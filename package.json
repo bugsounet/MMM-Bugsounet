@@ -1,0 +1,45 @@
+{
+  "name": "MMM-Bugsounet",
+  "version": "1.0.0",
+  "description": "Bugsounet modules.",
+  "keywords": [],
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "bugs": {
+    "url": "https://www.bugsounet.fr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
+  },
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "MMM-Bugsounet.js",
+  "scripts": {
+    "lint": "eslint . --config .eslint.config.mjs",
+    "lint:fix": "eslint . --config .eslint.config.mjs --fix",
+    "test": "npm run lint",
+    "test:translations": "prettier translations/*.json --check",
+    "update": "installer/update.sh"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.13",
+    "esbuild": "^0.24.2",
+    "fdir": "^6.4.3",
+    "sweetalert2": "^11.15.10"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^2.13.0",
+    "eslint": "^9.18.0",
+    "eslint-plugin-depend": "^0.12.0",
+    "eslint-plugin-import-x": "^4.6.1",
+    "eslint-plugin-package-json": "^0.20.1",
+    "markdownlint-cli2": "^0.17.2",
+    "stylelint": "^16.13.2",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-prettier": "^5.0.2"
+  },
+  "engines": {
+    "node": ">=20.18.1 <21 || >=22"
+  },
+  "rev": "250126"
+}
