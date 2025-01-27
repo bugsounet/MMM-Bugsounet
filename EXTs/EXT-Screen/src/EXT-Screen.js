@@ -81,7 +81,7 @@ Module.register("EXT-Screen", {
       wakeup: () => {
         this.sendSocketNotification("WAKEUP");
         if (this.config.Motion.animate) this.screenDisplay.animateModule();
-        this.sendNotification("Bugsounet_SCREEN-USER_PRESENCE", true);
+        this.sendNotification("Bugsounet_USER-PRESENCE", true);
       }
     };
 
@@ -142,40 +142,36 @@ Module.register("EXT-Screen", {
         this.screenDisplay.showMe();
         break;
       case "PIR_ERROR":
-        this.sendNotification("SHOW_ALERT", {
-          type: "notification",
-          title: "EXT-Screen",
+        this.sendNotification("Bugsounet_ALERT", {
+          type: "error",
           message: `Pir Error detected: ${payload}`,
           timer: 15000
         });
         break;
       case "PIR_DETECTED":
-        this.sendNotification("Bugsounet_SCREEN-USER_PRESENCE", true);
+        this.sendNotification("Bugsounet_USER-PRESENCE", true);
         break;
       case "PIR_ANIMATE":
         this.screenDisplay.animateModule();
         break;
       case "GOVERNOR_ERROR":
-        this.sendNotification("SHOW_ALERT", {
-          type: "notification",
-          title: "EXT-Screen",
+        this.sendNotification("Bugsounet_ALERT", {
+          type: "error",
           message: `Governor Error detected: ${payload}`,
           timer: 15000
         });
         break;
       case "CRON_ERROR":
-        this.sendNotification("SHOW_ALERT", {
-          type: "notification",
-          title: "EXT-Screen",
+        this.sendNotification("Bugsounet_ALERT", {
+          type: "error",
           message: `Cron Error detected: ${payload}`,
           timer: 15000
         });
         break;
       case "CRON_ERROR_UNSPECIFIED":
-        this.sendNotification("SHOW_ALERT", {
-          type: "notification",
-          title: this.translate("MODULE_CONFIG_ERROR", { MODULE_NAME: "EXT-Screen", ERROR: "Cron Configuration" }),
-          message: `Code:${payload} - ${this.translate("MODULE_ERROR_UNSPECIFIED")}`,
+        this.sendNotification("Bugsounet_ALERT", {
+          type: "error",
+          message: `Cron Configuration Error Code:${payload} - ${this.translate("MODULE_ERROR_UNSPECIFIED")}`,
           timer: 15000
         });
         break;
