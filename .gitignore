@@ -1,1 +1,6 @@
-/node_modules/
+**/node_modules/
+/EXTs/*/*.js
+/EXTs/*/components/*.js
+/EXTs/EXT-TelegramBot/cache/*
+/EXTs/EXT-TelegramBot/screenshot/screenshot_*.png
+
