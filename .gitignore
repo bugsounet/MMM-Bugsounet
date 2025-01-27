@@ -1,4 +1,6 @@
 **/node_modules/
+*.js
+conponents/*.js
 /EXTs/*/*.js
 /EXTs/*/components/*.js
 /EXTs/EXT-TelegramBot/cache/*

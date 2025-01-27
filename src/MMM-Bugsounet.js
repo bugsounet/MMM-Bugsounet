@@ -43,9 +43,9 @@ Module.register("MMM-Bugsounet", {
     if (noti.startsWith("EXT_") && this.EXTs) return this.EXTs.ActionsEXTs(noti, payload, sender);
     switch (noti) {
       case "ALL_MODULES_STARTED":
-      break;
-       case "DOM_OBJECTS_CREATED":
-      break;
+        break;
+      case "DOM_OBJECTS_CREATED":
+        break;
     }
   },
 

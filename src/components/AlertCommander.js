@@ -1,3 +1,4 @@
+/* global logBugsounet Swal */
 /* eslint-disable-next-line */
 class AlertCommander {
   constructor (Tools) {
