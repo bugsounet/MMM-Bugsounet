@@ -40,7 +40,7 @@ Module.register("MMM-Bugsounet", {
   },
 
   notificationReceived (noti, payload = null, sender = null) {
-    if (noti.startsWith("EXT_") && this.EXTs) return this.EXTs.ActionsEXTs(noti, payload, sender);
+    if (noti.startsWith("Bugsounet_") && this.EXTs) return this.EXTs.ActionsEXTs(noti, payload, sender);
     switch (noti) {
       case "ALL_MODULES_STARTED":
         break;
@@ -56,7 +56,7 @@ Module.register("MMM-Bugsounet", {
         break;
       case "INITIALIZED":
         this.EXTs.setBugsounet_Ready();
-        this.sendNotification("BUGSOUNET_READY");
+        this.sendNotification("Bugsounet_READY");
         logBugsounet("Initialized.");
         break;
       case "ERROR":
@@ -90,7 +90,7 @@ Module.register("MMM-Bugsounet", {
       unLock: () => this.EXTs.forceUnLockPagesAndScreen(),
       sendAlert: (...args) => this.sendAlert(...args)
     };
-    this.EXTs = new EXTs(Tools);
+    this.EXTs = new EXTs(Tools); // a faire verifier les CB
     await this.EXTs.init();
     this.sendNotification("EXT_DB", this.EXTs.Get_DB());
     this.sendSocketNotification("INIT");
