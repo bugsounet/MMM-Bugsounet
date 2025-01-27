@@ -1,0 +1,123 @@
+#EXT-TELBOT {
+  position: relative;
+
+  --font-size: 18px;
+  --overflow-max-height: 500px;
+  --profile-width: 40px;
+  --photo-height: 200px;
+  --bubble-after-top: 20px;
+
+  text-align: left;
+  display: inline-block;
+}
+
+#EXT-TELBOT.inactive {
+  display: none;
+}
+
+#EXT-TELBOT_ANCHOR {
+  width: 100%;
+  height: 1px;
+}
+
+#EXT-TELBOT .container {
+  width: var(--container-width);
+  font-size: var(--font-size);
+  color: #fff;
+  position: relative;
+}
+
+#EXT-TELBOT .container.telecastHideOverflow {
+  position: relative;
+  max-height: var(--overflow-max-height);
+  overflow-y: scroll;
+}
+
+#EXT-TELBOT .chat {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  min-height: 50px;
+}
+
+#EXT-TELBOT .from {
+  width: var(--profile-width);
+  height: var(--profile-width);
+}
+
+#EXT-TELBOT .profile {
+  width: var(--profile-width);
+  height: var(--profile-width);
+  border-radius: 50%;
+  margin: 0 auto;
+  line-height: 200%;
+  text-align: center;
+  font-weight: bold;
+}
+
+#EXT-TELBOT .profileImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+#EXT-TELBOT .video,
+#EXT-TELBOT .photo {
+  max-width: 100%;
+  min-height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+#EXT-TELBOT .photo .background {
+  position: absolute;
+  inset: 0;
+  filter: grayscale(80%) blur(20px);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#EXT-TELBOT .imageContainer {
+  position: relative;
+  inset: 0;
+}
+
+#EXT-TELBOT .photoImage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  max-height: var(--photo-height);
+  vertical-align: middle;
+}
+
+#EXT-TELBOT .message {
+  font-size: var(--font-size);
+  line-height: 125%;
+  margin-left: 25px;
+  width: 100%;
+}
+
+#EXT-TELBOT .bubble {
+  position: relative;
+  background: #08c;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+#EXT-TELBOT .bubble::after {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: var(--bubble-after-top);
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-right-color: #08c;
+  border-left: 0;
+  border-top: 0;
+  margin-top: -10px;
+  margin-left: -20px;
+}
