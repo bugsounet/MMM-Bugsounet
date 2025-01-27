@@ -1,0 +1,46 @@
+/*****************
+**   GA css     **
+**   @BuGsounet **
+******************/
+
+/* sweetAlert CSS */
+
+body.swal2-shown > [aria-hidden="true"] {
+  transition: 0.1s filter;
+  filter: blur(3px);
+}
+
+.swal2-container {
+  z-index: 100000 !important;
+}
+
+.AlertProgressColor {
+  background-color: #3cba54;
+  height: 1px;
+}
+
+.AlertProgressColorError {
+  background-color: #db3236;
+  height: 1px;
+}
+
+.AlertProgressColorWarning {
+  background-color: #ffa500;
+  height: 1px;
+}
+
+.AlertFooterColor {
+  color: darkgray;
+}
+
+.AlertMessageContainer {
+  display: inline-flex;
+  align-items: center;
+}
+
+.AlertMessageIcon {
+  width: 60px;
+  height: auto;
+  margin-right: 10px;
+  aspect-ratio: auto;
+}

@@ -22,9 +22,11 @@
     "update": "installer/update.sh"
   },
   "dependencies": {
+    "@electron/rebuild": "^3.7.1",
     "dayjs": "^1.11.13",
     "esbuild": "^0.24.2",
     "fdir": "^6.4.3",
+    "pm2": "^5.4.3",
     "sweetalert2": "^11.15.10"
   },
   "devDependencies": {
