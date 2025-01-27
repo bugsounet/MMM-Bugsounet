@@ -6,13 +6,13 @@ It will wake up with a Pir sensor, Touch screen or crontab
 
 ## Screenshot
 
-![screenshot1](https://raw.githubusercontent.com/bugsounet/EXT-Screen/dev/screenshot/screenshot.png)
+![screenshot1](/EXTs/EXT-Screen/screenshot/screenshot.png)
 
-![screenshot2](https://raw.githubusercontent.com/bugsounet/EXT-Screen/dev/screenshot/screenshot2.png)
+![screenshot2](/EXTs/EXT-Screen/screenshot/screenshot2.png)
 
-![screenshot3](https://raw.githubusercontent.com/bugsounet/EXT-Screen/dev/screenshot/screenshot3.png)
+![screenshot3](/EXTs/EXT-Screen/screenshot/screenshot3.png)
 
-![screenshot4](https://raw.githubusercontent.com/bugsounet/EXY-Screen/dev/screenshot/screenshot4.png)
+![screenshot3](/EXTs/EXT-Screen/screenshot/screenshot4.png)
 
 ## Installation
 
