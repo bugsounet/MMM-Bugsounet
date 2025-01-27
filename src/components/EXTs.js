@@ -95,9 +95,6 @@ class EXTs {
   /** Rule when a plugin send Hello **/
   onStartPlugin (plugin) {
     if (!plugin) return;
-    if (plugin === "EXT-Background") this.notificationReceived("GA_FORCE_FULLSCREEN");
-    if (plugin === "EXT-Detector") setTimeout(() => this.sendNotification("EXT_DETECTOR-START"), 300);
-    if (plugin === "EXT-Touch") this.sendNotification("EXT_TOUCH-START");
     if (plugin === "EXT-Pages") this.sendNotification("EXT_PAGES-Gateway");
   }
 
@@ -109,7 +106,6 @@ class EXTs {
     if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
       if (!this.EXT["EXT-Screen"].power) this.sendNotification("EXT_SCREEN-WAKEUP");
       this.sendNotification("EXT_SCREEN-LOCK");
-      if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-ON");
     }
 
     if (this.byPassIsConnected()) {
@@ -121,9 +117,7 @@ class EXTs {
     }
 
     if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("EXT_SPOTIFY-STOP");
-    if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("EXT_MUSIC-STOP");
     if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("EXT_RADIO-STOP");
-    if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("EXT_YOUTUBE-STOP");
     if (this.EXT["EXT-YouTubeCast"].hello && this.EXT["EXT-YouTubeCast"].connected) this.sendNotification("EXT_YOUTUBECAST-STOP");
     if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("EXT_FREEBOXTV-STOP");
 
@@ -143,7 +137,6 @@ class EXTs {
     setTimeout(() => { // wait 1 sec before scan ...
       if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
         this.sendNotification("EXT_SCREEN-UNLOCK");
-        if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("EXT_STREAMDECK-OFF");
       }
       if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("EXT_PAGES-UNLOCK");
       logBugsounet("[EXTs] Disconnected:", extName);
@@ -175,11 +168,9 @@ class EXTs {
     if (this.EXT["EXT-Screen"].hello) this.sendNotification("EXT_SCREEN-UNLOCK");
   }
 
-  // exception with EXT-Browser, EXT-Photos, EXT-Website
+  // exception with EXT-Website
   byPassIsConnected () {
-    if ((this.EXT["EXT-Browser"].hello && this.EXT["EXT-Browser"].connected)
-      || (this.EXT["EXT-Photos"].hello && this.EXT["EXT-Photos"].connected)
-      || (this.EXT["EXT-Website"].hello && this.EXT["EXT-Website"].connected)) {
+    if (this.EXT["EXT-Website"].hello && this.EXT["EXT-Website"].connected) {
       logBugsounet("[EXTs] byPass", true);
       return true;
     }
@@ -219,9 +210,6 @@ class EXTs {
       case "EXT_PAGES-Gateway":
         if (sender.name === "EXT-Pages") Object.assign(this.EXT["EXT-Pages"], payload);
         break;
-      case "EXT_GATEWAY":
-        this.gatewayEXT(payload);
-        break;
       case "EXT_GATEWAY-Restart":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Updates" && this.EXT["EXT-Updates"].hello) || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello) || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)) {
           this.sendSocketNotification("RESTART");
@@ -252,14 +240,6 @@ class EXTs {
           this.sendAlert({ type: "information", message: this.translate("EXTStop") }, "MMM-Bugsounet");
         }
         break;
-      case "EXT_MUSIC-CONNECTED":
-        if (!this.EXT["EXT-MusicPlayer"].hello) return this.sendWarn("[CONNECT] EXT-MusicPlayer don't say to me HELLO!");
-        this.connectEXT("EXT-MusicPlayer");
-        break;
-      case "EXT_MUSIC-DISCONNECTED":
-        if (!this.EXT["EXT-MusicPlayer"].hello) return this.sendWarn("[DISCONNECT] EXT-MusicPlayer don't say to me HELLO!");
-        this.disconnectEXT("EXT-MusicPlayer");
-        break;
       case "EXT_RADIO-CONNECTED":
         if (!this.EXT["EXT-RadioPlayer"].hello) return this.sendWarn("[CONNECT] EXT-RadioPlayer don't say to me HELLO!");
         this.connectEXT("EXT-RadioPlayer");
@@ -288,14 +268,6 @@ class EXTs {
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[RULES] EXT-Spotify don't say to me HELLO!");
         this.disconnectEXT("EXT-Spotify");
         break;
-      case "EXT_YOUTUBE-CONNECTED":
-        if (!this.EXT["EXT-YouTube"].hello) return this.sendWarn("[CONNECT] EXT-YouTube don't say to me HELLO!");
-        this.connectEXT("EXT-YouTube");
-        break;
-      case "EXT_YOUTUBE-DISCONNECTED":
-        if (!this.EXT["EXT-YouTube"].hello) return this.sendWarn("[DISCONNECT] EXT-YouTube don't say to me HELLO!");
-        this.disconnectEXT("EXT-YouTube");
-        break;
       case "EXT_YOUTUBECAST-CONNECTED":
         if (!this.EXT["EXT-YouTubeCast"].hello) return this.sendWarn("[CONNECT] EXT-YouTubeCast don't say to me HELLO!");
         this.connectEXT("EXT-YouTubeCast");
@@ -304,14 +276,6 @@ class EXTs {
         if (!this.EXT["EXT-YouTubeCast"].hello) return this.sendWarn("[DISCONNECT] EXT-YouTubeCast don't say to me HELLO!");
         this.disconnectEXT("EXT-YouTubeCast");
         break;
-      case "EXT_BROWSER-CONNECTED":
-        if (!this.EXT["EXT-Browser"].hello) return this.sendWarn("[CONNECT] EXT-Browser don't say to me HELLO!");
-        this.connectEXT("EXT-Browser");
-        break;
-      case "EXT_BROWSER-DISCONNECTED":
-        if (!this.EXT["EXT-Browser"].hello) return this.sendWarn("[DISCONNECT] EXT-Browser don't say to me HELLO!");
-        this.disconnectEXT("EXT-Browser");
-        break;
       case "EXT_FREEBOXTV-CONNECTED":
         if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[CONNECT] EXT-FreeboxTV don't say to me HELLO!");
         this.connectEXT("EXT-FreeboxTV");
@@ -319,14 +283,6 @@ class EXTs {
       case "EXT_FREEBOXTV-DISCONNECTED":
         if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[DISCONNECT] EXT-FreeboxTV don't say to me HELLO!");
         this.disconnectEXT("EXT-FreeboxTV");
-        break;
-      case "EXT_PHOTOS-CONNECTED":
-        if (!this.EXT["EXT-Photos"].hello) return this.sendWarn("[CONNECT] EXT-Photos don't say to me HELLO!");
-        this.connectEXT("EXT-Photos");
-        break;
-      case "EXT_PHOTOS-DISCONNECTED":
-        if (!this.EXT["EXT-Photos"].hello) return this.sendWarn("[DISCONNECT] EXT-Photos don't say to me HELLO!");
-        this.disconnectEXT("EXT-Photos");
         break;
       case "EXT_UPDATES-MODULE_UPDATE":
         if (!this.EXT || !this.EXT["EXT-Updates"].hello) return this.sendWarn("[RULES] EXT-Updates don't say to me HELLO!");
@@ -363,103 +319,6 @@ class EXTs {
       }, 300);
     }
     logBugsounet("[EXTs] Status:", this.EXT);
-  }
-
-  /**********************/
-  /** Scan GA Response **/
-  /**********************/
-  gatewayEXT (response) {
-    if (!response) return; // @todo scan if type array ??
-    logBugsounet("[EXTs] Response Scan");
-    let tmp = {
-      photos: {
-        urls: response.photos && response.photos.length ? response.photos : [],
-        length: response.photos && response.photos.length ? response.photos.length : 0
-      },
-      links: {
-        urls: response.urls && response.urls.length ? response.urls : [],
-        length: response.urls && response.urls.length ? response.urls.length : 0
-      },
-      youtube: response.youtube
-    };
-
-    // the show must go on !
-    var urls = configMerge({}, urls, tmp);
-    if (urls.photos.length > 0 && this.EXT["EXT-Photos"].hello) {
-      this.EXT["EXT-Photos"].connected = true;
-      this.sendNotification("EXT_PHOTOS-OPEN", urls.photos.urls);
-      logBugsounet("[EXTs] Forced connected: EXT-Photos");
-    }
-    else if (urls.links.length > 0) {
-      this.urlsScan(urls);
-    } else if (urls.youtube && this.EXT["EXT-YouTube"].hello) {
-      this.sendNotification("EXT_YOUTUBE-SEARCH", urls.youtube);
-      logBugsounet("[EXTs] Sended to YT", urls.youtube);
-    }
-    logBugsounet("[EXTs] Response Structure:", urls);
-  }
-
-  /** urls scan : dispatch url, youtube, spotify **/
-  /** use the FIRST discover link only **/
-  urlsScan (urls) {
-    var firstURL = urls.links.urls[0];
-
-    /** YouTube RegExp **/
-    /* eslint-disable no-useless-escape */
-    // need to be fixed
-    var YouTubeLink = new RegExp("youtube\.com\/([a-z]+)\\?([a-z]+)\=([0-9a-zA-Z\-\_]+)", "ig");
-    /* eslint-enable no-useless-escape */
-
-    /** Scan Youtube Link **/
-    var YouTube = YouTubeLink.exec(firstURL);
-
-    if (YouTube) {
-      let Type;
-      if (YouTube[1] === "watch") Type = "id";
-      if (YouTube[1] === "playlist") Type = "playlist";
-      if (!Type) return console.log("[EXTs] [GA:EXT:YouTube] Unknow Type !", YouTube);
-      if (this.EXT["EXT-YouTube"].hello) {
-        if (Type === "playlist") {
-          this.sendAlert({
-            message: "EXT_YOUTUBE don't support playlist",
-            timer: 5000,
-            type: "warning"
-          }, "MMM-Bugsounet");
-          return;
-        }
-        this.sendNotification("EXT_YOUTUBE-PLAY", YouTube[3]);
-      }
-      return;
-    }
-
-    /** scan spotify links **/
-    /** Spotify RegExp **/
-    /* eslint-disable no-useless-escape */
-    // need to be fixed
-    var SpotifyLink = new RegExp("open\.spotify\.com\/([a-z]+)\/([0-9a-zA-Z\-\_]+)", "ig");
-    /* eslint-enable no-useless-escape */
-    var Spotify = SpotifyLink.exec(firstURL);
-    if (Spotify) {
-      let type = Spotify[1];
-      let id = Spotify[2];
-      if (this.EXT["EXT-Spotify"].hello) {
-        if (type === "track") {
-          // don't know why tracks works only with uris !?
-          this.sendNotification("EXT_SPOTIFY-PLAY", { uris: [`spotify:track:${id}`] });
-        }
-        else {
-          this.sendNotification("EXT_SPOTIFY-PLAY", { context_uri: `spotify:${type}:${id}` });
-        }
-      }
-      return;
-    }
-    // send to Browser
-    if (this.EXT["EXT-Browser"].hello) {
-      // force connexion for rules (don't turn off other EXT)
-      this.EXT["EXT-Browser"].connected = true;
-      this.sendNotification("EXT_BROWSER-OPEN", firstURL);
-      logBugsounet("[EXTs] Forced connected: EXT-Browser");
-    }
   }
 
   /** Send Assistant Volume control **/
