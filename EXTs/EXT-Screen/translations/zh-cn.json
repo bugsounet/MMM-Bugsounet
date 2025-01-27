@@ -1,0 +1,10 @@
+{
+  "ScreenWakeUp": "屏幕唤醒由 {VALUES}",
+  "ScreenLock": "屏幕锁由 {VALUES}",
+  "ScreenUnLock": "屏幕解锁由 {VALUES}",
+  "ScreenTurnOff": "自动关闭屏幕:",
+  "ScreenLastPresence": "上次的呈现:",
+  "ScreenPowerOn": "打开屏幕",
+  "ScreenPowerOff": "关闭屏幕",
+  "ScreenAvailability": "Screen availability:"
+}
