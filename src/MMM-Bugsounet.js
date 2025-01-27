@@ -92,7 +92,7 @@ Module.register("MMM-Bugsounet", {
     };
     this.EXTs = new EXTs(Tools); // a faire verifier les CB
     await this.EXTs.init();
-    this.sendNotification("EXT_DB", this.EXTs.Get_DB());
+    this.sendNotification("Bugsounet_DB", this.EXTs.Get_DB());
     this.sendSocketNotification("INIT");
   },
 
