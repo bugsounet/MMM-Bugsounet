@@ -15,8 +15,17 @@
   "author": "bugsounet",
   "main": "MMM-Bugsounet.js",
   "scripts": {
+    "clean": "node installer/clean",
+    "deps": "node installer/deps",
+    "dev": "node installer/dev",
+    "dev:src": "node installer/src",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
     "lint": "eslint . --config .eslint.config.mjs",
     "lint:fix": "eslint . --config .eslint.config.mjs --fix",
+    "rebuild": "node installer/rebuild",
+    "reset": "node installer/reset",
+    "setup": "node installer/setup",
     "test": "npm run lint",
     "test:translations": "prettier translations/*.json --check",
     "update": "installer/update.sh"
