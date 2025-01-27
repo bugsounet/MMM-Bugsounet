@@ -118,7 +118,7 @@ Module.register("EXT-TelegramBot", {
             }
           }
         });
-        this.sendNotification("EXT_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO", this.name);
         this.sendSocketNotification("SET_COMMANDS", this.commands.map((c) => { return { command: c.command, description: c.description }; }));
         break;
       case "CHAT":
@@ -153,7 +153,7 @@ Module.register("EXT-TelegramBot", {
 
   notificationReceived (notification, payload, sender) {
     switch (notification) {
-      case "BUGSOUNET_READY":
+      case "Bugsounet_READY":
         if (sender.name === "MMM-Bugsounet") {
           if (this.isAlreadyInitialized) return;
           this.sendSocketNotification("INIT", this.config);
