@@ -1,0 +1,35 @@
+name: "MagicMirror² (master) and MMM-Pir build Testing"
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: Test install MMM-Pir
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.18.1, 20.x, 22.x, 23.x]
+    steps:
+      - name: "Use Node.js ${{ matrix.node-version }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          check-latest: true
+
+      - name: Checkout MagicMirror²
+        uses: actions/checkout@v4
+        with:
+          repository: MagicMirrorOrg/MagicMirror
+
+      - name: Install MagicMirror²
+        run: npm install
+
+      - name: Checkout MMM-Pir
+        uses: actions/checkout@v4
+        with:
+          path: MagicMirror/modules/MMM-Pir
+
+      - name: Install MMM-Pir
+        run: npm run setup
+        working-directory: MagicMirror/modules/MMM-Pir
+        continue-on-error: false
