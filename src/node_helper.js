@@ -27,7 +27,6 @@ module.exports = NodeHelper.create({
         }
         console.log(`[Bugsounet] MMM-Bugsounet Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
         this.config = payload;
-        if (this.config.debug) log = (...args) => { console.log("[Bugsounet]", ...args); };
         this.alreadyInitialized = true;
         await checker.secure();
         this.sendSocketNotification("BUGSOUNET-INIT");
