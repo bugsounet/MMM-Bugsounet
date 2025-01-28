@@ -2,7 +2,10 @@
   "name": "MMM-Bugsounet",
   "version": "1.0.0",
   "description": "Bugsounet modules.",
-  "keywords": [],
+  "keywords": [
+    "bugsounet",
+    "modules"
+  ],
   "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "bugs": {
     "url": "https://www.bugsounet.fr"
