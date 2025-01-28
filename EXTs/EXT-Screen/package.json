@@ -26,16 +26,11 @@
     "dev:src": "node installer/src",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
-    "lint": "eslint . --config .eslint.config.mjs",
-    "lint:fix": "eslint . --config .eslint.config.mjs --fix",
     "pinctrl": "installer/pinctrl.sh",
     "rebuild": "node installer/rebuild",
     "reset": "node installer/reset",
     "screenSaver": "installer/screenSaver.sh",
     "setup": "node installer/setup",
-    "test": "npm run lint",
-    "test:css": "stylelint *.css",
-    "test:markdown": "markdownlint-cli2 *.md",
     "test:minify": "node installer/minify",
     "update": "node installer/update"
   },
@@ -50,17 +45,6 @@
     "node-libgpiod": "^0.4.6",
     "progressbar.js": "^1.1.1",
     "python-shell": "^5.0.0"
-  },
-  "devDependencies": {
-    "@stylistic/eslint-plugin": "^2.13.0",
-    "eslint": "^9.18.0",
-    "eslint-plugin-depend": "^0.12.0",
-    "eslint-plugin-import-x": "^4.6.1",
-    "eslint-plugin-package-json": "^0.21.1",
-    "markdownlint-cli2": "^0.17.2",
-    "stylelint": "^16.13.2",
-    "stylelint-config-standard": "^37.0.0",
-    "stylelint-prettier": "^5.0.2"
   },
   "engines": {
     "node": ">=20.9.0 <21 || >=22"
