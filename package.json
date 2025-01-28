@@ -27,7 +27,9 @@
     "reset": "node installer/reset",
     "setup": "node installer/setup",
     "test": "npm run lint",
-    "test:translations": "prettier translations/*.json --check",
+    "test:css": "stylelint *.css EXTs/EXT-*/*.css",
+    "test:markdown": "markdownlint-cli2 *.md EXTs/EXT-*/*.md",
+    "test:translations": "prettier translations/*.json EXTs/EXT-*/translations/*.json --config .prettier.config.mjs --check",
     "update": "installer/update.sh"
   },
   "dependencies": {
