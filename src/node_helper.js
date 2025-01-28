@@ -6,8 +6,6 @@ var NodeHelper = require("node_helper");
 const checker = require("./components/checker");
 const controler = require("./components/controler");
 
-var log = () => { /* do nothing */ };
-
 module.exports = NodeHelper.create({
   requiresVersion: "2.30.0",
   start () {
