@@ -26,10 +26,10 @@ async function checkOS () {
       }
       utils.empty();
       await utils.checkRoot();
-      await functions.updatePackageInfoLinux();
-      await functions.installLinuxDeps();
-      await functions.installNPMDeps();
-      await functions.electronRebuild();
+      //await functions.updatePackageInfoLinux();
+      //await functions.installLinuxDeps();
+      //await functions.installNPMDeps();
+      //await functions.electronRebuild();
       await functions.installFiles();
       functions.done();
       break;

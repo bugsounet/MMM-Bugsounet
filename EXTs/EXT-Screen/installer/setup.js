@@ -1,5 +1,5 @@
-const utils = require("./utils");
-const functions = require("./functions");
+const utils = require("../../../installer/utils");
+const functions = require("../../../installer/functions");
 
 async function main () {
   // Let's start !

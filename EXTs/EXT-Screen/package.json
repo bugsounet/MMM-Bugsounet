@@ -30,8 +30,7 @@
     "rebuild": "node installer/rebuild",
     "reset": "node installer/reset",
     "screenSaver": "installer/screenSaver.sh",
-    "setup": "node installer/setup",
-    "test:minify": "node installer/minify",
+    "setup": "node installer/setup --path=EXTs/EXT-Screen",
     "update": "node installer/update"
   },
   "dependencies": {

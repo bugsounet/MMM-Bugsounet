@@ -8,6 +8,7 @@ const path = require("node:path");
 var packageJSON = require("../package.json");
 
 var moduleRoot = path.resolve(__dirname, "../");
+const installerHome = path.resolve(__dirname, "../installer");
 
 // color codes
 const reset = "\x1B[0m";
@@ -38,8 +39,8 @@ const findArgs = () => process.argv.reduce((args, arg) => {
 const args = findArgs();
 
 if (args.path) {
-  moduleRoot = path.resolve(moduleRoot, args.path);
-  packageJSON = require(`${moduleRoot}/package.json`);
+    moduleRoot = path.resolve(moduleRoot, args.path);
+    packageJSON = require(`${moduleRoot}/package.json`);
 }
 
 // deep merge
@@ -306,7 +307,8 @@ module.exports.npmRemove = npmRemove;
  */
 function minify (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec("cd installer && node minify", function (err) {
+  let cmd = (args.path) ? `node ${installerHome}/minify --path=${args.path}` : `node ${installerHome}/minify`
+  var child = exec(cmd, function (err) {
     if (err) {
       return callback(err);
     }
