@@ -3,7 +3,6 @@
  * @busgounet
 */
 
-const path = require("node:path");
 const { fdir } = require("fdir");
 const esbuild = require("esbuild");
 const utils = require("./utils");
@@ -12,8 +11,7 @@ const isWin = utils.isWin();
 const project = utils.moduleName();
 const revision = utils.moduleRev();
 const version = utils.moduleVersion();
-
-const moduleRoot = path.resolve(__dirname, "../");
+const moduleRoot = utils.getModuleRoot();
 
 var files = [];
 

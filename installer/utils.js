@@ -4,9 +4,10 @@ const Exec = util.promisify(require("node:child_process").exec);
 const exec = require("child_process").exec;
 const events = require("events");
 const path = require("node:path");
-const packageJSON = require("../package.json");
 
-const moduleRoot = path.resolve(__dirname, "../");
+var packageJSON = require("../package.json");
+
+var moduleRoot = path.resolve(__dirname, "../");
 
 // color codes
 const reset = "\x1B[0m";
@@ -14,6 +15,32 @@ const red = "\x1B[91m";
 const yellow = "\x1B[93m";
 const green = "\x1B[92m";
 const blue = "\x1B[94m";
+
+// find any node arguments
+const findArgs = () => process.argv.reduce((args, arg) => {
+  // long arg
+  if (arg.slice(0, 2) === "--") {
+    const longArg = arg.split("=");
+    const longArgFlag = longArg[0].slice(2);
+    const longArgValue = longArg.length > 1 ? longArg[1] : true;
+    args[longArgFlag] = longArgValue;
+  }
+  // flags
+  else if (arg[0] === "-") {
+    const flags = arg.slice(1).split("");
+    flags.forEach((flag) => {
+      args[flag] = true;
+    });
+  }
+  return args;
+}, {});
+
+const args = findArgs();
+
+if (args.path) {
+  moduleRoot = path.resolve(moduleRoot, args.path);
+  packageJSON = require(`${moduleRoot}/package.json`);
+}
 
 // deep merge
 function configMerge (result) {
@@ -39,6 +66,16 @@ function configMerge (result) {
   return result;
 }
 module.exports.configMerge = configMerge;
+
+function getArgs () {
+  return args;
+}
+module.exports.getArgs = getArgs;
+
+function getModuleRoot () {
+  return moduleRoot;
+}
+module.exports.getModuleRoot = getModuleRoot;
 
 // Display an empty line
 function empty () {
