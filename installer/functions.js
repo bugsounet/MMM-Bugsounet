@@ -1,11 +1,12 @@
 const utils = require("./utils");
-var packageJSON
+
+var packageJSON;
 try {
   packageJSON = require(`${utils.getModuleRoot()}/package.json`);
-} catch (e) {
-  utils.error("Error: package.json not found")
-  utils.empty()
-  process.exit(1)
+} catch {
+  utils.error("Error: package.json not found");
+  utils.empty();
+  process.exit(1);
 }
 
 var options = packageJSON.installer || {};
