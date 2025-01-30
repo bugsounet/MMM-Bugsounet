@@ -391,7 +391,7 @@ function execCMD (command, callback = () => {}, bypass) {
 }
 
 async function moduleReset () {
-  info("➤ Cleaning js files and reset branch...");
+  info("➤ Cleaning js files and reset git branch...");
   if (isWin()) {
     await execCMD(`del ${moduleRoot}\\*.js`);
     await execCMD(`rmdir ${moduleRoot}\\components /Q /S`);

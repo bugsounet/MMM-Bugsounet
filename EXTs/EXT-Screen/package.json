@@ -27,11 +27,10 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "pinctrl": "installer/pinctrl.sh",
-    "rebuild": "node installer/rebuild",
-    "reset": "node installer/reset",
+    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-Screen",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Screen",
     "screenSaver": "installer/screenSaver.sh",
-    "setup": "node installer/setup --path=EXTs/EXT-Screen",
-    "update": "node installer/update"
+    "setup": "node installer/setup --path=EXTs/EXT-Screen"
   },
   "dependencies": {
     "cron-parser": "^4.9.0",
