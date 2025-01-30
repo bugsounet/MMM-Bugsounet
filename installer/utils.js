@@ -389,6 +389,7 @@ function execCMD (command, callback = () => {}, bypass) {
     });
   });
 }
+module.exports.execCMD = execCMD;
 
 async function moduleReset () {
   info("➤ Cleaning js files and reset git branch...");
