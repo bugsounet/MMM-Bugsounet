@@ -307,6 +307,7 @@ module.exports.npmRemove = npmRemove;
  */
 function minify (callback = () => {}) {
   var emitter = new events.EventEmitter();
+  // to do: make working with windows
   let cmd = (args.path) ? `node ${installerHome}/minify --path=${args.path}` : `node ${installerHome}/minify`;
   var child = exec(cmd, function (err) {
     if (err) {
@@ -404,7 +405,7 @@ async function moduleReset () {
 module.exports.moduleReset = moduleReset;
 
 async function moduleClean () {
-  info("➤ Cleaning js node_modules...");
+  info("➤ Cleaning node_modules...");
   if (isWin()) {
     await execCMD(`rmdir ${moduleRoot}\\node_modules /Q /S`, () => {}, true);
   } else {

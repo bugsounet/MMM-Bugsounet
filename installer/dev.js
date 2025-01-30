@@ -10,8 +10,7 @@ const utils = require("./utils");
 
 const isWin = utils.isWin();
 const project = utils.moduleName();
-
-const moduleRoot = path.resolve(__dirname, "../");
+const moduleRoot = utils.getModuleRoot();
 
 var files = [];
 
