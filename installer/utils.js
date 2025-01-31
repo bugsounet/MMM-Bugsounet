@@ -255,7 +255,7 @@ function install (names, callback = () => {}) {
  */
 function prune (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec(`npm prune`, { cwd: moduleRoot }, function (err) {
+  var child = exec("npm prune", { cwd: moduleRoot }, function (err) {
     if (err) {
       return callback(err);
     }
@@ -353,7 +353,7 @@ module.exports.develop = develop;
 // electron need to be rebuilded
 function electronRebuild (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec(`npx electron-rebuild`, { cwd: moduleRoot }, function (err) {
+  var child = exec("npx electron-rebuild", { cwd: moduleRoot }, function (err) {
     if (err) {
       return callback(err);
     }
