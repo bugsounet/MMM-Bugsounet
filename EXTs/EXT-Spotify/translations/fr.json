@@ -1,0 +1,13 @@
+{
+  "PlayerNoResponse": "Pas de réponse du lecteur! ({VALUES})",
+  "PlayerConnected": "Connecté au lecteur! ({VALUES})",
+  "PlayerConnecting": "Patientez, connexion au lecteur...",
+
+  "SpotifyNoResult": "La recherche retourne aucun résultat",
+  "SpotifySearchFailed": "Erreur lors de la recherche",
+  "SpotifyListenText": "En écoute sur",
+  "SpotifySearchTypePlaylist": "playlist",
+  "SpotifySearchTypeAlbum": "album",
+  "SpotifySearchTypeTrack": "piste",
+  "SpotifySearchTypeArtist": "artiste"
+}

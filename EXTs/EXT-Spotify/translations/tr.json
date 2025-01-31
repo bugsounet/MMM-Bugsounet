@@ -1,0 +1,13 @@
+{
+  "PlayerNoResponse": "Oyuncudan yanıt yok! ({VALUES})",
+  "PlayerConnected": "Oyuncuya bağlanıldı! ({VALUES})",
+  "PlayerConnecting": "Lütfen bekleyin, oynatıcıya bağlanılıyor...",
+
+  "SpotifyNoResult": "Sonuç bulunamadı",
+  "SpotifySearchFailed": "Arama ve Oynatma başarısız oldu",
+  "SpotifyListenText": "Dinleniyor",
+  "SpotifySearchTypePlaylist": "Çalma Listesi",
+  "SpotifySearchTypeAlbum": "Albüm",
+  "SpotifySearchTypeTrack": "İzlemek",
+  "SpotifySearchTypeArtist": "Sanatçı"
+}

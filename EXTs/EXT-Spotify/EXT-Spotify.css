@@ -1,0 +1,383 @@
+/** Spotify css **/
+#EXT_SPOTIFY {
+  position: relative;
+  border-radius: 10px;
+  box-sizing: content-box;
+  color: #eee;
+  font-weight: normal;
+  text-align: left;
+  line-height: 120%;
+  text-shadow: black 2px 2px 2px;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+#EXT_SPOTIFY_FOREGROUND {
+  position: relative;
+  filter: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: space-between;
+}
+
+#EXT_SPOTIFY_COVER {
+  margin-bottom: 0.5vh;
+  position: relative;
+}
+
+#EXT_SPOTIFY_COVER_IMAGE {
+  width: 100%;
+  box-shadow: black 1px 1px 1px 1px;
+}
+
+#EXT_SPOTIFY_PROGRESS_BAR {
+  position: relative;
+}
+
+progress[value]#EXT_SPOTIFY_PROGRESS_BAR::-webkit-progress-value {
+  background-color: #fff;
+}
+
+progress[value]#EXT_SPOTIFY_PROGRESS_BAR::-webkit-progress-bar {
+  background-color: #666;
+}
+
+#EXT_SPOTIFY_CONTROL_PLAY {
+  display: inline-block;
+  margin: auto;
+  width: 50px;
+}
+
+#EXT_SPOTIFY_TITLE {
+  font-weight: bold;
+}
+
+#EXT_SPOTIFY_INFO_FOOTER {
+  display: flex;
+  flex-direction: row;
+  place-content: flex-end space-between;
+}
+
+#EXT_SPOTIFY_COVER_IMAGE.fade-in {
+  animation: fadeInOpacity 1s 1;
+  animation-timing-function: linear;
+}
+
+@keyframes fadeInOpacity {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+#EXT_SPOTIFY.bottomIn {
+  animation-duration: 1s;
+  animation-name: fadeInBottom;
+}
+
+#EXT_SPOTIFY.bottomOut {
+  animation-duration: 1s;
+  animation-name: fadeOutBottom;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 200%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeOutBottom {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 200%, 0);
+  }
+}
+
+#EXT_SPOTIFY .text {
+  width: inherit;
+  margin-right: 0.5em;
+  white-space: nowrap;
+  display: inline-block;
+  font-size: 1em;
+}
+
+#EXT_SPOTIFY .iconify {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin-right: 0;
+}
+
+#EXT_SPOTIFY .infoicon {
+  margin-right: 8px;
+}
+
+#EXT_SPOTIFY_VOLUME .mdi {
+  font-size: 20px;
+}
+
+#EXT_SPOTIFY.pausing #EXT_SPOTIFY_CONTROL_PLAY,
+#EXT_SPOTIFY.pausing #EXT_SPOTIFY_COVER_IMAGE,
+#EXT_SPOTIFY.pausing #EXT_SPOTIFY_PROGRESS_BAR,
+#EXT_SPOTIFY.pausing #EXT_SPOTIFY_MISC {
+  filter: brightness(50%) grayscale(75%);
+}
+
+#EXT_SPOTIFY.inactive {
+  display: none;
+}
+
+#TEXT_BULLET {
+  margin-right: 0.5em;
+  white-space: nowrap;
+  display: inline-block;
+  color: grey;
+}
+
+/* spotify mini */
+#EXT_SPOTIFY.mini {
+  width: 360px;
+  font-size: 16px;
+  height: auto;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_BACKGROUND {
+  background-size: cover;
+  background-position: center center;
+  filter: blur(16px) opacity(90%) grayscale(33%);
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  z-index: 0;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_FOREGROUND {
+  flex-direction: row;
+  padding: 0;
+}
+
+#EXT_SPOTIFY.mini .mdi {
+  font-size: 14px;
+}
+
+#EXT_SPOTIFY.mini .infoicon {
+  margin-right: 6px;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_COVER {
+  width: 140px;
+  height: 140px;
+  padding: 0;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_COVER_IMAGE {
+  height: 140px;
+  border-radius: 20px;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_MISC {
+  display: unset;
+  flex-direction: initial;
+  justify-content: initial;
+  margin-left: initial;
+  margin-right: initial;
+  overflow: initial;
+  width: initial;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_INFO {
+  width: 220px;
+  padding-left: 10px;
+  margin-top: 5px;
+  display: block;
+  flex-direction: initial;
+  height: auto;
+  justify-content: initial;
+  align-items: initial;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_INFO > * {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_INFO .text {
+  width: 290px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  margin-left: -5px;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_PROGRESS_BAR {
+  margin: 5px;
+  width: 95%;
+  border: 1px solid #aaa;
+  height: 10px;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_PROGRESS_TIME {
+  display: none;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_VOLUME {
+  /* margin-left: 10px; */
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_LOGO {
+  position: relative;
+  text-align: center;
+  left: auto;
+  transform: none;
+  color: #1db954;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_VOLUME .infoicon {
+  margin-right: 3px;
+  text-shadow: black 2px 2px 2px;
+  align-items: center;
+  text-align: center;
+  line-height: inherit;
+  font-size: 15px;
+}
+
+#EXT_SPOTIFY.mini #EXT_SPOTIFY_INFO .infoicon {
+  width: 23px;
+  margin-right: 10px;
+  text-shadow: black 2px 2px 2px;
+  align-items: center;
+  text-align: center;
+  line-height: inherit;
+}
+
+/** spotify big **/
+#EXT_SPOTIFY.big {
+  width: 400px;
+  font-size: 18px;
+  height: auto;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_BACKGROUND {
+  background-size: cover;
+  background-position: center center;
+  filter: blur(16px) opacity(90%) grayscale(33%);
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  z-index: 0;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_FOREGROUND {
+  padding: 20px;
+  flex-direction: column;
+}
+
+#EXT_SPOTIFY.big .mdi {
+  font-size: 14px;
+}
+
+#EXT_SPOTIFY.big .infoicon {
+  margin-right: 6px;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_COVER {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_COVER_IMAGE {
+  height: 100%;
+  border-radius: 10px;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_MISC {
+  display: unset;
+  flex-direction: initial;
+  justify-content: initial;
+  margin-left: initial;
+  margin-right: initial;
+  overflow: initial;
+  width: initial;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_INFO {
+  width: 380px;
+  padding-left: 10px;
+  margin-top: 5px;
+  display: block;
+  flex-direction: initial;
+  height: auto;
+  justify-content: initial;
+  align-items: initial;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_INFO > * {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_INFO .text {
+  width: 330px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: -5px;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_PROGRESS_BAR {
+  margin: 5px;
+  width: 100%;
+  border: 1px solid #aaa;
+  height: 10px;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_PROGRESS_TIME {
+  display: none;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_LOGO {
+  position: relative;
+  text-align: center;
+  left: auto;
+  transform: none;
+  color: #1db954;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_VOLUME .infoicon {
+  font-size: 20px;
+}
+
+#EXT_SPOTIFY.big #EXT_SPOTIFY_INFO .infoicon {
+  width: 23px;
+  margin-right: 10px;
+  text-shadow: black 2px 2px 2px;
+  align-items: center;
+  text-align: center;
+  line-height: inherit;
+}

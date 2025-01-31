@@ -1,0 +1,13 @@
+{
+  "PlayerNoResponse": "No response from the player! ({VALUES})",
+  "PlayerConnected": "Connected to the player! ({VALUES})",
+  "PlayerConnecting": "Please wait, connecting to the player...",
+
+  "SpotifyNoResult": "No Result found",
+  "SpotifySearchFailed": "Search and Play failed",
+  "SpotifyListenText": "Listening on",
+  "SpotifySearchTypePlaylist": "playlist",
+  "SpotifySearchTypeAlbum": "album",
+  "SpotifySearchTypeTrack": "track",
+  "SpotifySearchTypeArtist": "artist"
+}
