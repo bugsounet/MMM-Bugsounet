@@ -71,6 +71,7 @@ Module.register("EXT-Screen", {
   start () {
     if (this.config.debug) _logScreen = (...args) => { console.log("[Screen]", ...args); };
     this.ready = false;
+    this.isForceLocked = false;
     let Tools = {
       sendSocketNotification: (...args) => this.sendSocketNotification(...args),
       sendNotification: (...args) => this.sendNotification(...args),
@@ -126,6 +127,11 @@ Module.register("EXT-Screen", {
         break;
       case "SCREEN_POWERSTATUS":
         this.sendNotification("Bugsounet_SCREEN-POWER", payload);
+        if (payload) {
+          this.sendInformation(this.translate("ScreenPowerOn"));
+        } else {
+          this.sendInformation(this.translate("ScreenPowerOff"));
+        }
         break;
       case "SCREEN_ERROR":
         this.sendNotification("Bugsounet_ALERT", {
@@ -190,19 +196,38 @@ Module.register("EXT-Screen", {
     switch (notification) {
       // only available if not force-locked
       case "Bugsounet_SCREEN-END":
+        if (this.isForceLocked) return;
         this.sendSocketNotification("FORCE_END");
         break;
       case "UPDATES":
         if (sender?.name === "updatenotification" && this.getUpdatesNotifications) this.sendSocketNotification("WAKEUP");
         break;
       case "Bugsounet_SCREEN-WAKEUP":
+        if (this.isForceLocked) return;
+        this.sendInformation(this.translate("ScreenWakeUp", { VALUES: sender.name }));
         this.sendSocketNotification("WAKEUP");
         break;
       case "Bugsounet_SCREEN-LOCK":
+        if (this.isForceLocked) return;
+        this.sendInformation(this.translate("ScreenLock", { VALUES: sender.name }));
         this.sendSocketNotification("LOCK");
         break;
       case "Bugsounet_SCREEN-UNLOCK":
+        if (this.isForceLocked) return;
+        this.sendInformation(this.translate("ScreenUnLock", { VALUES: sender.name }));
         this.sendSocketNotification("UNLOCK");
+        break;
+      case "Bugsounet_SCREEN-FORCE_END":
+        this.isForceLocked = true;
+        this.sendSocketNotification("LOCK_FORCE_END");
+        break;
+      case "Bugsounet_SCREEN-FORCE_WAKEUP":
+        this.isForceLocked = false;
+        this.sendSocketNotification("LOCK_FORCE_WAKEUP");
+        break;
+      case "Bugsounet_SCREEN-FORCE_TOGGLE":
+        this.isForceLocked = !this.isForceLocked;
+        this.sendSocketNotification("LOCK_FORCE_TOOGLE");
         break;
     }
   },
@@ -256,5 +281,42 @@ Module.register("EXT-Screen", {
         }
       }
     });
+  },
+
+  sendInformation (message) {
+    this.sendNotification("Bugsounet_ALERT", {
+      message: message,
+      type: "information"
+    });
+  },
+
+  /** EXT-TelegramBot Commands **/
+  EXT_TELBOTCommands (commander) {
+    commander.add({
+      command: "screen",
+      description: "Screen power control",
+      callback: "tbScreen"
+    });
+  },
+  tbScreen (command, handler) {
+    if (handler.args) {
+      var args = handler.args.toLowerCase().split(" ");
+      if (args[0] === "on") {
+        this.isForceLocked = false;
+        this.sendSocketNotification("LOCK_FORCE_WAKEUP");
+        handler.reply("TEXT", this.translate("ScreenPowerOn"));
+        return;
+      }
+      if (args[0] === "off") {
+        this.isForceLocked = true;
+        this.sendSocketNotification("LOCK_FORCE_END");
+        handler.reply("TEXT", this.translate("ScreenPowerOff"));
+        return;
+      }
+    }
+    handler.reply("TEXT", "Need Help for /screen commands ?\n\n\
+  *on*: Power on the screen\n\
+  *off*: Power off the screen\n\
+  ", { parse_mode: "Markdown" });
   }
 });

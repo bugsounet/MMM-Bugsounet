@@ -41,12 +41,6 @@ Module.register("MMM-Bugsounet", {
 
   notificationReceived (noti, payload = null, sender = null) {
     if (noti.startsWith("Bugsounet_") && this.EXTs) return this.EXTs.ActionsEXTs(noti, payload, sender);
-    switch (noti) {
-      case "ALL_MODULES_STARTED":
-        break;
-      case "DOM_OBJECTS_CREATED":
-        break;
-    }
   },
 
   socketNotificationReceived (noti, payload) {
