@@ -26,6 +26,7 @@ async function checkOS () {
       }
       utils.empty();
       await utils.checkRoot();
+      await functions.installNPMDeps();
       await functions.installFiles();
       functions.done();
       break;

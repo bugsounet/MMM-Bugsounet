@@ -41,6 +41,7 @@
     "nan": "github:bugsounet/nan#node23",
     "node-cron": "^3.0.3",
     "node-libgpiod": "^0.4.6",
+    "open": "^10.1.0",
     "progressbar.js": "^1.1.1",
     "python-shell": "^5.0.0"
   },
