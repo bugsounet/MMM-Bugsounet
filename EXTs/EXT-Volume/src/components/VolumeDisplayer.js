@@ -60,7 +60,7 @@ class VolumeDisplayer {
     muteIconContainer.id = "EXT_VOLUME-MUTE_CONTAINER_ICON";
     var muteIcon = document.createElement("img");
     muteIcon.id = "EXT_VOLUME-MUTE_ICON";
-    muteIcon.src = "/modules/MMM-GoogleAssistant/EXTs/EXT-Volume/resources/mute.png";
+    muteIcon.src = "/modules/MMM-Bugsounet/EXTs/EXT-Volume/resources/mute.png";
     muteIconContainer.appendChild(muteIcon);
     muteContainer.appendChild(muteIconContainer);
     document.body.appendChild(muteContainer);
