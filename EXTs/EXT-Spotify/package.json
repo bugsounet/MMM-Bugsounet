@@ -29,6 +29,9 @@
     "setup": "node installer/setup --path=EXTs/EXT-Spotify",
     "token": "node installer/auth_Spotify"
   },
+  "dependencies": {
+    "open": "^10.1.0"
+  },
   "engines": {
     "node": ">=20"
   },
