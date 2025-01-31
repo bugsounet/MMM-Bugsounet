@@ -33,7 +33,7 @@ Module.register("EXT-FreeboxTV", {
   playStream (channel) {
     if (!this.ChannelsCheck(channel)) {
       console.error(`[FreeboxTV] Channel not found: ${channel}`);
-      this.sendNotification("GA_ALERT", {
+      this.sendNotification("Bugsounet_ALERT", {
         type: "error",
         message: `Channel not found: ${channel}`,
         timer: 10000
@@ -72,30 +72,30 @@ Module.register("EXT-FreeboxTV", {
   },
 
   notificationReceived (notification, payload, sender) {
-    if (notification === "GA_READY") {
-      if (sender.name === "MMM-GoogleAssistant") this.sendSocketNotification("CONFIG", this.config);
+    if (notification === "Bugsounet_READY") {
+      if (sender.name === "MMM-Bugsounet") this.sendSocketNotification("CONFIG", this.config);
     }
-    if (notification === "EXT_VLCSERVER-START") this.sendSocketNotification("START");
+    if (notification === "Bugsounet_VLCSERVER-START") this.sendSocketNotification("START");
     if (!this.ready) return;
 
     switch (notification) {
-      case "EXT_FREEBOXTV-PLAY":
+      case "Bugsounet_FREEBOXTV-PLAY":
         this.playStream(payload ? payload : this.Channels[0]);
         break;
-      case "EXT_FREEBOXTV-NEXT":
+      case "Bugsounet_FREEBOXTV-NEXT":
         this.playNextStream(payload);
         break;
-      case "EXT_FREEBOXTV-PREVIOUS":
+      case "Bugsounet_FREEBOXTV-PREVIOUS":
         this.playPreviousStream(payload);
         break;
-      case "EXT_VLCServer-WILL_PLAYING":
+      case "Bugsounet_VLCServer-WILL_PLAYING":
         this.canStop = false;
         break;
-      case "EXT_STOP":
-      case "EXT_FREEBOXTV-STOP":
+      case "Bugsounet_STOP":
+      case "Bugsounet_FREEBOXTV-STOP":
         if (this.canStop) this.stopStream(true);
         break;
-      case "EXT_FREEBOXTV-VOLUME":
+      case "Bugsounet_FREEBOXTV-VOLUME":
         var value = null;
         if (payload) value = parseInt(payload);
         if (typeof value === "number" && value >= 0 && value <= 100) {
@@ -105,10 +105,10 @@ Module.register("EXT-FreeboxTV", {
           console.log(`[FreeboxTV] Volume: ${this.volumeControl} [${value}]`);
         } else console.log("[FreeboxTV] Volume Control wrong value:", payload);
         break;
-      case "EXT_FREEBOXTV-VOLUME_MIN":
+      case "Bugsounet_FREEBOXTV-VOLUME_MIN":
         if (this.FreeboxTV.playing) this.sendSocketNotification("VOLUME_CONTROL", this.config.volume.min);
         break;
-      case "EXT_FREEBOXTV-VOLUME_MAX":
+      case "Bugsounet_FREEBOXTV-VOLUME_MAX":
         if (this.FreeboxTV.playing) this.sendSocketNotification("VOLUME_CONTROL", this.volumeControl ? this.volumeControl : this.config.volume.start);
         break;
     }
@@ -136,28 +136,28 @@ Module.register("EXT-FreeboxTV", {
         iterifyArr(this.Channels);
         if (!this.ready) {
           this.ready = true;
-          this.sendNotification("EXT_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO", this.name);
         }
         break;
       case "ENDED":
         this.FreeboxTV.playing = false;
         this.canStop = true;
-        this.sendNotification("EXT_FREEBOXTV-DISCONNECTED");
+        this.sendNotification("Bugsounet_FREEBOXTV-DISCONNECTED");
         break;
       case "STARTED":
         this.FreeboxTV.playing = true;
         this.canStop = true;
-        this.sendNotification("EXT_FREEBOXTV-CONNECTED");
+        this.sendNotification("Bugsounet_FREEBOXTV-CONNECTED");
         break;
       case "ERROR":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "error",
           message: payload,
           timer: 10000
         });
         break;
       case "WILL_PLAYING":
-        this.sendNotification("EXT_VLCServer-WILL_PLAYING");
+        this.sendNotification("Bugsounet_VLCServer-WILL_PLAYING");
         break;
     }
   },
