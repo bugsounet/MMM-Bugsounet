@@ -3,7 +3,6 @@
  * @busgounet
 */
 
-const path = require("node:path");
 const { copyFileSync } = require("node:fs");
 const { fdir } = require("fdir");
 const utils = require("./utils");
