@@ -1,0 +1,26 @@
+{
+  "name": "EXT-Librespot",
+  "version": "2.0.0",
+  "description": "Librespot plugins for EXT-Spotify.",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-Librespot",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-Librespot.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Librespot",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Librespot",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Librespot",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Librespot",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Librespot",
+    "setup": "node installer/setup --path=EXTs/EXT-Librespot",
+    "setup:credentials": "installer/setup-credentials.sh",
+    "setup:develop": "installer/setup-from-devsource.sh",
+    "setup:source": "installer/setup-from-source.sh"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "241226"
+}

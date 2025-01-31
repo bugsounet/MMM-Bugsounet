@@ -5,4 +5,5 @@
 /EXTs/EXT-*/components/**/*.js
 /EXTs/EXT-TelegramBot/cache/*
 /EXTs/EXT-TelegramBot/screenshot/screenshot_*.png
-
+/EXTs/EXT-Librespot/components/sources/
+/EXTs/EXT-Librespot/components/librespot/librespot
