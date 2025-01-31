@@ -255,7 +255,7 @@ function install (names, callback = () => {}) {
  */
 function prune (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec("npm prune", function (err) {
+  var child = exec(`cd ${moduleRoot} && npm prune`, function (err) {
     if (err) {
       return callback(err);
     }
@@ -278,7 +278,7 @@ function prune (callback = () => {}) {
  */
 function npmRemove (names, callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec(`npm remove ${names}`, function (err) {
+  var child = exec(`cd ${moduleRoot} && npm remove ${names}`, function (err) {
     if (err) {
       return callback(err);
     }
@@ -329,7 +329,8 @@ function minify (callback = () => {}) {
 
 function develop (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec("cd installer && node dev", function (err) {
+  let cmd = (args.path) ? `node ${installerHome}/dev --path=${args.path}` : `node ${installerHome}/dev`;
+  var child = exec(cmd, function (err) {
     if (err) {
       return callback(err);
     }
@@ -352,7 +353,7 @@ module.exports.develop = develop;
 // electron need to be rebuilded
 function electronRebuild (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec("npx electron-rebuild", function (err) {
+  var child = exec("cd ${moduleRoot} && npx electron-rebuild", function (err) {
     if (err) {
       return callback(err);
     }
