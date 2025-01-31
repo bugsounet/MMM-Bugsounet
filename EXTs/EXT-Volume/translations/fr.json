@@ -1,0 +1,6 @@
+{
+  "VolumePresetError": "Volume: Erreur de Preset !",
+  "VolumeText": "Volume:",
+  "VolumeHelp": "Défini le volume sonore",
+  "VolumeDisabled": "Le contrôle du volume est désactivé"
+}
