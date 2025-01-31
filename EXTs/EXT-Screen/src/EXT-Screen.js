@@ -210,11 +210,13 @@ Module.register("EXT-Screen", {
       case "Bugsounet_SCREEN-LOCK":
         if (this.isForceLocked) return;
         this.sendInformation(this.translate("ScreenLock", { VALUES: sender.name }));
+        this.screenDisplay.hideMe();
         this.sendSocketNotification("LOCK");
         break;
       case "Bugsounet_SCREEN-UNLOCK":
         if (this.isForceLocked) return;
         this.sendInformation(this.translate("ScreenUnLock", { VALUES: sender.name }));
+        this.screenDisplay.showMe();
         this.sendSocketNotification("UNLOCK");
         break;
       case "Bugsounet_SCREEN-FORCE_END":
