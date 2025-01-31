@@ -207,8 +207,8 @@ class EXTs {
       case "Bugsounet_HELLO":
         this.helloEXT(payload);
         break;
-      case "Bugsounet_Alert":
-        this.sendAlert(payload, sender);
+      case "Bugsounet_ALERT":
+        this.sendAlert(payload, sender.name);
         break;
       case "Bugsounet_PAGES-Gateway":
         if (sender.name === "EXT-Pages") Object.assign(this.EXT["EXT-Pages"], payload);
