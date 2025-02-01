@@ -150,7 +150,7 @@ async function doTools () {
 
   document.getElementById("Alert-Send").onclick = function () {
     $("#Alert-Send").addClass("disabled");
-    Request("/api/Assistant/Alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ alert: $("#Alert-Query").val() }), "Alert", () => {
+    Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ alert: $("#Alert-Query").val() }), "Alert", () => {
       alertify.success(translation.RequestDone);
     }, null);
   };
