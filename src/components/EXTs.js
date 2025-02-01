@@ -160,7 +160,7 @@ class EXTs {
     if (this.EXT["EXT-Pages"].hello) this.sendNotification("Bugsounet_PAGES-LOCK");
     if (this.EXT["EXT-Screen"].hello) {
       if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
-      this.sendNotification("EXT_SCREEN-LOCK");
+      this.sendNotification("Bugsounet_SCREEN-LOCK");
     }
   }
 
@@ -233,10 +233,10 @@ class EXTs {
         this.EXT["EXT-Screen"].power = payload;
         if (this.EXT["EXT-Pages"].hello) {
           if (this.EXT["EXT-Screen"].power) {
-            this.sendNotification("EXT_PAGES-RESUME");
-            this.sendNotification("EXT_PAGES-HOME");
+            this.sendNotification("Bugsounet_PAGES-RESUME");
+            this.sendNotification("Bugsounet_PAGES-HOME");
           }
-          else this.sendNotification("EXT_PAGES-PAUSE");
+          else this.sendNotification("Bugsounet_PAGES-PAUSE");
         }
         break;
       case "Bugsounet_STOP":
@@ -252,7 +252,7 @@ class EXTs {
         if (!this.EXT["EXT-RadioPlayer"].hello) return this.sendWarn("[DISCONNECT] EXT-RadioPlayer don't say to me HELLO!");
         this.disconnectEXT("EXT-RadioPlayer");
         break;
-      case "EXT_SPOTIFY-CONNECTED":
+      case "Bugsounet_SPOTIFY-CONNECTED":
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[CONNECT] EXT-Spotify don't say to me HELLO!");
         this.EXT["EXT-Spotify"].remote = true;
         break;
