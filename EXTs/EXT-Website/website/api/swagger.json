@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "description": "Control MMM-GoogleAssistant from API",
+    "description": "Control MMM-Bugsounet from API",
     "version": "0.0.0",
     "title": "EXT-Website API"
   },
@@ -26,10 +26,6 @@
     {
       "name": "EXT",
       "description": "EXTs Tools"
-    },
-    {
-      "name": "Assistant",
-      "description": "MMM-GoogleAssistant Tools"
     },
     {
       "name": "System",
@@ -2764,77 +2760,10 @@
         }
       }
     },
-    "/api/Assistant/query": {
+    "/api/system/alert": {
       "post": {
         "tags": [
-          "Assistant"
-        ],
-        "summary": "Send query to MMM-GoogleAssistant",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Send request On MMM-GoogleAssistant.<li>Required: `Bearer` token in header.<li>Required: `query` param with your assistant request in body (JSON Format).",
-        "requestBody": {
-          "description" : "Query to send in MMM-GoogleAssistant",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendQuery"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Command sended successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EXT200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing query param",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": " MMM-GoogleAssistant is not Ready",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Assistant/Alert": {
-      "post": {
-        "tags": [
-          "Assistant"
+          "System"
         ],
         "summary": "Send Alert on the screen",
         "security": [

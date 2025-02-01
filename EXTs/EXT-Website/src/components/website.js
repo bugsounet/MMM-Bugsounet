@@ -1024,15 +1024,6 @@ class website {
         res.json({ done: "ok" });
         break;
 
-      case "/api/EXT/YouTube":
-        if (!this.website.EXTStatus["EXT-YouTube"].hello) return res.status(404).send("Not Found");
-        var YTquery = req.body["query"];
-        if (!YTquery || typeof (YTquery) !== "string") return res.status(400).send("Bad Request");
-        log("[API] Request send youtube search:", YTquery);
-        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_YOUTUBE-SEARCH", payload: YTquery });
-        res.json({ done: "ok" });
-        break;
-
       case "/api/EXT/Screen":
         if (!this.website.EXTStatus["EXT-Screen"].hello) return res.status(404).send("Not Found");
         var power = req.body["power"];
@@ -1158,16 +1149,7 @@ class website {
         res.json({ done: "ok" });
         break;
 
-      case "/api/Assistant/query":
-        if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).send("Not Found");
-        var query = req.body["query"];
-        if (typeof (query) !== "string" || query.length < 5) return res.status(400).send("Bad Request");
-        log("[API] Request MMM-Bugsounet query:", query);
-        this.sendSocketNotification("SendNoti", { noti: "GA_ACTIVATE", payload: { type: "TEXT", key: query } });
-        res.json({ done: "ok" });
-        break;
-
-      case "/api/Assistant/Alert":
+      case "/api/system/alert":
         if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).send("Not Found");
         var alert = req.body["alert"];
         if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).send("Bad Request");
