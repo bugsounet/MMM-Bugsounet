@@ -41,7 +41,7 @@ Module.register("EXT-Website", {
 
   notificationReceived (notification, payload, sender) {
     switch (notification) {
-      case "BUGSOUNET_READY":
+      case "Bugsounet_READY":
         if (sender.name === "MMM-Bugsounet") this.websiteInit();
         break;
       case "Bugsounet_DB":

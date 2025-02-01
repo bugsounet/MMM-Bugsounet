@@ -69,9 +69,9 @@ class website {
     };
     this.MMVersion = global.version;
     this.root_path = global.root_path;
-    this.GAPath = `${this.root_path}/modules/MMM-GoogleAssistant`;
-    this.WebsiteModulePath = `${this.root_path}/modules/MMM-GoogleAssistant/EXTs/EXT-Website`;
-    this.WebsitePath = `${this.root_path}/modules/MMM-GoogleAssistant/EXTs/EXT-Website/website`;
+    this.GAPath = `${this.root_path}/modules/MMM-Bugsounet`;
+    this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
+    this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
     this.APIDOCS = {};
     this.secret = this.encode(`EXT-Website v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
     this.rateLimiter = rateLimit({
@@ -733,7 +733,7 @@ class website {
 
       case "/api/config/EXT":
         if (!req.headers["ext"]) return res.status(400).send("Bad Request");
-        var index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(`MMM-GoogleAssistant/EXTs/${req.headers["ext"]}`);
+        var index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(`MMM-Bugsounet/EXTs/${req.headers["ext"]}`);
         if (index > -1) {
           log(`[API] Request config of ${req.headers["ext"]}`);
           let stringify = JSON.stringify(this.website.MMConfig.modules[index]);
@@ -852,7 +852,7 @@ class website {
 
         try {
           const dataConfig = JSON.parse(this.decode(req.body["config"]));
-          if (dataConfig.module !== `MMM-GoogleAssistant/EXTs/${req.headers["ext"]}`) {
+          if (dataConfig.module !== `MMM-Bugsounet/EXTs/${req.headers["ext"]}`) {
             return res.status(400).send("Bad Request");
           }
           const NewConfig = await this.configAddOrModify(dataConfig);
@@ -899,7 +899,7 @@ class website {
         if (this.website.EXTInstalled.indexOf(pluginName) === -1) {
           if (this.website.EXT.indexOf(pluginName) > -1) {
             log("[API] Request installation:", pluginName);
-            var modulePath = `${this.root_path}/modules/MMM-GoogleAssistant/EXTs/${pluginName}`;
+            var modulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/${pluginName}`;
             var Command = `cd ${modulePath} && npm install`;
 
             var child = exec(Command, { cwd: modulePath }, (error) => {
@@ -1162,7 +1162,7 @@ class website {
         if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).send("Not Found");
         var query = req.body["query"];
         if (typeof (query) !== "string" || query.length < 5) return res.status(400).send("Bad Request");
-        log("[API] Request MMM-GoogleAssistant query:", query);
+        log("[API] Request MMM-Bugsounet query:", query);
         this.sendSocketNotification("SendNoti", { noti: "GA_ACTIVATE", payload: { type: "TEXT", key: query } });
         res.json({ done: "ok" });
         break;
@@ -1236,7 +1236,7 @@ class website {
         var pluginName = req.headers["ext"];
         if (this.website.EXTInstalled.indexOf(pluginName) > -1 && this.website.EXT.indexOf(pluginName) > -1) {
           log("[API] Request delete:", pluginName);
-          var modulePath = `${this.root_path}/modules/MMM-GoogleAssistant/EXTs/${pluginName}`;
+          var modulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/${pluginName}`;
           var Command = `cd ${modulePath} && npm run clean && npm run reset`;
           var child = exec(Command, { cwd: modulePath }, (error) => {
             if (error) {
@@ -1492,7 +1492,7 @@ class website {
   readFreeTV () {
     return new Promise((resolve) => {
       var streamsConfig = undefined;
-      let file = `${this.root_path}/modules/MMM-GoogleAssistant/EXTs/EXT-FreeboxTV/streamsConfig.json`;
+      let file = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-FreeboxTV/streamsConfig.json`;
       if (fs.existsSync(file)) streamsConfig = require(file);
       resolve(streamsConfig);
     });
@@ -1501,9 +1501,9 @@ class website {
   readRadio () {
     return new Promise((resolve) => {
       var RadioResult = undefined;
-      const radio = this.website.MMConfig.modules.find((m) => m.module === "MMM-GoogleAssistant/EXTs/EXT-RadioPlayer" && !m.disabled);
+      const radio = this.website.MMConfig.modules.find((m) => m.module === "MMM-Bugsounet/EXTs/EXT-RadioPlayer" && !m.disabled);
       if (radio?.config?.streams) {
-        let file = `${this.root_path}/modules/MMM-GoogleAssistant/EXTs/EXT-RadioPlayer/${radio.config.streams}`;
+        let file = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-RadioPlayer/${radio.config.streams}`;
         if (fs.existsSync(file)) RadioResult = require(file);
         else console.error(`[WEBSITE] [Radio] error when loading file: ${file}`);
       }
@@ -1516,8 +1516,8 @@ class website {
     try {
       var Configured = [];
       this.website.MMConfig.modules.find((m) => {
-        if (m.module.startsWith("MMM-GoogleAssistant/EXTs/")) {
-          let plugin = m.module.split("MMM-GoogleAssistant/EXTs/")[1];
+        if (m.module.startsWith("MMM-Bugsounet/EXTs/")) {
+          let plugin = m.module.split("MMM-Bugsounet/EXTs/")[1];
           if (this.website.EXT.includes(plugin)) Configured.push(plugin);
         }
       });
@@ -1533,8 +1533,8 @@ class website {
     var Installed = [];
     var ext = this.website.EXT;
     ext.find((m) => {
-      if (fs.existsSync(`${this.root_path}/modules/MMM-GoogleAssistant/EXTs/${m}/node_helper.js`)) {
-        let name = require(`${this.root_path}/modules/MMM-GoogleAssistant/EXTs/${m}/package.json`).name;
+      if (fs.existsSync(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/node_helper.js`)) {
+        let name = require(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/package.json`).name;
         if (name === m) Installed.push(m);
         else console.warn(`[WEBSITE] Found: ${m} but in package.json name is not the same: ${name}`);
       }
@@ -1745,7 +1745,7 @@ class website {
   /** delete plugins config **/
   configDelete (EXT) {
     return new Promise((resolve) => {
-      let index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(`MMM-GoogleAssistant/EXTs/${EXT}`);
+      let index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(`MMM-Bugsounet/EXTs/${EXT}`);
       this.website.MMConfig.modules.splice(index, 1); // delete modules
       resolve(this.website.MMConfig);
     });
@@ -1940,7 +1940,7 @@ class website {
 
   /** read and search GA config **/
   getGAConfig () {
-    var index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf("MMM-GoogleAssistant");
+    var index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf("MMM-Bugsounet");
     if (index > -1) return this.website.MMConfig.modules[index];
     else return {};
   }
@@ -2030,7 +2030,7 @@ class website {
   }
 
   checkUpdate (module, version) {
-    let remoteFile = `https://raw.githubusercontent.com/bugsounet/MMM-GoogleAssistant/refs/heads/prod/EXTs/${module}/package.json`;
+    let remoteFile = `https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/prod/EXTs/${module}/package.json`;
     let result = {
       last: version,
       update: false,
@@ -2158,7 +2158,7 @@ class website {
       last: "0.0.0",
       needUpdate: false
     };
-    let remoteFile = "https://raw.githubusercontent.com/bugsounet/MMM-GoogleAssistant/refs/heads/prod/EXTs/EXT-Website/package.json";
+    let remoteFile = "https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/prod/EXTs/EXT-Website/package.json";
     return new Promise((resolve) => {
       fetch(remoteFile)
         .then((response) => response.json())

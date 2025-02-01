@@ -152,7 +152,7 @@ class sysInfoPage {
 
     var GAVersion = document.createElement("div");
     GAVersion.id = "WEBSITE-SYSINFO_VERSION-GA";
-    GAVersion.textContent = "MMM-GoogleAssistant:";
+    GAVersion.textContent = "MMM-Bugsounet:";
     Sysinfo_version_list.appendChild(GAVersion);
     var GAVersion_Value = document.createElement("div");
     GAVersion_Value.id = "WEBSITE-SYSINFO_VERSION-GA-VALUE";

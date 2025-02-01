@@ -207,7 +207,7 @@ async function doTools () {
         $("#Update-Box").css("display", "block");
         for (const [key] of Object.entries(updateModules)) {
           if ($(`#${key}`).length === 0) $("#Update-Modules-Box").append(`<br><span id='${key}'>${key}</span>`);
-          if (key.startsWith("EXT-") || key === "MMM-GoogleAssistant") ++needUpdate;
+          if (key.startsWith("EXT-") || key === "MMM-Bugsounet") ++needUpdate;
         }
         $("#Update-Modules-Box").css("display", "block");
       }

@@ -326,10 +326,10 @@ async function EXTConfigJSEditor () {
       }
 
       /** Rules for not change module name **/
-      if (json && json.module && json.module !== `MMM-GoogleAssistant/EXTs/${EXT}`) {
+      if (json && json.module && json.module !== `MMM-Bugsounet/EXTs/${EXT}`) {
         errors.push({
           path: ["module"],
-          message: `${translation.ErrModule} MMM-GoogleAssistant/EXTs/${EXT}`
+          message: `${translation.ErrModule} MMM-Bugsounet/EXTs/${EXT}`
         });
       }
       return errors;
@@ -425,7 +425,7 @@ async function EXTModifyConfigJSEditor () {
       }
 
       /** Rules for not change module name **/
-      if (json && json.module && json.module !== `MMM-GoogleAssistant/EXTs/${EXT}`) {
+      if (json && json.module && json.module !== `MMM-Bugsounet/EXTs/${EXT}`) {
         errors.push({
           path: ["module"],
           message: `${translation.ErrModule} ${EXT}`
