@@ -1,6 +1,6 @@
 /******************
 * EXT-Website
-* bugsounet ©05/24
+* bugsounet ©02/25
 ******************/
 
 /* global WebsiteTranslations, sysInfoPage */
@@ -24,7 +24,7 @@ Module.register("EXT-Website", {
     switch (notification) {
       case "INITIALIZED":
         this.ready = true;
-        this.sendNotification("EXT_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO", this.name);
         break;
       case "SendNoti":
         if (payload.payload && payload.noti) this.sendNotification(payload.noti, payload.payload);
@@ -44,17 +44,17 @@ Module.register("EXT-Website", {
       case "BUGSOUNET_READY":
         if (sender.name === "MMM-Bugsounet") this.websiteInit();
         break;
-      case "EXT_DB":
+      case "Bugsounet_DB":
         this.EXT_DB = payload;
         console.log("[WEBSITE] Received Database", this.EXT_DB);
         break;
-      case "EXT_DB-UPDATE":
-        this.sendSocketNotification("EXT_DB-UPDATE", payload);
+      case "Bugsounet_DB-UPDATE":
+        this.sendSocketNotification("Bugsounet_DB-UPDATE", payload);
         break;
-      case "EXT_STATUS":
-        this.sendSocketNotification("EXT_STATUS", payload);
+      case "Bugsounet_STATUS":
+        this.sendSocketNotification("Bugsounet_STATUS", payload);
         break;
-      case "EXT_WEBSITE-SYSINFO":
+      case "Bugsounet_WEBSITE-SYSINFO":
         this.sysInfo.toggle();
         break;
     }
@@ -99,7 +99,7 @@ Module.register("EXT-Website", {
     this.Translations = new WebsiteTranslations(Tools);
     let init = await this.Translations.init();
     if (!init) {
-      this.sendNotification("GA_ALERT", {
+      this.sendNotification("Bugsounet_ALERT", {
         message: "Translations Error",
         type: "error",
         timer: 5000
@@ -159,7 +159,7 @@ Module.register("EXT-Website", {
     text += `*${result["HOSTNAME"]}*\n\n`;
     // version
     text += `*-- ${this.translate("GW_System_Box_Version")} --*\n`;
-    text += "*" + `MMM-GoogleAssistant:* \`${result["VERSION"]["GA"]}\`\n`;
+    text += "*" + `MMM-Bugsounet:* \`${result["VERSION"]["GA"]}\`\n`;
     text += "*" + `MagicMirror²:* \`${result["VERSION"]["MagicMirror"]}\`\n`;
     text += "*" + `Electron:* \`${result["VERSION"]["ELECTRON"]}\`\n`;
     text += "*" + `MagicMirror² ${this.translate("GW_System_NodeVersion")}* \`${result["VERSION"]["NODEMM"]}\`\n`;

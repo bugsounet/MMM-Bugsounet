@@ -200,7 +200,7 @@ class website {
         console.error("[WEBSITE] [SERVER] Can't start web server!");
         console.error("[WEBSITE] [SERVER] Error:", err.message);
         this.sendSocketNotification("SendNoti", {
-          noti: "GA_ALERT",
+          noti: "Bugsounet_ALERT",
           payload: {
             type: "error",
             message: "Can't start web server!",
@@ -552,14 +552,14 @@ class website {
       this.website.serverAPI
         .listen(8085, "127.0.0.1", () => {
           console.log("[WEBSITE] [API] Start listening on port 8085");
-          this.sendSocketNotification("SendNoti", "EXT_WEBSITE-API_STARTED");
+          this.sendSocketNotification("SendNoti", "Bugsounet_WEBSITE-API_STARTED");
           resolve();
         })
         .on("error", (err) => {
           console.error("[WEBSITE] [API] Can't start API server!");
           console.error("[WEBSITE] [API] Error:", err.message);
           this.sendSocketNotification("SendNoti", {
-            noti: "GA_ALERT",
+            noti: "Bugsounet_ALERT",
             payload: {
               type: "error",
               message: "Can't start API server!",
@@ -929,7 +929,7 @@ class website {
         var speaker = req.body["volume"];
         if (typeof (speaker) !== "number" || speaker < 0 || speaker > 100 || isNaN(speaker)) return res.status(400).send("Bad Request");
         log("[API] Request speaker volume change to", speaker);
-        this.sendSocketNotification("SendNoti", { noti: "EXT_VOLUME-SPEAKER_SET", payload: speaker || "0" });
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_VOLUME-SPEAKER_SET", payload: speaker || "0" });
         res.json({ done: "ok" });
         break;
 
@@ -938,7 +938,7 @@ class website {
         var recorder = req.body["volume"];
         if (typeof (recorder) !== "number" || recorder < 0 || recorder > 100) return res.status(400).send("Bad Request");
         log("[API] Request recorder volume change to", recorder);
-        this.sendSocketNotification("SendNoti", { noti: "EXT_VOLUME-RECORDER_SET", payload: recorder || "0" });
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_VOLUME-RECORDER_SET", payload: recorder || "0" });
         res.json({ done: "ok" });
         break;
 
@@ -948,7 +948,7 @@ class website {
         var allRadio = Object.keys(this.website.radio);
         if (allRadio.indexOf(req.body["radio"]) === -1) return res.status(404).send("Not Found");
         log("[API] Request radio change to", req.body["radio"]);
-        this.sendSocketNotification("SendNoti", { noti: "EXT_RADIO-PLAY", payload: req.body["radio"] });
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_RADIO-PLAY", payload: req.body["radio"] });
         res.json({ done: "ok" });
         break;
 
@@ -957,7 +957,7 @@ class website {
         var updates = this.filterObject(this.website.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
         if (!updates.length) return res.status(404).send("Not Found");
         log("[API] Request send updates");
-        this.sendSocketNotification("SendNoti", "EXT_UPDATES-UPDATE");
+        this.sendSocketNotification("SendNoti", "Bugsounet_UPDATES-UPDATE");
         res.json({ done: "ok" });
         break;
 
@@ -965,7 +965,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
         if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Already playing");
         log("[API] Request send Spotify play");
-        this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PLAY");
+        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY");
         res.json({ done: "ok" });
         break;
 
@@ -973,14 +973,14 @@ class website {
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
         if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Already pausing");
         log("[API] Request send Spotify pause");
-        this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PAUSE");
+        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PAUSE");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/toggle":
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
         log("[API] Request send Spotify toogle");
-        this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PLAY-TOGGLE");
+        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY-TOGGLE");
         res.json({ done: "ok" });
         break;
 
@@ -988,7 +988,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
         if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Not playing");
         log("[API] Request send Spotify stop");
-        this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-STOP");
+        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-STOP");
         res.json({ done: "ok" });
         break;
 
@@ -996,7 +996,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
         if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Not playing");
         log("[API] Request send Spotify next");
-        this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-NEXT");
+        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-NEXT");
         res.json({ done: "ok" });
         break;
 
@@ -1004,7 +1004,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
         if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Not playing");
         log("[API] Request send Spotify previous");
-        this.sendSocketNotification("SendNoti", "EXT_SPOTIFY-PREVIOUS");
+        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PREVIOUS");
         res.json({ done: "ok" });
         break;
 
@@ -1020,7 +1020,7 @@ class website {
           random: false
         };
         log("[API] Request send Spotify search:", pl);
-        this.sendSocketNotification("SendNoti", { noti: "EXT_SPOTIFY-SEARCH", payload: pl });
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_SPOTIFY-SEARCH", payload: pl });
         res.json({ done: "ok" });
         break;
 
@@ -1029,7 +1029,7 @@ class website {
         var YTquery = req.body["query"];
         if (!YTquery || typeof (YTquery) !== "string") return res.status(400).send("Bad Request");
         log("[API] Request send youtube search:", YTquery);
-        this.sendSocketNotification("SendNoti", { noti: "EXT_YOUTUBE-SEARCH", payload: YTquery });
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_YOUTUBE-SEARCH", payload: YTquery });
         res.json({ done: "ok" });
         break;
 
@@ -1040,12 +1040,12 @@ class website {
         log("[API] Request send screen power:", power);
         if (power === "OFF") {
           if (!this.website.EXTStatus["EXT-Screen"].power) return res.status(409).send("Already OFF");
-          this.sendSocketNotification("SendNoti", "EXT_SCREEN-FORCE_END");
+          this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_END");
           return res.json({ done: "ok" });
         }
         if (power === "ON") {
           if (this.website.EXTStatus["EXT-Screen"].power) return res.status(409).send("Already ON");
-          this.sendSocketNotification("SendNoti", "EXT_SCREEN-FORCE_WAKEUP");
+          this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_WAKEUP");
           return res.json({ done: "ok" });
         }
         res.status(400).send("Bad Request");
@@ -1059,7 +1059,7 @@ class website {
         var allTV = Object.keys(this.website.freeTV);
         if (allTV.indexOf(TV) === -1) return res.status(404).send("Not Found");
         log("[API] Request send FreeboxTV channel:", TV);
-        this.sendSocketNotification("SendNoti", { noti: "EXT_FREEBOXTV-PLAY", payload: TV });
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_FREEBOXTV-PLAY", payload: TV });
         res.json({ done: "ok" });
         break;
 
@@ -1134,32 +1134,32 @@ class website {
     switch (req.url) {
       case "/api/EXT/stop":
         this.sendSocketNotification("SendStop");
-        this.sendSocketNotification("SendNoti", "EXT_STOP");
+        this.sendSocketNotification("SendNoti", "Bugsounet_STOP");
         res.json({ done: "ok" });
         break;
 
       case "/api/system/restart":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "EXT_GATEWAY-Restart"), 1000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Restart"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/die":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "EXT_GATEWAY-Close"), 3000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Close"), 3000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/reboot":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "EXT_GATEWAY-Reboot"), 1000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Reboot"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/shutdown":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "EXT_GATEWAY-Shutdown"), 3000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Shutdown"), 3000);
         res.json({ done: "ok" });
         break;
 
       case "/api/Assistant/query":
-        if (!this.website.EXTStatus["GA_Ready"]) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).send("Not Found");
         var query = req.body["query"];
         if (typeof (query) !== "string" || query.length < 5) return res.status(400).send("Bad Request");
         log("[API] Request MMM-GoogleAssistant query:", query);
@@ -1168,19 +1168,19 @@ class website {
         break;
 
       case "/api/Assistant/Alert":
-        if (!this.website.EXTStatus["GA_Ready"]) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).send("Not Found");
         var alert = req.body["alert"];
         if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).send("Bad Request");
         log("[API] Request send Alert:", alert);
         this.sendSocketNotification("SendNoti", {
-          noti: "GA_ALERT",
+          noti: "Bugsounet_ALERT",
           payload: {
             type: "information",
             message: alert,
             sender: req.user?.id ? req.user.id : "EXT-Website",
             timer: 30 * 1000,
-            sound: "modules/MMM-GoogleAssistant/EXTs/EXT-Website/website/tools/message.mp3",
-            icon: "modules/MMM-GoogleAssistant/EXTs/EXT-Website/website/assets/img/GA_Small.png"
+            sound: "modules/MMM-Bugsounett/EXTs/EXT-Website/website/tools/message.mp3",
+            icon: "modules/MMM-Bugsounet/EXTs/EXT-Website/website/assets/img/GA_Small.png"
           }
         });
         res.json({ done: "ok" });

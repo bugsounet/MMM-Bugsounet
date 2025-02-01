@@ -626,7 +626,7 @@ class sysInfoPage {
       removeAnimateCSS("WEBSITE_SYSINFO", "backOutRight");
       addAnimateCSS("WEBSITE_SYSINFO", "backInLeft", 1);
       this.showing = true;
-      this.sendNotification("EXT_WEBSITE-CONNECTED");
+      this.sendNotification("Bugsounet_WEBSITE-CONNECTED");
     }
   }
 
@@ -644,7 +644,7 @@ class sysInfoPage {
         MM.getModules().enumerate((module) => {
           module.show(500, () => {}, { lockString: "WEBSITE_SYSINFO_LOCK" });
         });
-        this.sendNotification("EXT_WEBSITE-DISCONNECTED");
+        this.sendNotification("Bugsounet_WEBSITE-DISCONNECTED");
       }, 1000);
     }
   }

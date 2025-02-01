@@ -18,19 +18,19 @@ module.exports = NodeHelper.create({
         this.config = payload;
         this.initialize();
         break;
-      case "EXT_DB-UPDATE":
+      case "Bugsounet_DB-UPDATE":
         if (this.website) this.website.setEXTVersions(payload);
         else {
           // library is not loaded
-          setTimeout(() => { this.socketNotificationReceived("EXT_DB-UPDATE", payload); }, 1000);
+          setTimeout(() => { this.socketNotificationReceived("Bugsounet_DB-UPDATE", payload); }, 1000);
         }
         break;
-      case "EXT_STATUS":
+      case "Bugsounet_STATUS":
         if (this.website) {
           this.website.setEXTStatus(payload);
         } else {
           // library is not loaded ... retry (not needed but...)
-          setTimeout(() => { this.socketNotificationReceived("EXT_STATUS", payload); }, 1000);
+          setTimeout(() => { this.socketNotificationReceived("Bugsounet_STATUS", payload); }, 1000);
         }
         break;
       case "GET-SYSINFO":
