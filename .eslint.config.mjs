@@ -112,10 +112,16 @@ const config = [
     }
   },
   {
-    "ignores": ["*.js", "components/**/*.js"]
+    "ignores": ["MMM-Bugsounet.js", "node_helper.js", "components/**/*.js"]
   },
   {
-    "ignores": ["**/EXTs/EXT-*/*.js", "**/EXTs/EXT-*/components/**/*.js"]
+    "ignores": ["EXTs/EXT-*/components/**/*.js", "EXTs/EXT-*/EXT-*.js", "EXTs/EXT-*/node_helper.js"]
+  },
+  {
+    "ignores": ["EXTs/EXT-Website/website/assets/js/*.js", "EXTs/EXT-Website/**/*.min.js"]
+  },
+  {
+    "ignores": ["EXTs/EXT-Website/website/config/**/*.js", "EXTs/EXT-Website/website/tools/*.js"]
   }
 ];
 
