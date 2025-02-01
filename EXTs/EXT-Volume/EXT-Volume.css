@@ -1,0 +1,96 @@
+/* Volume */
+
+#EXT_VOLUME-MUTE {
+  top: calc(70% - 180px);
+  left: calc(50% - 200px);
+  width: 400px;
+  position: fixed;
+  visibility: visible;
+  opacity: 1;
+  z-index: 1;
+}
+
+#EXT_VOLUME-MUTE_CONTAINER_ICON {
+  height: 100px;
+  width: fit-content;
+  display: flex;
+  margin: auto;
+}
+
+#EXT_VOLUME-SPEAKER {
+  top: calc(70% - 20px);
+  left: calc(50% - 200px);
+  width: 400px;
+  height: 40px;
+  background-color: #333;
+  position: fixed;
+  visibility: visible;
+  opacity: 1;
+  z-index: 1;
+}
+
+#EXT_VOLUME-SPEAKER_BAR {
+  position: absolute;
+  width: 400px;
+  height: 40px;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: rgb(72 133 237 / 50%);
+}
+
+#EXT_VOLUME-RECORDER {
+  top: calc(70% - 65px);
+  left: calc(50% - 200px);
+  width: 400px;
+  height: 40px;
+  background-color: #333;
+  position: fixed;
+  visibility: visible;
+  opacity: 1;
+  z-index: 1;
+}
+
+#EXT_VOLUME-RECORDER_BAR {
+  position: absolute;
+  width: 400px;
+  height: 40px;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background-color: rgb(255 0 0 / 50%);
+}
+
+#EXT_VOLUME-SPEAKER_TEXT,
+#EXT_VOLUME-RECORDER_TEXT {
+  position: absolute;
+  width: 400px;
+  height: 40px;
+  top: 0;
+  left: 0;
+  color: #fff;
+  text-align: center;
+  font-size: 24px;
+  line-height: 40px;
+  z-index: 9998;
+}
+
+#EXT_VOLUME-RECODER_CONTAINER_ICON,
+#EXT_VOLUME-SPEAKER_CONTAINER_ICON {
+  height: 40px;
+  width: 25px;
+  display: flex;
+}
+
+#EXT_VOLUME-RECORDER_ICON,
+#EXT_VOLUME-SPEAKER_ICON {
+  flex: auto;
+  align-self: flex-end;
+  font-size: 24px;
+}
+
+#EXT_VOLUME-MUTE.hidden,
+#EXT_VOLUME-RECORDER.hidden,
+#EXT_VOLUME-SPEAKER.hidden {
+  display: none;
+}

@@ -1,0 +1,24 @@
+name: "Markdown Testing"
+
+on: [pull_request]
+
+jobs:
+  eslint:
+    name: Run ReadMe Markdown scanning
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Use Node.js v20.x (latest)"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          check-latest: true
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: npm prune
+
+      - name: Run markdownlint-cli2
+        run: npm run test:markdown
+        continue-on-error: false

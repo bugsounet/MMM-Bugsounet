@@ -1,0 +1,28 @@
+{
+  "name": "EXT-VLCServer",
+  "version": "1.3.0",
+  "description": "VLC Media Server plugin for MMM-Bugsounet",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-VLCServer",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-VLCServer.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-VLCServer",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-VLCServer",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-VLCServer",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-VLCServer",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-VLCServer",
+    "setup": "node installer/setup --path=EXTs/EXT-VLCServer"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "installer": {
+    "apt": [
+      "vlc"
+    ]
+  },
+  "rev": "241219"
+}

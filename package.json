@@ -1,0 +1,67 @@
+{
+  "name": "MMM-Bugsounet",
+  "version": "1.0.0",
+  "description": "Bugsounet modules.",
+  "keywords": [
+    "bugsounet",
+    "modules"
+  ],
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "bugs": {
+    "url": "https://www.bugsounet.fr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
+  },
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "MMM-Bugsounet.js",
+  "scripts": {
+    "clean": "node installer/clean",
+    "deps": "node installer/deps",
+    "dev": "node installer/dev",
+    "dev:src": "node installer/src",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "lint": "eslint . --config .eslint.config.mjs",
+    "lint:fix": "eslint . --config .eslint.config.mjs --fix",
+    "minify": "node installer/minify",
+    "rebuild": "node installer/rebuild",
+    "reset": "node installer/reset",
+    "setup": "node installer/setup",
+    "setup:EXT-FreeboxTV": "node EXTs/EXT-FreeboxTV/installer/setup --path=EXTs/EXT-FreeboxTV",
+    "setup:EXT-Screen": "node EXTs/EXT-Screen/installer/setup --path=EXTs/EXT-Screen",
+    "setup:EXT-TelegramBot": "node EXTs/EXT-TelegramBot/installer/setup --path=EXTs/EXT-TelegramBot",
+    "test": "npm run lint",
+    "test:css": "stylelint *.css EXTs/EXT-*/*.css",
+    "test:markdown": "markdownlint-cli2 *.md EXTs/EXT-*/*.md",
+    "test:translations": "prettier translations/*.json EXTs/EXT-*/translations/*.json --config .prettier.config.mjs --check",
+    "update": "installer/update.sh"
+  },
+  "dependencies": {
+    "@electron/rebuild": "^3.7.1",
+    "@mdi/font": "^7.4.47",
+    "dayjs": "^1.11.13",
+    "esbuild": "^0.24.2",
+    "fdir": "^6.4.3",
+    "open": "^10.1.0",
+    "pm2": "^5.4.3",
+    "sweetalert2": "^11.15.10"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^3.0.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-depend": "^0.12.0",
+    "eslint-plugin-import-x": "^4.6.1",
+    "eslint-plugin-package-json": "^0.21.1",
+    "markdownlint-cli2": "^0.17.2",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-prettier": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=20.18.1 <21 || >=22"
+  },
+  "rev": "250201"
+}

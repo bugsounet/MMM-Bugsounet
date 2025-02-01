@@ -1,0 +1,6 @@
+{
+  "VLC_NotInstalled": "VLC n'est pas installé ou n'a pas été trouvé!",
+  "VLC_Close": "Le Serveur HTTP de VLC est Fermé!",
+  "VLCError": "VLC Retourne une erreur: {VALUES}",
+  "VLC_ErrorPacket": "VLC a retourné une error!"
+}

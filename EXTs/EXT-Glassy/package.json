@@ -1,0 +1,32 @@
+{
+  "name": "EXT-Glassy",
+  "version": "1.1.3",
+  "description": "Glassy Effect for MagicMirror²",
+  "keywords": [
+    "glassy",
+    "magic mirror",
+    "background"
+  ],
+  "homepage": "https://github.com/bugsounet/EXT-Glassy",
+  "bugs": {
+    "url": "https://github.com/bugsounet/EXT-Glassy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/EXT-Glassy"
+  },
+  "license": "MIT",
+  "author": "@bugsounet",
+  "main": "MMM-Glassy.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Glassy",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Glassy",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Glassy",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Glassy",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Glassy",
+    "setup": "node installer/setup --path=EXTs/EXT-Glassy"
+  },
+  "rev": "250103"
+}
