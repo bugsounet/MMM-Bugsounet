@@ -7,8 +7,8 @@ Module.register("EXT-Saint", {
     debug: false,
     personalize: {
       displayTomorrow: false,
-      todayText: "Aujourd'hui, nous fêtons",
-      tomorrowText: "Demain, nous fêterons",
+      todayText: "Aujourd'hui, nous fêtons:",
+      tomorrowText: "Demain, nous fêterons:",
       displayIcon: true
     },
     update: 60 * 1000

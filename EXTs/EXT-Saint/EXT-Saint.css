@@ -2,12 +2,10 @@
  * Module: EXT-Saint
  */
 
-.EXT-Saint {
+#EXT-SAINT {
+  display: inline-flex;
+  flex-direction: column;
   color: #fff;
   font-size: medium;
   line-height: 1.5em;
-}
-
-#EXT-SAINT {
-  display: inline-flex;
 }
