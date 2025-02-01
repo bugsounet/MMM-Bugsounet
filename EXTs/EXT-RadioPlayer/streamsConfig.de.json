@@ -1,0 +1,66 @@
+{
+  "Bayern 1": {
+    "link": "https://dispatcher.rndfnk.com/br/br1/nbopf/mp3/mid",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Bayern1-logo.svg/200px-Bayern1-logo.svg.png"
+  },
+  "BR Klassik": {
+    "link": "https://dispatcher.rndfnk.com/br/brklassik/live/mp3/mid",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/58/BR_KLASSIK_121023_web_rgb.jpg"
+  },
+  "BOBs Alternative": {
+    "link": "https://regiocast.streamabc.net/regc-radiobobalternativerock9577444-mp3-192-2041777",
+    "img": "https://agginfo.quantumcast.cloud/m/rc/branding/52f966e9-3582-4d3a-9411-2c9616992a3e/bob_alternative-rock_640x480.png"
+  },
+  "BOBs 2000er Rock": {
+    "link": "https://regiocast.streamabc.net/regc-radiobob2000rock2507507-mp3-192-9881528",
+    "img": "https://agginfo.quantumcast.cloud/m/rc/branding/507002a6-2359-4287-a686-9660132a3dbb/bob_2000er-rock_640x480.png"
+  },
+  "BOBs Unplugged": {
+    "link": "https://regiocast.streamabc.net/regc-radiobobchillout8068831-mp3-192-5567718",
+    "img": "https://agginfo.quantumcast.cloud/m/rc/branding/6553b7af-0204-43fe-9a0b-a7abfa41a4f8/bob_unplugged_640x480.png"
+  },
+  "BOBs Harte Saite": {
+    "link": "https://regiocast.streamabc.net/regc-radiobobhartesaite4742158-mp3-192-1633493",
+    "img": "https://agginfo.quantumcast.cloud/m/rc/branding/b732e9fc-bcb7-4765-a4c8-ba2a3a5f23eb/bob_harte-saite_640x480.png"
+  },
+  "BOBs Rockabilly": {
+    "link": "https://regiocast.streamabc.net/regc-radiobobrockabilly9140406-mp3-192-8598887",
+    "img": "https://agginfo.quantumcast.cloud/m/rc/branding/7456c12d-9dd8-49f4-85a1-38dee6d7cb84/bob_rockabilly_640x480.png"
+  },
+  "BOBs Grunge": {
+    "link": "https://regiocast.streamabc.net/regc-radiobobgrunge4112801-mp3-192-5387631",
+    "img": "https://agginfo.quantumcast.cloud/m/rc/branding/eafaa733-654e-43ee-bc94-a279fddb766e/bob_grunge_640x480.png"
+  },
+  "BOBs Blues": {
+  "link": "https://regiocast.streamabc.net/regc-radiobobblues6003375-mp3-192-4052902",
+  "img": "https://agginfo.quantumcast.cloud/m/rc/branding/cfde4126-fd08-4d9b-a717-44a02528ecc2/bob_blues_640x480.png"
+  },
+  "BOBs 90er Rock": {
+  "link": "https://regiocast.streamabc.net/regc-radiobob90srock8400272-mp3-192-6033382",
+  "img": "https://agginfo.quantumcast.cloud/m/rc/branding/b5d022d3-a840-49b0-8b8c-a1673463783c/bob_90er-rock_640x480.png"
+  },
+  "Rock Antenne": {
+    "link": "https://stream.rockantenne.de/rockantenne",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Rock_Antenne_Logo_2017.svg/200px-Rock_Antenne_Logo_2017.svg.png"
+  },
+  "Rock Antenne Alternative": {
+    "link": "https://stream.rockantenne.de/alternative",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Rock_Antenne_Logo_2017.svg/200px-Rock_Antenne_Logo_2017.svg.png"
+  },
+  "Bayern 3": {
+    "link": "https://dispatcher.rndfnk.com/br/br3/live/mp3/mid",
+    "img": "https://upload.wikimedia.org/wikipedia/de/thumb/d/d3/Bayern_3.svg/200px-Bayern_3.svg.png"
+  },
+  "Puls": {
+    "link": "https://dispatcher.rndfnk.com/br/puls/live/mp3/mid",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/BR_puls_Logo.svg/200px-BR_puls_Logo.svg.png"
+  },
+  "B5 Aktuell": {
+    "link": "https://dispatcher.rndfnk.com/br/br24/live/mp3/mid",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/B5_aktuell_%282007%29.svg/200px-B5_aktuell_%282007%29.svg.png"
+  },
+  "KEXP 90.3 FM": {
+    "link": "https://kexp-mp3-128.streamguys1.com/kexp128.mp3",
+    "img": "https://www.kexp.org/static/assets/img/logo-white.svg"
+  }
+}
