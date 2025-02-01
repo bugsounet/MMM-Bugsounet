@@ -4,9 +4,10 @@ This module allows to add a glass effect to MagicMirror² modules
 
 ## Screenshot
 
-![](https://github.com/bugsounet/MMM-Glassy/blob/dev/Screenshot.png?raw=true)
+![Screenshot](https://github.com/bugsounet/MMM-Glassy/blob/dev/Screenshot.png?raw=true)
 
 ## Install
+
 **`MMM-Glassy` need `MagicMirror²` v2.27.0 and above**
 
 Clone the module into your `MagicMirror` module folder and execute npm install in the module folder.
@@ -21,6 +22,7 @@ Clone the module into your `MagicMirror` module folder and execute npm install i
 ## Configuration
 
 ### Simple Sample
+
 This sample allow to apply glassy effect to all modules with default configuration.
 
 ```js
@@ -31,6 +33,7 @@ This sample allow to apply glassy effect to all modules with default configurati
 ```
 
 ### Personalized Sample
+
 This example is the default configuration for customization
 
 ```js
@@ -62,6 +65,7 @@ This example is the default configuration for customization
 ```
 
 ### Configuration Structure
+
 | field | type | default | description |
 | --- | --- | --- | --- |
 | debug | BOOLEAN | false | enable or not debug mode |
@@ -69,22 +73,23 @@ This example is the default configuration for customization
 | modulePadding | STRING | "10px" | Padding size to add for Glassy effect (around module). |
 | moduleRadius | STRING | "10px" | Radius size to add for round effect of the glass |
 | moduleShadow | STRING | "5px" | Shadow size to add for depth effect |
-| moduleBackgroundRGB | STRING | "0,0,0" | Glass color choice<br>Note: must be in RGB<br>By default: Black RGB color |
+| moduleBackgroundRGB | STRING | "0,0,0" | Glass color choice  -- Note: must be in RGB -- By default: Black RGB color |
 | moduleBackgroundOpacity | STRING | "15%" | Glass opacity |
-| moduleBorderRGB | STRING | "255,255,255" | Glass border color<br>Note: must be in RGB<br>By default: White RGB color |
+| moduleBorderRGB | STRING | "255,255,255" | Glass border color -- Note: must be in RGB -- By default: White RGB color |
 | moduleBorderOpacity | STRING | "10%" | Glass border opacity |
 | moduleShadowOffsetX | STRING | "-5px" | Shadow effect size (OffSet X) |
 | moduleShadowOffsetY | STRING | "-5px" | Shadow effect size (OffSet Y) |
 | moduleShadowBlur | STRING | "8px" | Blur effect of the shadow effect |
 | moduleShadowColor | STRING | "black" | Glass shadow color |
 | moduleBlur | STRING | "5px" | Blur effect of the Glass (for background transparency)  |
-| moduleSpacing | STRING | "15px" | Spacing between 2 modules<br>Note: by default MagicMirror² have `30px` spacing |
-| mirrorMargin | STRING | "10px" | Change MagicMirror² screen margin.<br>Note: By default MagicMirror² have `60px` screen margin |
+| moduleSpacing | STRING | "15px" | Spacing between 2 modules -- Note: by default MagicMirror² have `30px` spacing |
+| mirrorMargin | STRING | "10px" | Change MagicMirror² screen margin.-- Note: By default MagicMirror² have `60px` screen margin |
 | mirrorBackground | BOOLEAN | true | Allows you to use a background defined for MagicMirror². |
-| mirrorBackgroundFile | STRING | "default.jpg" | Filename of the background;<br>(must be in `resources` folder) |
-| mirrorBackgroundOnSuspend | BOOLEAN | true | Display Background when `MMM-Glassy` is suspended. |
+| mirrorBackgroundFile | STRING | "default.jpg" | Filename of the background (must be in `resources` folder) |
+| mirrorBackgroundOnSuspend | BOOLEAN | true | Display Background when `EXT-Glassy` is suspended. |
 
-### Notes:
+### Notes
+
 * Find an RGB color: see [rgbcolorpicker](https://rgbcolorpicker.com/) website
   * In this module RGB Color feature  `x,y,z` is the result of rgb(`x,y,z`)
 * Opacity percentage:
@@ -99,17 +104,22 @@ This example is the default configuration for customization
   * Changing all modules to Glass Effect take a lot of resources
   * Maybe ignore somes modules can help your Raspberry Pi!
     * Use: `ignoreModules: ["MMM-Module", "MMM-Module2"]`
+
 ## Update
 
 ### Manual Update
+
 In a terminal try this command:
 
 ```sh
   cd ~/MagicMirror/modules/MMM-Glassy
   npm run update
 ```
+
 ### Automatic Update from [updatenotification](https://develop.docs.magicmirror.builders/modules/updatenotification.html) default module
-Since MagicMirror² v2.27.x, we are able to Update automatically any modules from `updatenotification`.<br>
+
+Since MagicMirror² v2.27.x, we are able to Update automatically any modules from `updatenotification`.
+
 Let's add `MMM-Glassy` rule
 
 ```js
@@ -129,10 +139,13 @@ Let's add `MMM-Glassy` rule
 ```
 
 ## Credit
-  * Author:
-     * @bugsounet
-  * License: MIT
+
+* Author:
+  * @bugsounet
+* License: MIT
+
 ## Donation
+
  If you love this module, buy me a coffee :)
 
  [Donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TTHRH94Y4KL36&source=url)
