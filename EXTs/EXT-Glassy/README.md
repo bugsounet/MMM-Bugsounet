@@ -105,39 +105,6 @@ This example is the default configuration for customization
   * Maybe ignore somes modules can help your Raspberry Pi!
     * Use: `ignoreModules: ["MMM-Module", "MMM-Module2"]`
 
-## Update
-
-### Manual Update
-
-In a terminal try this command:
-
-```sh
-  cd ~/MagicMirror/modules/MMM-Glassy
-  npm run update
-```
-
-### Automatic Update from [updatenotification](https://develop.docs.magicmirror.builders/modules/updatenotification.html) default module
-
-Since MagicMirror² v2.27.x, we are able to Update automatically any modules from `updatenotification`.
-
-Let's add `MMM-Glassy` rule
-
-```js
-  {
-    module: "updatenotification",
-    position: "top_center",
-    config: {
-      updateAutorestart: true, // restart MagicMirror² automatically after update
-      updates: [
-        // MMM-Glassy rule
-        {
-          "MMM-Glassy": "npm run update"
-        },
-      ]
-    }
-  },
-```
-
 ## Credit
 
 * Author:
