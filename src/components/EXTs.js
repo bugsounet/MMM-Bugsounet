@@ -18,6 +18,7 @@ class EXTs {
       "EXT-Librespot",
       "EXT-Pages",
       "EXT-RadioPlayer",
+      "EXT-Saint",
       "EXT-Screen",
       "EXT-SmartHome",
       "EXT-Spotify",
