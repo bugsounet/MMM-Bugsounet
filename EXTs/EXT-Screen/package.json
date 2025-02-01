@@ -35,8 +35,6 @@
   "dependencies": {
     "cron-parser": "^4.9.0",
     "dayjs": "^1.11.13",
-    "esbuild": "^0.24.2",
-    "fdir": "^6.4.3",
     "long-press-event": "^2.5.0",
     "nan": "github:bugsounet/nan#node23",
     "node-cron": "^3.0.3",
