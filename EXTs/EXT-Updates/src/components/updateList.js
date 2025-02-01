@@ -1,5 +1,3 @@
-const updateList = [
-  "MMM-Bugsounet"
-];
+const updateList = ["MMM-Bugsounet"];
 
 module.exports = updateList;
