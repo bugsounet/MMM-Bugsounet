@@ -6,9 +6,9 @@
  */
 
 #FRANCEINFO_CONTENER {
-  line-height:1.1em;
+  line-height: 1.1em;
   width: 100%;
-  background-color: #FFF;
+  background-color: #fff;
   color: #000;
 }
 
@@ -69,10 +69,16 @@
   animation: 3s ease 0s normal forwards 1 fadein;
 }
 
-@keyframes fadein{
-  0%   { opacity:0; }
-  66%  { opacity:0; }
-  100% { opacity:1; }
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 #FRANCEINFO_DESCRIPTION.hideArticle {
@@ -81,14 +87,14 @@
 }
 
 #FRANCEINFO_FOOTER {
-  text-align:right;
+  text-align: right;
 }
 
 #FRANCEINFO_LOGO {
   font-size: 100%;
   font-weight: bold;
   background-color: #414141;
-  color: #FFF;
+  color: #fff;
   display: flex;
 }
 
@@ -110,7 +116,7 @@
 }
 
 #FRANCEINFO_SOURCE.start {
-  animation-duration: .8s;
+  animation-duration: 0.8s;
   animation-name: clignoter;
   animation-iteration-count: 2;
   transition: none;
@@ -120,17 +126,24 @@
 #FRANCEINFO_SOURCE.stop {
   animation-name: stopclignoter;
   animation-iteration-count: 1;
-
 }
 
 @keyframes clignoter {
-  0%   { opacity:1; }
-  40%  { opacity:0; }
-  100% { opacity:1; }
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 @keyframes stopclignoter {
-  0%   { opacity:1; }
+  0% {
+    opacity: 1;
+  }
 }
 
 #FRANCEINFO_TIME {
@@ -150,7 +163,7 @@
 #FRANCEINFO_QRCODE {
   height: 120px;
   width: 120px;
-  margin-top: 0px;
+  margin-top: 0;
   margin-right: -10px;
   margin-left: 5px;
 }
@@ -189,10 +202,11 @@
   width: 100px;
   min-width: 100px;
   min-height: 100px;
+
   /* display: inline-block; */
-  margin-right: 0px;
+  margin-right: 0;
   margin-top: 3px;
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 #FRANCEINFO_CONTENER_TITLE {
@@ -207,5 +221,5 @@
 
 #FRANCEINFO_TIME.vertical {
   font-size: 60%;
-  margin-top: 0px;
+  margin-top: 0;
 }
