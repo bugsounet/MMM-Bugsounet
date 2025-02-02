@@ -258,14 +258,14 @@ class smarthome {
         "action.devices.traits.InputSelector"
       ],
       name: {
-        name: "Jarvis",
+        name: "MagicMirror²",
         defaultNames: [
-          "Jarvis",
+          "Magic Mirror",
           "MagicMirror",
           "Mirror"
         ],
         nicknames: [
-          "Jarvis",
+          "Magic Mirror",
           "MagicMirror",
           "Mirror"
         ]
