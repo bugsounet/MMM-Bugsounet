@@ -24,9 +24,9 @@
     "dev:src": "node ../../installer/src --path=EXTs/EXT-Freebox",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
+    "register": "node installer/Freebox_Login.js",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Freebox",
-    "setup": "node installer/setup --path=EXTs/EXT-Freebox",
-    "register": "node installer/Freebox_Login.js"
+    "setup": "node installer/setup --path=EXTs/EXT-Freebox"
   },
   "dependencies": {
     "axios": "^1.7.9",
