@@ -19,6 +19,7 @@ class EXTs {
       "EXT-FreeboxTV",
       "EXT-Glassy",
       "EXT-Librespot",
+      "EXT-MeteoFrance",
       "EXT-Pages",
       "EXT-RadioPlayer",
       "EXT-Saint",
