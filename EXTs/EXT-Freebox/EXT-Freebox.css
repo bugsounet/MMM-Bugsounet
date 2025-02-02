@@ -548,10 +548,6 @@ input.switch-round + label {
   height: 15px;
   background-color: #808080;
   border-radius: 30px;
-  border-radius: 30px;
-  border-radius: 30px;
-  border-radius: 30px;
-  border-radius: 30px;
 }
 
 input.switch-round + label::before,
@@ -568,13 +564,6 @@ input.switch-round + label::before {
   right: 1px;
   background-color: #706c6c;
   border-radius: 30px;
-  border-radius: 30px;
-  border-radius: 30px;
-  border-radius: 30px;
-  border-radius: 30px;
-  transition: background 0.4s;
-  transition: background 0.4s;
-  transition: background 0.4s;
   transition: background 0.4s;
 }
 
@@ -582,16 +571,7 @@ input.switch-round + label::after {
   width: 20px;
   background-color: #dcdcdc;
   border-radius: 100%;
-  border-radius: 100%;
-  border-radius: 100%;
-  border-radius: 100%;
-  border-radius: 100%;
   box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
-  box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
-  box-shadow: 0 2px 5px rgb(0 0 0 / 30%);
-  transition: margin 0.4s;
-  transition: margin 0.4s;
-  transition: margin 0.4s;
   transition: margin 0.4s;
 }
 
@@ -614,9 +594,6 @@ input.switch-round:checked + label::after {
   position: relative;
   cursor: none;
   outline: none;
-  user-select: none;
-  user-select: none;
-  user-select: none;
   user-select: none;
 }
 
