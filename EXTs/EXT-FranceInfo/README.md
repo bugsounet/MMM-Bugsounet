@@ -1,4 +1,6 @@
-# Affiche les flux rss de `franceinfo:` sur MagicMirror²
+# EXT-FranceInfo
+
+Affiche les flux rss de `franceinfo:` sur MagicMirror²
 
 ![franceinfo](https://raw.githubusercontent.com/bugsounet/EXT-FranceInfo/dev/franceinfo.png)
 
@@ -87,41 +89,41 @@ npm install
 
 ### Champ `debug`
 
->|Champ | type | valeur par défaut
->|---|---|---
->|debug | BOOLEAN | false
+| Champ | type | valeur par défaut
+|---|---|---
+| debug | BOOLEAN | false
 
 Si vous définissez `debug` sur true `true`, les logs détaillé seront écrit en console. (généralement réservé aux développeurs)
 
 ### Champ `update`
 
->|Champ | type | valeur par défaut
->|---|---|---
->|update | NUMBER | 15\*60*1000
+| Champ | type | valeur par défaut
+|---|---|---
+| update | NUMBER | 15\*60*1000
 
 Temps d'intervale des mise a jours des information RSS en ms. (par défaut: 15min)
 
 ### Champ `speed`
 
->|Champ | type | valeur par défaut
->|---|---|---
->|speed | NUMBER | 15*1000
+| Champ | type | valeur par défaut
+|---|---|---
+| speed | NUMBER | 15*1000
 
 Temps d'affichage de l'article. (par défaut: 15sec)
 
 ### Champ `maxItem`
 
->|Champ | type | valeur par défaut
->|---|---|---
->|maxItem | NUMBER | 100
+| Champ | type | valeur par défaut
+|---|---|---
+| maxItem | NUMBER | 100
 
 Nombre d'article qui peuvent être affiché (Utilise en cas de plusieures requetes RSS)
 
 ### Champ `flux: []`
 
->|Champ | type | valeur par défaut
->|---|---|---
->|flux | ARRAY of STRING | [ "Les Titres" , "Monde" ]
+|Champ | type | valeur par défaut
+|---|---|---
+|flux | ARRAY of STRING | [ "Les Titres" , "Monde" ]
 
 32 Flux RSS disponible:
 
@@ -160,12 +162,12 @@ Nombre d'article qui peuvent être affiché (Utilise en cas de plusieures requet
 
 ### Champ `vertical: {}`
 
->|Champ | type | valeur par défaut
->|---|---|---
->|useVertical | BOOLEAN | false
->|width | STRING | 450px
->|imageMaxWidth | STRING | 20vw
->|imageMaxHeight | STRING | 20vh
+| Champ | type | valeur par défaut
+|---|---|---
+| useVertical | BOOLEAN | false
+| width | STRING | 450px
+| imageMaxWidth | STRING | 20vw
+| imageMaxHeight | STRING | 20vh
 
 * useVertical: utilisation du module dans une position veticale
 * width: largeur du module
