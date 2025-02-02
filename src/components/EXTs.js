@@ -21,6 +21,7 @@ class EXTs {
       "EXT-Librespot",
       "EXT-MeteoFrance",
       "EXT-Pages",
+      "EXT-PrixCarburants",
       "EXT-RadioPlayer",
       "EXT-Saint",
       "EXT-Screen",
