@@ -71,10 +71,6 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-Website
         continue-on-error: false
 
-      - name: Run ESBuild EXT-Welcome
-        run: node installer/minify --path=EXTs/EXT-Welcome
-        continue-on-error: false
-
       - name: Run ESBuild EXT-YouTubeCast
         run: node installer/minify --path=EXTs/EXT-YouTubeCast
         continue-on-error: false
