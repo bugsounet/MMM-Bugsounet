@@ -1,10 +1,6 @@
 # EXT-Freebox
 
-EXT-Freebox est un module pour le projet [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror)
-
-Il permet d'afficher, sur votre Mirroir, divers informations de votre [Freebox](https://www.free.fr/freebox/) en temps réél.
-
-Plusieurs modules sont disponibles et permet l'affichage suivant:
+EXT-Freebox permet d'afficher, sur votre Mirroir, divers informations de votre [Freebox](https://www.free.fr/freebox/) en temps réél.
 
 * Model de la Freebox.
 * Bande Passante.
@@ -16,7 +12,7 @@ Plusieurs modules sont disponibles et permet l'affichage suivant:
 
 ## Screenshot
 
-![screenshot](https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/dev/EXTs/EXT-Freebox/screenshot.png)
+![screenshot](/EXTs/EXT-Freebox/screenshot.png)
 
 ## Installation
 
@@ -166,27 +162,27 @@ Note sur `showEthClientRate`:
 
 ### Legende des icones de connexion
 
-* ![eth1](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/eth1.png) Connexion depuis le port Ethernet numéro 1
-* ![eth2](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/eth2.png) Connexion depuis le port Ethernet numéro 2
-* ![eth3](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/eth3.png) Connexion depuis le port Ethernet numéro 3
-* ![eth4](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/eth4.png) Connexion depuis le port Ethernet numéro 4
-* ![cpl](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/cpl.png) Connexion depuis le port CPL
-* ![sfp](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/sfp.png) Connexion depuis le port SFP
-* ![2d4g_5](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/wifi/2d4g_5.png) Connexion depuis le wifi 2.4Ghz
-* ![2d4g_5](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/wifi/5g_5.png) Connexion depuis le wifi 5Ghz
-* ᴿ (En rouge) Suivi du signal wifi est la connexion depuis un répéteur Wifi
-* ![VM](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/e257a81b24d3dff1d451e0c35b7b2cdda3c5f5c6/resources/fromFreeboxOS/VM.svg) Machine Virtuelle
-* ![What](https://raw.githubusercontent.com/bugsounet/EXT-Freebox/e257a81b24d3dff1d451e0c35b7b2cdda3c5f5c6/resources/fromFreeboxOS/what.svg) Connexion indéterminée
+* ![eth1](/EXTs/EXT-Freebox/resources/eth1.png) Connexion depuis le port Ethernet numéro 1
+* ![eth2](/EXTs/EXT-Freebox/resources/eth2.png) Connexion depuis le port Ethernet numéro 2
+* ![eth3](/EXTs/EXT-Freebox/resources/eth3.png) Connexion depuis le port Ethernet numéro 3
+* ![eth4](/EXTs/EXT-Freebox/resources/eth4.png) Connexion depuis le port Ethernet numéro 4
+* ![cpl](/EXTs/EXT-Freebox/resources/cpl.png) Connexion depuis le port CPL
+* ![sfp](/EXTs/EXT-Freebox/resources/sfp.png) Connexion depuis le port SFP
+* ![2d4g_5](/EXTs/EXT-Freebox/resources/wifi/2d4g_5.png) Connexion depuis le wifi 2.4Ghz
+* ![2d4g_5](/EXTs/EXT-Freebox/resources/wifi/5g_5.png) Connexion depuis le wifi 5Ghz
+* ᴿ Cconnexion depuis un répéteur Wifi
+* ![VM](/EXTs/EXT-Freebox/resources/fromFreeboxOS/VM.svg) Machine Virtuelle
+* ![What](/EXTs/EXT-Freebox/resources/fromFreeboxOS/what.svg) Connexion indéterminée
 
 ### Legende des icones de norme de connexion wifi
 
-* <img src="https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/standard/Wi-Fi_1.png" width=20px alt="wifi1" /> Connexion avec la norme 802.11b (wifi 1)
-* <img src="https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/standard/Wi-Fi_2.png" width=20px alt="wifi2" /> Connexion avec la norme 802.11a (wifi 2)
-* <img src="https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/standard/Wi-Fi_3.png" width=20px alt="wifi3" /> Connexion avec la norme 802.11g (wifi 3)
-* <img src="https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/standard/Wi-Fi_4.png" width=20px alt="wifi4" /> Connexion avec la norme 802.11n (wifi 4)
-* <img src="https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/standard/Wi-Fi_5.png" width=20px alt="wifi5" /> Connexion avec la norme 802.11ac (wifi 5)
-* <img src="https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/standard/Wi-Fi_6.png" width=20px alt="wifi6" /> Connexion avec la norme 802.11ax (wifi 6)
-* <img src="https://raw.githubusercontent.com/bugsounet/EXT-Freebox/dev/resources/standard/Wi-Fi_7.png" width=20px alt="wifi7" /> Connexion avec la norme 802.11be (wifi 7)
+* <img src="/EXTs/EXT-Freebox/resources/standard/Wi-Fi_1.png" width=20px alt="wifi1" /> Connexion avec la norme 802.11b (wifi 1)
+* <img src="/EXTs/EXT-Freebox/resources/standard/Wi-Fi_2.png" width=20px alt="wifi2" /> Connexion avec la norme 802.11a (wifi 2)
+* <img src="/EXTs/EXT-Freebox/resources/standard/Wi-Fi_3.png" width=20px alt="wifi3" /> Connexion avec la norme 802.11g (wifi 3)
+* <img src="/EXTs/EXT-Freebox/resources/standard/Wi-Fi_4.png" width=20px alt="wifi4" /> Connexion avec la norme 802.11n (wifi 4)
+* <img src="/EXTs/EXT-Freebox/resources/standard/Wi-Fi_5.png" width=20px alt="wifi5" /> Connexion avec la norme 802.11ac (wifi 5)
+* <img src="/EXTs/EXT-Freebox/resources/standard/Wi-Fi_6.png" width=20px alt="wifi6" /> Connexion avec la norme 802.11ax (wifi 6)
+* <img src="/EXTs/EXT-Freebox/resources/standard/Wi-Fi_7.png" width=20px alt="wifi7" /> Connexion avec la norme 802.11be (wifi 7)
 
 ### Personalisation de l'affichage des noms et des icones des appareils connectés
 
