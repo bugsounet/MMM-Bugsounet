@@ -1,5 +1,5 @@
 {
-  "AlertInformation" : "Information",
+  "AlertInformation": "Information",
   "AlertWarning": "Avertissement",
   "AlertError": "Erreur",
   "AlertSuccess": "Réussie"

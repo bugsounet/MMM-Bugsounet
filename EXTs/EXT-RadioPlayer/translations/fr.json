@@ -1,0 +1,11 @@
+{
+  "NO_INFORMATIONS": "Aucune informations disponible.",
+  "NO_STREAMS_FILE": "Aucun fichier streams a été configuré.",
+  "RADIO_DESC_RADIO": "Lance l'écoute d'une radio.",
+  "RADIO_DESC_NEXT": "Lance l'écoute de la radio suivante.",
+  "RADIO_DESC_PREVIOUS": "Lance l'écoute de la radio précédente.",
+  "RADIO_DESC_LIST": "Liste des radios disponible.",
+  "RADIO_PLAYING": "En écoute: {VALUES}",
+  "RADIO_NOT_FOUND": "Radio non trouvé: {VALUES}",
+  "RADIO_LIST": "Radio disponible:\n - {VALUES}\n\nNote: Vous pouvez utiliser ***/Radio <nom de la radio>*** pour écouter votre radio préféré."
+}

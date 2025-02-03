@@ -1,0 +1,76 @@
+name: "ESBuild Testing: EXTs"
+
+on: [pull_request]
+
+jobs:
+  eslint:
+    name: Run esbuild
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Use Node.js v20.x (latest)"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          check-latest: true
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: npm prune
+
+      - name: Run ESBuild EXT-FreeboxTV
+        run: node installer/minify --path=EXTs/EXT-FreeboxTV
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Glassy
+        run: node installer/minify --path=EXTs/EXT-Glassy
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Librespot
+        run: node installer/minify --path=EXTs/EXT-Librespot
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Pages
+        run: node installer/minify --path=EXTs/EXT-Pages
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-RadioPlayer
+        run: node installer/minify --path=EXTs/EXT-RadioPlayer
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Saint
+        run: node installer/minify --path=EXTs/EXT-Saint
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Screen
+        run: node installer/minify --path=EXTs/EXT-Screen
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Spotify
+        run: node installer/minify --path=EXTs/EXT-Spotify
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-TelegramBot
+        run: node installer/minify --path=EXTs/EXT-TelegramBot
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Updates
+        run: node installer/minify --path=EXTs/EXT-Updates
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-VLCServer
+        run: node installer/minify --path=EXTs/EXT-VLCServer
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Volume
+        run: node installer/minify --path=EXTs/EXT-Volume
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Website
+        run: node installer/minify --path=EXTs/EXT-Website
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-YouTubeCast
+        run: node installer/minify --path=EXTs/EXT-YouTubeCast
+        continue-on-error: false

@@ -9,6 +9,7 @@
 /EXTs/EXT-Librespot/components/librespot/cache/files/*
 /EXTs/EXT-Librespot/components/librespot/cache/volume
 /EXTs/EXT-Librespot/components/sources/
+/EXTs/EXT-Librespot/components/librespot/librespot
 /EXTs/EXT-MusicPlayer/cover/*.jpg
 /EXTs/EXT-Spotify/tokenSpotify.json
 /EXTs/EXT-TelegramBot/cache/*
@@ -20,6 +21,8 @@
 /EXTs/EXT-Website/website/tokens/*
 /EXTs/EXT-Website/website/config/**/*.js
 /EXTs/EXT-Website/website/tools/*.js
-/EXTs/EXT-Librespot/components/librespot/librespot
 /EXTs/EXT-SmartHome/smarthome.json
-/EXTs/EXT-SmartHome/website/tokens/
+/EXTs/EXT-SmartHome/website/tokens/*
+!/EXTs/EXT-SmartHome/website/tokens/.keep
+/EXTs/EXT-PrixCarburants/data/database/PrixCarburants_instantane.xml
+/EXTs/EXT-PrixCarburants/data/download.zip

@@ -1,0 +1,39 @@
+{
+  "name": "EXT-Freebox",
+  "version": "2.3.4",
+  "description": "Display Freebox informations",
+  "keywords": [
+    "freebox",
+    "french"
+  ],
+  "homepage": "https://github.com/bugsounet/EXT-Freebox",
+  "bugs": {
+    "url": "https://github.com/bugsounet/EXT-Freebox"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/EXT-Freebox"
+  },
+  "license": "MIT",
+  "author": "bugs",
+  "main": "EXT-Freebox.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Freebox",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Freebox",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Freebox",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Freebox",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "register": "node installer/Freebox_Login.js",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Freebox",
+    "setup": "node installer/setup --path=EXTs/EXT-Freebox"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "ping": "^0.4.4"
+  },
+  "engines": {
+    "node": ">=20.9.0 <21 || >=22"
+  },
+  "rev": "250103"
+}
