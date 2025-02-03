@@ -20,6 +20,7 @@ class EXTs {
       "EXT-Glassy",
       "EXT-Librespot",
       "EXT-MeteoFrance",
+      "EXT-NetatmoThermostat",
       "EXT-Pages",
       "EXT-PrixCarburants",
       "EXT-RadioPlayer",
