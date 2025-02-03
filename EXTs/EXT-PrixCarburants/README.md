@@ -4,7 +4,7 @@ Ce module permet d'afficher les prix des carburants des stations selon votre cod
 
 ## Screenshot
 
-![screenshot](/EXTs/EXT-Screen//screenshot.png)
+![screenshot](/EXTs/EXT-PrixCarburants/screenshot.png)
 
 ## Installation
 
