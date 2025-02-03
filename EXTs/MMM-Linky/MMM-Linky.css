@@ -1,0 +1,37 @@
+.MMM-Linky {
+  max-width: 350px;
+  margin: 0 auto;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.header {
+  text-transform: uppercase;
+  text-align: center;  
+  font-size: var(--font-size-xsmall);
+  font-family: var(--font-primary), Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  border-bottom: 1px solid #fff; 
+  line-height: 15px;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+#energyChart {
+  width: 100% !important;
+  height: 300px;
+  margin-top: 20px;
+}
+
+.chartjs-render-monitor {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.const colors = ["rgba(245, 234, 39, 0.8)", "rgba(245, 39, 230, 0.8)"]
+
+canvas {
+  width: 100% !important;
+  height: 400px !important;
+}

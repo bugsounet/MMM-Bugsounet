@@ -1,0 +1,29 @@
+{
+  "name": "MMM-Linky",
+  "version": "1.0.0",
+  "description": "Un module pour récupérer et afficher les données de consommation Linky sur MagicMirror.",
+  "main": "MMM-Linky.js",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "node-schedule": "^2.1.1"
+  },
+  "author": "2hdlockness",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2hdlockness/MMM-Linky.git"
+  },
+  "keywords": [
+    "MagicMirror",
+    "linky",
+    "consommation",
+    "électricité",
+    "Enedis",
+    "énergie",
+    "Smart Home"	  
+  ],
+   "bugs": {
+    "url": "https://github.com/2hdlockness/MMM-Linky/issues"
+  },
+  "homepage": "https://github.com/2hdlockness/MMM-Linky#readme"
+}
