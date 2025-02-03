@@ -6,7 +6,7 @@
  */
 
 var NodeHelper = require("node_helper");
-var moment = require("moment");
+var moment = require("dayjs");
 var netatmo = require("./components/netatmo");
 
 var logNT = () => { /* do nothing ! */ };
