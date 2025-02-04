@@ -1,0 +1,188 @@
+/*****************
+**   GA css     **
+**   @BuGsounet **
+******************/
+
+/*
+ * Google Color code
+ * 	Green
+ *    Hex: #3cba54
+ *    RGB: 60, 186, 84
+ *  Yellow
+ *    Hex: #f4c20d
+ *    RGB: 244, 194, 13
+ *  Red
+ *    Hex: #db3236
+ *    RGB: 219, 50, 54
+ *  Blue
+ *    Hex: #4885ed
+ *    RGB: 72, 133, 237
+ *
+ * AndroidTV Background
+ *    RGB: 33, 33, 33
+ *    RGB: 25, 25, 25
+*/
+
+/** Main background for fullscreen **/
+#GA_DOM {
+  background-image: url("./resources/GA_Big.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/** popup for fullscreen rules hide/show **/
+#GA_DOM-FS {
+  display: block;
+}
+
+#GA_DOM-FS.hidden {
+  display: none;
+}
+
+/** popup display windows **/
+
+/** Google popups **/
+#GoogleAssistant {
+  opacity: 0.95;
+  z-index: 99999;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  border: none;
+  top: 0;
+  left: 0;
+}
+
+#GoogleAssistant.hidden {
+  display: none;
+}
+
+#GA-popout {
+  bottom: 0;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+  font-size: 40px;
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+}
+
+#GA-popout div {
+  font-family: Roboto, arial, sans-serif;
+}
+
+#GA-assistant-bar {
+  display: flex;
+  background-color: rgb(33 33 33 / 99%);
+  height: 144px;
+  padding: 0 112px;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.GA-assistant_response {
+  color: #fff;
+  font-size: 30px;
+  margin: auto 0;
+  text-overflow: ellipsis;
+  overflow: auto;
+}
+
+.GA-assistant-word-icon {
+  height: 55px;
+  margin: auto 0 auto auto;
+}
+
+.GA-assistant_icon {
+  margin-left: -70px;
+  zoom: 35%;
+}
+
+.GA-bar_icon {
+  height: 55px;
+  width: 280px;
+  object-fit: contain;
+}
+
+.lockup_logo {
+  margin: 8px 0 0;
+  height: 55px;
+}
+
+/*** Result Window ***/
+
+#GA-Result {
+  position: absolute;
+  width: 100%;
+  height: 95%;
+  bottom: 144px;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s linear;
+}
+
+#GA-Result.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0s 0.5s,
+    opacity 0.5s linear;
+}
+
+#GA-ResultOuput {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+/* sweetAlert CSS */
+
+body.swal2-shown > [aria-hidden="true"] {
+  transition: 0.1s filter;
+  filter: blur(3px);
+}
+
+.swal2-container {
+  z-index: 100000 !important;
+}
+
+.AlertProgressColor {
+  background-color: #3cba54;
+  height: 1px;
+}
+
+.AlertProgressColorError {
+  background-color: #db3236;
+  height: 1px;
+}
+
+.AlertProgressColorWarning {
+  background-color: #ffa500;
+  height: 1px;
+}
+
+.AlertFooterColor {
+  color: darkgray;
+}
+
+.AlertMessageContainer {
+  display: inline-flex;
+  align-items: center;
+}
+
+.AlertMessageIcon {
+  width: 60px;
+  height: auto;
+  margin-right: 10px;
+  aspect-ratio: auto;
+}

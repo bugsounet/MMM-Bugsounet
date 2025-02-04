@@ -1,0 +1,28 @@
+{
+  "NO_RESPONSE": "Entschuldigung, das habe ich nicht verstanden.",
+  "NO_AUDIO_RESPONSE": " ",
+  "TOO_SHORT": "Entschuldigung, das habe ich nicht verstanden.",
+  "CONVERSATION_ERROR": "Kommunikationsfehler: Falsche Mikrofonkonfiguration",
+  "QUERY_REPLY": "Google Assistant wird aktiviert.",
+  "QUERY_HELP": "Mit `/query` können Texteingaben an Google Assistant übermittelt werden.",
+
+  "STOP_HELP": "Beendet eventuelle Aktivität der erweiterten Anzeige.",
+  "STOP_EXT": "Beende erweiterte Anzeige.",
+
+  "GALoading": "Lade...",
+  "GAReady": "Bereit!",
+  "GABegin": "Hallo, wie kann ich helfen?",
+  "GAContinue": "Ich höre...",
+  "GAErrorRecipe": "Fehler beim Laden des Rezepts: {VALUES}",
+  "GAErrorCredentials": "[FATAL] Assistant: credentials.json fehlt",
+  "GAErrorTokenGA": "[FATAL] Token Assistant: tokenGA.json fehlt",
+
+  "ShellExecError": "ShellExec gibt Fehler zurück.",
+  "ShellExecDone": "ShellExec erfolgreich ausgeführt.",
+
+  "EXTStop": "Alle erweiterten Prozesse werden beendet.",
+  "SystemRestart": "System neu starten",
+  "SystemShutdown": "System herunterfahren",
+  "MMClose": "MagicMirror² ausschalten",
+  "MMRestart": "MagicMirror² neustarten"
+}

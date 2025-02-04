@@ -26,3 +26,5 @@
 !/EXTs/EXT-SmartHome/website/tokens/.keep
 /EXTs/EXT-PrixCarburants/data/database/PrixCarburants_instantane.xml
 /EXTs/EXT-PrixCarburants/data/download.zip
+/EXTs/EXT-Assistant/credentials.json
+/EXTs/EXT-Assistant/tokenGA.json

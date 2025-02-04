@@ -1,0 +1,26 @@
+{
+  "NO_RESPONSE": "Lo siento, no te entiendo.",
+  "NO_AUDIO_RESPONSE": "No hay respuesta",
+  "TOO_SHORT": "Lo siento, no te entiendo, demasiado corto..",
+  "CONVERSATION_ERROR": "Error en la conversación. (micrófono sin configurar)",
+  "QUERY_REPLY": "Google Assistant va a ser activado",
+  "QUERY_HELP": "Puedes usar Google Assistant vía texto con este comando.",
+
+  "STOP_HELP": "Parar Extented Display si está activo",
+  "STOP_EXT": "Extented Display parado",
+
+  "GALoading": "Cargando...",
+  "GAReady": "Listos!",
+  "GABegin": "Hola, Como puedo ayudar?",
+  "GAContinue": "Estoy escuchándote...",
+  "GAErrorRecipe": "Error cargando esta receta: {VALUES}",
+  "GAErrorCredentials": "[FATAL] Asistente: Falta credentials.json",
+  "GAErrorTokenGA": "[FATAL] Asistente: Falta tokenGA.json",
+
+  "ShellExecError": "ShellExec devolvió errores",
+  "ShellExecDone": "ShellExec se ejecutó correctamente",
+
+  "EXTStop": "Detenidos todos los procesos Extra",
+  "MMClose": "Apagar MagicMirror²",
+  "MMRestart": "Reiniciar MagicMirror²"
+}
