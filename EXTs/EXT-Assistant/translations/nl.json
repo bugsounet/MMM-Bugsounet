@@ -1,0 +1,24 @@
+{
+  "NO_RESPONSE": "Sorry ik heb het niet verstaan.",
+  "TOO_SHORT": "Sorry ik heb het niet verstaan.",
+  "CONVERSATION_ERROR": "Gespreksfout.(verkeerd geconfigureerd microfoon)",
+  "QUERY_REPLY": "Google Assistant wordt geactiveerd",
+  "QUERY_HELP": "Met deze opdracht kun je `Google Assistant` per tekst bedienen.",
+
+  "STOP_HELP": "Stop uitgebreide weergave indien actief",
+  "STOP_EXT": "Ik stop Uitgebreide Weergave",
+
+  "GALoading": "Laden...",
+  "GAReady": "Klaar!",
+  "GABegin": "He, hoe kan ik je helpen?",
+  "GAContinue": "Ik luister naar jou...",
+  "GAErrorRecipe": "Fout tijdens het laden van dit recept: {VALUES}",
+  "GAErrorCredentials": "[FATAL] Assistant: credentials.json niet aanwezig",
+  "GAErrorTokenGA": "[FATAL] Token Assistant: tokenGA.json niet aanwezig",
+
+  "EXTStop": "Alle uitgebreide weergaven zijn gestopt",
+  "SystemRestart": "Herstart uw systeem",
+  "SystemShutdown": "Zet uw systeem uit",
+  "MMClose": "MagicMirror² uitschakelen",
+  "MMRestart": "Herstart MagicMirror²"
+}

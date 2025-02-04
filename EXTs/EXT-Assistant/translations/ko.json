@@ -1,0 +1,23 @@
+{
+  "NO_RESPONSE": "죄송합니다, 이해하지 못했습니다.",
+  "TOO_SHORT": "죄송합니다, 이해하지 못했습니다.",
+  "CONVERSATION_ERROR": "Conversation error. (misconfigured microphone)",
+  "QUERY_REPLY": "구글 어시스턴트가 활성화됩니다.",
+  "QUERY_HELP": "이 명령을 사용하여 텍스트로 구글 어시스턴트를 명령할 수 있습니다.",
+
+  "STOP_HELP": "실행 중인 경우 확장디스플레이를 중지합니다.",
+  "STOP_EXT": "확장디스플레이를 중지합니다.",
+
+  "GALoading": "로딩중...",
+  "GAReady": "준비!",
+  "GABegin": "반가워요, 무엇을 도와드릴까요?",
+  "GAContinue": "듣는중...",
+  "GAErrorRecipe": "이 recipe를 불러오는 중 오류가 발생함: {VALUES}",
+  "GAErrorCredentials": "[FATAL] Assistant: credentials.json이 없습니다.",
+  "GAErrorTokenGA": "[FATAL] Token Assistant: tokenGA.json이 없습니다.",
+
+  "ShellExecError": "ShellExec return some Errors",
+  "ShellExecDone": "ShellExec executed sucessfully",
+
+  "EXTStop": "모든 프로세스가 중지되었습니다"
+}
