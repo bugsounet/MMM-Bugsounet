@@ -1,0 +1,26 @@
+{
+  "name": "EXT-Updates",
+  "version": "1.6.1",
+  "description": "Apply Updates of EXTs",
+  "homepage": "https://wiki.bugsounet.fr/EXT-Updates",
+  "license": "MIT",
+  "author": "@bugsounet",
+  "main": "EXT-Updates.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Updates",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Updates",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Updates",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Updates",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Updates",
+    "setup": "node installer/setup --path=EXTs/EXT-Updates"
+  },
+  "dependencies": {
+    "ps-node": "^0.1.6"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "250114"
+}

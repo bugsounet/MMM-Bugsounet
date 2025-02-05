@@ -1,0 +1,173 @@
+<div class="wrapper">
+
+  {% if loading or error %}
+      <div class="current-conditions-wrapper">
+        <span class="current-conditions">
+          {% if error %}
+            <img class="icon" src="modules/MMM-Bugsounet/EXTs/EXT-MeteoFrance/resources/error.svg" />
+            <div class="small">{{ phrases.error | safe }}</div>
+          {% else %}
+            <div class="loadingDisplayer">
+              <div class="loadingDisplayerLogo"><img class="loadingLogo" src="modules/MMM-Bugsounet/EXTs/EXT-MeteoFrance/resources/logo.png"></img></div>
+              <div class="loadingDisplayerVideo">
+                <video autoplay muted loop class="loadingVideo" src="modules/MMM-Bugsounet/EXTs/EXT-MeteoFrance/resources/splash_video.mp4"></video>
+              </div>
+            </div>
+          {% endif %}
+        </span>
+      </div>
+
+  {% else %}
+
+    {# -------------- Current Conditions -------------- #}
+    {% if config.display.CurrentConditions %}
+        <div class="background {{ forecast.currently.background }}"></div>
+        {% if forecast.place %}
+        <div class="place">{{ forecast.place }}</div>
+        {% endif %}
+        <div class="current-conditions {% if forecast.place %}withPlace{% endif %}">
+          <img class="icon" src="{{ forecast.currently.iconPath }}" />
+          <div class= "temperatures-container">
+            <span class="temperature large light">{{ forecast.currently.temperature }}</span>
+            {% if config.display.Feels %}
+            <span class="feels-temperature">{{ forecast.currently.feels }}</span>
+          {% endif %}
+          </div>
+        </div>
+
+    {% endif %}
+
+    {# -------------- Extra Current Conditions -------------- #}
+    {% if config.display.ExtraCurrentConditions %}
+      <div class="extra-current-conditions small">
+        <div class="sun-container">
+          {% if config.display.SunCondition %}
+          <span class="wi wi-sunrise"></span>
+          <span class="sun-time">  {{ forecast.currently.sunRise }}</span>
+          <span class="wi wi-sunset"></span>
+          <span class="sun-time">  {{ forecast.currently.sunSet }}</span>
+          {% endif %}
+          {% if config.display.UV %}
+          <span class="uv-container">
+            <span class="inline-icon icon_uv"></span>
+            <span class="uv{{ forecast.currently.uv }}">  {{ forecast.currently.uv }}</span>
+          </span>
+          {% endif %}
+        </div>
+        <div class="temperature-container">
+            <span class="wi wi-thermometer"></span>
+            <span class="low-temperature">{{ forecast.currently.tempRange.low }}</span>
+            <span class="temperature-separator">/</span>
+            <span class="high-temperature">{{ forecast.currently.tempRange.high }}</span>
+        </div>
+        <div class="Precip-humidity-container">
+          {% if config.display.Precipitation %}
+          <span class="precipitation-container">
+            <span class="wi wi-raindrop"></span>
+            {% if forecast.currently.precipitation.accumulation %}
+            <span class="pop">{{ forecast.currently.precipitation.accumulation }}</span>
+          {% endif %}
+          </span>
+          {% endif %}
+          {% if config.display.Humidity %}
+          <span class="wi wi-humidity"></span>
+          <span class="humidity">  {{ forecast.currently.humidity }}</span>
+          {% endif %}
+        </div>
+        {% if config.display.Wind %}
+        <div class="wind-container">
+          <span class="wi wi-wind-beaufort-{{ forecast.currently.wind.Beaufort }}"></span>
+          <span class="wind-speed">{{ forecast.currently.wind.windSpeed }}</span>
+          {% if forecast.currently.wind.windIcon %}
+          <img class="feels-sun-container inline-icon arrowIcon" src="{{ forecast.currently.wind.windIcon }}" />
+          {% endif %}
+        </div>
+        {% if forecast.currently.wind.windSpeedGust %}
+        <div class="wind-alert-container">
+          <span class="wi wi-strong-wind"></span>
+          <span class="wind-speed-gust">RAFALES {{ forecast.currently.wind.windSpeedGust }}</span>
+        </div>
+        {% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# -------------- description -------------- #}
+    {% if config.display.Summary %}
+      <div class="description small">{{ forecast.summary }}</div>
+    {% endif %}
+
+    {# -------------- Forecast -------------- #}
+    {% if config.display.HourlyForecast or config.display.DailyForecast %}
+      <div class="forecast-container">
+
+        {# Hourly #}
+        {% if config.display.HourlyForecast %}
+
+          {% for h in forecast.hourly %}
+            <div class="forecast-item daily">
+              {#<span class="time">{{ h.time }}</span>#}
+              <span class="time wi wi-time-{{ h.time }}"></span>
+              <span class="forecast-icon-container">
+                <img class="forecast-icon" src="{{ h.iconPath }}" />
+              </span>
+              <span class="temperature small">{{ h.temperature }}</span>
+
+
+              {% if config.display.Wind %}
+                <span class="beaufort">
+                  <span class="wi wi-wind-beaufort-{{ h.wind.Beaufort }}"></span>
+                </span>
+                <span class="wind-container">
+                  <span class="wind-speed">{{ h.wind.windSpeed }}</span>
+                </span>
+                <span class="forecast-icon-arrow-container">
+                  <img class="inline-icon wind arrowIcon" src="{{ h.wind.windIcon }}" />
+                </span>
+              {% endif %}
+
+            </div>
+          {% endfor %}
+
+        {% endif %}
+
+        {# Daily #}
+        {% if config.display.DailyForecast %}
+
+          {% for d in forecast.daily %}
+            <div class="forecast-item daily">
+              <span class="day-name">{{ d.day }}</span>
+              <span class="forecast-icon-container">
+                <img class="forecast-icon" src="{{ d.iconPath }}" />
+              </span>
+              <span class="temperature-container small">
+                <span class="low-temperature">{{ d.tempRange.low }}</span>
+                <span class="temperature-separator">/</span>
+                <span class="high-temperature">{{ d.tempRange.high }}</span>
+              </span>
+
+              {% if config.display.Wind %}
+                <span class="beaufort">
+                  <span class="wi wi-wind-beaufort-{{ d.wind.Beaufort }}"></span>
+                </span>
+                <span class="wind-container">
+                  <span class="wind-speed">{{ d.wind.windSpeed }}</span>
+                </span>
+                <span class="forecast-icon-arrow-container">
+                  <img class="inline-icon arrowIcon" src="{{ d.wind.windIcon }}" />
+                </span>
+
+              {% endif %}
+
+            </div>
+          {% endfor %}
+
+        {% endif %}
+
+      </div>
+    {% endif %}
+
+    <div class="last_update small dimmed">Mise à jour depuis Météo France, le {{ update }}</div>
+  {% endif %}
+
+</div>

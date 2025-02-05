@@ -1,0 +1,9 @@
+{
+  "SpotifyNoResult": "No se encuentran resultados",
+  "SpotifySearchFailed": "Búsqueda y reproducción fallida",
+  "SpotifyListenText": "Escuchando",
+  "SpotifySearchTypePlaylist": "lista",
+  "SpotifySearchTypeAlbum": "álbum",
+  "SpotifySearchTypeTrack": "canción",
+  "SpotifySearchTypeArtist": "artista"
+}

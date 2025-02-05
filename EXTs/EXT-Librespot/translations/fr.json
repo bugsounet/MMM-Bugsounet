@@ -1,0 +1,7 @@
+{
+  "LibrespotNoInstalled": "Librespot n'est pas installé!",
+  "LibrespotNoCredentials": "Les identifiants de librespot sont manquant! (Executez: `npm run setup:credentials`)",
+  "LibrespotError": "Librespot: {VALUES}",
+  "TBRestart": "Redémarre le serveur Librespot",
+  "TBRestarted": "Serveur redémarré, nouveaux identifiants chargés!"
+}

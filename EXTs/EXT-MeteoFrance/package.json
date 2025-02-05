@@ -1,0 +1,39 @@
+{
+  "name": "EXT-MeteoFrance",
+  "version": "1.1.4",
+  "description": "MagicMirror² module that gets weather forecast data from Meteo France",
+  "keywords": [
+    "magicmirror",
+    "weather",
+    "meteofrance",
+    "french"
+  ],
+  "homepage": "https://github.com/bugsounet/EXT-MeteoFrance#readme",
+  "bugs": {
+    "url": "https://github.com/bugsounet/EXT-MeteoFrance/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bugsounet/EXT-MeteoFrance"
+  },
+  "license": "MIT",
+  "author": [
+    "bugsounet"
+  ],
+  "main": "EXT-MeteoFrance.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-MeteoFrance",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-MeteoFrance",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-MeteoFrance",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-MeteoFrance",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-MeteoFrance",
+    "setup": "node installer/setup --path=EXTs/EXT-MeteoFrance"
+  },
+  "dependencies": {
+    "meteofrance_api": "^1.2.4",
+    "weathericons": "^2.1.0"
+  },
+  "rev": "250103"
+}

@@ -1,0 +1,6 @@
+{
+  "AlertInformation": "Information",
+  "AlertWarning": "Warning",
+  "AlertError": "Error",
+  "AlertSuccess": "Success"
+}

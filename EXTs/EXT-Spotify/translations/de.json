@@ -1,0 +1,13 @@
+{
+  "PlayerNoResponse": "Keine Antwort vom Spotify-Player! ({VALUES})",
+  "PlayerConnected": "Mit Spotify-Player verbunden! ({VALUES})",
+  "PlayerConnecting": "Verbindung zum Spotify-Player wird aufgebaut...",
+
+  "SpotifyNoResult": "Kein Ergebnis gefunden",
+  "SpotifySearchFailed": "Suche und Wiedergabe fehlgeschlagen",
+  "SpotifyListenText": "Zuhören aktiv",
+  "SpotifySearchTypePlaylist": "playlist",
+  "SpotifySearchTypeAlbum": "album",
+  "SpotifySearchTypeTrack": "track",
+  "SpotifySearchTypeArtist": "artist"
+}

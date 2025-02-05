@@ -1,0 +1,26 @@
+{
+  "Radio Kiss Kiss": {
+    "img": "https://static2.mytuner.mobi/media/tvos_radios/R6DyE2LEgJ.jpg",
+    "link": "http://ice07.fluidstream.net:8080/KissKiss.mp3"
+  },
+  "Radio 101": {
+    "img": "https://static2.mytuner.mobi/media/tvos_radios/r8MjNMsYjM.png",
+    "link": "http://icecast.unitedradio.it/r101"
+  },
+  "Radio Italia": {
+    "img": "https://cdn-radiotime-logos.tunein.com/s18147d.png",
+    "link": "http://stream1.rds.it:8000/rds64k"
+  },
+  "Radio 105": {
+    "img": "https://static2.mytuner.mobi/media/tvos_radios/kDEyWkTtEE.png",
+    "link": "http://icecast.unitedradio.it/Radio105.mp3"
+  },
+  "RTL 102.5": {
+    "img": "https://static2.mytuner.mobi/media/tvos_radios/UWUuuy57sW.png",
+    "link": "https://streamingv2.shoutcast.com/rtl-1025"
+  },
+  "Radio Deejay": {
+    "img": "https://static2.mytuner.mobi/media/tvos_radios/p6XeFjfDZh.jpg",
+    "link": "https://streamcdnp1-4c4b867c89244861ac216426883d1ad0.msvdn.net/radiodeejay/radiodeejay/play1.m3u8"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "name": "MMM-Bugsounet",
+  "version": "1.0.0",
+  "description": "Bugsounet modules.",
+  "keywords": [
+    "bugsounet",
+    "modules"
+  ],
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "bugs": {
+    "url": "https://www.bugsounet.fr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
+  },
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "MMM-Bugsounet.js",
+  "scripts": {
+    "clean": "node installer/clean",
+    "deps": "node installer/deps",
+    "dev": "node installer/dev",
+    "dev:src": "node installer/src",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "lint": "eslint . --config .eslint.config.mjs",
+    "lint:fix": "eslint . --config .eslint.config.mjs --fix",
+    "minify": "node installer/minify",
+    "rebuild": "node installer/rebuild",
+    "reset": "node installer/reset",
+    "setup": "node installer/setup",
+    "setup:EXT-FranceInfo": "node EXTs/EXT-FranceInfo/installer/setup --path=EXTs/EXT-FranceInfo",
+    "setup:EXT-Freebox": "node EXTs/EXT-Freebox/installer/setup --path=EXTs/EXT-Freebox",
+    "setup:EXT-FreeboxTV": "node EXTs/EXT-FreeboxTV/installer/setup --path=EXTs/EXT-FreeboxTV",
+    "setup:EXT-Glassy": "node EXTs/EXT-Glassy/installer/setup --path=EXTs/EXT-Glassy",
+    "setup:EXT-Librespot": "node EXTs/EXT-Librespot/installer/setup --path=EXTs/EXT-Librespot",
+    "setup:EXT-MeteoFrance": "node EXTs/EXT-MeteoFrance/installer/setup --path=EXTs/EXT-MeteoFrance",
+    "setup:EXT-NetatmoThermostat": "node EXTs/EXT-NetatmoThermostat/installer/setup --path=EXTs/EXT-NetatmoThermostat",
+    "setup:EXT-Pages": "node EXTs/EXT-Pages/installer/setup --path=EXTs/EXT-Pages",
+    "setup:EXT-PrixCarburants": "node EXTs/EXT-PrixCarburants/installer/setup --path=EXTs/EXT-PrixCarburants",
+    "setup:EXT-RadioPlayer": "node EXTs/EXT-RadioPlayer/installer/setup --path=EXTs/EXT-RadioPlayer",
+    "setup:EXT-Saint": "node EXTs/EXT-Saint/installer/setup --path=EXTs/EXT-Saint",
+    "setup:EXT-Screen": "node EXTs/EXT-Screen/installer/setup --path=EXTs/EXT-Screen",
+    "setup:EXT-SmartHome": "node EXTs/EXT-SmartHome/installer/setup --path=EXTs/EXT-SmartHome",
+    "setup:EXT-Spotify": "node EXTs/EXT-Spotify/installer/setup --path=EXTs/EXT-Spotify",
+    "setup:EXT-TelegramBot": "node EXTs/EXT-TelegramBot/installer/setup --path=EXTs/EXT-TelegramBot",
+    "setup:EXT-Updates": "node EXTs/EXT-Updates/installer/setup --path=EXTs/EXT-Updates",
+    "setup:EXT-VLCServer": "node EXTs/EXT-VLCServer/installer/setup --path=EXTs/EXT-VLCServer",
+    "setup:EXT-Volume": "node EXTs/EXT-Volume/installer/setup --path=EXTs/EXT-Volume",
+    "setup:EXT-Website": "node EXTs/EXT-Website/installer/setup --path=EXTs/EXT-Website",
+    "setup:EXT-YouTubeCast": "node EXTs/EXT-YouTubeCast/installer/setup --path=EXTs/EXT-YouTubeCast",
+    "test": "npm run lint",
+    "test:all": "npm run lint && npm run test:css && npm run test:markdown && npm run test:translations",
+    "test:css": "stylelint *.css EXTs/EXT-*/*.css --config .stylelintrc.json",
+    "test:markdown": "markdownlint-cli2 *.md EXTs/EXT-*/*.md --config .markdownlint-cli2.mjs",
+    "test:translations": "prettier translations/*.json EXTs/EXT-*/translations/*.json --check --config .prettier.config.mjs",
+    "update": "node installer/update"
+  },
+  "dependencies": {
+    "@electron/rebuild": "^3.7.1",
+    "@mdi/font": "^7.4.47",
+    "dayjs": "^1.11.13",
+    "esbuild": "^0.24.2",
+    "fdir": "^6.4.3",
+    "open": "^10.1.0",
+    "pm2": "^5.4.3",
+    "sweetalert2": "^11.15.10"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^3.0.1",
+    "eslint": "^9.19.0",
+    "eslint-plugin-depend": "^0.12.0",
+    "eslint-plugin-import-x": "^4.6.1",
+    "eslint-plugin-package-json": "^0.22.0",
+    "markdownlint-cli2": "^0.17.2",
+    "stylelint": "^16.14.1",
+    "stylelint-config-standard": "^37.0.0",
+    "stylelint-prettier": "^5.0.3"
+  },
+  "engines": {
+    "node": ">=20.18.1 <21 || >=22"
+  },
+  "rev": "250201"
+}

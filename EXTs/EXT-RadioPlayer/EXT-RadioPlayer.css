@@ -1,0 +1,89 @@
+#EXT_RADIO {
+  width: 250px;
+  font-size: medium;
+  height: 140px;
+  line-height: 1.5em;
+  display: inline-block;
+  position: relative;
+  color: white;
+}
+
+#EXT_RADIO.hidden {
+  display: none;
+}
+
+#EXT_RADIO-RadioInformationContainer {
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  padding: 10px;
+  border-bottom: white solid 1px;
+}
+
+#EXT_RADIO-RadioName {
+  flex: 1 1 0;
+  text-align: center;
+  align-self: center;
+  font-size: medium;
+  margin-right: 5px;
+}
+
+#EXT_RADIO-RadioLogoContainer {
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#EXT_RADIO-RadioLogo {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+}
+
+#EXT_RADIO-RadioLogo.WipeEnter {
+  animation: RadioWipeEnter 1s 1;
+}
+
+@keyframes RadioWipeEnter {
+  0% {
+    transform: scale(0, 0.01);
+  }
+
+  50% {
+    transform: scale(1, 0.01);
+  }
+}
+
+#EXT_RADIO-MarqueeContainer {
+  height: 25px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  font-size: smaller;
+}
+
+#EXT_RADIO-MarqueeDiv {
+  display: block;
+  width: 200%;
+  position: absolute;
+  overflow: hidden;
+  animation: RadioMarquee 15s linear infinite;
+}
+
+#EXT_RADIO-MarqueeSpan1,
+#EXT_RADIO-MarqueeSpan2 {
+  float: left;
+  width: 50%;
+}
+
+@keyframes RadioMarquee {
+  0% {
+    left: 0;
+  }
+
+  100% {
+    left: -100%;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "ALERT_UPDATE_ERROR": "Güncelleme hatası: {MODULE_NAME}",
+  "ALERT_WELCOMEPID": "EXT-Güncellemelerine hoş geldiniz,<br>Sihirli Ayna PID üzerinde çalışıyor {PID}",
+  "HELP_UPDATE": "Komut yöneticisini güncelle",
+  "HELP_SCAN": "Güncellemelerin mevcut olup olmadığını kontrol etmek için taramayı zorlayın",
+  "INIT_INPROGRESS": "EXT-Güncellemeler henüz başlatılmadı!",
+  "MODULENOTFOUND": "Modül bulunamadı: {MODULE_NAME}",
+  "NEEDRESTART": "Sihirli Ayna'yı yeniden başlatmayı unutmayın!",
+  "NOTAVAILABLE": "Güncellenemiyor {MODULE_NAME}",
+  "NOUPDATE_TB": "Yeni güncelleme mevcut değil.",
+  "TB_UPDATE_ERROR": "Güncelleme hatası: {MODULE_NAME}\nLütfen sorunu manuel olarak çözün",
+  "TB_WELCOMEPID": "EXT-Updates'e hoş geldiniz,\nMagicMirror² PID {PID} üzerinde çalışıyor\n",
+  "UPDATE_DONE": "Güncelleme başarılı: {MODULE_NAME}",
+  "UPDATE_HELPTB": "Modülleri `/update <module_name>` ile güncelleyebilirsiniz.",
+  "UPDATE_INPROGRESS": "Lütfen bekleyin. Güncelleme devam ediyor!",
+  "UPDATE_SCAN": "Zorunlu güncelleme taraması...",
+  "UPDATE_AUTO": "Otomatik Güncelleme mevcut:\n",
+  "UPDATE_MANUAL": "Manuel Güncelleme:\n",
+  "UPDATING": "Güncelleniyor: {MODULE_NAME}"
+}

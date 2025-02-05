@@ -1,0 +1,41 @@
+{
+  "name": "EXT-FranceInfo",
+  "version": "1.5.0",
+  "description": "France Info Rss Reader",
+  "keywords": [
+    "magic mirror",
+    "module",
+    "news",
+    "french",
+    "franceinfo"
+  ],
+  "homepage": "https://github.com/bugsounet/EXT-FranceInfo",
+  "bugs": {
+    "url": "https://github.com/bugsounet/EXT-FranceInfo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/EXT-FranceInfo"
+  },
+  "license": "MIT",
+  "author": "@bugsounet",
+  "main": "EXT-FranceInfo.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-FranceInfo",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-FranceInfo",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-FranceInfo",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-FranceInfo",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-FranceInfo",
+    "setup": "node installer/setup --path=EXTs/EXT-FranceInfo"
+  },
+  "dependencies": {
+    "feedme": "^2.0.2",
+    "stream": "^0.0.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "241207"
+}

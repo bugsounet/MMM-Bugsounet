@@ -1,0 +1,11 @@
+{
+  "NO_INFORMATIONS": "No informations available.",
+  "NO_STREAMS_FILE": "No streams file defined.",
+  "RADIO_DESC_RADIO": "Play radio.",
+  "RADIO_DESC_NEXT": "Play next radio.",
+  "RADIO_DESC_PREVIOUS": "Play previous radio.",
+  "RADIO_DESC_LIST": "Available radio list.",
+  "RADIO_PLAYING": "Playing: {VALUES}",
+  "RADIO_NOT_FOUND": "Radio not found: {VALUES}",
+  "RADIO_LIST": "Available Radio: \n - {VALUES}\n\nNote: You can use ***/Radio <radio name>*** for listening your prefered radio station."
+}

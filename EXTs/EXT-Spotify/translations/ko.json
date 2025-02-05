@@ -1,0 +1,9 @@
+{
+  "SpotifyNoResult": "결과를 찾을 수 없습니다.",
+  "SpotifySearchFailed": "검색에 실패했습니다.",
+  "SpotifyListenText": "재생 중",
+  "SpotifySearchTypePlaylist": "재생목록",
+  "SpotifySearchTypeAlbum": "앨범",
+  "SpotifySearchTypeTrack": "트랙",
+  "SpotifySearchTypeArtist": "아티스트"
+}

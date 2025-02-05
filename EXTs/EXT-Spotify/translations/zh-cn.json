@@ -1,0 +1,13 @@
+{
+  "PlayerNoResponse": "没有来自 {VALUES} 的响应!",
+  "PlayerConnected": "已连接到 {VALUES} !",
+  "PlayerConnecting": "请稍候，正在连接 ...",
+
+  "SpotifyNoResult": "Spotify: 未找到结果",
+  "SpotifySearchFailed": "Spotify: 搜索和播放失败",
+  "SpotifyListenText": "正在聆听中",
+  "SpotifySearchTypePlaylist": "播放列表",
+  "SpotifySearchTypeAlbum": "专辑",
+  "SpotifySearchTypeTrack": "音轨",
+  "SpotifySearchTypeArtist": "艺术家"
+}

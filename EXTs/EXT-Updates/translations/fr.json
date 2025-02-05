@@ -1,0 +1,20 @@
+{
+  "ALERT_UPDATE_ERROR": "Erreur lors de la mise à jour: {MODULE_NAME}",
+  "ALERT_WELCOMEPID": "Bienvenue sur EXT-Updates,<br>MagicMirror² fonctionne sur le PID {PID}",
+  "HELP_UPDATE": "Gestionnaire de mises à jour",
+  "HELP_SCAN": "Force la recherche de mises à jour",
+  "INIT_INPROGRESS": "EXT-Updates n'est pas encore initialisé !",
+  "MODULENOTFOUND": "Module/Plugin non trouvé: {MODULE_NAME}",
+  "NEEDRESTART": "N'oubliez pas de redémarrer MagicMirror² !",
+  "NOTAVAILABLE": "Impossible de mettre à jour {MODULE_NAME}",
+  "NOUPDATE_TB": "Pas de nouvelles mises à jour disponible.",
+  "TB_UPDATE_ERROR": "Erreur lors de la mise à jour: {MODULE_NAME}\nVeuillez le résoudre manuellement.",
+  "TB_WELCOMEPID": "Bienvenue sur EXT-Updates,\nMagicMirror² fonctionne sur le PID {PID}\n",
+  "UPDATE_DONE": "Mise à jour terminée avec succès: {MODULE_NAME}",
+  "UPDATE_HELPTB": "Vous pouvez mettre à jour avec la commande `/update <nom_du_module/plugin>`",
+  "UPDATE_INPROGRESS": "Merci de patienter, une mise a jour est en cours !",
+  "UPDATE_SCAN": "Recherche de nouvelles mises à jour...",
+  "UPDATE_AUTO": "Mise(s) à jour automatique disponible:\n",
+  "UPDATE_MANUAL": "Mise(s) à jour manuelle:\n",
+  "UPDATING": "Mise à jour de: {MODULE_NAME}"
+}

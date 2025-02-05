@@ -1,0 +1,41 @@
+{
+  "name": "EXT-SmartHome",
+  "version": "1.2.1",
+  "description": "GA EXT-SmartHome Connect",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-SmartHome",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-SmartHome.js",
+  "scripts": {
+    "certbot": "sudo installer/certbot.sh",
+    "clean": "node ../../installer/clean --path=EXTs/EXT-SmartHome",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-SmartHome",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-SmartHome",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-SmartHome",
+    "preinstall": "installer/preinstall.sh -d 'nginx certbot python3-certbot-nginx'",
+    "install": "exit 1",
+    "project": "installer/check_ProjectID.sh",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-SmartHome",
+    "setup": "node installer/setup --path=EXTs/EXT-SmartHome",
+    "smarthome": "sudo node installer/smarthome && npm run certbot"
+  },
+  "dependencies": {
+    "@colors/colors": "^1.6.0",
+    "actions-on-google": "^3.0.0",
+    "body-parser": "^1.20.3",
+    "googleapis": "^144.0.0",
+    "is-valid-domain": "^0.1.6",
+    "prompt": "^1.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "installer": {
+    "apt": [
+      "nginx",
+      "certbot",
+      "python3-certbot-nginx"
+    ]
+  },
+  "rev": "250111"
+}
