@@ -28,3 +28,5 @@
 /EXTs/EXT-PrixCarburants/data/download.zip
 /EXTs/EXT-Assistant/credentials.json
 /EXTs/EXT-Assistant/tokenGA.json
+/EXTs/EXT-Assistant/tmp/lastResponse.mp3
+/EXTs/EXT-Assistant/tmp/responseOutput.html

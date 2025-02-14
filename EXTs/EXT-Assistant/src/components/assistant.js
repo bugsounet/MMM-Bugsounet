@@ -48,7 +48,7 @@ class ASSISTANT {
 
       if (this.projectId) {
         this.assistantConfig.conversationConfig.deviceModelId = `${this.projectId}-bugsounet_GA`;
-        this.assistantConfig.conversationConfig.deviceId = "MMM-GoogleAssistant";
+        this.assistantConfig.conversationConfig.deviceId = "EXT-Assistant";
         logGA("Used project_id:", this.projectId);
         logGA("deviceModelId is:", this.assistantConfig.conversationConfig.deviceModelId);
         logGA("deviceId is", this.assistantConfig.conversationConfig.deviceId);

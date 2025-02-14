@@ -1,7 +1,7 @@
 /*
- * Module : MMM-GoogleAssistant
+ * Module : EXT-Assistant
  * @bugsounet
- * ©2024
+ * ©2025
  */
 
 /* global AssistantResponse, AssistantSearch, AlertCommander, EXTs */
@@ -59,16 +59,13 @@ Module.register("EXT-Assistant", {
 
   getScripts () {
     return [
-      "/modules/MMM-GoogleAssistant/components/assistantResponse.js",
-      "/modules/MMM-GoogleAssistant/components/assistantSearch.js",
-      "/modules/MMM-GoogleAssistant/components/EXTs.js",
-      "/modules/MMM-GoogleAssistant/components/AlertCommander.js",
-      "/modules/MMM-GoogleAssistant/node_modules/sweetalert2/dist/sweetalert2.all.min.js"
+      "/modules/MMM-Bugsounet/EXTs/EXT-Assistant/components/assistantResponse.js",
+      "/modules/MMM-Bugsounet/EXTs/EXT-Assistant/components/assistantSearch.js"
     ];
   },
 
   getStyles () {
-    return ["/modules/MMM-GoogleAssistant/MMM-GoogleAssistant.css"];
+    return ["/modules/MMM-Bugsounet/EXTs/EXT-Assistant/EXT-Assistant.css"];
   },
 
   getTranslations () {
@@ -94,8 +91,10 @@ Module.register("EXT-Assistant", {
   },
 
   notificationReceived (noti, payload = null, sender = null) {
-    this.doPlugin("onNotificationReceived", { notification: noti, payload: payload });
-    if (noti.startsWith("EXT_") && this.EXTs) return this.EXTs.ActionsEXTs(noti, payload, sender);
+    if (noti === "Bugsounet_READY" && sender.name === "MMM-Bugsounet") {
+      this.sendSocketNotification("INIT", this.helperConfig);
+    }
+    if (!this.init) return;
     switch (noti) {
       case "GA_ACTIVATE":
         if (payload && payload.type && payload.key) this.assistantActivate(payload);
@@ -110,9 +109,6 @@ Module.register("EXT-Assistant", {
         break;
       case "GA_STOP":
         if (this.assistantResponse.response && this.GAStatus.actual === "reply") this.assistantResponse.conversationForceEnd();
-        break;
-      case "GA_ALERT":
-        this.sendAlert(payload, sender.name);
         break;
     }
   },
@@ -132,7 +128,7 @@ Module.register("EXT-Assistant", {
           message: this.translate(payload),
           type: "warning",
           timer: 10000
-        }, "MMM-GoogleAssistant");
+        }, "EXT-Assistant");
         break;
       case "INFORMATION":
         // maybe for later
@@ -141,23 +137,18 @@ Module.register("EXT-Assistant", {
         this.sendAlert({
           message: this.translate(payload),
           type: "error"
-        }, "MMM-GoogleAssistant");
+        }, "EXT-Assistant");
         break;
       case "RECIPE_ERROR":
         this.sendAlert({
           message: this.translate("GAErrorRecipe", { VALUES: payload }),
           type: "error"
-        }, "MMM-GoogleAssistant");
-        break;
-      case "GA-INIT":
-        this.EXT_Config();
+        }, "EXT-Assistant");
         break;
       case "INITIALIZED":
         logGA("Initialized.");
         this.assistantResponse.Version(payload);
         this.assistantResponse.status("standby");
-        this.doPlugin("onReady");
-        this.EXTs.setGA_Ready();
         this.sendNotification("GA_READY");
         break;
       case "ASSISTANT_RESULT":
@@ -210,12 +201,6 @@ Module.register("EXT-Assistant", {
       old: "standby"
     };
 
-    this.plugins = {
-      onReady: [],
-      onNotificationReceived: [],
-      onActivate: [],
-      onStatus: []
-    };
     this.commands = {};
     this.transcriptionHooks = {};
     this.responseHooks = {};
@@ -234,10 +219,8 @@ Module.register("EXT-Assistant", {
         return this.translate(text);
       },
       GAStatus: (status) => {
-        this.doPlugin("onStatus", { status: status });
         this.GAStatus = status;
         this.sendNotification(`ASSISTANT_${this.GAStatus.actual.toUpperCase()}`);
-        this.EXTs.ActionsGA(this.GAStatus.actual.toUpperCase());
       },
       Gateway: (response) => {
         return this.ScanResponse(response);
@@ -250,7 +233,6 @@ Module.register("EXT-Assistant", {
     this.assistantResponse = new AssistantResponse(this.helperConfig["responseConfig"], this.callbacks);
     this.AssistantSearch = new AssistantSearch(this.helperConfig.assistantConfig);
 
-    this.AlertCommander = new AlertCommander(this.callbacks);
     this.assistantResponse.prepareGA();
     this.assistantResponse.prepareBackground();
     this.assistantResponse.Loading();
@@ -295,26 +277,7 @@ Module.register("EXT-Assistant", {
       console.error("[GA] No Stop Commands defined!");
     }
 
-    this.sendSocketNotification("PRE-INIT", this.helperConfig);
-  },
-
-  async EXT_Config () {
-    const Tools = {
-      translate: (...args) => this.translate(...args),
-      sendNotification: (...args) => this.sendNotification(...args),
-      sendSocketNotification: (...args) => this.sendSocketNotification(...args),
-      socketNotificationReceived: (...args) => this.socketNotificationReceived(...args),
-      notificationReceived: (...args) => this.notificationReceived(...args),
-      lock: () => this.EXTs.forceLockPagesAndScreen(),
-      unLock: () => this.EXTs.forceUnLockPagesAndScreen(),
-      sendAlert: (...args) => this.sendAlert(...args)
-    };
-    this.EXTs = new EXTs(Tools);
-    let init = await this.EXTs.init();
-    if (!init) return;
-    this.sendNotification("EXT_DB", this.EXTs.Get_DB());
-
-    this.sendSocketNotification("INIT");
+    //this.sendSocketNotification("PRE-INIT", this.helperConfig);
   },
 
   /********************************/
@@ -326,52 +289,6 @@ Module.register("EXT-Assistant", {
       description: this.translate("QUERY_HELP"),
       callback: "tbQuery"
     });
-    commander.add({
-      command: "stop",
-      description: this.translate("STOP_HELP"),
-      callback: "tbStopEXT"
-    });
-
-    commander.add({
-      command: "reboot",
-      description: this.translate("SystemRestart"),
-      callback: "tbReboot"
-    });
-    commander.add({
-      command: "shutdown",
-      description: this.translate("SystemShutdown"),
-      callback: "tbShutdown"
-    });
-    commander.add({
-      command: "close",
-      description: this.translate("MMClose"),
-      callback: "tbClose"
-    });
-    commander.add({
-      command: "restart",
-      description: this.translate("MMRestart"),
-      callback: "tbRestart"
-    });
-  },
-
-  tbReboot (command, handler) {
-    handler.reply("TEXT", this.translate("SystemRestart"));
-    this.sendSocketNotification("REBOOT");
-  },
-
-  tbShutdown (command, handler) {
-    handler.reply("TEXT", this.translate("SystemShutdown"));
-    this.sendSocketNotification("SHUTDOWN");
-  },
-
-  tbClose (command, handler) {
-    handler.reply("TEXT", this.translate("MMClose"));
-    this.sendSocketNotification("CLOSE");
-  },
-
-  tbRestart (command, handler) {
-    handler.reply("TEXT", this.translate("MMRestart"));
-    this.sendSocketNotification("RESTART");
   },
 
   tbQuery (command, handler) {
@@ -379,12 +296,6 @@ Module.register("EXT-Assistant", {
     if (!query) handler.reply("TEXT", this.translate("QUERY_HELP"));
     else this.assistantActivate({ type: "TEXT", key: query });
   },
-
-  tbStopEXT (command, handler) {
-    this.sendNotification("EXT_STOP");
-    handler.reply("TEXT", this.translate("STOP_EXT"));
-  },
-
 
   /*
    * Activate Process
@@ -394,7 +305,6 @@ Module.register("EXT-Assistant", {
     this.assistantResponse.clearAliveTimers();
     if (this.GAStatus.actual === "continue") this.assistantResponse.showTranscription(this.translate("GAContinue"));
     else this.assistantResponse.showTranscription(this.translate("GABegin"));
-    this.doPlugin("onActivate");
     this.assistantResponse.fullscreen(true);
     this.lastQuery = null;
     var options = {
@@ -612,18 +522,6 @@ Module.register("EXT-Assistant", {
     }
   },
 
-  doPlugin (pluginName, args) { // to verify
-    if (this.plugins.hasOwnProperty(pluginName)) {
-      var plugins = this.plugins[pluginName];
-      if (Array.isArray(plugins) && plugins.length > 0) {
-        for (var i = 0; i < plugins.length; i++) {
-          var job = plugins[i];
-          this.doCommand(job, args, pluginName);
-        }
-      }
-    }
-  },
-
   registerPluginsObject (obj) {
     for (var pop in this.plugins) {
       if (obj.hasOwnProperty(pop)) {
@@ -676,20 +574,5 @@ Module.register("EXT-Assistant", {
         });
       }
     });
-  },
-
-  sendAlert (payload, sender) {
-    if (!sender) return this.AlertCommander.Alert({ type: "error", message: "Alert error: no sender specified" });
-    if (sender === "MMM-GoogleAssistant" || sender.startsWith("EXT")) {
-      if (!payload) return this.AlertCommander.Alert({ type: "error", message: `Alert error by: ${sender}` });
-      this.AlertCommander.Alert({
-        type: payload.type ? payload.type : "error",
-        message: payload.message ? payload.message : "Unknow message",
-        timer: payload.timer ? payload.timer : null,
-        sender: payload.sender ? payload.sender : sender,
-        icon: payload.icon ? payload.icon : null,
-        sound: payload.sound ? payload.sound : null
-      });
-    }
   }
 });

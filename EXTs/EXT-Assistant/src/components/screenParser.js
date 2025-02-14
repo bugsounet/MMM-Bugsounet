@@ -25,7 +25,7 @@ class SCREENPARSER {
       str = disableTimeoutFromScreenOutput(str);
       str = str.replace("html", `html style="zoom:${this.config.responseOutputZoom}"`);
 
-      var url = `/modules/MMM-GoogleAssistant/${this.config.responseOutputCSS}?seed=${Date.now()}`;
+      var url = `/modules/MMM-Bugsounet/EXTs/EXT-Assistant/${this.config.responseOutputCSS}?seed=${Date.now()}`;
       str = str.replace(/<style>html,body[^<]+<\/style>/gmi, `<link rel="stylesheet" href="${url}">`);
 
       var ret = HTMLParser.parse(response.screen.originalContent);

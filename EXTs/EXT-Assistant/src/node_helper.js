@@ -1,11 +1,10 @@
 //
-// Module : MMM-GoogleAssistant
+// Module : EXT-Assistant
 //
 
 const fs = require("node:fs");
 const { exec } = require("node:child_process");
 var NodeHelper = require("node_helper");
-const checker = require("./components/checker");
 
 var logGA = () => { /* do nothing */ };
 
@@ -19,30 +18,19 @@ module.exports = NodeHelper.create({
 
   async socketNotificationReceived (noti, payload) {
     switch (noti) {
-      case "PRE-INIT":
+      case "INIT":
         if (this.alreadyInitialized) {
-          console.error("[GA] You can't use MMM-GoogleAssistant in server mode");
-          this.sendSocketNotification("ERROR", "You can't use MMM-GoogleAssistant in server mode");
+          console.error("[GA] You can't use EXT-Assistant in server mode");
+          this.sendSocketNotification("ERROR", "You can't use EXT-Assistant in server mode");
           setTimeout(() => process.exit(), 5000);
           return;
         }
-        console.log(`[GA] MMM-GoogleAssistant Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
+        console.log(`[GA] EXT-Assistant Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
         this.config = payload;
         if (this.config.debug) logGA = (...args) => { console.log("[GA]", ...args); };
         this.alreadyInitialized = true;
         this.config.assistantConfig["modulePath"] = __dirname;
         this.initGA();
-        break;
-      case "INIT":
-        var Version = {
-          version: require("./package.json").version,
-          rev: require("./package.json").rev,
-          lang: this.config.assistantConfig.lang
-        };
-        this.controler = new this.lib.Controler();
-        await this.controler.check_PM2_Process();
-        this.sendSocketNotification("INITIALIZED", Version);
-        console.log("[GA] Assistant Ready!");
         break;
       case "ACTIVATE_ASSISTANT":
         this.activate(payload);
@@ -64,17 +52,6 @@ module.exports = NodeHelper.create({
         break;
       case "CLOSE":
         this.controler.doClose();
-        break;
-      case "MODULE-ERROR":
-        console.error("[GA] ----------------------------------------");
-        console.error("[GA] [!]", payload);
-        console.error("[GA] ----------------------------------------");
-        console.error("[GA] [!] MagicMirror² will shutdown now!");
-        console.error("[GA] ----------------------------------------");
-        setTimeout(() => { process.exit(); }, 5000);
-        break;
-      case "NOMODULE-ERROR":
-        console.log("[GA] ALL Modules scanned");
         break;
     }
   },
@@ -98,7 +75,6 @@ module.exports = NodeHelper.create({
       return this.sendSocketNotification("NOT_INITIALIZED", { message: message });
     }
 
-    await checker.checkConfigDeepMerge();
     let bugsounet = await this.libraries("GA");
     if (bugsounet) return this.bugsounetError(bugsounet, "Assistant");
 
@@ -109,7 +85,13 @@ module.exports = NodeHelper.create({
     this.searchOnGoogle = new this.lib.googleSearch(Tools, this.config.debug);
 
     await this.loadRecipes();
-    this.sendSocketNotification("GA-INIT");
+    var Version = {
+      version: require("./package.json").version,
+      rev: require("./package.json").rev,
+      lang: this.config.assistantConfig.lang
+    };
+    this.sendSocketNotification("INITIALIZED", Version);
+    console.log("[GA] Assistant Ready!");
   },
 
   libraries (type) {
@@ -118,8 +100,7 @@ module.exports = NodeHelper.create({
       // { "library to load" : "store library name" }
       { "./components/googleSearch.js": "googleSearch" },
       { "./components/assistant.js": "Assistant" },
-      { "./components/screenParser.js": "ScreenParser" },
-      { "./components/controler.js": "Controler" }
+      { "./components/screenParser.js": "ScreenParser" }
     ];
 
     let errors = 0;
@@ -163,8 +144,8 @@ module.exports = NodeHelper.create({
 
   bugsounetError (bugsounet, family) {
     console.error(`[GA] [DATA] [${family}] Warning: ${bugsounet} needed library not loaded !`);
-    console.error("[GA] [DATA] Try to solve it with `npm run rebuild` in MMM-GoogleAssistant folder");
-    this.sendSocketNotification("WARNING", `[${family}] Try to solve it with 'npm run rebuild' in MMM-GoogleAssistant folder`);
+    console.error("[GA] [DATA] Try to solve it with `npm run rebuild` in EXT-Assistant folder");
+    this.sendSocketNotification("WARNING", `[${family}] Try to solve it with 'npm run rebuild' in EXT-Assistant folder`);
   },
 
   loadRecipes () {

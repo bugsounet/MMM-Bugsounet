@@ -12,7 +12,7 @@ class AssistantResponse {
     this.GAStatus = { actual: "standby", old: "standby" };
     this.loopCount = 0;
     this.chime = this.config.chimes;
-    this.resourcesDir = "/modules/MMM-GoogleAssistant/resources/";
+    this.resourcesDir = "/modules/MMM-Bugsounet/EXTs/EXT-Assistant/resources/";
 
     this.imgStatus = {
       hook: this.resourcesDir + this.config.imgStatus.hook,
@@ -124,7 +124,7 @@ class AssistantResponse {
     var GAAssistantResponse = document.createElement("span");
     GAAssistantResponse.id = "GA-Transcription";
     GAAssistantResponse.className = "GA-assistant_response";
-    GAAssistantResponse.textContent = "~MMM-GoogleAssistant~";
+    GAAssistantResponse.textContent = "~EXT-Assistant~";
     GAAssistantBar.appendChild(GAAssistantResponse);
 
     var GAAssistantWordIcon = document.createElement("div");
@@ -213,6 +213,7 @@ class AssistantResponse {
   }
 
   start (response) {
+    logGA("Assisntant Response:", response)
     this.response = response;
     clearTimeout(this.aliveTimer);
     if (this.showing) this.end();
@@ -287,7 +288,7 @@ class AssistantResponse {
   playAudioOutput (response) {
     if (response.audio) {
       this.showing = true;
-      this.audioResponse.src = `/modules/MMM-GoogleAssistant/${response.audio.uri}?seed=${Date.now()}`;
+      this.audioResponse.src = `/modules/MMM-Bugsounet/EXTs/EXT-Assistant/${response.audio.uri}?seed=${Date.now()}`;
       return true;
     }
     return false;
@@ -300,7 +301,7 @@ class AssistantResponse {
       }
       this.showing = true;
       var iframe = document.getElementById("GA-ResultOuput");
-      iframe.src = `/modules/MMM-GoogleAssistant/${response.screen.uri}?seed=${Date.now()}`;
+      iframe.src = `/modules/MMM-Bugsounet/EXTs/EXT-Assistant/${response.screen.uri}?seed=${Date.now()}`;
       var winh = document.getElementById("GA-Result");
       winh.classList.remove("hidden");
       return true;
@@ -348,12 +349,12 @@ class AssistantResponse {
 
   Loading () {
     this.forceStatusImg("standby");
-    this.showTranscription(`${this.callbacks.translate("GALoading")} MMM-GoogleAssistant`);
+    this.showTranscription(`${this.callbacks.translate("GALoading")} EXT-Assistant`);
     this.fullscreen(true, null, false);
   }
 
   Version (version) {
-    this.showTranscription(`MMM-GoogleAssistant v${version.version} (${version.rev}) [${version.lang}] ©bugsounet ${this.callbacks.translate("GAReady")}`);
+    this.showTranscription(`EXT-Assistant v${version.version} (${version.rev}) [${version.lang}] ©bugsounet ${this.callbacks.translate("GAReady")}`);
     this.fullscreen(true, null, false);
     this.aliveTimer = setTimeout(() => {
       this.end(false);
