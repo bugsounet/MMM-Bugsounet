@@ -1,0 +1,39 @@
+{
+  "name": "EXT-Detector",
+  "version": "2.10.2",
+  "description": "Snowboy / Porcupine Simple detector for MMM-GoogleAssistant",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-Detector.js",
+  "typings": "components/lib/node/index.d.ts",
+  "binary": {
+    "module_name": "snowboy",
+    "module_path": "./components/lib/node/binding/{configuration}/{node_abi}-{platform}-{arch}/",
+    "remote_path": "./{module_name}/v{version}/{configuration}/",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://github.com/bugsounet/snowboy"
+  },
+  "scripts": {
+    "clean": "rm -rf node_modules build components/lib/node/binding/ components/lib/node/index.js",
+    "dev": "cd installer && node dev.js",
+    "dev:src": "cd installer && node src.js",
+    "lint": "cd ../.. && npm run lint",
+    "lint:fix": "cd ../.. && npm run lint:fix",
+    "postinstall": "installer/postinstall.sh -r -m",
+    "preinstall": "installer/preinstall.sh -d 'libmagic-dev libatlas-base-dev sox libsox-fmt-all build-essential'",
+    "rebuild": "installer/rebuild.sh",
+    "reset": "rm -f *.js components/*.js",
+    "test": "npm run lint",
+    "test:minify": "cd installer && node minify.js"
+  },
+  "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.11",
+    "@picovoice/porcupine-node": "^3.0.5",
+    "@types/node": "^22.10.7",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "250120"
+}

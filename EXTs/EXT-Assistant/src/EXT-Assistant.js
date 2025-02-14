@@ -96,18 +96,18 @@ Module.register("EXT-Assistant", {
     }
     if (!this.ready) return;
     switch (noti) {
-      case "GA_ACTIVATE":
+      case "Bugsounet_ASSISTANT-ACTIVATE":
         if (payload && payload.type && payload.key) this.assistantActivate(payload);
         else this.assistantActivate({ type: "MIC" });
         break;
-      case "GA_FORCE_FULLSCREEN":
+      case "Bugsounet_ASSISTANT-FORCE_FULLSCREEN":
         if (this.config.responseConfig.useFullscreen) return logGA("Force Fullscreen: Already activated");
         this.config.responseConfig.useFullscreen = true;
         this.assistantResponse = null;
         this.assistantResponse = new AssistantResponse(this.helperConfig["responseConfig"], this.callbacks);
         logGA("Force Fullscreen: AssistantResponse Reloaded");
         break;
-      case "GA_STOP":
+      case "Bugsounet_ASSISTANT-STOP":
         if (this.assistantResponse.response && this.GAStatus.actual === "reply") this.assistantResponse.conversationForceEnd();
         break;
     }
@@ -153,7 +153,7 @@ Module.register("EXT-Assistant", {
         this.ready = true;
         break;
       case "ASSISTANT_RESULT":
-        if (payload.volume !== null) this.sendNotification("EXT_VOLUME-SPEAKER_SET", payload.volume);
+        if (payload.volume !== null) this.sendNotification("Bugsounet_VOLUME-SPEAKER_SET", payload.volume);
         this.assistantResponse.start(payload);
         break;
       case "TUNNEL":
@@ -253,7 +253,7 @@ Module.register("EXT-Assistant", {
       }
     };
     this.parseLoadedRecipe(JSON.stringify(StopCommand));
-    logGA("[HOOK] EXT_Stop Command Added");
+    logGA("[HOOK] Stop Command Added");
 
     // add default command to globalStopCommand (if needed)
     if (this.globalStopCommands.indexOf(this.config.stopCommand) === -1) {
@@ -271,7 +271,7 @@ Module.register("EXT-Assistant", {
           command: "EXT_Stop"
         };
         this.parseLoadedRecipe(JSON.stringify(Command));
-        logGA(`[HOOK] Add pattern for EXT_Stop command: ${pattern}`);
+        logGA(`[HOOK] Add pattern for Stop command: ${pattern}`);
       });
     }
     else { // should never happen !
@@ -349,13 +349,13 @@ Module.register("EXT-Assistant", {
         youtube: null
       };
       logGA("Send response:", opt);
-      this.notificationReceived("EXT_GATEWAY", opt);
+      this.notificationReceived("Bugsounet_GATEWAY", opt);
     } else if (response.text) {
       if (this.AssistantSearch.GoogleSearch(response.text)) {
         this.sendSocketNotification("GOOGLESEARCH", response.transcription.transcription);
       } else if (this.AssistantSearch.YouTubeSearch(response.text)) {
         logGA("Send response YouTube:", response.transcription.transcription);
-        this.notificationReceived("EXT_GATEWAY", {
+        this.notificationReceived("Bugsounet_GATEWAY", {
           photos: [],
           urls: [],
           youtube: response.transcription.transcription
@@ -367,7 +367,7 @@ Module.register("EXT-Assistant", {
   sendGoogleResult (link) {
     if (!link) return console.error("[GA] No link to open!");
     logGA("Send response:", link);
-    this.notificationReceived("EXT_GATEWAY", {
+    this.notificationReceived("Bugsounet_GATEWAY", {
       photos: [],
       urls: [link],
       youtube: null

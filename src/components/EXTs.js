@@ -15,6 +15,7 @@ class EXTs {
 
     this.ExtDB = [
       "EXT-Assistant",
+      "EXT-Detector",
       "EXT-FranceInfo",
       "EXT-Freebox",
       "EXT-FreeboxTV",
