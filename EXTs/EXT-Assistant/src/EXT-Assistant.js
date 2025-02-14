@@ -94,7 +94,7 @@ Module.register("EXT-Assistant", {
     if (noti === "Bugsounet_READY" && sender.name === "MMM-Bugsounet") {
       this.sendSocketNotification("INIT", this.helperConfig);
     }
-    if (!this.init) return;
+    if (!this.ready) return;
     switch (noti) {
       case "GA_ACTIVATE":
         if (payload && payload.type && payload.key) this.assistantActivate(payload);
@@ -149,7 +149,8 @@ Module.register("EXT-Assistant", {
         logGA("Initialized.");
         this.assistantResponse.Version(payload);
         this.assistantResponse.status("standby");
-        this.sendNotification("GA_READY");
+        this.ready = true;
+        this.sendNotification("Bugsounet_HELLO", this.name);
         break;
       case "ASSISTANT_RESULT":
         if (payload.volume !== null) this.sendNotification("EXT_VOLUME-SPEAKER_SET", payload.volume);
@@ -277,7 +278,7 @@ Module.register("EXT-Assistant", {
       console.error("[GA] No Stop Commands defined!");
     }
 
-    //this.sendSocketNotification("PRE-INIT", this.helperConfig);
+   this.ready = false;
   },
 
   /********************************/

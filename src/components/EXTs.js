@@ -14,6 +14,7 @@ class EXTs {
     this.sendAlert = (...args) => Tools.sendAlert(...args);
 
     this.ExtDB = [
+      "EXT-Assistant",
       "EXT-FranceInfo",
       "EXT-Freebox",
       "EXT-FreeboxTV",
