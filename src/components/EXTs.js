@@ -66,6 +66,7 @@ class EXTs {
     this.EXT["EXT-Volume"].recorder = 0;
     this.EXT["EXT-Pages"].actual = 0;
     this.EXT["EXT-Pages"].total = 0;
+    this.EXT["EXT-Assistant"].status = "init";
   }
 
   setBugsounet_Ready () {
@@ -213,7 +214,7 @@ class EXTs {
     clearTimeout(this.sendStatusTimeout);
     switch (noti) {
       case "Bugsounet_HELLO":
-        this.helloEXT(payload);
+        this.helloEXT(sender.name);
         break;
       case "Bugsounet_ALERT":
         this.sendAlert(payload, sender.name);
@@ -318,7 +319,10 @@ class EXTs {
         if (!this.EXT["EXT-Website"].hello) return this.sendWarn("[DISCONNECT] EXT-Website don't say to me HELLO!");
         this.disconnectEXT("EXT-Website");
         break;
-
+      case "Bugsounet_ASSISTANT-STATUS":
+        if (!this.EXT["EXT-Assistant"].hello) return this.sendWarn("EXT-Assistant don't say to me HELLO!");
+        this.EXT["EXT-Assistant"].status = payload;
+        break;
       /** Warn if not in db **/
       default:
         logBugsounet("[EXTs] Sorry, i don't understand what is", noti, payload || "");

@@ -147,10 +147,10 @@ Module.register("EXT-Assistant", {
         break;
       case "INITIALIZED":
         logGA("Initialized.");
+        this.sendNotification("Bugsounet_HELLO");
         this.assistantResponse.Version(payload);
         this.assistantResponse.status("standby");
         this.ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
         break;
       case "ASSISTANT_RESULT":
         if (payload.volume !== null) this.sendNotification("EXT_VOLUME-SPEAKER_SET", payload.volume);
@@ -221,7 +221,7 @@ Module.register("EXT-Assistant", {
       },
       GAStatus: (status) => {
         this.GAStatus = status;
-        this.sendNotification(`ASSISTANT_${this.GAStatus.actual.toUpperCase()}`);
+        this.sendNotification("Bugsounet_ASSISTANT-STATUS", this.GAStatus.actual);
       },
       Gateway: (response) => {
         return this.ScanResponse(response);

@@ -9,7 +9,7 @@ class AssistantResponse {
     this.response = null;
     this.aliveTimer = null;
     this.allStatus = ["hook", "standby", "reply", "error", "think", "continue", "listen", "confirmation"];
-    this.GAStatus = { actual: "standby", old: "standby" };
+    this.GAStatus = { actual: "init", old: "init" };
     this.loopCount = 0;
     this.chime = this.config.chimes;
     this.resourcesDir = "/modules/MMM-Bugsounet/EXTs/EXT-Assistant/resources/";
