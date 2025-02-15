@@ -9,6 +9,7 @@ var packageJSON = require("../package.json");
 
 var moduleRoot = path.resolve(__dirname, "../");
 const installerHome = path.resolve(__dirname, "../installer");
+const bugsounetRoot = path.resolve(__dirname);
 
 // color codes
 const reset = "\x1B[0m";
@@ -353,7 +354,8 @@ module.exports.develop = develop;
 // electron need to be rebuilded
 function electronRebuild (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  var child = exec("npx electron-rebuild", { cwd: moduleRoot }, function (err) {
+  const cmd = args.path ? `npx electron-rebuild -m ${moduleRoot}` : "npx electron-rebuild";
+  var child = exec(cmd, { cwd: bugsounetRoot }, function (err) {
     if (err) {
       return callback(err);
     }

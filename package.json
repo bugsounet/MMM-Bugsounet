@@ -63,6 +63,7 @@
     "dayjs": "^1.11.13",
     "esbuild": "^0.24.2",
     "fdir": "^6.4.3",
+    "nan": "github:bugsounet/nan#node23",
     "open": "^10.1.0",
     "pm2": "^5.4.3",
     "sweetalert2": "^11.15.10"
