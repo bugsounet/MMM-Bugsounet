@@ -26,7 +26,7 @@ class DetectorVisual {
 
   DetectorActivateWord () {
     this.DetectorRefreshLogo(true);
-    this.sendNotification("Bugsounet_ACTIVATE");
+    this.sendNotification("Bugsounet_ASSISTANT-ACTIVATE");
   }
 
   DetectorRefreshLogo (disabled) {

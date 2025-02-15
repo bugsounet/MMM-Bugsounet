@@ -106,6 +106,7 @@ class EXTs {
   onStartPlugin (plugin) {
     if (!plugin) return;
     if (plugin === "EXT-Pages") this.sendNotification("Bugsounet_PAGES-Gateway");
+    if (plugin === "EXT-Detector") this.sendNotification("Bugsounet_DETECTOR-START");
   }
 
   /** Connect rules **/
@@ -323,6 +324,11 @@ class EXTs {
       case "Bugsounet_ASSISTANT-STATUS":
         if (!this.EXT["EXT-Assistant"].hello) return this.sendWarn("EXT-Assistant don't say to me HELLO!");
         this.EXT["EXT-Assistant"].status = payload;
+        switch (this.EXT["EXT-Assistant"].status) {
+          case "standby":
+            if (this.EXT["EXT-Detector"].hello) this.sendNotification("Bugsounet_DETECTOR-START");
+            break;
+        }
         break;
       /** Warn if not in db **/
       default:

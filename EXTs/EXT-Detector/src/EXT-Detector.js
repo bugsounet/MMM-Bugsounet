@@ -59,8 +59,8 @@ Module.register("EXT-Detector", {
       case "Bugsounet_DETECTOR-STOP":
         if (this.ready) { this.sendSocketNotification("STOP"); }
         break;
-      case "Bugsounet_Ready":
-        if (sender.name === "MMM-Bugsounet") { this.sendSocketNotification("INIT", this.config); }
+      case "Bugsounet_READY":
+        if (sender.name === "MMM-Bugsounet") this.sendSocketNotification("INIT", this.config);
         break;
     }
   },
@@ -68,8 +68,8 @@ Module.register("EXT-Detector", {
   socketNotificationReceived (notification, payload) {
     switch (notification) {
       case "INITIALIZED":
-        this.sendNotification("Bugsounet_HELLO", this.name);
         this.ready = true;
+        this.sendNotification("Bugsounet_HELLO", this.name);
         break;
       case "NOT_INITIALIZED":
         this.sendNotification("Bugsounet_ALERT", {
