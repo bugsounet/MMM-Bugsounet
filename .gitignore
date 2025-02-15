@@ -30,3 +30,6 @@
 /EXTs/EXT-Assistant/tokenGA.json
 /EXTs/EXT-Assistant/tmp/lastResponse.mp3
 /EXTs/EXT-Assistant/tmp/responseOutput.html
+/EXTs/EXT-Detector/build/
+/EXTs/EXT-Detector/bin/
+/EXTs/EXT-Detector/components/lib/node/binding/*
