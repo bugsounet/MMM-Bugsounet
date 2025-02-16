@@ -25,14 +25,14 @@
   "author": "bugsounet",
   "main": "EXT-Assistant.js",
   "scripts": {
-    "clean": "node ../../installer/clean --path=EXTs/EXT-FranceInfo",
-    "deps": "node ../../installer/deps --path=EXTs/EXT-FranceInfo",
-    "dev": "node ../../installer/dev --path=EXTs/EXT-FranceInfo",
-    "dev:src": "node ../../installer/src --path=EXTs/EXT-FranceInfo",
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Assistant",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Assistant",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Assistant",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Assistant",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
-    "reset": "node ../../installer/reset --path=EXTs/EXT-FranceInfo",
-    "setup": "node installer/setup --path=EXTs/EXT-FranceInfo"
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Assistant",
+    "setup": "node installer/setup --path=EXTs/EXT-Assistant"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.12.6",
@@ -44,7 +44,7 @@
     "readline": "^1.3.0"
   },
   "engines": {
-    "node": ">=20.18.1 <21 || >=22"
+    "node": ">=23"
   },
   "rev": "250120"
 }
