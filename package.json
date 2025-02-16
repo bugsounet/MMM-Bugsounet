@@ -61,7 +61,7 @@
     "@electron/rebuild": "^3.7.1",
     "@mdi/font": "^7.4.47",
     "dayjs": "^1.11.13",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "fdir": "^6.4.3",
     "nan": "github:bugsounet/nan#node23",
     "open": "^10.1.0",
