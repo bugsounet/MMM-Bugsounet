@@ -1,6 +1,6 @@
 var log = () => { /* do nothing */ };
-var cron = require("node-cron");
-var parser = require("cron-parser");
+const cron = require("node-cron");
+const { CronExpressionParser, CronFieldCollection } = require("cron-parser");
 
 class cronJob {
   constructor (config, callback) {
@@ -88,7 +88,7 @@ class cronJob {
   }
 
   checkCron (toCron, type) {
-    var interval = parser.parseExpression("* * * * *");
+    const interval = CronExpressionParser.parse("* * * * *");
     var fields = JSON.parse(JSON.stringify(interval.fields));
     console.log(`[Screen] [LIB] [CRON] [${type}] Configure:`, toCron);
     if (isNaN(toCron.hour)) {
@@ -107,12 +107,13 @@ class cronJob {
     }
     fields.dayOfWeek = toCron.dayOfWeek;
     try {
-      var modifiedInterval = parser.fieldsToExpression(fields);
-      var job = modifiedInterval.stringify();
+      const modifiedInterval = CronFieldCollection.from(interval.fields, fields);
+      const job = modifiedInterval.stringify();
       log(`[${type}] PASSED --->`, job);
       if (type === "ON") this.cronON.push(job);
       else this.cronOFF.push(job);
-      console.log(`[Screen] [LIB] [CRON] [${type}] Next`, type === "ON" ? "Start:" : "Stop:", modifiedInterval.next().toString());
+      const next = CronExpressionParser.parse(job);
+      console.log(`[Screen] [LIB] [CRON] [${type}] Next`, type === "ON" ? "Start:" : "Stop:", next.next().toString());
     } catch (e) {
       this.error_unspecified(8);
       console.error(`[Screen] [LIB] [CRON] ~Code 8~ [${type}]`, toCron, e.toString());
