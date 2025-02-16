@@ -35,7 +35,7 @@
     "setup": "node installer/setup --path=EXTs/EXT-FranceInfo"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.12.5",
+    "@grpc/grpc-js": "^1.12.6",
     "google-auth-library": "^9.15.0",
     "google-sr": "^5.0.0",
     "html-entities": "^2.5.2",
