@@ -18,7 +18,7 @@ function startConversation (conversation) {
   conversation
     .on("ended", (error) => {
       if (error) {
-        console.log("[GA] Conversation Ended Error:", error);
+        console.error("[GA] Conversation ended with error:", error);
         process.exit();
       } else {
         conversation.end();
@@ -28,7 +28,7 @@ function startConversation (conversation) {
     })
     // catch any errors
     .on("error", (error) => {
-      console.log("[GA] Conversation Error:", error);
+      console.error("[GA] Conversation Error:", error);
       process.exit();
     });
 }
@@ -36,7 +36,7 @@ function startConversation (conversation) {
 try {
   this.assistant = new GoogleAssistant(config.auth);
 } catch (error) {
-  console.log("[GA]", error.toString());
+  console.error("[GA]", error.toString());
   process.exit();
 }
 
@@ -46,5 +46,5 @@ this.assistant
     this.assistant.start(config.conversation, startConversation);
   })
   .on("error", (error) => {
-    console.log("[GA] Assistant Error:", error);
+    console.error("[GA] Assistant Error:", error);
   });
