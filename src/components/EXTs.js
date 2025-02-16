@@ -327,6 +327,33 @@ class EXTs {
         switch (this.EXT["EXT-Assistant"].status) {
           case "standby":
             if (this.EXT["EXT-Detector"].hello) this.sendNotification("Bugsounet_DETECTOR-START");
+            //if (this.EXT["EXT-Touch"].hello) this.sendNotification("Bugsounet_TOUCH-START");
+            if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
+              this.sendNotification("Bugsounet_SCREEN-UNLOCK", { show: true });
+              //if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-OFF");
+            }
+            if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("Bugsounet_PAGES-RESUME");
+            if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-VOLUME_MAX");
+            if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-VOLUME_MAX");
+            //if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("Bugsounet_MUSIC-VOLUME_MAX");
+            if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-VOLUME_MAX");
+            //if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("Bugsounet_YOUTUBE-VOLUME_MAX");
+            break;
+          case "listen":
+          case "think":
+            if (this.EXT["EXT-Detector"].hello) this.sendNotification("Bugsounet_DETECTOR-STOP");
+            //if (this.EXT["EXT-Touch"].hello) this.sendNotification("Bugsounet_TOUCH-BLINK");
+            if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
+              if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
+              this.sendNotification("Bugsounet_SCREEN-LOCK", { show: true });
+              //if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-ON");
+            }
+            if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("Bugsounet_PAGES-PAUSE");
+            if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-VOLUME_MIN");
+            if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-VOLUME_MIN");
+            //if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("Bugsounet__MUSIC-VOLUME_MIN");
+            if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-VOLUME_MIN");
+            //if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("Bugsounet_YOUTUBE-VOLUME_MIN");
             break;
         }
         break;
