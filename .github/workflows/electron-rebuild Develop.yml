@@ -1,4 +1,4 @@
-name: "MagicMirror² (develop) with electron v34.x and electron-rebuild Testing"
+name: "MagicMirror² (develop) and electron-rebuild Testing"
 
 on: [pull_request]
 
