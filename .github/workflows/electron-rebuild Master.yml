@@ -24,13 +24,16 @@ jobs:
       - name: Install MagicMirror²
         run: npm install
 
+      - name: Install Electron v34@latest
+        run: npm install electron@34
+
       - name: Checkout MMM-Bugsounet
         uses: actions/checkout@v4
         with:
           path: MagicMirror/modules/MMM-Bugsounet
 
       - name: Install MMM-Bugsounet
-        run: npm prune
+        run: npm run setup
         working-directory: MagicMirror/modules/MMM-Bugsounet
 
       - name: Install EXT-Screen

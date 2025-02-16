@@ -1,4 +1,4 @@
-name: "MagicMirror² (develop) and electron-rebuild Testing"
+name: "MagicMirror² (develop) with electron v34.x and electron-rebuild Testing"
 
 on: [pull_request]
 
@@ -25,13 +25,16 @@ jobs:
       - name: Install MagicMirror²
         run: npm install
 
+      - name: Install Electron v34@latest
+        run: npm install electron@34
+
       - name: Checkout MMM-Bugsounet
         uses: actions/checkout@v4
         with:
           path: MagicMirror/modules/MMM-Bugsounet
 
       - name: Install MMM-Bugsounet
-        run: npm prune
+        run: npm run setup
         working-directory: MagicMirror/modules/MMM-Bugsounet
 
       - name: Install EXT-Screen
