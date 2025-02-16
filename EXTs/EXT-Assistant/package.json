@@ -36,8 +36,8 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.12.5",
-    "buscar.io": "^1.8.1",
     "google-auth-library": "^9.15.0",
+    "google-sr": "^5.0.0",
     "html-entities": "^2.5.2",
     "node-html-parser": "^7.0.1",
     "protobufjs": "^7.4.0",
@@ -46,6 +46,5 @@
   "engines": {
     "node": ">=20.18.1 <21 || >=22"
   },
-  "rev": "250120",
-"type":"commonjs"
+  "rev": "250120"
 }
