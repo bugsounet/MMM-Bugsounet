@@ -4,7 +4,7 @@
  * ©2025
  */
 
-/* global AssistantResponse, AssistantSearch, AlertCommander, EXTs */
+/* global AssistantResponse, AssistantSearch */
 
 var logGA = () => { /* do nothing */ };
 
@@ -278,7 +278,7 @@ Module.register("EXT-Assistant", {
       console.error("[GA] No Stop Commands defined!");
     }
 
-   this.ready = false;
+    this.ready = false;
   },
 
   /********************************/

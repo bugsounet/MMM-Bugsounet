@@ -12,32 +12,32 @@ class GoogleSearch {
     if (!text) return;
     var finalResult = [];
     search({
-        query: text,
-        resultTypes: [OrganicResult]
-      })
-        .then((response) => {
-          if (response?.length) {
-            response.forEach((result) => {
-              logGA(`Link: ${result.link} (${result.title})`);
-              finalResult.push(result.link);
-            });
+      query: text,
+      resultTypes: [OrganicResult]
+    })
+      .then((response) => {
+        if (response?.length) {
+          response.forEach((result) => {
+            logGA(`Link: ${result.link} (${result.title})`);
+            finalResult.push(result.link);
+          });
 
-            if (finalResult.length) {
-              logGA("Results:", finalResult);
-              this.sendSocketNotification("GOOGLESEARCH-RESULT", finalResult[0]);
-            } else {
-              logGA("No Results found!");
-              this.sendSocketNotification("ERROR", "[GoogleSearch] No Results found!");
-            }
+          if (finalResult.length) {
+            logGA("Results:", finalResult);
+            this.sendSocketNotification("GOOGLESEARCH-RESULT", finalResult[0]);
           } else {
             logGA("No Results found!");
             this.sendSocketNotification("ERROR", "[GoogleSearch] No Results found!");
           }
-        })
-        .catch((e) => {
-          console.error(`[GA] [GOOGLE_SEARCH] [ERROR] ${e.message}`);
-          this.sendSocketNotification("ERROR", "[GoogleSearch] Sorry, an error occurred!");
-        });
+        } else {
+          logGA("No Results found!");
+          this.sendSocketNotification("ERROR", "[GoogleSearch] No Results found!");
+        }
+      })
+      .catch((e) => {
+        console.error(`[GA] [GOOGLE_SEARCH] [ERROR] ${e.message}`);
+        this.sendSocketNotification("ERROR", "[GoogleSearch] Sorry, an error occurred!");
+      });
   }
 }
 

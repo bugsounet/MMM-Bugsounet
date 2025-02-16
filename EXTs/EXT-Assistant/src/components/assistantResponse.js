@@ -213,7 +213,6 @@ class AssistantResponse {
   }
 
   start (response) {
-    logGA("Assisntant Response:", response)
     this.response = response;
     clearTimeout(this.aliveTimer);
     if (this.showing) this.end();

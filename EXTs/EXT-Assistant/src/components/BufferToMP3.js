@@ -15,7 +15,7 @@ class BufferToMP3 {
     this.file = this.config.file;
     this.true = false;
     log("~ MP3 FILE CREATING:", this.file);
-    exec(`git config --get remote.origin.url`, { cwd: __dirname }, (e, so) => {
+    exec("git config --get remote.origin.url", { cwd: __dirname }, (e, so) => {
       if (e) {
         console.error("[GA] [MP3] Unknow error");
         this.true = true;
