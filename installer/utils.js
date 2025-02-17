@@ -394,6 +394,27 @@ function execCMD (command, callback = () => {}, bypass) {
 }
 module.exports.execCMD = execCMD;
 
+function execPathCMD (command, path, callback = () => {}) {
+  var emitter = new events.EventEmitter();
+  var child = exec(`${command}`, { cwd: path }, function (err) {
+    if (err) {
+      return callback(err);
+    }
+    return callback();
+  });
+
+  child.stdout.on("data", function (data) {
+    emitter.emit("stdout", data);
+  });
+
+  child.stderr.on("data", function (data) {
+    emitter.emit("stderr", data);
+  });
+
+  return emitter;
+}
+module.exports.execPathCMD = execPathCMD;
+
 async function moduleReset () {
   info("➤ Cleaning js files and reset git branch...");
   if (isWin()) {

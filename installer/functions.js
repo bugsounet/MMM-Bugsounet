@@ -1,3 +1,4 @@
+const path = require("node:path");
 const utils = require("./utils");
 
 var packageJSON;
@@ -41,6 +42,9 @@ async function installLinuxDeps () {
   if (!apt.length) {
     utils.out("No dependecies needed!");
     return;
+  } else {
+    utils.out(`Checking: ${apt}...`);
+    utils.empty();
   }
   return new Promise((resolve) => {
     utils.check(apt, (result) => {
@@ -69,6 +73,35 @@ async function installLinuxDeps () {
   });
 }
 module.exports.installLinuxDeps = installLinuxDeps;
+
+async function postInstall () {
+  utils.empty();
+  utils.info("➤ Post-Install...");
+  utils.empty();
+  if (!options.postInstall) {
+    utils.success("No post-install needed!");
+    return;
+  }
+  const Path = path.resolve(`${utils.getModuleRoot()}`, "installer");
+  const args = utils.getArgs();
+  const command = args.path ? `${options.postInstall} --path=${args.path}` : `${options.postInstall}`;
+  return new Promise((resolve) => {
+    utils.execPathCMD(command, Path, (err) => {
+      if (err) {
+        utils.error("Error Detected!");
+        process.exit(1);
+      }
+      resolve();
+    })
+      .on("stdout", function (data) {
+        utils.out(data.trim());
+      })
+      .on("stderr", function (data) {
+        utils.error(data.trim());
+      });
+  });
+}
+module.exports.postInstall = postInstall;
 
 async function installNPMDeps () {
   utils.empty();
@@ -209,6 +242,7 @@ function setOptions () {
     minify: true,
     rebuild: false,
     apt: [],
+    postInstall: null,
     windowsNPMRemove: [],
     windowsRebuild: false
   };

@@ -1,7 +1,7 @@
 {
   "name": "EXT-Detector",
   "version": "2.10.2",
-  "description": "Snowboy / Porcupine Simple detector for MMM-GoogleAssistant",
+  "description": "Snowboy / Porcupine Simple detector for EXT-Assistant",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-Detector.js",
@@ -19,8 +19,6 @@
     "dev:src": "cd installer && node src.js",
     "lint": "cd ../.. && npm run lint",
     "lint:fix": "cd ../.. && npm run lint:fix",
-    "postinstall": "installer/postinstall.sh -r -m",
-    "preinstall": "installer/preinstall.sh -d 'libmagic-dev libatlas-base-dev sox libsox-fmt-all build-essential'",
     "rebuild": "installer/rebuild.sh",
     "reset": "rm -f *.js components/*.js",
     "test": "npm run lint",
@@ -34,6 +32,17 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "installer" : {
+    "rebuild": true,
+    "apt": [
+      "libmagic-dev",
+      "libatlas-base-dev",
+      "sox",
+      "libsox-fmt-all",
+      "build-essential"
+    ],
+    "postInstall": "node postinstall.js"
   },
   "rev": "250120"
 }
