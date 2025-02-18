@@ -38,16 +38,16 @@ jobs:
         working-directory: MagicMirror/modules/MMM-Bugsounet
 
       - name: Install EXT-Detector
-        run: npm run setup
-        working-directory: MagicMirror/modules/MMM-Bugsounet/EXTs/EXT-Detector
+        run: npm run setup:EXT-Detector
+        working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
       - name: Install EXT-Screen
-        run: npm run setup
-        working-directory: MagicMirror/modules/MMM-Bugsounet/EXTs/EXT-Screen
+        run: npm run setup:EXT-Screen
+        working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
       - name: Install EXT-Website
-        run: npm run setup
-        working-directory: MagicMirror/modules/MMM-Bugsounet/EXTs/EXT-Website
+        run: npm run setup:EXT-Website
+        working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
