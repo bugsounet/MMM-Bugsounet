@@ -13,6 +13,8 @@ try {
 var options = packageJSON.installer || {};
 
 async function updatePackageInfoLinux () {
+  const apt = options.apt;
+  if (!apt.length) return;
   utils.empty();
   utils.info("➤ Update package informations");
   utils.empty();
@@ -35,17 +37,13 @@ async function updatePackageInfoLinux () {
 module.exports.updatePackageInfoLinux = updatePackageInfoLinux;
 
 async function installLinuxDeps () {
+  const apt = options.apt;
+  if (!apt.length) return;
   utils.empty();
   utils.info("➤ Dependencies installer");
   utils.empty();
-  const apt = options.apt;
-  if (!apt.length) {
-    utils.out("No dependecies needed!");
-    return;
-  } else {
-    utils.out(`Checking: ${apt}...`);
-    utils.empty();
-  }
+  utils.out(`Checking: ${apt}...`);
+  utils.empty();
   return new Promise((resolve) => {
     utils.check(apt, (result) => {
       if (!result.length) {
@@ -75,13 +73,10 @@ async function installLinuxDeps () {
 module.exports.installLinuxDeps = installLinuxDeps;
 
 async function postInstall () {
+  if (!options.postInstall) return;
   utils.empty();
   utils.info("➤ Post-Install...");
   utils.empty();
-  if (!options.postInstall) {
-    utils.success("No post-install needed!");
-    return;
-  }
   const Path = path.resolve(`${utils.getModuleRoot()}`, "installer");
   const args = utils.getArgs();
   const command = args.path ? `${options.postInstall} --path=${args.path}` : `${options.postInstall}`;
@@ -174,13 +169,10 @@ async function develop () {
 module.exports.develop = develop;
 
 async function electronRebuild () {
+  if (!options.rebuild || (utils.isWin() && !options.windowsRebuild)) return;
   utils.empty();
   utils.info("➤ Rebuild MagicMirror...");
   utils.empty();
-  if (!options.rebuild || (utils.isWin() && !options.windowsRebuild)) {
-    utils.out("electron-rebuild is not needed.");
-    return;
-  }
   return new Promise((resolve) => {
     utils.electronRebuild((err) => {
       if (err) {
