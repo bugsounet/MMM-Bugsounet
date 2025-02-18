@@ -14,18 +14,15 @@
     "host": "https://github.com/bugsounet/snowboy"
   },
   "scripts": {
-    "clean": "node ../../installer/clean --path=EXTs/EXT-FranceInfo",
-    "deps": "node ../../installer/deps --path=EXTs/EXT-FranceInfo",
-    "dev": "node ../../installer/dev --path=EXTs/EXT-FranceInfo",
-    "dev:src": "node ../../installer/src --path=EXTs/EXT-FranceInfo",
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Detector",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Detector",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Detector",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Detector",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
-    "lint": "cd ../.. && npm run lint",
-    "lint:fix": "cd ../.. && npm run lint:fix",
-    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-FranceInfo",
-    "reset": "node ../../installer/reset --path=EXTs/EXT-FranceInfo",
-    "setup": "node ../../installer/setup --path=EXTs/EXT-FranceInfo",
-    "test": "npm run lint"
+    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-Detector",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Detector",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Detector"
   },
   "dependencies": {
     "@mapbox/node-pre-gyp": "^2.0.0",
