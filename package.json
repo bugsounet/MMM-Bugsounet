@@ -30,7 +30,7 @@
     "rebuild": "node installer/rebuild",
     "reset": "node installer/reset",
     "setup": "node installer/setup",
-    "setup:EXT-Detector": "node installer/setup --path=EXTs/EXT-Detector", 
+    "setup:EXT-Detector": "node installer/setup --path=EXTs/EXT-Detector",
     "setup:EXT-FranceInfo": "node installer/setup --path=EXTs/EXT-FranceInfo",
     "setup:EXT-Freebox": "node installer/setup --path=EXTs/EXT-Freebox",
     "setup:EXT-FreeboxTV": "node installer/setup --path=EXTs/EXT-FreeboxTV",

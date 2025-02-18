@@ -14,15 +14,18 @@
     "host": "https://github.com/bugsounet/snowboy"
   },
   "scripts": {
-    "clean": "rm -rf node_modules build components/lib/node/binding/ components/lib/node/index.js",
-    "dev": "cd installer && node dev.js",
-    "dev:src": "cd installer && node src.js",
+    "clean": "node ../../installer/clean --path=EXTs/EXT-FranceInfo",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-FranceInfo",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-FranceInfo",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-FranceInfo",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
     "lint": "cd ../.. && npm run lint",
     "lint:fix": "cd ../.. && npm run lint:fix",
-    "rebuild": "installer/rebuild.sh",
-    "reset": "rm -f *.js components/*.js",
-    "test": "npm run lint",
-    "test:minify": "cd installer && node minify.js"
+    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-FranceInfo",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-FranceInfo",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-FranceInfo",
+    "test": "npm run lint"
   },
   "dependencies": {
     "@mapbox/node-pre-gyp": "^2.0.0",
