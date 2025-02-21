@@ -24,7 +24,7 @@
     "express-slow-down": "^2.0.3",
     "http-proxy-middleware": "^3.0.3",
     "jquery": "^3.7.1",
-    "jsoneditor": "^10.1.2",
+    "jsoneditor": "^10.1.3",
     "jsonwebtoken": "^9.0.2",
     "node-pty": "^1.0.0",
     "prompt": "^1.3.0",
