@@ -90,7 +90,7 @@ NAN_METHOD(SnowboyDetect::New) {
 }
 
 NAN_METHOD(SnowboyDetect::Reset) {
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   bool ret = ptr->detector->Reset();
   info.GetReturnValue().Set(Nan::New(ret));
 }
@@ -107,7 +107,7 @@ NAN_METHOD(SnowboyDetect::RunDetection) {
 
   std::string data(bufferData, bufferLength);
 
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   int ret = ptr->detector->RunDetection(data);
   info.GetReturnValue().Set(Nan::New(ret));
 }
@@ -121,7 +121,7 @@ NAN_METHOD(SnowboyDetect::SetSensitivity) {
   Nan::MaybeLocal<v8::Object> sensitivity = Nan::To<v8::Object>(info[0]);
   Nan::Utf8String sensitivityString(sensitivity.ToLocalChecked());
 
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   ptr->detector->SetSensitivity(*sensitivityString);
 }
 
@@ -129,12 +129,12 @@ NAN_METHOD(SnowboyDetect::ApplyFrontend) {
   Nan::Maybe<bool> applyFrontend= Nan::To<bool>(info[0]);
   bool applyFrontendBool=applyFrontend.FromJust();
 
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   ptr->detector->ApplyFrontend(applyFrontendBool);
 }
 
 NAN_METHOD(SnowboyDetect::GetSensitivity) {
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   std::string sensitivity = ptr->detector->GetSensitivity();
   info.GetReturnValue().Set(Nan::New(sensitivity).ToLocalChecked());
 }
@@ -146,35 +146,35 @@ NAN_METHOD(SnowboyDetect::SetAudioGain) {
   }
 
   Nan::MaybeLocal<v8::Number> gain = Nan::To<v8::Number>(info[0]);
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   ptr->detector->SetAudioGain(gain.ToLocalChecked()->Value());
 }
 
 NAN_METHOD(SnowboyDetect::UpdateModel) {
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   ptr->detector->UpdateModel();
 }
 
 NAN_METHOD(SnowboyDetect::NumHotwords) {
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   int numHotwords = ptr->detector->NumHotwords();
   info.GetReturnValue().Set(Nan::New(numHotwords));
 }
 
 NAN_METHOD(SnowboyDetect::SampleRate) {
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   int sampleRate = ptr->detector->SampleRate();
   info.GetReturnValue().Set(Nan::New(sampleRate));
 }
 
 NAN_METHOD(SnowboyDetect::NumChannels) {
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   int numChannels = ptr->detector->NumChannels();
   info.GetReturnValue().Set(Nan::New(numChannels));
 }
 
 NAN_METHOD(SnowboyDetect::BitsPerSample) {
-  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.Holder());
+  SnowboyDetect* ptr = Nan::ObjectWrap::Unwrap<SnowboyDetect>(info.This());
   int bitsPerSample = ptr->detector->BitsPerSample();
   info.GetReturnValue().Set(Nan::New(bitsPerSample));
 }
