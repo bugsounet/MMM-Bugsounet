@@ -27,7 +27,7 @@
   "dependencies": {
     "@mapbox/node-pre-gyp": "^2.0.0",
     "@picovoice/porcupine-node": "^3.0.6",
-    "@types/node": "^22.13.4",
+    "@types/node": "^22.13.5",
     "typescript": "^5.7.3"
   },
   "engines": {
