@@ -25,9 +25,6 @@ jobs:
       - name: Install MagicMirror²
         run: npm install
 
-      - name: Install Electron v34@latest
-        run: npm install electron@34
-
       - name: Checkout MMM-Bugsounet
         uses: actions/checkout@v4
         with:
