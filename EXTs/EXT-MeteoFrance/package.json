@@ -21,6 +21,11 @@
     "bugsounet"
   ],
   "main": "EXT-MeteoFrance.js",
+  "overrides": {
+    "meteofrance_api": {
+      "axios": "^1.8.2"
+    }
+  },
   "scripts": {
     "clean": "node ../../installer/clean --path=EXTs/EXT-MeteoFrance",
     "deps": "node ../../installer/deps --path=EXTs/EXT-MeteoFrance",
@@ -29,7 +34,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-MeteoFrance",
-    "setup": "node installer/setup --path=EXTs/EXT-MeteoFrance"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-MeteoFrance"
   },
   "dependencies": {
     "meteofrance_api": "^1.2.4",
