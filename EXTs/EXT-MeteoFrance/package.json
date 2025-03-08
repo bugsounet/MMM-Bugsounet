@@ -21,11 +21,6 @@
     "bugsounet"
   ],
   "main": "EXT-MeteoFrance.js",
-  "overrides": {
-    "meteofrance_api": {
-      "axios": "^1.8.2"
-    }
-  },
   "scripts": {
     "clean": "node ../../installer/clean --path=EXTs/EXT-MeteoFrance",
     "deps": "node ../../installer/deps --path=EXTs/EXT-MeteoFrance",
@@ -39,6 +34,11 @@
   "dependencies": {
     "meteofrance_api": "^1.2.4",
     "weathericons": "^2.1.0"
+  },
+  "overrides": {
+    "meteofrance_api": {
+      "axios": "^1.8.2"
+    }
   },
   "rev": "250103"
 }
