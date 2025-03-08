@@ -33,7 +33,8 @@
   },
   "overrides": {
     "node-telegram-bot-api": {
-      "tough-cookie": "^5.0.0"
+      "tough-cookie": "^5.0.0",
+      "request": "npm:@cypress/request@3"
     }
   },
   "rev": "241219"
