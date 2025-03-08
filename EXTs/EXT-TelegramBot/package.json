@@ -31,5 +31,10 @@
       "grim"
     ]
   },
+  "overrides": {
+    "node-telegram-bot-api": {
+      "tough-cookie": "^5.0.0"
+    }
+  },
   "rev": "241219"
 }
