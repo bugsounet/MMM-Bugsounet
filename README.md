@@ -6,7 +6,6 @@ This "all in one" module is **only** intended for my personal use.
 
 This module include (with install on demand)
 
-* EXT-FranceInfo
 * EXT-Freebox
 * EXT-FreeboxTV
 * EXT-Glassy
