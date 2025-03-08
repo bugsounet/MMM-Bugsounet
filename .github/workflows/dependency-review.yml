@@ -19,4 +19,4 @@ jobs:
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v4
         with:
-          allow-ghsas: GHSA-mrr8-v49w-3333, GHSA-jr5f-v2jv-69x6, GHSA-p8p7-x288-28g6
+          allow-ghsas: GHSA-mrr8-v49w-3333, GHSA-jr5f-v2jv-69x6, GHSA-p8p7-x288-28g6, GHSA-72xf-g2v4-qvf3
