@@ -6,8 +6,6 @@ This "all in one" module is **only** intended for my personal use.
 
 This module include (with install on demand)
 
-* EXT-Assistant
-* EXT-Detector
 * EXT-FranceInfo
 * EXT-Freebox
 * EXT-FreeboxTV
@@ -28,18 +26,6 @@ This module include (with install on demand)
 * EXT-Volume
 * EXT-Website
 * EXT-YouTubeCast
-
-And comming:
-
-* EXT-Browser
-* EXT-GooglePhotos
-* EXT-Keyboard
-* EXT-MusicPlayer
-* EXT-Photos
-* EXT-StreamDeck
-* EXT-Touch
-* EXT-Welcome
-* EXT-YouTube
 
 Warn, you can't use this module and can't use a fork of it. (module self protected)
 
