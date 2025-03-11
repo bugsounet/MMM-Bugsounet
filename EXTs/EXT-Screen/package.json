@@ -30,7 +30,7 @@
     "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-Screen",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Screen",
     "screenSaver": "installer/screenSaver.sh",
-    "setup": "node installer/setup --path=EXTs/EXT-Screen"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Screen"
   },
   "dependencies": {
     "cron-parser": "^5.0.4",
