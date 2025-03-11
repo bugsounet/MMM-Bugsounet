@@ -14,9 +14,6 @@ class EXTs {
     this.sendAlert = (...args) => Tools.sendAlert(...args);
 
     this.ExtDB = [
-      "EXT-Assistant",
-      "EXT-Detector",
-      "EXT-FranceInfo",
       "EXT-Freebox",
       "EXT-FreeboxTV",
       "EXT-Glassy",
@@ -34,8 +31,7 @@ class EXTs {
       "EXT-Updates",
       "EXT-VLCServer",
       "EXT-Volume",
-      "EXT-Website",
-      "EXT-YouTubeCast"
+      "EXT-Website"
     ];
 
     this.EXT = {
@@ -67,7 +63,6 @@ class EXTs {
     this.EXT["EXT-Volume"].recorder = 0;
     this.EXT["EXT-Pages"].actual = 0;
     this.EXT["EXT-Pages"].total = 0;
-    this.EXT["EXT-Assistant"].status = "init";
   }
 
   setBugsounet_Ready () {
@@ -106,7 +101,6 @@ class EXTs {
   onStartPlugin (plugin) {
     if (!plugin) return;
     if (plugin === "EXT-Pages") this.sendNotification("Bugsounet_PAGES-Gateway");
-    if (plugin === "EXT-Detector") this.sendNotification("Bugsounet_DETECTOR-START");
   }
 
   /** Connect rules **/
@@ -129,7 +123,6 @@ class EXTs {
 
     if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-STOP");
     if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-STOP");
-    if (this.EXT["EXT-YouTubeCast"].hello && this.EXT["EXT-YouTubeCast"].connected) this.sendNotification("Bugsounet_YOUTUBECAST-STOP");
     if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-STOP");
 
     logBugsounet("[EXTs] Connected:", extName);
@@ -282,14 +275,6 @@ class EXTs {
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[RULES] EXT-Spotify don't say to me HELLO!");
         this.disconnectEXT("EXT-Spotify");
         break;
-      case "Bugsounet_YOUTUBECAST-CONNECTED":
-        if (!this.EXT["EXT-YouTubeCast"].hello) return this.sendWarn("[CONNECT] EXT-YouTubeCast don't say to me HELLO!");
-        this.connectEXT("EXT-YouTubeCast");
-        break;
-      case "Bugsounet_YOUTUBECAST-DISCONNECTED":
-        if (!this.EXT["EXT-YouTubeCast"].hello) return this.sendWarn("[DISCONNECT] EXT-YouTubeCast don't say to me HELLO!");
-        this.disconnectEXT("EXT-YouTubeCast");
-        break;
       case "Bugsounet_FREEBOXTV-CONNECTED":
         if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[CONNECT] EXT-FreeboxTV don't say to me HELLO!");
         this.connectEXT("EXT-FreeboxTV");
@@ -321,42 +306,6 @@ class EXTs {
         if (!this.EXT["EXT-Website"].hello) return this.sendWarn("[DISCONNECT] EXT-Website don't say to me HELLO!");
         this.disconnectEXT("EXT-Website");
         break;
-      case "Bugsounet_ASSISTANT-STATUS":
-        if (!this.EXT["EXT-Assistant"].hello) return this.sendWarn("EXT-Assistant don't say to me HELLO!");
-        this.EXT["EXT-Assistant"].status = payload;
-        switch (this.EXT["EXT-Assistant"].status) {
-          case "standby":
-            if (this.EXT["EXT-Detector"].hello) this.sendNotification("Bugsounet_DETECTOR-START");
-            //if (this.EXT["EXT-Touch"].hello) this.sendNotification("Bugsounet_TOUCH-START");
-            if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
-              this.sendNotification("Bugsounet_SCREEN-UNLOCK", { show: true });
-              //if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-OFF");
-            }
-            if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("Bugsounet_PAGES-RESUME");
-            if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-VOLUME_MAX");
-            if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-VOLUME_MAX");
-            //if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("Bugsounet_MUSIC-VOLUME_MAX");
-            if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-VOLUME_MAX");
-            //if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("Bugsounet_YOUTUBE-VOLUME_MAX");
-            break;
-          case "listen":
-          case "think":
-            if (this.EXT["EXT-Detector"].hello) this.sendNotification("Bugsounet_DETECTOR-STOP");
-            //if (this.EXT["EXT-Touch"].hello) this.sendNotification("Bugsounet_TOUCH-BLINK");
-            if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
-              if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
-              this.sendNotification("Bugsounet_SCREEN-LOCK", { show: true });
-              //if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-ON");
-            }
-            if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("Bugsounet_PAGES-PAUSE");
-            if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-VOLUME_MIN");
-            if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-VOLUME_MIN");
-            //if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("Bugsounet__MUSIC-VOLUME_MIN");
-            if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-VOLUME_MIN");
-            //if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("Bugsounet_YOUTUBE-VOLUME_MIN");
-            break;
-        }
-        break;
 
       /** Warn if not in db **/
       default:
@@ -369,14 +318,6 @@ class EXTs {
       }, 300);
     }
     logBugsounet("[EXTs] Status:", this.EXT);
-  }
-
-  /** Send Assistant Volume control **/
-  sendVolume (volume) {
-    if (this.EXT["EXT-Volume"].hello) {
-      logBugsounet("Volume Control:", volume);
-      this.sendNotification("Bugsounet_VOLUME-SPEAKER_SET", volume);
-    }
   }
 
   sendWarn (message) {
