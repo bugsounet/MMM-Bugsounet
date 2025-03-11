@@ -19,6 +19,10 @@ jobs:
       - name: Install Dependencies
         run: npm prune
 
+      - name: Run ESBuild EXT-Freebox
+        run: node installer/minify --path=EXTs/EXT-Freebox
+        continue-on-error: false
+
       - name: Run ESBuild EXT-FreeboxTV
         run: node installer/minify --path=EXTs/EXT-FreeboxTV
         continue-on-error: false
@@ -31,8 +35,20 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-Librespot
         continue-on-error: false
 
+      - name: Run ESBuild EXT-MeteoFrance
+        run: node installer/minify --path=EXTs/EXT-MeteoFrance
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-NetatmoThermostat
+        run: node installer/minify --path=EXT-EXTs/NetatmoThermostat
+        continue-on-error: false
+
       - name: Run ESBuild EXT-Pages
         run: node installer/minify --path=EXTs/EXT-Pages
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-PrixCarburants
+        run: node installer/minify --path=EXTs/EXT-PrixCarburants
         continue-on-error: false
 
       - name: Run ESBuild EXT-RadioPlayer
@@ -45,6 +61,10 @@ jobs:
 
       - name: Run ESBuild EXT-Screen
         run: node installer/minify --path=EXTs/EXT-Screen
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-SmartHome
+        run: node installer/minify --path=EXTs/EXT-SmartHome
         continue-on-error: false
 
       - name: Run ESBuild EXT-Spotify
@@ -69,8 +89,4 @@ jobs:
 
       - name: Run ESBuild EXT-Website
         run: node installer/minify --path=EXTs/EXT-Website
-        continue-on-error: false
-
-      - name: Run ESBuild EXT-YouTubeCast
-        run: node installer/minify --path=EXTs/EXT-YouTubeCast
         continue-on-error: false
