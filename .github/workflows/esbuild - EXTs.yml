@@ -40,7 +40,7 @@ jobs:
         continue-on-error: false
 
       - name: Run ESBuild EXT-NetatmoThermostat
-        run: node installer/minify --path=EXT-EXTs/NetatmoThermostat
+        run: node installer/minify --path=EXTs/EXT-NetatmoThermostat
         continue-on-error: false
 
       - name: Run ESBuild EXT-Pages
