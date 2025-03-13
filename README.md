@@ -24,7 +24,6 @@ This module include (with install on demand)
 * EXT-VLCServer
 * EXT-Volume
 * EXT-Website
-* EXT-YouTubeCast
 
 Warn, you can't use this module and can't use a fork of it. (module self protected)
 
