@@ -364,10 +364,6 @@ class website {
           res.sendFile(`${this.WebsitePath}/index.html`);
         })
 
-        .get("/EXT", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/EXT.html`);
-        })
-
         .get("/Terminal", (req, res, next) => this.auth(req, res, next), (req, res) => {
           var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
           res.sendFile(`${this.WebsitePath}/terminal.html`);
@@ -450,39 +446,6 @@ class website {
 
         .get("/MMConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/mmconfig.html`);
-        })
-
-        .get("/EXTCreateConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          if (req.query.ext
-            && this.website.EXTInstalled.indexOf(req.query.ext) > -1 // is installed
-            && this.website.EXT.indexOf(req.query.ext) > -1 // is an EXT
-            && this.website.EXTConfigured.indexOf(req.query.ext) === -1 // is not configured
-          ) {
-            res.sendFile(`${this.WebsitePath}/EXTCreateConfig.html`);
-          }
-          else res.redirect("/404");
-        })
-
-        .get("/EXTModifyConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          if (req.query.ext
-            && this.website.EXTInstalled.indexOf(req.query.ext) > -1 // is installed
-            && this.website.EXT.indexOf(req.query.ext) > -1 // is an EXT
-            && this.website.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
-          ) {
-            res.sendFile(`${this.WebsitePath}/EXTModifyConfig.html`);
-          }
-          else res.redirect("/404");
-        })
-
-        .get("/EXTDeleteConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          if (req.query.ext
-            && this.website.EXTInstalled.indexOf(req.query.ext) === -1 // is not installed
-            && this.website.EXT.indexOf(req.query.ext) > -1 // is an EXT
-            && this.website.EXTConfigured.indexOf(req.query.ext) > -1 // is configured
-          ) {
-            res.sendFile(`${this.WebsitePath}/EXTDeleteConfig.html`);
-          }
-          else res.redirect("/404");
         })
 
         .get("/Tools", (req, res, next) => this.auth(req, res, next), (req, res) => {

@@ -75,7 +75,7 @@ async function doTerminal () {
   }
 
   socketPTY.on("connect", () => {
-    termPTY.write(`\x1B[1;3;31mEXT-Websitet v${version.version} (${version.rev}.${version.lang})\x1B[0m \r\n\n`);
+    termPTY.write(`\x1B[1;3;31mEXT-Website v${version.version} (${version.rev}.${version.lang})\x1B[0m \r\n\n`);
   });
 
   socketPTY.on("disconnect", () => {

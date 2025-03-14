@@ -79,43 +79,6 @@ async function doTools () {
     };
   }
 
-  // webview
-  if (!webviewTag) {
-    $("#webviewHeader").text(translation.Tools_Webview_Header);
-    $("#webviewNeeded").text(translation.Tools_Webview_Needed);
-    $("#webviewbtn-Apply").text(translation.Save);
-    $("#webviewbtn-Error").text(translation.Error);
-    $("#webviewbtn-Done").text(translation.Done);
-    if (!InstEXT.length) InstEXT = await loadDataInstalledEXT();
-    var webviewNeeded = ["EXT-Browser", "EXT-Photos", "EXT-YouTube", "EXT-YouTubeCast"];
-    var displayNeeded = 0;
-
-    InstEXT.forEach((EXT) => {
-      if (webviewNeeded.indexOf(EXT) > -1) displayNeeded++;
-    });
-
-    if (displayNeeded) $("#webview-Box").css("display", "block");
-
-    document.getElementById("webviewbtn-Apply").onclick = function () {
-      Request("/api/config/webview", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "WebviewTag", () => {
-        $("#webviewbtn-Apply").css("display", "none");
-        $("#webviewbtn-Done").css("display", "inline-block");
-        alertify.success(translation.Restart);
-      }, (err) => {
-        $("#webviewbtn-Apply").css("display", "none");
-        $("#webviewbtn-Error").css("display", "inline-block");
-        let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
-        if (!err.status) alertify.error("Connexion Lost!");
-        else alertify.error(`[WebviewTag] Server return Error ${err.status} (${error})`);
-      });
-    };
-
-    document.getElementById("webviewbtn-Done").onclick = function () {
-      $("#webview-Box").css("display", "none");
-      webviewTag = true;
-    };
-  }
-
   // screen control
   if (EXTStatus["EXT-Screen"].hello) {
     if (EXTStatus["EXT-Screen"].power) $("#Screen-Control").text(translation.TurnOff);
@@ -135,7 +98,7 @@ async function doTools () {
     };
   }
 
-  // GA-Alert query
+  // Bugsounet-Alert query
   $("#Alert-Query").prop("placeholder", translation.Tools_Alert_Query);
   $("#Alert-Text").text(translation.Tools_Alert_Text);
   $("#Alert-Send").text(translation.Send);
@@ -349,53 +312,6 @@ async function doTools () {
       } else {
         $("#Spotify-Send").addClass("disabled");
       }
-    };
-  }
-
-  // GoogleAssistant Query
-  $("#GoogleAssistant-Text").text(translation.Tools_GoogleAssistant_Text);
-  $("#GoogleAssistant-Query").prop("placeholder", translation.Tools_GoogleAssistant_Query);
-  $("#GoogleAssistant-Send").text(translation.Send);
-  $("#GoogleAssistant-Box").css("display", "block");
-  $("#GoogleAssistant-Query").keyup(function () {
-    if ($(this).val().length > 5) {
-      $("#GoogleAssistant-Send").removeClass("disabled");
-    } else {
-      $("#GoogleAssistant-Send").addClass("disabled");
-    }
-  });
-
-  document.getElementById("GoogleAssistant-Send").onclick = function () {
-    $("#GoogleAssistant-Send").addClass("disabled");
-    Request("/api/Assistant/query", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: $("#GoogleAssistant-Query").val() }), "GoogleAssistant", () => {
-      $("#GoogleAssistant-Query").val("");
-      alertify.success(translation.RequestDone);
-    }, (err) => {
-      $("#GoogleAssistant-Query").val("");
-      let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
-      if (!err.status) alertify.error("Connexion Lost!");
-      else alertify.error(`[GoogleAssistant] Server return Error ${err.status} (${error})`);
-    });
-  };
-
-  // YouTube Query
-  if (EXTStatus["EXT-YouTube"].hello) {
-    $("#YouTube-Text").text(translation.Tools_YouTube_Text);
-    $("#YouTube-Query").prop("placeholder", translation.Tools_YouTube_Query);
-    $("#YouTube-Send").text(translation.Send);
-    $("#YouTube-Box").css("display", "block");
-    $("#YouTube-Query").keyup(function () {
-      if ($(this).val().length > 1) {
-        $("#YouTube-Send").removeClass("disabled");
-      } else {
-        $("#YouTube-Send").addClass("disabled");
-      }
-    });
-
-    document.getElementById("YouTube-Send").onclick = function () {
-      Request("/api/EXT/YouTube", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: $("#YouTube-Query").val() }), "YouTube", () => {
-        alertify.success(translation.RequestDone);
-      }, null);
     };
   }
 
