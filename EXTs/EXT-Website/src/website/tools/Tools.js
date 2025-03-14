@@ -2,10 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, alertify, getCurrentToken, getVersion, loadRadio, loadTranslation, loadDataInstalledEXT, doTranslateNavBar, checkWebviewTag, checkEXTStatus,
-  loadBackupNames, loadDataInstalledEXT, forceMobileRotate
-*/
-/* eslint-disable max-lines-per-function */
+/* global $, alertify, getCurrentToken, getVersion, loadRadio, loadTranslation, doTranslateNavBar, checkEXTStatus, loadBackupNames, forceMobileRotate */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -15,9 +12,7 @@ var PleaseRotateOptions = {
 
 // define all vars
 var translation = {};
-var InstEXT = [];
 var version = {};
-var webviewTag = false;
 var EXTStatus = {};
 
 // Load rules
@@ -34,12 +29,12 @@ window.addEventListener("load", async () => {
 async function doTools () {
   // translate
   $(document).prop("title", translation.Tools);
-  webviewTag = await checkWebviewTag();
   EXTStatus = await checkEXTStatus();
 
   // live stream every secs of EXT for update
   setInterval(async () => {
     EXTStatus = await checkEXTStatus();
+    updateTools();
   }, 1000);
 
   $("#title").text(translation.Tools_Welcome);
@@ -83,10 +78,6 @@ async function doTools () {
   if (EXTStatus["EXT-Screen"].hello) {
     if (EXTStatus["EXT-Screen"].power) $("#Screen-Control").text(translation.TurnOff);
     else $("#Screen-Control").text(translation.TurnOn);
-    setInterval(() => {
-      if (EXTStatus["EXT-Screen"].power) $("#Screen-Control").text(translation.TurnOff);
-      else $("#Screen-Control").text(translation.TurnOn);
-    }, 1000);
     $("#Screen-Text").text(translation.Tools_Screen_Text);
     $("#Screen-Box").css("display", "block");
 
@@ -125,27 +116,19 @@ async function doTools () {
     $("#Volume-Text3").text(translation.Tools_Volume_Text3);
     $("#Volume-Send").text(translation.Confirm);
     $("#Volume-Box").css("display", "block");
-    setInterval(() => {
-      $("#Volume-Set").text(`${EXTStatus["EXT-Volume"].speaker}%`);
-    }, 1000);
 
     document.getElementById("Volume-Send").onclick = function () {
       Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: Number($("#Volume-Query").val()) }), "Volume", () => {
         alertify.success(translation.RequestDone);
       }, null);
     };
-  }
 
-  // mic control
-  if (EXTStatus["EXT-Volume"].hello) {
+    // mic control
     $("#Volume-Text-Record").text(translation.Tools_Volume_Text_Record);
     $("#Volume-Text-Record2").text(translation.Tools_Volume_Text2);
     $("#Volume-Text-Record3").text(translation.Tools_Volume_Text3);
     $("#Volume-Send-Record").text(translation.Confirm);
     $("#Volume-Box-Record").css("display", "block");
-    setInterval(() => {
-      $("#Volume-Set-Record").text(`${EXTStatus["EXT-Volume"].recorder}%`);
-    }, 1000);
 
     document.getElementById("Volume-Send-Record").onclick = function () {
       Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: Number($("#Volume-Query-Record").val()) }), "Volume", () => {
@@ -159,24 +142,6 @@ async function doTools () {
     $("#Update-Header").text(translation.Tools_Update_Header);
     $("#Update-Text").text(translation.Tools_Update_Text);
     $("#Update-Text2").text(translation.Tools_Update_Text2);
-    // only on live
-    setInterval(async () => {
-      let needUpdate = 0;
-      $("#Update-Confirm").text(translation.Confirm);
-      var updateModules = EXTStatus["EXT-Updates"].module;
-      if (!updateModules) return $("#Update-Box").css("display", "none");
-      if (!Object.keys(updateModules).length) return $("#Update-Box").css("display", "none");
-      if (Object.keys(updateModules).length) {
-        $("#Update-Box").css("display", "block");
-        for (const [key] of Object.entries(updateModules)) {
-          if ($(`#${key}`).length === 0) $("#Update-Modules-Box").append(`<br><span id='${key}'>${key}</span>`);
-          if (key.startsWith("EXT-") || key === "MMM-Bugsounet") ++needUpdate;
-        }
-        $("#Update-Modules-Box").css("display", "block");
-      }
-      if (!needUpdate) $("#Update-Confirm").addClass("disabled");
-      else $("#Update-Confirm").removeClass("disabled");
-    }, 1000);
     document.getElementById("Update-Confirm").onclick = function () {
       $("#Update-Confirm").addClass("disabled");
       Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
@@ -188,15 +153,6 @@ async function doTools () {
   // Spotify Control
   if (EXTStatus["EXT-Spotify"].hello) {
     var type = null;
-    setInterval(() => {
-      if (EXTStatus["EXT-Spotify"].connected || EXTStatus["EXT-Spotify"].play) {
-        $("#Spotify-Play").css("display", "none");
-        $("#Spotify-Stop").css("display", "block");
-      } else {
-        $("#Spotify-Play").css("display", "block");
-        $("#Spotify-Stop").css("display", "none");
-      }
-    }, 1000);
     $("#Spotify-Text").text(translation.Tools_Spotify_Text);
     $("#Spotify-Text2").text(translation.Tools_Spotify_Text2);
     $("#Spotify-Send").text(translation.Send);
@@ -361,11 +317,49 @@ async function doTools () {
       alertify.success(translation.RequestDone);
     }, null);
   };
+}
 
-  setInterval(() => {
-    if (this.hasPluginConnected(EXTStatus, "connected", true)) {
-      $("#Stop-Box").css("display", "block");
+function updateTools () {
+  if (EXTStatus["EXT-Screen"].hello) {
+    if (EXTStatus["EXT-Screen"].power) $("#Screen-Control").text(translation.TurnOff);
+    else $("#Screen-Control").text(translation.TurnOn);
+  }
+
+  if (EXTStatus["EXT-Volume"].hello) {
+    $("#Volume-Set").text(`${EXTStatus["EXT-Volume"].speaker}%`);
+    $("#Volume-Set-Record").text(`${EXTStatus["EXT-Volume"].recorder}%`);
+  }
+
+  if (EXTStatus["EXT-Updates"].hello) {
+    let needUpdate = 0;
+    $("#Update-Confirm").text(translation.Confirm);
+    var updateModules = EXTStatus["EXT-Updates"].module;
+    if (!updateModules) return $("#Update-Box").css("display", "none");
+    if (!Object.keys(updateModules).length) return $("#Update-Box").css("display", "none");
+    if (Object.keys(updateModules).length) {
+      $("#Update-Box").css("display", "block");
+      for (const [key] of Object.entries(updateModules)) {
+        if ($(`#${key}`).length === 0) $("#Update-Modules-Box").append(`<br><span id='${key}'>${key}</span>`);
+        if (key.startsWith("EXT-") || key === "MMM-Bugsounet") ++needUpdate;
+      }
+      $("#Update-Modules-Box").css("display", "block");
     }
-    else $("#Stop-Box").css("display", "none");
-  }, 1000);
+    if (!needUpdate) $("#Update-Confirm").addClass("disabled");
+    else $("#Update-Confirm").removeClass("disabled");
+  }
+
+  if (this.hasPluginConnected(EXTStatus, "connected", true)) {
+    $("#Stop-Box").css("display", "block");
+  }
+  else $("#Stop-Box").css("display", "none");
+
+  if (EXTStatus["EXT-Spotify"].hello) {
+    if (EXTStatus["EXT-Spotify"].connected || EXTStatus["EXT-Spotify"].play) {
+      $("#Spotify-Play").css("display", "none");
+      $("#Spotify-Stop").css("display", "block");
+    } else {
+      $("#Spotify-Play").css("display", "block");
+      $("#Spotify-Stop").css("display", "none");
+    }
+  }
 }
