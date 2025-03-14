@@ -63,6 +63,7 @@ class EXTs {
     this.EXT["EXT-Volume"].recorder = 0;
     this.EXT["EXT-Pages"].actual = 0;
     this.EXT["EXT-Pages"].total = 0;
+    this.EXT["EXT-FreeboxTV"].channels = [];
   }
 
   setBugsounet_Ready () {
@@ -274,6 +275,10 @@ class EXTs {
       case "Bugsounet_SPOTIFY-PLAYER_DISCONNECTED":
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[RULES] EXT-Spotify don't say to me HELLO!");
         this.disconnectEXT("EXT-Spotify");
+        break;
+      case "Bugsounet_FREEBOXTV-CHANNELS":
+        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[CONNECT] EXT-FreeboxTV don't say to me HELLO!");
+        this.EXT["EXT-FreeboxTV"].channels = payload;
         break;
       case "Bugsounet_FREEBOXTV-CONNECTED":
         if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[CONNECT] EXT-FreeboxTV don't say to me HELLO!");

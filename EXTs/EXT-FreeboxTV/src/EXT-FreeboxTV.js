@@ -136,7 +136,8 @@ Module.register("EXT-FreeboxTV", {
         iterifyArr(this.Channels);
         if (!this.ready) {
           this.ready = true;
-          this.sendNotification("Bugsounet_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
+          this.sendNotification("Bugsounet_FREEBOXTV-CHANNELS", this.Channels);
         }
         break;
       case "ENDED":

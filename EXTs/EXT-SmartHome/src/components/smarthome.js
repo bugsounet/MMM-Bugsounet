@@ -378,16 +378,18 @@ class smarthome {
     if (this.smarthome.EXT["EXT-FreeboxTV"]) {
       log("[DEVICE] Found: EXT-FreeboxTV (action.devices.traits.Channel)");
       this.smarthome.device.traits.push("action.devices.traits.Channel");
-      let FBTV = {
-        key: "EXT-FreeboxTV",
-        names: [
-          {
-            lang: this.smarthome.lang,
-            name_synonym: ["EXT-FreeboxTV", "FreeboxTV", "Freebox TV"]
-          }
-        ]
-      };
-      this.smarthome.device.attributes.availableInputs.push(FBTV);
+      this.smarthome.EXTStatus["EXT-FreeboxTV"].channels.forEach((channel) => {
+        let FBTV = {
+          key: `TV ${channel}`,
+          names: [
+            {
+              lang: this.smarthome.lang,
+              name_synonym: [`TV ${channel}`, `${channel}`]
+            }
+          ]
+        };
+        this.smarthome.device.attributes.availableInputs.push(FBTV);
+      })
     }
 
     log("Your device is now:", this.smarthome.device);
