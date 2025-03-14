@@ -1,10 +1,9 @@
-<p>Bonjour, bienvenue sur MMM-GoogleAssistant</p>
+<p>Bonjour, bienvenue sur MMM-Bugsounet</p>
 <p>Cet outil va aider à configurer ou à gérer votre miroir</p>
 <p>Que peut vraiment faire cet outil ?</p>
 <ul>
   <li>Permet d'avoir un contrôle à distance (localement ou internet)</li>
   <li>Permet d'installer/supprimer les plugins EXTs</li>
-  <li>Permet de configurer/modifier votre EXT avec un exemple de configuration</li>
   <li>Permet de configurer MagicMirror²</li>
   <li>Permet de créer une sauvegarde de votre fichier de configuration à chaque modification</li>
   <li>Permet d'afficher des journaux MagicMirror² en temps réel</li>
@@ -14,16 +13,6 @@
   <li>Permet d'afficher divers informations système</li>
   <li>...</li>
 </ul>
-<br>
-<p>Merci aux traducteurs:</p>
-<ul>
-  <li>@CalcU (Espagnol)</li>
-  <li>@lxne (Allemand)</li>
-  <li>@bitass (Néerlandais)</li>
-  <li>@pitchx (Français revu)</li>
-  <li>@maxmax (Espagnol)</li>
-  <li>@dvbit (Italien)</li>
-  <li>@toramanderler (Turc)</li>
-</ul>
 <p>Je vous souhaite une agréable découverte!</p>
-<p>Bonne utilisation,<br>@bugsounet</p>
+<p>Bonne utilisation,</p>
+<p>@bugsounet</p>

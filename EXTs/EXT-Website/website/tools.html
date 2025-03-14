@@ -25,11 +25,10 @@
 <body id="page-top">
     <div id="wrapper">
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion p-0 toggled bg-gradient-left">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"><img class="mw-100" src="assets/img/GA.gif"></a>
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"><img class="mw-100 rounded-circle" src="assets/img/logo%20bugsounet.png" width="50%"></a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light invisible" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="/"><i class="fa fa-home"></i><span id="Home">Home</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/EXT"><i class="fa fa-plug"></i><span id="Plugins">EXT Plugins</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/Terminal"><i class="fa fa-terminal"></i><span id="Terminal">Terminal Output</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/MMConfig"><i class="fa fa-code"></i><span id="Configuration">MagicMirror Configuration</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="/3rdpartymodules"><i class="fa fa-newspaper-o"></i><span id="3rdPartry">3rd Party modules</span></a></li>
@@ -77,26 +76,6 @@
                                             <li class="list-group-item plan-action" style="padding: 0;border-style: none;"><a id="Restart" class="btn" href="/Restart" style="margin-top: 5px;">&nbsp; &nbsp; &nbsp;&nbsp;</a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 plan price blue wow col-md-6" id="webview-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);"><strong>webview</strong></h2><span class="price">EXT Plugins</span>
-                                            </li>
-                                            <li class="list-group-item"><span id="webviewHeader">&nbsp;</span></li>
-                                            <li class="list-group-item"><span id="webviewNeeded"></span><span><br>EXT-Browser<br>EXT-Photos<br>EXT-YouTube<br>EXT-YouTubeCast<br></span></li>
-                                            <li class="list-group-item plan-action" style="padding: 0Px;border-style: none;"><a id="webviewbtn-Apply" class="btn">&nbsp; &nbsp; &nbsp;&nbsp;<br></a><a class="flash animated infinite btn" id="webviewbtn-Error" style="display: none;">Error<br></a><a class="tada animated btn" id="webviewbtn-Done" style="display: none;">Done<br></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-6 col-md-3 plan price yellow wow col-md-6" id="GoogleAssistant-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">Google Assistant</h2><span class="price">Request</span>
-                                            </li>
-                                            <li class="list-group-item"><span id="GoogleAssistant-Text">&nbsp; &nbsp;&nbsp;</span></li>
-                                            <li class="list-group-item"><input type="text" id="GoogleAssistant-Query" placeholder="" style="width: 95%;"></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="GoogleAssistant-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
-                                        </ul>
-                                    </div>
                                     <div class="col-sm-4 plan price green wow col-sm-6" id="Update-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
@@ -129,7 +108,7 @@
                                     <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="Alert-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">GA-Alert</h2><span class="price">Request</span>
+                                                <h2 style="color: var(--bs-light);">Busounet-Alert</h2><span class="price">Request</span>
                                             </li>
                                             <li class="list-group-item"><span id="Alert-Text">&nbsp; &nbsp;&nbsp;</span></li>
                                             <li class="list-group-item"><input type="text" id="Alert-Query" placeholder="" style="width: 95%;"></li>
@@ -250,16 +229,6 @@
                                             <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="Radio-Send" class="btn">&nbsp; &nbsp;<br></a></li>
                                         </ul>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 plan price default wow col-md-6" id="YouTube-Box" style="display: none;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item heading" style="margin-left: 0px;">
-                                                <h2 style="color: var(--bs-light);">EXT-YouTube</h2><span class="price">Request</span>
-                                            </li>
-                                            <li class="list-group-item"><span id="YouTube-Text">&nbsp; &nbsp;&nbsp;</span></li>
-                                            <li class="list-group-item"><input type="text" id="YouTube-Query" placeholder="" style="width: 95%;"></li>
-                                            <li class="list-group-item plan-action" style="padding: 0px;border-style: none;"><a id="YouTube-Send" class="btn disabled"><strong>&nbsp; &nbsp; &nbsp;&nbsp;</strong><br></a></li>
-                                        </ul>
-                                    </div>
                                     <div class="col-sm-6 col-md-3 plan price green wow col-md-6" id="Spotify-Box" style="display: none;">
                                         <ul class="list-group">
                                             <li class="list-group-item heading" style="margin-left: 0px;">
@@ -292,7 +261,7 @@
             </div>
             <footer class="sticky-footer bg-google-grey-21">
                 <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright © bugsounet.fr 2025</span></div>
+                    <div class="text-center my-auto copyright"><span>Copyright © bugsounet 2025</span></div>
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
