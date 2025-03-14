@@ -14,7 +14,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Website",
-    "setup": "node installer/setup --path=EXTs/EXT-Website"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Website"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
