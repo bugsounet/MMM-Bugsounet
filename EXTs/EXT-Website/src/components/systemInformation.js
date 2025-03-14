@@ -86,7 +86,8 @@ class systemInfo {
           cpu: 0,
           mem: 0
         }
-      }
+      },
+      WIRELESS: {}
     };
   }
 
@@ -152,7 +153,8 @@ class systemInfo {
       mem: "total,active,swaptotal,swapused",
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
-      cpuTemperature: "main"
+      cpuTemperature: "main",
+      wifiConnections: "*"
     };
     return new Promise((resolve) => {
       si.get(valueObject)
@@ -184,6 +186,8 @@ class systemInfo {
               }
             });
           }
+
+          if (data?.wifiConnections[0]) this.System["WIRELESS"] = data.wifiConnections[0];
 
           if (data.mem) {
             this.System["MEMORY"].total = this.convert(data.mem.total, 0);
@@ -219,6 +223,7 @@ class systemInfo {
             await this.wirelessStatus(this.System["NETWORK"].name, (err, status) => {
               if (err) {
                 console.error("[WEBSITE] [SYSTEMINFO] WirelessTools Error", err.message);
+                if (this.System["WIRELESS"].iface) this.System["NETWORK"] = this.forceWireless();
                 resolve();
                 return;
               }
@@ -226,6 +231,7 @@ class systemInfo {
               resolve();
             });
           } else {
+            if (this.System["WIRELESS"].iface === this.System["NETWORK"].name) this.System["NETWORK"] = this.forceWireless();
             resolve();
           }
         })
@@ -234,6 +240,22 @@ class systemInfo {
           resolve();
         });
     });
+  }
+
+  forceWireless () {
+    return {
+      type: "wireless",
+      ip: this.System["NETWORK"].ip,
+      name: this.System["WIRELESS"].iface,
+      speed: "unknow",
+      duplex: "",
+      ssid: this.System["WIRELESS"].ssid,
+      frequency: this.System["WIRELESS"].frequency / 1000,
+      signalLevel: this.System["WIRELESS"].signalLevel,
+      barLevel: this.barLevel(this.System["WIRELESS"].signalLevel),
+      rate: this.System["WIRELESS"].txRate,
+      quality: this.System["WIRELESS"].quality
+    };
   }
 
   convert (octet, FixTo) {
@@ -387,14 +409,20 @@ class systemInfo {
 
     if ((match = block.match(/Signal level[:|=]\s*(-?[0-9]+)/))) {
       parsed.signalLevel = parseInt(match[1], 10);
-      if (parsed.signalLevel >= -50) parsed.barLevel = 4;
-      else if (parsed.signalLevel < -50 && parsed.signalLevel >= -60) parsed.barLevel = 3;
-      else if (parsed.signalLevel < -60 && parsed.signalLevel >= -67) parsed.barLevel = 2;
-      else if (parsed.signalLevel < -67 && parsed.signalLevel >= -70) parsed.barLevel = 1;
-      else parsed.barLevelLevel = 0;
+      parsed.barLevel = this.barLevel(parsed.signalLevel);
     }
 
     return parsed;
+  }
+
+  barLevel (signalLevel) {
+    var barLevel = 0;
+    if (signalLevel >= -50) barLevel = 4;
+    else if (signalLevel < -50 && signalLevel >= -60) barLevel = 3;
+    else if (signalLevel < -60 && signalLevel >= -67) barLevel = 2;
+    else if (signalLevel < -67 && signalLevel >= -70) barLevel = 1;
+    else barLevel = 0;
+    return barLevel;
   }
 }
 
