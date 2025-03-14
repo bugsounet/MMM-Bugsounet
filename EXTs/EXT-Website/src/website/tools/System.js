@@ -305,45 +305,6 @@ async function doSystem (cb = null) {
   $("#ElectronCPU").text(system.PROCESS.electron.cpu);
   $("#ElectronMemory").text(system.PROCESS.electron.mem);
 
-  if (system.PROCESS.nginx.pid) {
-    $("#nginxValues").removeClass("visually-hidden");
-    $("#nginxOK").removeClass("visually-hidden");
-    $("#nginxNOK").addClass("visually-hidden");
-    $("#nginxPid").text(system.PROCESS.nginx.pid);
-    $("#nginxCPU").text(system.PROCESS.nginx.cpu);
-    $("#nginxMemory").text(system.PROCESS.nginx.mem);
-  } else {
-    $("#nginxValues").addClass("visually-hidden");
-    $("#nginxOK").addClass("visually-hidden");
-    $("#nginxNOK").removeClass("visually-hidden");
-  }
-
-  if (system.PROCESS.librespot.pid) {
-    $("#LibrespotValues").removeClass("visually-hidden");
-    $("#LibrespotOK").removeClass("visually-hidden");
-    $("#LibrespotNOK").addClass("visually-hidden");
-    $("#LibrespotPid").text(system.PROCESS.librespot.pid);
-    $("#LibrespotCPU").text(system.PROCESS.librespot.cpu);
-    $("#LibrespotMemory").text(system.PROCESS.librespot.mem);
-  } else {
-    $("#LibrespotValues").addClass("visually-hidden");
-    $("#LibrespotOK").addClass("visually-hidden");
-    $("#LibrespotNOK").removeClass("visually-hidden");
-  }
-
-  if (system.PROCESS.pm2.pid) {
-    $("#pm2Values").removeClass("visually-hidden");
-    $("#pm2OK").removeClass("visually-hidden");
-    $("#pm2NOK").addClass("visually-hidden");
-    $("#pm2Pid").text(system.PROCESS.pm2.pid);
-    $("#pm2CPU").text(system.PROCESS.pm2.cpu);
-    $("#pm2Memory").text(system.PROCESS.pm2.mem);
-  } else {
-    $("#pm2Values").addClass("visually-hidden");
-    $("#pm2OK").addClass("visually-hidden");
-    $("#pm2NOK").removeClass("visually-hidden");
-  }
-
   if (cb) cb();
 }
 
@@ -433,9 +394,6 @@ function progressOrText (system) {
     $("#Uptime-Box").addClass("col-md-12");
     $("#Uptime-Box").removeClass("col-md-6");
     $("#Uptime-Box").css("width", "100%");
-    $("#GoogleAssistant-Box").addClass("col-md-12");
-    $("#GoogleAssistant-Box").removeClass("col-md-6");
-    $("#GoogleAssistant-Box").css("width", "100%");
   } else {
     // display Progress
     $("#Load").removeClass("visually-hidden");
@@ -462,9 +420,6 @@ function progressOrText (system) {
     $("#Uptime-Box").removeClass("col-md-12");
     $("#Uptime-Box").addClass("col-md-6");
     $("#Uptime-Box").css("width", "50%");
-    $("#GoogleAssistant-Box").removeClass("col-md-12");
-    $("#GoogleAssistant-Box").addClass("col-md-6");
-    $("#GoogleAssistant-Box").css("width", "50%");
   }
 }
 
@@ -475,7 +430,6 @@ function doStatic () {
   $("#MMVersion").text(system.VERSION.MagicMirror);
   $("#ElectronVersion").text(system.VERSION.ELECTRON);
   $("#GPU").text(system.GPU ? translation.System_GPUAcceleration_Enabled : translation.System_GPUAcceleration_Disabled);
-  $("#NODEMM").text(system.VERSION.NODEMM);
   $("#NODECORE").text(system.VERSION.NODECORE);
   $("#NPM").text(system.VERSION.NPM);
   $("#OS").text(system.VERSION.OS);
@@ -527,16 +481,6 @@ function doStatic () {
   $("#SysCurrent").text(translation.System_System);
   $("#RecordUptime").text(translation.System_RecordUptime);
   $("#SysRecord").text(translation.System_System);
-
-  $("#ProcessSystem").text(translation.System_ProcessSystem);
-  $("#ElectronCPUProcess").text(translation.System_CPU);
-  $("#ElectronMemoryProcess").text(translation.System_Memory);
-  $("#NginxCPUProcess").text(translation.System_CPU);
-  $("#NginxMemoryProcess").text(translation.System_Memory);
-  $("#LibrespotCPUProcess").text(translation.System_CPU);
-  $("#LibrespotMemoryProcess").text(translation.System_Memory);
-  $("#PM2CPUProcess").text(translation.System_CPU);
-  $("#PM2MemoryProcess").text(translation.System_Memory);
 
   $("#NamePlugin").text(translation.System_NamePlugin);
   $("#VersionPlugin").text(translation.System_VersionPlugin);
