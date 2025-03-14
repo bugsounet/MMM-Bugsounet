@@ -2,7 +2,6 @@
 
 const fs = require("node:fs");
 const util = require("node:util");
-const { exec } = require("node:child_process");
 const readline = require("readline");
 const Stream = require("stream");
 const http = require("node:http");
@@ -49,9 +48,7 @@ class website {
       serverAPI: null,
       translations: null,
       loginTranslation: null,
-      schemaTranslatation: null,
       language: null,
-      webviewTag: false,
       GAConfig: {}, // see to be deleted !?
       HyperWatch: null,
       radio: null,
@@ -68,7 +65,6 @@ class website {
     };
     this.MMVersion = global.version;
     this.root_path = global.root_path;
-    this.GAPath = `${this.root_path}/modules/MMM-Bugsounet`;
     this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
     this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
     this.APIDOCS = {};
@@ -131,7 +127,6 @@ class website {
     if (this.lib.error || this.website.errorInit) return;
 
     this.website.language = this.website.MMConfig.language;
-    this.website.webviewTag = this.checkElectronOptions();
     this.website.EXT = data.EXT_DB.sort();
     this.website.translations = Translations;
     this.website.loginTranslation = {
@@ -141,9 +136,6 @@ class website {
       error: this.website.translations["Login_Error"],
       login: this.website.translations["Login_Login"]
     };
-    this.website.schemaTranslatation = Translations.Schema;
-    this.website.EXTStatus = Translations.EXTStatus;
-    this.website.GAConfig = this.getGAConfig();
     this.website.homeText = await this.getHomeText();
     this.website.freeTV = await this.readFreeTV();
     this.website.radio = await this.readRadio();
@@ -171,7 +163,6 @@ class website {
     log("EXT plugins in database:", this.website.EXT.length);
     log("Find", this.website.EXTInstalled.length, "installed plugins in MagicMirror");
     log("Find", this.website.EXTConfigured.length, "configured plugins in config file");
-    log("webviewTag Configured:", this.website.webviewTag);
     log("Language set:", this.website.language);
     log("Listening:", this.website.listening);
     log("APIDocs:", this.website.APIDocs);
@@ -324,7 +315,6 @@ class website {
         .use(cors({ origin: "*" }))
         .use("/Login.js", express.static(`${this.WebsitePath}/tools/Login.js`))
         .use("/Home.js", express.static(`${this.WebsitePath}/tools/Home.js`))
-        .use("/Plugins.js", express.static(`${this.WebsitePath}/tools/Plugins.js`))
         .use("/Terminal.js", express.static(`${this.WebsitePath}/tools/Terminal.js`))
         .use("/MMConfig.js", express.static(`${this.WebsitePath}/tools/MMConfig.js`))
         .use("/Tools.js", express.static(`${this.WebsitePath}/tools/Tools.js`))
@@ -342,7 +332,6 @@ class website {
         .use("/xterm", express.static(`${this.WebsiteModulePath}/node_modules/xterm`))
         .use("/xterm-addon-fit", express.static(`${this.WebsiteModulePath}/node_modules/xterm-addon-fit`))
         .use("/jquery.min.js", express.static(`${this.WebsiteModulePath}/node_modules/jquery/dist/jquery.min.js`))
-        .use("/tablesorter", express.static(`${this.WebsiteModulePath}/node_modules/tablesorter/dist`))
 
         .get("/login", this.speedLimiter, this.rateLimiter, (req, res) => {
           const logged = this.hasValidCookie(req);
@@ -406,40 +395,6 @@ class website {
               ptyProcess.resize(size.cols, size.rows);
             });
           });
-        })
-
-        .get("/install", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-          if (req.query.ext && this.website.EXTInstalled.indexOf(req.query.ext) === -1 && this.website.EXT.indexOf(req.query.ext) > -1) {
-            res.sendFile(`${this.WebsitePath}/install.html`);
-            io.once("connection", (socket) => {
-              log(`[${ip}] Connected to installer Terminal Logs:`, req.user);
-              socket.on("disconnect", (err) => {
-                log(`[${ip}] Disconnected from installer Terminal Logs:`, req.user, `[${err}]`);
-              });
-              this.lib.HyperWatch.stream().on("stdData", (data) => {
-                if (typeof data === "string") io.to(socket.id).emit("terminal.installer", data.replace(/\r?\n/g, "\r\n"));
-              });
-            });
-          }
-          else res.redirect("/404");
-        })
-
-        .get("/delete", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-          if (req.query.ext && this.website.EXTInstalled.indexOf(req.query.ext) > -1 && this.website.EXT.indexOf(req.query.ext) > -1) {
-            res.sendFile(`${this.WebsitePath}/delete.html`);
-            io.once("connection", (socket) => {
-              log(`[${ip}] Connected to uninstaller Terminal Logs:`, req.user);
-              socket.on("disconnect", (err) => {
-                log(`[${ip}] Disconnected from uninstaller Terminal Logs:`, req.user, `[${err}]`);
-              });
-              this.lib.HyperWatch.stream().on("stdData", (data) => {
-                if (typeof data === "string") io.to(socket.id).emit("terminal.delete", data.replace(/\r?\n/g, "\r\n"));
-              });
-            });
-          }
-          else res.redirect("/404");
         })
 
         .get("/MMConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
@@ -688,51 +643,6 @@ class website {
         }
         break;
 
-      case "/api/config/EXT":
-        if (!req.headers["ext"]) return res.status(400).send("Bad Request");
-        var index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(`MMM-Bugsounet/EXTs/${req.headers["ext"]}`);
-        if (index > -1) {
-          log(`[API] Request config of ${req.headers["ext"]}`);
-          let stringify = JSON.stringify(this.website.MMConfig.modules[index]);
-          let encoded = this.encode(stringify);
-          res.json({ config: encoded });
-        } else {
-          res.status(404).send("Not Found");
-        }
-        break;
-
-      case "/api/config/default":
-        if (!req.headers["ext"]) return res.status(400).send("Bad Request");
-        try {
-          log(`[API] Request default config of ${req.headers["ext"]}`);
-          let data = require(`../website/config/${req.headers["ext"]}/config.js`);
-          let stringify = JSON.stringify(data.default);
-          let encoded = this.encode(stringify);
-          res.json({ config: encoded });
-        } catch {
-          res.status(404).send("Not Found");
-        }
-        break;
-
-      case "/api/config/schema":
-        if (!req.headers["ext"]) return res.status(400).send("Bad Request");
-        try {
-          log(`[API] Request schema config of ${req.headers["ext"]}`);
-          let data = require(`../website/config/${req.headers["ext"]}/config.js`);
-          data.schema = this.makeSchemaTranslate(data.schema, this.website.schemaTranslatation);
-          data.stringify = JSON.stringify(data.schema);
-          data.encoded = this.encode(data.stringify);
-          res.json({ schema: data.encoded });
-        } catch (e) {
-          console.error("[WEBSITE] [API] Schema:", e.message);
-          res.status(404).send("Not Found");
-        }
-        break;
-
-      case "/api/config/webview":
-        res.json({ webview: this.website.webviewTag });
-        break;
-
       case "/api/backups":
         var names = await this.loadBackupNames();
         res.json(names);
@@ -798,86 +708,6 @@ class website {
           log("[API] Reload config");
         } else if (resultSaveConfig.error) {
           res.status(500).json({ error: resultSaveConfig.error });
-        }
-        break;
-
-      case "/api/config/EXT":
-        if (!req.headers["ext"] || !req.body["config"]) return res.status(400).send("Bad Request");
-        log("[API] Receiving write EXT config...");
-        if (this.website.EXT.indexOf(req.headers["ext"]) === -1) return res.status(404).send("Not Found");
-        if (this.website.EXTInstalled.indexOf(req.headers["ext"]) === -1) return res.status(409).send("Not installed");
-
-        try {
-          const dataConfig = JSON.parse(this.decode(req.body["config"]));
-          if (dataConfig.module !== `MMM-Bugsounet/EXTs/${req.headers["ext"]}`) {
-            return res.status(400).send("Bad Request");
-          }
-          const NewConfig = await this.configAddOrModify(dataConfig);
-          resultSaveConfig = await this.saveConfig(NewConfig);
-        } catch (e) {
-          log("[API] Request error", e.message);
-          res.status(400).send("Bad Request");
-          return;
-        }
-        log("[API] Write config result:", resultSaveConfig);
-        if (resultSaveConfig.done) {
-          res.json(resultSaveConfig);
-          this.website.MMConfig = await this.readConfig();
-          this.website.EXTConfigured = this.searchConfigured();
-          log("[API] Reload config");
-        } else if (resultSaveConfig.error) {
-          res.status(500).json({ error: resultSaveConfig.error });
-        }
-        break;
-
-      case "/api/config/webview":
-        if (!this.website.webviewTag) {
-          log("[API] Receiving set webview...");
-          var NewConfig = await this.setWebviewTag();
-          resultSaveConfig = await this.saveConfig(NewConfig);
-          log("[API] Write webview config result:", resultSaveConfig);
-          if (resultSaveConfig.done) {
-            res.json(resultSaveConfig);
-            this.website.webviewTag = true;
-            this.website.MMConfig = await this.readConfig();
-            log("[API] Reload config");
-          } else if (resultSaveConfig.error) {
-            res.status(500).json({ error: resultSaveConfig.error });
-          }
-        } else {
-          log("[API] Already activated");
-          res.status(409).send("Already activated");
-        }
-        break;
-
-      case "/api/EXT":
-        if (!req.headers["ext"]) return res.status(400).send("Bad Request");
-        var pluginName = req.headers["ext"];
-        if (this.website.EXTInstalled.indexOf(pluginName) === -1) {
-          if (this.website.EXT.indexOf(pluginName) > -1) {
-            log("[API] Request installation:", pluginName);
-            var modulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/${pluginName}`;
-            var Command = `cd ${modulePath} && npm install`;
-
-            var child = exec(Command, { cwd: modulePath }, (error) => {
-              if (error) {
-                console.error("[WEBSITE] [API] [INSTALL] [FATAL] exec error:", error);
-                res.status(500).json({ error: `Error on install ${pluginName}` });
-              } else {
-                this.website.EXTInstalled = this.searchInstalled();
-                log("[API] [INSTALL] [DONE]", pluginName);
-                res.json({ done: "ok" });
-              }
-            });
-            child.stdout.pipe(process.stdout);
-            child.stderr.pipe(process.stdout);
-          } else {
-            log(`[API] [INSTALL] EXT Not Found: ${pluginName}`);
-            res.status(404).send("Not Found");
-          }
-        } else {
-          log(`[API] [INSTALL] EXT Already Installed: ${pluginName}`);
-          res.status(409).send("Already installed");
         }
         break;
 
@@ -1151,50 +981,6 @@ class website {
   /** DELETE API **/
   async DeleteAPI (req, res) {
     switch (req.url) {
-      case "/api/config/EXT":
-        if (!req.headers["ext"]) return res.status(400).send("Bad Request");
-        var plugin = this.checkPluginInConfig(req.headers["ext"]);
-        if (!plugin) return res.status(404).send("Not Found");
-        log("[API] Receiving delete EXT config...", req.headers["ext"]);
-        var NewConfig = await this.configDelete(req.headers["ext"]);
-        var resultSaveConfig = await this.saveConfig(NewConfig);
-        log("[API] Write config result:", resultSaveConfig);
-        if (resultSaveConfig.done) {
-          res.json(resultSaveConfig);
-          this.website.MMConfig = await this.readConfig();
-          this.website.EXTConfigured = this.searchConfigured();
-          log("[API] Reload config");
-        } else if (resultSaveConfig.error) {
-          res.status(500).json({ error: resultSaveConfig.error });
-        }
-        break;
-
-      case "/api/EXT":
-        log("[API] Receiving delete EXT...");
-        if (!req.headers["ext"]) return res.status(400).send("Bad Request");
-        var pluginName = req.headers["ext"];
-        if (this.website.EXTInstalled.indexOf(pluginName) > -1 && this.website.EXT.indexOf(pluginName) > -1) {
-          log("[API] Request delete:", pluginName);
-          var modulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/${pluginName}`;
-          var Command = `cd ${modulePath} && npm run clean && npm run reset`;
-          var child = exec(Command, { cwd: modulePath }, (error) => {
-            if (error) {
-              console.error("[WEBSITE] [API] [DELETE] [FATAL] exec error:", error);
-              res.status(500).json({ error: `Error on delete ${pluginName}` });
-            } else {
-              this.website.EXTInstalled = this.searchInstalled();
-              log("[API] [DELETE] [DONE]", pluginName);
-              res.json({ done: "ok" });
-            }
-          });
-          child.stdout.pipe(process.stdout);
-          child.stderr.pipe(process.stdout);
-        } else {
-          log(`[API] [DELETE] EXT Not Found: ${pluginName}`);
-          res.status(404).send("Not Found");
-        }
-        break;
-
       case "/api/backups":
         log("[API] Receiving delete backup demand...");
         var deleteBackup = await this.deleteBackup();
@@ -1502,14 +1288,14 @@ class website {
     return new Promise((resolve) => {
       const configPath = `${this.root_path}/config/config.js`;
       const configPathTMP = `${this.root_path}/config/configTMP.js`;
-      const backupFile = `config.js.GA.${this.timeStamp()}`;
+      const backupFile = `config.js.${this.timeStamp()}`;
       const backupPath = `${this.WebsiteModulePath}/backup/${backupFile}`;
       var source = fs.createReadStream(configPath);
       var destination = fs.createWriteStream(backupPath);
 
       source.pipe(destination, { end: false });
       source.on("end", () => {
-        var header = `/*** GENERATED BY @bugsounet EXT-Website v${require("../package.json").version} ***/\n/*** https://forum.bugsounet.fr **/\n\nvar config = `;
+        var header = `/*** GENERATED BY @bugsounet EXT-Website v${require("../package.json").version} ***/\n\nvar config = `;
         var footer = "\n\n/*************** DO NOT EDIT THE LINE BELOW ***************/\nif (typeof module !== 'undefined') {module.exports = config;}\n";
 
         fs.writeFile(configPathTMP, header + util.inspect(MMConfig, {
@@ -1693,7 +1479,7 @@ class website {
   /** list of all backups **/
   loadBackupNames () {
     return new Promise((resolve) => {
-      const regex = "config.js.GA";
+      const regex = "config.js";
       var List = [];
       var FileList = fs.readdirSync(`${this.WebsiteModulePath}/backup/`);
       FileList.forEach((file) => {
@@ -1709,7 +1495,7 @@ class website {
   /** delete all backups **/
   deleteBackup () {
     return new Promise((resolve) => {
-      const regex = "config.js.GA";
+      const regex = "config.js";
       var FileList = fs.readdirSync(`${this.WebsiteModulePath}/backup/`);
       FileList.forEach((file) => {
         const testFile = file.match(regex);
@@ -1850,78 +1636,6 @@ class website {
       }
     }
     return result;
-  }
-
-  /** check electron Options for find webviewTag **/
-  checkElectronOptions () {
-    let config = this.website.MMConfig;
-    if (typeof config.electronOptions === "object"
-      && typeof config.electronOptions.webPreferences === "object"
-      && config.electronOptions.webPreferences.webviewTag
-    ) return true;
-    else return false;
-  }
-
-  /** enable webview tag **/
-  setWebviewTag () {
-    return new Promise((resolve) => {
-      let options = {
-        electronOptions: {
-          webPreferences: {
-            webviewTag: true
-          }
-        }
-      };
-      let MMConfig = this.configMerge({}, this.website.MMConfig, options);
-      resolve(MMConfig);
-    });
-  }
-
-  /** read and search GA config **/
-  getGAConfig () {
-    var index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf("MMM-Bugsounet");
-    if (index > -1) return this.website.MMConfig.modules[index];
-    else return {};
-  }
-
-  /** create schema Validation with template and translation **/
-  makeSchemaTranslate (schema, translation) {
-
-    /* replace {template} by translation */
-    function translate (template) {
-      return template.replace(new RegExp("{([^}]+)}", "g"), function (_unused, varName) {
-        if (varName in translation === false) console.warn("[WEBSITE] [Translator] Missing:", template);
-        return varName in translation ? translation[varName] : `{${varName}}`;
-      });
-    }
-
-    /* read object in deep an search what translate */
-    function makeTranslate (result) {
-      var stack = Array.prototype.slice.call(arguments, 0);
-      var item;
-      var key;
-      while (stack.length) {
-        item = stack.shift();
-        for (key in item) {
-          if (item.hasOwnProperty(key)) {
-            if (typeof result[key] === "object" && result[key] && Object.prototype.toString.call(result[key]) !== "[object Array]") {
-              if (typeof item[key] === "object" && item[key] !== null) {
-                result[key] = makeTranslate({}, result[key], item[key]);
-              } else {
-                result[key] = item[key];
-              }
-            } else {
-              if ((key === "title" || key === "description") && result[key]) {
-                result[key] = translate(item[key]);
-              }
-              else result[key] = item[key];
-            }
-          }
-        }
-      }
-      return result;
-    }
-    return makeTranslate(schema);
   }
 
   /** create logs file from array **/
