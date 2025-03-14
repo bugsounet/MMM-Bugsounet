@@ -117,7 +117,7 @@ class systemInfo {
       cpu: "manufacturer,brand",
       osInfo: "distro, release,codename,arch,hostname",
       system: "raspberry",
-      versions: "kernel, node, npm"
+      versions: "kernel, npm"
     };
 
     return new Promise((resolve) => {
@@ -135,7 +135,6 @@ class systemInfo {
             this.System["VERSION"].ELECTRON = process.versions.electron;
             this.System["VERSION"].KERNEL = data.versions.kernel;
             this.System["VERSION"].NPM = data.versions.npm;
-            this.System["VERSION"].NODEMM = data.versions.node;
           }
           resolve();
         })
@@ -153,8 +152,7 @@ class systemInfo {
       mem: "total,active,swaptotal,swapused",
       fsSize: "mount,size,used,use",
       currentLoad: "currentLoad",
-      cpuTemperature: "main",
-      processLoad: "(nginx, electron, librespot, pm2) proc,pid,cpu,mem"
+      cpuTemperature: "main"
     };
     return new Promise((resolve) => {
       si.get(valueObject)
@@ -215,16 +213,6 @@ class systemInfo {
             let tempF = (tempC * (9 / 5)) + 32;
             this.System["CPU"].temp.F = tempF.toFixed(1);
             this.System["CPU"].temp.C = tempC.toFixed(1);
-          }
-
-          if (data.processLoad) {
-            data.processLoad.forEach((process) => {
-              this.System["PROCESS"][process.proc] = {
-                pid: process.pid,
-                cpu: +process.cpu.toFixed(2),
-                mem: +process.mem.toFixed(2)
-              };
-            });
           }
 
           if (this.System["NETWORK"].type === "wireless") {

@@ -8,15 +8,11 @@ class WebsiteTranslations {
     this.translate = (...args) => Tools.translate(...args);
 
     this.EXTTranslate = {};
-    this.EXTDescription = {};
-    this.VALTranslate = {};
-    console.log("[WEBSITE] WebsiteEXTs Ready");
+    console.log("[WEBSITE] WebsiteTranslation Ready");
   }
 
   async init () {
     await this.Load_EXT_Translation();
-    await this.Load_EXT_Description();
-    await this.Load_EXT_TrSchemaValidation();
     return true;
   }
 
@@ -34,37 +30,6 @@ class WebsiteTranslations {
 
       this.EXTTranslate.Home = this.translate("GW_Home");
       this.EXTTranslate.Home_Welcome = this.translate("GW_Home_Welcome");
-
-      this.EXTTranslate.Plugins = this.translate("GW_Plugins");
-      this.EXTTranslate.Plugins_Welcome = this.translate("GW_Plugins_Welcome");
-      this.EXTTranslate.Plugins_Table_Reset = this.translate("GW_Plugins_Table_Reset");
-      this.EXTTranslate.Plugins_Table_Showing = this.translate("GW_Plugins_Table_Showing");
-      this.EXTTranslate.Plugins_Table_Plugins = this.translate("GW_Plugins_Table_Plugins");
-      this.EXTTranslate.Plugins_Table_Name = this.translate("GW_Plugins_Table_Name");
-      this.EXTTranslate.Plugins_Table_Description = this.translate("GW_Plugins_Table_Description");
-      this.EXTTranslate.Plugins_Table_Actions = this.translate("GW_Plugins_Table_Actions");
-      this.EXTTranslate.Plugins_Table_Configuration = this.translate("GW_Plugins_Table_Configuration");
-      this.EXTTranslate.Plugins_Table_Search = this.translate("GW_Plugins_Table_Search");
-      this.EXTTranslate.Plugins_Table_Wiki = this.translate("GW_Plugins_Table_Wiki");
-      this.EXTTranslate.Plugins_Table_Install = this.translate("GW_Plugins_Table_Install");
-      this.EXTTranslate.Plugins_Table_Delete = this.translate("GW_Plugins_Table_Delete");
-      this.EXTTranslate.Plugins_Table_Modify = this.translate("GW_Plugins_Table_Modify");
-      this.EXTTranslate.Plugins_Table_Configure = this.translate("GW_Plugins_Table_Configure");
-      this.EXTTranslate.Plugins_Table_DeleteConfig = this.translate("GW_Plugins_Table_DeleteConfig");
-      this.EXTTranslate.Plugins_Delete_TerminalHeader = this.translate("GW_Plugins_Delete_TerminalHeader");
-      this.EXTTranslate.Plugins_Delete_Message = this.translate("GW_Plugins_Delete_Message");
-      this.EXTTranslate.Plugins_Delete_Progress = this.translate("GW_Plugins_Delete_Progress");
-      this.EXTTranslate.Plugins_Delete_Confirmed = this.translate("GW_Plugins_Delete_Confirmed");
-      this.EXTTranslate.Plugins_Install_TerminalHeader = this.translate("GW_Plugins_Install_TerminalHeader");
-      this.EXTTranslate.Plugins_Install_Message = this.translate("GW_Plugins_Install_Message");
-      this.EXTTranslate.Plugins_Install_Progress = this.translate("GW_Plugins_Install_Progress");
-      this.EXTTranslate.Plugins_Install_Confirmed = this.translate("GW_Plugins_Install_Confirmed");
-      this.EXTTranslate.Plugins_Initial_Title = this.translate("GW_Plugins_Initial_Title");
-      this.EXTTranslate.Plugins_DeleteConfig_Title = this.translate("GW_Plugins_DeleteConfig_Title");
-      this.EXTTranslate.Plugins_DeleteConfig_Confirmed = this.translate("GW_Plugins_DeleteConfig_Confirmed");
-      this.EXTTranslate.Plugins_Modify_Title = this.translate("GW_Plugins_Modify_Title");
-      this.EXTTranslate.Plugins_Error_Snowboy = this.translate("GW_Plugins_Error_Snowboy");
-      this.EXTTranslate.Plugins_Error_Porcupine = this.translate("GW_Plugins_Error_Porcupine");
 
       this.EXTTranslate.Terminal = this.translate("GW_Terminal");
       this.EXTTranslate.TerminalOpen = this.translate("GW_TerminalOpen");
@@ -222,168 +187,5 @@ class WebsiteTranslations {
 
   Get_EXT_Translation () {
     return this.EXTTranslate;
-  }
-
-  /** load descriptions **/
-  Load_EXT_Description () {
-    return new Promise((resolve) => {
-      this.EXTDescription["EXT-Background"] = this.translate("EXT-Background");
-      this.EXTDescription["EXT-Browser"] = this.translate("EXT-Browser");
-      this.EXTDescription["EXT-Detector"] = this.translate("EXT-Detector");
-      this.EXTDescription["EXT-FreeboxTV"] = this.translate("EXT-FreeboxTV");
-      this.EXTDescription["EXT-GooglePhotos"] = this.translate("EXT-GooglePhotos");
-      this.EXTDescription["EXT-Keyboard"] = this.translate("EXT-Keyboard");
-      this.EXTDescription["EXT-Librespot"] = this.translate("EXT-Librespot");
-      this.EXTDescription["EXT-MusicPlayer"] = this.translate("EXT-MusicPlayer");
-      this.EXTDescription["EXT-Pages"] = this.translate("EXT-Pages");
-      this.EXTDescription["EXT-Photos"] = this.translate("EXT-Photos");
-      this.EXTDescription["EXT-RadioPlayer"] = this.translate("EXT-RadioPlayer");
-      this.EXTDescription["EXT-Screen"] = this.translate("EXT-Screen");
-      this.EXTDescription["EXT-SmartHome"] = this.translate("EXT-SmartHome");
-      this.EXTDescription["EXT-Spotify"] = this.translate("EXT-Spotify");
-      this.EXTDescription["EXT-StreamDeck"] = this.translate("EXT-StreamDeck");
-      this.EXTDescription["EXT-TelegramBot"] = this.translate("EXT-TelegramBot");
-      this.EXTDescription["EXT-Touch"] = this.translate("EXT-Touch");
-      this.EXTDescription["EXT-Updates"] = this.translate("EXT-Updates");
-      this.EXTDescription["EXT-VLCServer"] = this.translate("EXT-VLCServer");
-      this.EXTDescription["EXT-Volume"] = this.translate("EXT-Volume");
-      this.EXTDescription["EXT-Website"] = this.translate("EXT-Website");
-      this.EXTDescription["EXT-Welcome"] = this.translate("EXT-Welcome");
-      this.EXTDescription["EXT-YouTube"] = this.translate("EXT-YouTube");
-      this.EXTDescription["EXT-YouTubeCast"] = this.translate("EXT-YouTubeCast");
-      resolve();
-    });
-  }
-
-  Get_EXT_Description () {
-    return this.EXTDescription;
-  }
-
-  /** load schema validation translations **/
-  Load_EXT_TrSchemaValidation () {
-    return new Promise((resolve) => {
-      this.VALTranslate.PluginDescription = this.translate("VAL_PluginDescription");
-      this.VALTranslate.PluginName = this.translate("VAL_PluginName");
-      this.VALTranslate.PluginAnimateIn = this.translate("VAL_PluginAnimateIn");
-      this.VALTranslate.PluginAnimateOut = this.translate("VAL_PluginAnimateOut");
-      this.VALTranslate.PluginDisable = this.translate("VAL_PluginDisable");
-      this.VALTranslate.PluginPosition = this.translate("VAL_PluginPosition");
-      this.VALTranslate.PluginConfigDeepMerge = this.translate("VAL_PluginConfigDeepMerge");
-      this.VALTranslate.PluginConfiguration = this.translate("VAL_PluginConfiguration");
-      this.VALTranslate.PluginDebug = this.translate("VAL_PluginDebug");
-      this.VALTranslate["EXT-Background_Model"] = this.translate("VAL_EXT-Background_Model");
-      this.VALTranslate["EXT-Background_Image"] = this.translate("VAL_EXT-Background_Image");
-      this.VALTranslate["EXT-Browser_Delay"] = this.translate("VAL_EXT-Browser_Delay");
-      this.VALTranslate["EXT-Browser_Scroll"] = this.translate("VAL_EXT-Browser_Scroll");
-      this.VALTranslate["EXT-Browser_Step"] = this.translate("VAL_EXT-Browser_Step");
-      this.VALTranslate["EXT-Browser_Interval"] = this.translate("VAL_EXT-Browser_Interval");
-      this.VALTranslate["EXT-Browser_Start"] = this.translate("VAL_EXT-Browser_Start");
-      this.VALTranslate["EXT-Detector_Icon"] = this.translate("VAL_EXT-Detector_Icon");
-      this.VALTranslate["EXT-Detector_Touch"] = this.translate("VAL_EXT-Detector_Touch");
-      this.VALTranslate["EXT-Detector_Detector"] = this.translate("VAL_EXT-Detector_Detector");
-      this.VALTranslate["EXT-Detector_Engine"] = this.translate("VAL_EXT-Detector_Engine");
-      this.VALTranslate["EXT-Detector_Keyword"] = this.translate("VAL_EXT-Detector_Keyword");
-      this.VALTranslate["EXT-Detector_Sensitivity"] = this.translate("VAL_EXT-Detector_Sensitivity");
-      this.VALTranslate["EXT-Detector_AccessKey"] = this.translate("VAL_EXT-Detector_AccessKey");
-      this.VALTranslate["EXT-Detector_CustomModel"] = this.translate("VAL_EXT-Detector_CustomModel");
-      this.VALTranslate["EXT-GooglePhotos_Type"] = this.translate("VAL_EXT-GooglePhotos_Type");
-      this.VALTranslate["EXT-GooglePhotos_Delay"] = this.translate("VAL_EXT-GooglePhotos_Delay");
-      this.VALTranslate["EXT-GooglePhotos_Infos"] = this.translate("VAL_EXT-GooglePhotos_Infos");
-      this.VALTranslate["EXT-GooglePhotos_Albums"] = this.translate("VAL_EXT-GooglePhotos_Albums");
-      this.VALTranslate["EXT-GooglePhotos_Background"] = this.translate("VAL_EXT-GooglePhotos_Background");
-      this.VALTranslate["EXT-GooglePhotos_Sort"] = this.translate("VAL_EXT-GooglePhotos_Sort");
-      this.VALTranslate["EXT-GooglePhotos_HD"] = this.translate("VAL_EXT-GooglePhotos_HD");
-      this.VALTranslate["EXT-GooglePhotos_Format"] = this.translate("VAL_EXT-GooglePhotos_Format");
-      this.VALTranslate["EXT-GooglePhotos_Height"] = this.translate("VAL_EXT-GooglePhotos_Height");
-      this.VALTranslate["EXT-GooglePhotos_Width"] = this.translate("VAL_EXT-GooglePhotos_Width");
-      this.VALTranslate["EXT-GooglePhotos_uploadAlbum"] = this.translate("VAL_EXT-GooglePhotos_uploadAlbum");
-      this.VALTranslate["EXT-Keyboard_keyFinder"] = this.translate("VAL_EXT-Keyboard_keyFinder");
-      this.VALTranslate["EXT-Keyboard_keys"] = this.translate("VAL_EXT-Keyboard_keys");
-      this.VALTranslate["EXT-Keyboard_keycode"] = this.translate("VAL_EXT-Keyboard_keycode");
-      this.VALTranslate["EXT-Keyboard_notification"] = this.translate("VAL_EXT-Keyboard_notification");
-      this.VALTranslate["EXT-Keyboard_payload"] = this.translate("VAL_EXT-Keyboard_payload");
-      this.VALTranslate["EXT-Keyboard_command"] = this.translate("VAL_EXT-Keyboard_command");
-      this.VALTranslate["EXT-Keyboard_sound"] = this.translate("VAL_EXT-Keyboard_sound");
-      this.VALTranslate["EXT-Librespot_Name"] = this.translate("VAL_EXT-Librespot_Name");
-      this.VALTranslate["EXT-Librespot_Min"] = this.translate("VAL_EXT-Librespot_Min");
-      this.VALTranslate["EXT-Librespot_Max"] = this.translate("VAL_EXT-Librespot_Max");
-      this.VALTranslate["EXT-MusicPlayer_USB"] = this.translate("VAL_EXT-MusicPlayer_USB");
-      this.VALTranslate["EXT-MusicPlayer_Path"] = this.translate("VAL_EXT-MusicPlayer_Path");
-      this.VALTranslate["EXT-MusicPlayer_Check"] = this.translate("VAL_EXT-MusicPlayer_Check");
-      this.VALTranslate["EXT-MusicPlayer_Start"] = this.translate("VAL_EXT-MusicPlayer_Start");
-      this.VALTranslate["EXT-MusicPlayer_Min"] = this.translate("VAL_EXT-MusicPlayer_Min");
-      this.VALTranslate["EXT-MusicPlayer_Max"] = this.translate("VAL_EXT-MusicPlayer_Max");
-      this.VALTranslate["EXT-Pages_pages"] = this.translate("VAL_EXT-Pages_pages");
-      this.VALTranslate["EXT-Pages_fixed"] = this.translate("VAL_EXT-Pages_fixed");
-      this.VALTranslate["EXT-Pages_hiddenPages"] = this.translate("VAL_EXT-Pages_hiddenPages");
-      this.VALTranslate["EXT-Pages_animateIn"] = this.translate("VAL_EXT-Pages_animateIn");
-      this.VALTranslate["EXT-Pages_rotationTime"] = this.translate("VAL_EXT-Pages_rotationTime");
-      this.VALTranslate["EXT-Pages_rotationTimes"] = this.translate("VAL_EXT-Pages_rotationTimes");
-      this.VALTranslate["EXT-Pages_homePage"] = this.translate("VAL_EXT-Pages_homePage");
-      this.VALTranslate["EXT-Pages_indicator"] = this.translate("VAL_EXT-Pages_indicator");
-      this.VALTranslate["EXT-Pages_hideBeforeRotation"] = this.translate("VAL_EXT-Pages_hideBeforeRotation");
-      this.VALTranslate["EXT-Pages_Gateway"] = this.translate("VAL_EXT-Pages_Gateway");
-      this.VALTranslate["EXT-Pages_loading"] = this.translate("VAL_EXT-Pages_loading");
-      this.VALTranslate["EXT-Photos_Delay"] = this.translate("VAL_EXT-Photos_Delay");
-      this.VALTranslate["EXT-Photos_Loop"] = this.translate("VAL_EXT-Photos_Loop");
-      this.VALTranslate["EXT-RadioPlayer_Min"] = this.translate("VAL_EXT-RadioPlayer_Min");
-      this.VALTranslate["EXT-RadioPlayer_Max"] = this.translate("VAL_EXT-RadioPlayer_Max");
-      this.VALTranslate["EXT-Screen_Sleeping"] = this.translate("VAL_EXT-Screen_Sleeping");
-      this.VALTranslate["EXT-SmartHome_username"] = this.translate("VAL_EXT-SmartHome_username");
-      this.VALTranslate["EXT-SmartHome_password"] = this.translate("VAL_EXT-SmartHome_password");
-      this.VALTranslate["EXT-SmartHome_CLIENTID"] = this.translate("VAL_EXT-SmartHome_CLIENTID");
-      this.VALTranslate["EXT-Spotify_Interval"] = this.translate("VAL_EXT-Spotify_Interval");
-      this.VALTranslate["EXT-Spotify_Idle"] = this.translate("VAL_EXT-Spotify_Idle");
-      this.VALTranslate["EXT-Spotify_BottomBar"] = this.translate("VAL_EXT-Spotify_BottomBar");
-      this.VALTranslate["EXT-Spotify_ID"] = this.translate("VAL_EXT-Spotify_ID");
-      this.VALTranslate["EXT-Spotify_Secret"] = this.translate("VAL_EXT-Spotify_Secret");
-      this.VALTranslate["EXT-StreamDeck_device"] = this.translate("VAL_EXT-StreamDeck_device");
-      this.VALTranslate["EXT-StreamDeck_brightness"] = this.translate("VAL_EXT-StreamDeck_brightness");
-      this.VALTranslate["EXT-StreamDeck_ecobrightness"] = this.translate("VAL_EXT-StreamDeck_ecobrightness");
-      this.VALTranslate["EXT-StreamDeck_ecotime"] = this.translate("VAL_EXT-StreamDeck_ecotime");
-      this.VALTranslate["EXT-StreamDeck_logo"] = this.translate("VAL_EXT-StreamDeck_logo");
-      this.VALTranslate["EXT-TelegramBot_telegramAPIKey"] = this.translate("VAL_EXT-TelegramBot_telegramAPIKey");
-      this.VALTranslate["EXT-TelegramBot_adminChatId"] = this.translate("VAL_EXT-TelegramBot_adminChatId");
-      this.VALTranslate["EXT-TelegramBot_allowedUser"] = this.translate("VAL_EXT-TelegramBot_allowedUser");
-      this.VALTranslate["EXT-TelegramBot_commandAllowed"] = this.translate("VAL_EXT-TelegramBot_commandAllowed");
-      this.VALTranslate["EXT-TelegramBot_useWelcomeMessage"] = this.translate("VAL_EXT-TelegramBot_useWelcomeMessage");
-      this.VALTranslate["EXT-TelegramBot_useSoundNotification"] = this.translate("VAL_EXT-TelegramBot_useSoundNotification");
-      this.VALTranslate["EXT-TelegramBot_TelegramBotServiceAlerte"] = this.translate("VAL_EXT-TelegramBot_TelegramBotServiceAlerte");
-      this.VALTranslate["EXT-TelegramBot_favourites"] = this.translate("VAL_EXT-TelegramBot_favourites");
-      this.VALTranslate["EXT-TelegramBot_telecast"] = this.translate("VAL_EXT-TelegramBot_telecast");
-      this.VALTranslate["EXT-TelegramBot_telecastLife"] = this.translate("VAL_EXT-TelegramBot_telecastLife");
-      this.VALTranslate["EXT-TelegramBot_telecastLimit"] = this.translate("VAL_EXT-TelegramBot_telecastLimit");
-      this.VALTranslate["EXT-TelegramBot_telecastHideOverflow"] = this.translate("VAL_EXT-TelegramBot_telecastHideOverflow");
-      this.VALTranslate["EXT-TelegramBot_telecastContainer"] = this.translate("VAL_EXT-TelegramBot_telecastContainer");
-      this.VALTranslate["EXT-TelegramBot_dateFormat"] = this.translate("VAL_EXT-TelegramBot_dateFormat");
-      this.VALTranslate["EXT-Updates_AutoUpdate"] = this.translate("VAL_EXT-Updates_AutoUpdate");
-      this.VALTranslate["EXT-Updates_AutoRestart"] = this.translate("VAL_EXT-Updates_AutoRestart");
-      this.VALTranslate["EXT-Updates_Log"] = this.translate("VAL_EXT-Updates_Log");
-      this.VALTranslate["EXT-Updates_Timeout"] = this.translate("VAL_EXT-Updates_Timeout");
-      this.VALTranslate["EXT-Updates_Welcome"] = this.translate("VAL_EXT-Updates_Welcome");
-      this.VALTranslate["EXT-Updates_Watchdog"] = this.translate("VAL_EXT-Updates_Watchdog");
-      this.VALTranslate["EXT-Updates_Bugsounet"] = this.translate("VAL_EXT-Updates_Bugsounet");
-      this.VALTranslate["EXT-Volume_Start"] = this.translate("VAL_EXT-Volume_Start");
-      this.VALTranslate["EXT-Volume_Sync"] = this.translate("VAL_EXT-Volume_Sync");
-      this.VALTranslate["EXT-Website_username"] = this.translate("VAL_EXT-Website_username");
-      this.VALTranslate["EXT-Website_password"] = this.translate("VAL_EXT-Website_password");
-      this.VALTranslate["EXT-Website_APIDocs"] = this.translate("VAL_EXT-Website_APIDocs");
-      this.VALTranslate["EXT-Welcome_Welcome"] = this.translate("VAL_EXT-Welcome_Welcome");
-      this.VALTranslate["EXT-YouTube_Fullscreen"] = this.translate("VAL_EXT-YouTube_Fullscreen");
-      this.VALTranslate["EXT-YouTube_Width"] = this.translate("VAL_EXT-YouTube_Width");
-      this.VALTranslate["EXT-YouTube_Height"] = this.translate("VAL_EXT-YouTube_Height");
-      this.VALTranslate["EXT-YouTube_Search"] = this.translate("VAL_EXT-YouTube_Search");
-      this.VALTranslate["EXT-YouTube_Display"] = this.translate("VAL_EXT-YouTube_Display");
-      this.VALTranslate["EXT-YouTube_Header"] = this.translate("VAL_EXT-YouTube_Header");
-      this.VALTranslate["EXT-YouTube_Username"] = this.translate("VAL_EXT-YouTube_Username");
-      this.VALTranslate["EXT-YouTube_Password"] = this.translate("VAL_EXT-YouTube_Password");
-      this.VALTranslate["EXT-YouTubeCast_Name"] = this.translate("VAL_EXT-YouTubeCast_Name");
-      this.VALTranslate["EXT-YouTubeCast_Port"] = this.translate("VAL_EXT-YouTubeCast_Port");
-      resolve();
-    });
-  }
-
-  Get_EXT_TrSchemaValidation () {
-    return this.VALTranslate;
   }
 }

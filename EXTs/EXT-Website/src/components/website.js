@@ -37,7 +37,6 @@ class website {
     this.website = {
       MMConfig: null, // real config file (config.js)
       EXT: null, // EXT plugins list
-      EXTDescription: {}, // description of EXT
       EXTConfigured: [], // configured EXT in config
       EXTInstalled: [], // installed EXT in MM
       EXTStatus: {}, // status of EXT
@@ -48,7 +47,7 @@ class website {
       server: null,
       api: null,
       serverAPI: null,
-      translation: null,
+      translations: null,
       loginTranslation: null,
       schemaTranslatation: null,
       language: null,
@@ -134,14 +133,13 @@ class website {
     this.website.language = this.website.MMConfig.language;
     this.website.webviewTag = this.checkElectronOptions();
     this.website.EXT = data.EXT_DB.sort();
-    this.website.EXTDescription = Translations.Description;
-    this.website.translation = Translations.Translate;
+    this.website.translations = Translations;
     this.website.loginTranslation = {
-      welcome: this.website.translation["Login_Welcome"],
-      username: this.website.translation["Login_Username"],
-      password: this.website.translation["Login_Password"],
-      error: this.website.translation["Login_Error"],
-      login: this.website.translation["Login_Login"]
+      welcome: this.website.translations["Login_Welcome"],
+      username: this.website.translations["Login_Username"],
+      password: this.website.translations["Login_Password"],
+      error: this.website.translations["Login_Error"],
+      login: this.website.translations["Login_Login"]
     };
     this.website.schemaTranslatation = Translations.Schema;
     this.website.EXTStatus = Translations.EXTStatus;
@@ -150,7 +148,7 @@ class website {
     this.website.freeTV = await this.readFreeTV();
     this.website.radio = await this.readRadio();
 
-    this.website.systemInformation.lib = new this.lib.SystemInformation(this.website.translation, this.website.MMConfig.units);
+    this.website.systemInformation.lib = new this.lib.SystemInformation(this.website.translations, this.website.MMConfig.units);
     this.website.systemInformation.result = await this.website.systemInformation.lib.initData();
 
     if (!this.config.username && !this.config.password) {
@@ -648,7 +646,7 @@ class website {
         break;
 
       case "/api/translations/common":
-        res.json(this.website.translation);
+        res.json(this.website.translations);
         break;
 
       case "/api/translations/homeText":
@@ -674,10 +672,6 @@ class website {
 
       case "/api/EXT/configured":
         res.json(this.website.EXTConfigured);
-        break;
-
-      case "/api/EXT/descriptions":
-        res.json(this.website.EXTDescription);
         break;
 
       case "/api/EXT/status":

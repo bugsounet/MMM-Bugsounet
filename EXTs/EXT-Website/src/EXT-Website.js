@@ -108,9 +108,7 @@ Module.register("EXT-Website", {
     }
     this.session = {};
     this.config.EXT_DB = this.EXT_DB;
-    this.config.translations.Description = this.Translations.Get_EXT_Description();
-    this.config.translations.Translate = this.Translations.Get_EXT_Translation();
-    this.config.translations.Schema = this.Translations.Get_EXT_TrSchemaValidation();
+    this.config.translations = this.Translations.Get_EXT_Translation();
     this.sysInfo = new sysInfoPage(Tools);
     this.sysInfo.prepare();
     this.sendSocketNotification("INIT", this.config);
