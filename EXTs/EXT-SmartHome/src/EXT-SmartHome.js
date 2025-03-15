@@ -47,8 +47,22 @@ Module.register("EXT-SmartHome", {
     return dom;
   },
 
+  getTranslations () {
+    return {
+      en: "translations/en.json",
+      fr: "translations/fr.json"
+    };
+  },
+
   async websiteInit () {
     this.config.EXT_DB = this.EXT_DB;
+    this.config.translations = {
+      Stop: this.translate("Stop"),
+      Restart: this.translate("Restart"),
+      CLose: this.translate("CLose"),
+      Reboot: this.translate("Reboot"),
+      Shutdown: this.translate("Shutdown")
+    };
     this.sendSocketNotification("INIT", this.config);
   },
 
@@ -117,9 +131,6 @@ Module.register("EXT-SmartHome", {
       case "CB_SPOTIFY-NEXT":
         this.sendNotification("Bugsounet_SPOTIFY-NEXT");
         break;
-      case "CB_STOP":
-        this.sendNotification("Bugsounet_STOP");
-        break;
       case "CB_TV-PLAY":
         this.sendNotification("Bugsounet_FREEBOXTV-PLAY", payload);
         break;
@@ -138,8 +149,21 @@ Module.register("EXT-SmartHome", {
       case "CB_RADIO-PREVIOUS":
         this.sendNotification("Bugsounet_RADIO-PREVIOUS");
         break;
+      case "CB_STOP":
+        this.sendNotification("Bugsounet_STOP");
+        break;
       case "CB_RESTART":
-        this.sendNotification("Bugsounet_GATEWAY-Restart");
+        this.sendNotification("Bugsounet_Restart");
+        break;
+      case "CB_CLOSE":
+        this.sendNotification("Bugsounet_Close");
+        break;
+      case "CB_REBOOT":
+        this.sendNotification("Bugsounet_Reboot");
+        break;
+      case "CB_SHUTDOWN":
+        this.sendNotification("Bugsounet_Shutdown");
+        break;
     }
   }
 });

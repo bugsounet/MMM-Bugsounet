@@ -48,7 +48,8 @@ module.exports = NodeHelper.create({
       password: this.config.password,
       CLIENT_ID: this.config.CLIENT_ID,
       debug: this.config.debug,
-      lang: config.language
+      lang: config.language,
+      translations: this.config.translations
     };
 
     let callbacks = {

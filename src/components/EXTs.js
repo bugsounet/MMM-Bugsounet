@@ -221,17 +221,26 @@ class EXTs {
       case "Bugsounet_PAGES-Gateway":
         if (sender.name === "EXT-Pages") Object.assign(this.EXT["EXT-Pages"], payload);
         break;
+      case "Bugsounet_STOP":
+        if (this.hasPluginConnected(this.EXT, "connected", true)) {
+          this.sendAlert({ type: "information", message: this.translate("EXTStop") }, "MMM-Bugsounet");
+        }
+        break;
+      case "Bugsounet_Restart":
       case "Bugsounet_GATEWAY-Restart":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Updates" && this.EXT["EXT-Updates"].hello) || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello) || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)) {
           this.sendSocketNotification("RESTART");
         }
         break;
+      case "Bugsounet_Close":
       case "Bugsounet_GATEWAY-Close":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("CLOSE");
         break;
+      case "Bugsounet_Reboot":
       case "Bugsounet_GATEWAY-Reboot":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("REBOOT");
         break;
+      case "Bugsounet_Shutdown":
       case "Bugsounet_GATEWAY-Shutdown":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("SHUTDOWN");
         break;
@@ -244,11 +253,6 @@ class EXTs {
             this.sendNotification("Bugsounet_PAGES-HOME");
           }
           else this.sendNotification("Bugsounet_PAGES-PAUSE");
-        }
-        break;
-      case "Bugsounet_STOP":
-        if (this.hasPluginConnected(this.EXT, "connected", true)) {
-          this.sendAlert({ type: "information", message: this.translate("EXTStop") }, "MMM-Bugsounet");
         }
         break;
       case "Bugsounet_RADIO-CONNECTED":

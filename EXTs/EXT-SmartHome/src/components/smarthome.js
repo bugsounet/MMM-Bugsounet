@@ -14,6 +14,8 @@ var log = () => { /* do nothing */ };
 class smarthome {
   constructor (config, cb = () => {}) {
     this.config = config;
+    this.translations = this.config.translations;
+
     this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
 
     if (this.config.debug) log = (...args) => { console.log("[SMARTHOME]", ...args); };
@@ -272,17 +274,7 @@ class smarthome {
       },
       attributes: {
         orderedInputs: true,
-        availableInputs: [
-          {
-            key: "Stop",
-            names: [
-              {
-                lang: this.smarthome.lang,
-                name_synonym: ["Stop", "stop"]
-              }
-            ]
-          }
-        ]
+        availableInputs: []
       },
       willReportState: true,
       roomHint: "MMM-Bugsounet",
@@ -316,6 +308,19 @@ class smarthome {
     this.smarthome.current.RadioIsPlaying = Status["EXT-RadioPlayer"].connected;
     this.smarthome.current.RadioPlay = Status["EXT-RadioPlayer"].playing;
 
+    // Stop
+    log(`[DEVICE] Add Input: ${this.translations["Stop"]}`);
+    let stop = {
+      key: this.translations["Stop"],
+      names: [
+        {
+          lang: this.smarthome.lang,
+          name_synonym: [this.translations["Stop"], "Stop", "stop"]
+        }
+      ]
+    };
+    this.smarthome.device.attributes.availableInputs.push(stop);
+
     if (this.smarthome.EXT["EXT-Screen"]) {
       log("[DEVICE] Found: EXT-Screen (action.devices.traits.OnOff)");
       this.smarthome.device.traits.push("action.devices.traits.OnOff");
@@ -329,18 +334,8 @@ class smarthome {
       this.smarthome.device.attributes.levelStepSize = 5;
     }
     if (this.smarthome.EXT["EXT-Pages"]) {
-      log("[DEVICE] Found: EXT-Pages (action.devices.traits.InputSelector)");
-      for (let i = 0; i < this.smarthome.current.MaxPages; i++) {
-        log("[DEVICE] Set: pages", i);
-        let input = {};
-        input.key = `page ${i}`;
-        input.names = [];
-        input.names[0] = {};
-        input.names[0].lang = this.smarthome.lang;
-        input.names[0].name_synonym = [];
-        input.names[0].name_synonym[0] = `page ${i}`;
-        this.smarthome.device.attributes.availableInputs.push(input);
-      }
+      log("[DEVICE] Found: EXT-Pages (action.devices.traits.Channel)");
+      this.smarthome.device.traits.push("action.devices.traits.Channel");
     }
 
     this.smarthome.device.traits.push("action.devices.traits.Locator");
@@ -381,8 +376,8 @@ class smarthome {
 
     if (this.smarthome.EXT["EXT-FreeboxTV"]) {
       log("[DEVICE] Found: EXT-FreeboxTV (action.devices.traits.InputSelector)");
-      //this.smarthome.device.traits.push("action.devices.traits.Channel");
       this.smarthome.EXTStatus["EXT-FreeboxTV"].channels.forEach((channel) => {
+        log(`[DEVICE] Add Input: TV ${channel}`);
         let FBTV = {
           key: `TV ${channel}`,
           names: [
@@ -399,6 +394,7 @@ class smarthome {
     if (this.smarthome.EXT["EXT-RadioPlayer"]) {
       log("[DEVICE] Found: EXT-RadioPlayer (action.devices.traits.InputSelector)");
       this.smarthome.EXTStatus["EXT-RadioPlayer"].channels.forEach((channel) => {
+        log(`[DEVICE] Add Input: Radio ${channel}`);
         let radio = {
           key: `Radio ${channel}`,
           names: [
@@ -411,6 +407,58 @@ class smarthome {
         this.smarthome.device.attributes.availableInputs.push(radio);
       });
     }
+
+    // Restart MM²
+    log(`[DEVICE] Add Input: ${this.translations["Restart"]}`);
+    let restartMM = {
+      key: this.translations["Restart"],
+      names: [
+        {
+          lang: this.smarthome.lang,
+          name_synonym: [this.translations["Restart"]]
+        }
+      ]
+    };
+    this.smarthome.device.attributes.availableInputs.push(restartMM);
+
+    // CLose MM²
+    log(`[DEVICE] Add Input: ${this.translations["CLose"]}`);
+    let cLoseMM = {
+      key: this.translations["CLose"],
+      names: [
+        {
+          lang: this.smarthome.lang,
+          name_synonym: [this.translations["CLose"]]
+        }
+      ]
+    };
+    this.smarthome.device.attributes.availableInputs.push(cLoseMM);
+
+    // Restart system
+    log(`[DEVICE] Add Input: ${this.translations["Reboot"]}`);
+    let restartSystem = {
+      key: this.translations["Reboot"],
+      names: [
+        {
+          lang: this.smarthome.lang,
+          name_synonym: [this.translations["Reboot"]]
+        }
+      ]
+    };
+    this.smarthome.device.attributes.availableInputs.push(restartSystem);
+
+    // CLose system
+    log(`[DEVICE] Add Input: ${this.translations["Shutdown"]}`);
+    let closeSystem = {
+      key: this.translations["Shutdown"],
+      names: [
+        {
+          lang: this.smarthome.lang,
+          name_synonym: [this.translations["Shutdown"]]
+        }
+      ]
+    };
+    this.smarthome.device.attributes.availableInputs.push(closeSystem);
 
     log("Your device is now:", this.smarthome.device);
     this.requestSync();
@@ -524,6 +572,8 @@ class smarthome {
       return result;
     }
 
+    result.currentInput = this.translations["Stop"];
+
     if (EXT["EXT-Screen"]) {
       result.on = data.Screen;
     }
@@ -537,13 +587,6 @@ class smarthome {
     if (EXT["EXT-RadioPlayer"] && data.RadioIsPlaying) {
       result.currentInput = `Radio ${data.RadioPlay}`;
     }
-
-    /*
-    else if (EXT["EXT-Pages"]) {
-      result.currentInput = `page ${data.Page}`;
-    }
-    */
-
     if (EXT["EXT-Spotify"]) {
       result.currentApplication = data.SpotifyIsConnected ? "spotify" : "home";
     }
@@ -581,37 +624,48 @@ class smarthome {
         var element;
 
         // STOP
-        if (input === "Stop") {
+        if (input === this.translations["Stop"]) {
           this.send("Stop");
-          params.newInput = "Stop";
-
-          /*
-          if (this.smarthome.EXT["EXT-Pages"]) {
-            params.newInput = `page ${data.Page}`;
-          } else {
-            params.newInput = "Stop";
-          }
-          */
-
+          params.newInput = this.translations["Stop"];
         }
+
+        // RestartMM
+        if (input === this.translations["Restart"]) {
+          this.send("Restart");
+          params.newInput = this.translations["Restart"];
+        }
+
+        // CLoseMM
+        if (input === this.translations["CLose"]) {
+          this.send("Close");
+          params.newInput = this.translations["CLose"];
+        }
+
+        // RestartSystem
+        if (input === this.translations["Reboot"]) {
+          this.send("Reboot");
+          params.newInput = this.translations["Reboot"];
+        }
+
+        // CloseSystem
+        if (input === this.translations["Shutdown"]) {
+          this.send("Shutdown");
+          params.newInput = this.translations["Shutdown"];
+        }
+
         // FreeboxTV
         if (input.startsWith("TV ")) {
           element = input.split("TV ");
           this.send("TVPlay", element[1]);
           params.newInput = input;
         }
+
+        // RadioPlayer
         if (input.startsWith("Radio ")) {
           element = input.split("Radio ");
           this.send("RadioPlay", element[1]);
           params.newInput = input;
         }
-
-        /*
-         else {
-          var number = input.split(" ");
-          this.send("setPage", number[1]);
-        }
-        */
 
         return { status: "SUCCESS", states: { online: true, currentInput: params.newInput } };
       case "action.devices.commands.NextInput":
@@ -623,7 +677,7 @@ class smarthome {
         // this.send("setPreviousPage");
         return { status: "SUCCESS", states: { online: true } };
       case "action.devices.commands.Reboot":
-        this.send("Reboot");
+        this.send("Restart");
         return {};
       case "action.devices.commands.Locate":
         this.send("Locate");
@@ -651,11 +705,10 @@ class smarthome {
         }
         return { status: "SUCCESS", states: { online: true, currentApplication: params.newApplication } };
       case "action.devices.commands.relativeChannel":
-        // a coder avec pages ?
         if (params.relativeChannelChange > 0) {
-          this.send("TVNext");
+          this.send("setNextPage");
         } else {
-          this.send("TVPrevious");
+          this.send("setPreviousPage");
         }
         return { status: "SUCCESS" };
       default:
@@ -858,6 +911,8 @@ class smarthome {
         state.isMuted = current.VolumeIsMuted;
       }
 
+      state.currentInput = this.translations["Stop"];
+
       if (EXT["EXT-FreeboxTV"] && current.TvIsPlaying) {
         state.currentInput = `TV ${current.TVPlay}`;
       }
@@ -865,12 +920,6 @@ class smarthome {
       if (EXT["EXT-RadioPlayer"] && current.RadioIsPlaying) {
         state.currentInput = `Radio ${current.RadioPlay}`;
       }
-
-      /*
-       else if (EXT["EXT-Pages"]) {
-        state.currentInput = `page ${current.Page}`;
-      }
-      */
 
       if (EXT["EXT-Spotify"]) {
         state.currentApplication = current.SpotifyIsConnected ? "spotify" : "home";
@@ -941,10 +990,6 @@ class smarthome {
         log("[CALLBACK] Send Alert Done:", values);
         this.sendSocketNotification("CB_DONE", values);
         break;
-      case "Reboot":
-        log("[CALLBACK] Send Restart");
-        setTimeout(() => this.sendSocketNotification("CB_RESTART"), 8000);
-        break;
       case "Locate":
         log("[CALLBACK] Send Locate");
         this.sendSocketNotification("CB_LOCATE");
@@ -964,10 +1009,6 @@ class smarthome {
       case "SpotifyNext":
         log("[CALLBACK] Send SpotifyNext");
         this.sendSocketNotification("CB_SPOTIFY-NEXT");
-        break;
-      case "Stop":
-        log("[CALLBACK] Send Stop");
-        this.sendSocketNotification("CB_STOP");
         break;
       case "TVPlay":
         log("[CALLBACK] Send TVPlay", values);
@@ -992,6 +1033,26 @@ class smarthome {
       case "RadioPrevious":
         log("[CALLBACK] Send RadioPrevious");
         this.sendSocketNotification("CB_RADIO-PREVIOUS");
+        break;
+      case "Stop":
+        log("[CALLBACK] Send Stop");
+        this.sendSocketNotification("CB_STOP");
+        break;
+      case "Restart":
+        log("[CALLBACK] Send Restart MM²");
+        setTimeout(() => this.sendSocketNotification("CB_RESTART"), 5000);
+        break;
+      case "Close":
+        log("[CALLBACK] Send Close MM²");
+        setTimeout(() => this.sendSocketNotification("CB_CLOSE"), 5000);
+        break;
+      case "Reboot":
+        log("[CALLBACK] Send Reboot");
+        setTimeout(() => this.sendSocketNotification("CB_REBOOT"), 5000);
+        break;
+      case "Shutdown":
+        log("[CALLBACK] Send Shutdown");
+        setTimeout(() => this.sendSocketNotification("CB_SHUTDOWN"), 5000);
         break;
       default:
         log("[CALLBACK] Unknow callback:", name);
