@@ -14,7 +14,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-FreeboxTV",
-    "setup": "node installer/setup --path=EXTs/EXT-FreeboxTV"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-FreeboxTV"
   },
   "dependencies": {
     "vlc-client": "^1.1.1"
