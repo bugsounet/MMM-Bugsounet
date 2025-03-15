@@ -121,7 +121,7 @@ Module.register("EXT-SmartHome", {
         this.sendNotification("Bugsounet_STOP");
         break;
       case "CB_TV-PLAY":
-        this.sendNotification("Bugsounet_FREEBOXTV-PLAY");
+        this.sendNotification("Bugsounet_FREEBOXTV-PLAY", payload);
         break;
       case "CB_TV-NEXT":
         this.sendNotification("Bugsounet_FREEBOXTV-NEXT");

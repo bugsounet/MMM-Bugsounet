@@ -389,7 +389,7 @@ class smarthome {
           ]
         };
         this.smarthome.device.attributes.availableInputs.push(FBTV);
-      })
+      });
     }
 
     log("Your device is now:", this.smarthome.device);
@@ -406,7 +406,8 @@ class smarthome {
       MaxPages: this.smarthome.current.MaxPages,
       SpotifyIsConnected: this.smarthome.current.SpotifyIsConnected,
       SpotifyIsPlaying: this.smarthome.current.SpotifyIsPlaying,
-      TvIsPlaying: this.smarthome.current.TvIsPlaying
+      TvIsPlaying: this.smarthome.current.TvIsPlaying,
+      TVPlay: this.smarthome.current.TVPlay
     };
     this.smarthome.current.Screen = data["EXT-Screen"].power;
     this.smarthome.current.Volume = data["EXT-Volume"].speaker;
@@ -416,6 +417,7 @@ class smarthome {
     this.smarthome.current.SpotifyIsConnected = data["EXT-Spotify"].connected;
     this.smarthome.current.SpotifyIsPlaying = data["EXT-Spotify"].play;
     this.smarthome.current.TvIsPlaying = data["EXT-FreeboxTV"].connected;
+    this.smarthome.current.TVPlay = data["EXT-FreeboxTV"].playing;
   }
 
   /** action on google **/
@@ -506,7 +508,7 @@ class smarthome {
       result.isMuted = data.VolumeIsMuted;
     }
     if (EXT["EXT-FreeboxTV"] && data.TvIsPlaying) {
-      result.currentInput = "EXT-FreeboxTV";
+      result.currentInput = `TV ${data.TVPlay}`;
     } else if (EXT["EXT-Pages"]) {
       result.currentInput = `page ${data.Page}`;
     }
@@ -544,6 +546,9 @@ class smarthome {
         return { status: "SUCCESS", states: { online: true, isMuted: params.mute, currentVolume: data.Volume } };
       case "action.devices.commands.SetInput":
         var input = params.newInput;
+        var element;
+
+        // STOP
         if (input === "Stop") {
           this.send("Stop");
           if (this.smarthome.EXT["EXT-Pages"]) {
@@ -551,13 +556,16 @@ class smarthome {
           } else {
             params.newInput = "Stop";
           }
-        } else if (input === "EXT-FreeboxTV") {
-          this.send("TVPlay");
+        // FreeboxTV
+        } else if (input.startsWith("TV ")) {
+          element = input.split("TV ");
+          this.send("TVPlay", element[1]);
           params.newInput = input;
         } else {
           var number = input.split(" ");
           this.send("setPage", number[1]);
         }
+
         return { status: "SUCCESS", states: { online: true, currentInput: params.newInput } };
       case "action.devices.commands.NextInput":
         this.send("setNextPage");
@@ -799,8 +807,9 @@ class smarthome {
         state.currentVolume = current.Volume;
         state.isMuted = current.VolumeIsMuted;
       }
+      /// ---> a voir
       if (EXT["EXT-FreeboxTV"] && current.TvIsPlaying) {
-        state.currentInput = "EXT-FreeboxTV";
+        state.currentInput = `TV ${current.TVPlay}`;
       } else if (EXT["EXT-Pages"]) {
         state.currentInput = `page ${current.Page}`;
       }
@@ -902,8 +911,8 @@ class smarthome {
         this.sendSocketNotification("CB_STOP");
         break;
       case "TVPlay":
-        log("[CALLBACK] Send TVPlay");
-        this.sendSocketNotification("CB_TV-PLAY");
+        log("[CALLBACK] Send TVPlay", values);
+        this.sendSocketNotification("CB_TV-PLAY", values);
         break;
       case "TVNext":
         log("[CALLBACK] Send TVNext");
