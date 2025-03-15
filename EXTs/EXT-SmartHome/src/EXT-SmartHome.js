@@ -129,6 +129,15 @@ Module.register("EXT-SmartHome", {
       case "CB_TV-PREVIOUS":
         this.sendNotification("Bugsounet_FREEBOXTV-PREVIOUS");
         break;
+      case "CB_RADIO-PLAY":
+        this.sendNotification("Bugsounet_RADIO-PLAY", payload);
+        break;
+      case "CB_RADIO-NEXT":
+        this.sendNotification("Bugsounet_RADIO-NEXT");
+        break;
+      case "CB_RADIO-PREVIOUS":
+        this.sendNotification("Bugsounet_RADIO-PREVIOUS");
+        break;
       case "CB_RESTART":
         this.sendNotification("Bugsounet_GATEWAY-Restart");
     }

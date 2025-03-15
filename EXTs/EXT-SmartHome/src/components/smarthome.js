@@ -301,7 +301,8 @@ class smarthome {
       "EXT-Volume": Status["EXT-Volume"].hello,
       "EXT-Pages": Status["EXT-Pages"].hello,
       "EXT-Spotify": Status["EXT-Spotify"].hello,
-      "EXT-FreeboxTV": Status["EXT-FreeboxTV"].hello
+      "EXT-FreeboxTV": Status["EXT-FreeboxTV"].hello,
+      "EXT-RadioPlayer": Status["EXT-RadioPlayer"].hello
     };
     this.smarthome.current.Screen = Status["EXT-Screen"].power;
     this.smarthome.current.Volume = Status["EXT-Volume"].speaker;
@@ -311,6 +312,9 @@ class smarthome {
     this.smarthome.current.SpotifyIsConnected = Status["EXT-Spotify"].connected;
     this.smarthome.current.SpotifyIsPlaying = Status["EXT-Spotify"].play;
     this.smarthome.current.TvIsPlaying = Status["EXT-FreeboxTV"].connected;
+    this.smarthome.current.TVPlay = Status["EXT-FreeboxTV"].playing;
+    this.smarthome.current.RadioIsPlaying = Status["EXT-RadioPlayer"].connected;
+    this.smarthome.current.RadioPlay = Status["EXT-RadioPlayer"].playing;
 
     if (this.smarthome.EXT["EXT-Screen"]) {
       log("[DEVICE] Found: EXT-Screen (action.devices.traits.OnOff)");
@@ -376,8 +380,8 @@ class smarthome {
     }
 
     if (this.smarthome.EXT["EXT-FreeboxTV"]) {
-      log("[DEVICE] Found: EXT-FreeboxTV (action.devices.traits.Channel)");
-      this.smarthome.device.traits.push("action.devices.traits.Channel");
+      log("[DEVICE] Found: EXT-FreeboxTV (action.devices.traits.InputSelector)");
+      //this.smarthome.device.traits.push("action.devices.traits.Channel");
       this.smarthome.EXTStatus["EXT-FreeboxTV"].channels.forEach((channel) => {
         let FBTV = {
           key: `TV ${channel}`,
@@ -389,6 +393,22 @@ class smarthome {
           ]
         };
         this.smarthome.device.attributes.availableInputs.push(FBTV);
+      });
+    }
+
+    if (this.smarthome.EXT["EXT-RadioPlayer"]) {
+      log("[DEVICE] Found: EXT-RadioPlayer (action.devices.traits.InputSelector)");
+      this.smarthome.EXTStatus["EXT-RadioPlayer"].channels.forEach((channel) => {
+        let radio = {
+          key: `Radio ${channel}`,
+          names: [
+            {
+              lang: this.smarthome.lang,
+              name_synonym: [`Radio ${channel}`, `${channel}`]
+            }
+          ]
+        };
+        this.smarthome.device.attributes.availableInputs.push(radio);
       });
     }
 
@@ -407,7 +427,9 @@ class smarthome {
       SpotifyIsConnected: this.smarthome.current.SpotifyIsConnected,
       SpotifyIsPlaying: this.smarthome.current.SpotifyIsPlaying,
       TvIsPlaying: this.smarthome.current.TvIsPlaying,
-      TVPlay: this.smarthome.current.TVPlay
+      TVPlay: this.smarthome.current.TVPlay,
+      RadioIsPlaying: this.smarthome.current.RadioIsPlaying,
+      RadioPlay: this.smarthome.current.RadioPlay
     };
     this.smarthome.current.Screen = data["EXT-Screen"].power;
     this.smarthome.current.Volume = data["EXT-Volume"].speaker;
@@ -418,6 +440,8 @@ class smarthome {
     this.smarthome.current.SpotifyIsPlaying = data["EXT-Spotify"].play;
     this.smarthome.current.TvIsPlaying = data["EXT-FreeboxTV"].connected;
     this.smarthome.current.TVPlay = data["EXT-FreeboxTV"].playing;
+    this.smarthome.current.RadioIsPlaying = data["EXT-RadioPlayer"].connected;
+    this.smarthome.current.RadioPlay = data["EXT-RadioPlayer"].playing;
   }
 
   /** action on google **/
@@ -509,9 +533,17 @@ class smarthome {
     }
     if (EXT["EXT-FreeboxTV"] && data.TvIsPlaying) {
       result.currentInput = `TV ${data.TVPlay}`;
-    } else if (EXT["EXT-Pages"]) {
+    }
+    if (EXT["EXT-RadioPlayer"] && data.RadioIsPlaying) {
+      result.currentInput = `Radio ${data.RadioPlay}`;
+    }
+
+    /*
+    else if (EXT["EXT-Pages"]) {
       result.currentInput = `page ${data.Page}`;
     }
+    */
+
     if (EXT["EXT-Spotify"]) {
       result.currentApplication = data.SpotifyIsConnected ? "spotify" : "home";
     }
@@ -551,27 +583,44 @@ class smarthome {
         // STOP
         if (input === "Stop") {
           this.send("Stop");
+          params.newInput = "Stop";
+
+          /*
           if (this.smarthome.EXT["EXT-Pages"]) {
             params.newInput = `page ${data.Page}`;
           } else {
             params.newInput = "Stop";
           }
+          */
+
+        }
         // FreeboxTV
-        } else if (input.startsWith("TV ")) {
+        if (input.startsWith("TV ")) {
           element = input.split("TV ");
           this.send("TVPlay", element[1]);
           params.newInput = input;
-        } else {
+        }
+        if (input.startsWith("Radio ")) {
+          element = input.split("Radio ");
+          this.send("RadioPlay", element[1]);
+          params.newInput = input;
+        }
+
+        /*
+         else {
           var number = input.split(" ");
           this.send("setPage", number[1]);
         }
+        */
 
         return { status: "SUCCESS", states: { online: true, currentInput: params.newInput } };
       case "action.devices.commands.NextInput":
-        this.send("setNextPage");
+        // a coder avec soit FreeboxTV ou RadioPlayer
+        //this.send("setNextPage");
         return { status: "SUCCESS", states: { online: true } };
       case "action.devices.commands.PreviousInput":
-        this.send("setPreviousPage");
+        // a coder avec soit FreeboxTV ou RadioPlayer
+        // this.send("setPreviousPage");
         return { status: "SUCCESS", states: { online: true } };
       case "action.devices.commands.Reboot":
         this.send("Reboot");
@@ -602,6 +651,7 @@ class smarthome {
         }
         return { status: "SUCCESS", states: { online: true, currentApplication: params.newApplication } };
       case "action.devices.commands.relativeChannel":
+        // a coder avec pages ?
         if (params.relativeChannelChange > 0) {
           this.send("TVNext");
         } else {
@@ -758,7 +808,7 @@ class smarthome {
     if (!this.smarthome.ready) return;
     let query = {
       requestBody: {
-        requestId: `GA-${Date.now()}`,
+        requestId: `Bugsounet-${Date.now()}`,
         agentUserId: this.smarthome.user.username,
         inputs: [
           {
@@ -807,12 +857,21 @@ class smarthome {
         state.currentVolume = current.Volume;
         state.isMuted = current.VolumeIsMuted;
       }
-      /// ---> a voir
+
       if (EXT["EXT-FreeboxTV"] && current.TvIsPlaying) {
         state.currentInput = `TV ${current.TVPlay}`;
-      } else if (EXT["EXT-Pages"]) {
+      }
+
+      if (EXT["EXT-RadioPlayer"] && current.RadioIsPlaying) {
+        state.currentInput = `Radio ${current.RadioPlay}`;
+      }
+
+      /*
+       else if (EXT["EXT-Pages"]) {
         state.currentInput = `page ${current.Page}`;
       }
+      */
+
       if (EXT["EXT-Spotify"]) {
         state.currentApplication = current.SpotifyIsConnected ? "spotify" : "home";
       }
@@ -820,7 +879,7 @@ class smarthome {
       let body = {
         requestBody: {
           agentUserId: this.smarthome.user.username,
-          requestId: `GA-${Date.now()}`,
+          requestId: `Bugsounet-${Date.now()}`,
           payload: {
             devices: {
               states: {
@@ -921,6 +980,18 @@ class smarthome {
       case "TVPrevious":
         log("[CALLBACK] Send TVPrevious");
         this.sendSocketNotification("CB_TV-PREVIOUS");
+        break;
+      case "RadioPlay":
+        log("[CALLBACK] Send RadioPlay", values);
+        this.sendSocketNotification("CB_RADIO-PLAY", values);
+        break;
+      case "RadioNext":
+        log("[CALLBACK] Send RadioNext");
+        this.sendSocketNotification("CB_RADIO-NEXT");
+        break;
+      case "RadioPrevious":
+        log("[CALLBACK] Send RadioPrevious");
+        this.sendSocketNotification("CB_RADIO-PREVIOUS");
         break;
       default:
         log("[CALLBACK] Unknow callback:", name);
