@@ -61,7 +61,7 @@ Module.register("EXT-Updates", {
         this.sendAdmin(this.translate("UPDATE_DONE", { MODULE_NAME: payload }));
         break;
       case "RESTART":
-        this.sendNotification("Bugsounet_GATEWAY-Restart");
+        this.sendNotification("Bugsounet_Restart");
         break;
       case "NEEDRESTART":
         this.sendAlert(this.translate("NEEDRESTART"), 5 * 1000, "warning");
