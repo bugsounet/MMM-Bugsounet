@@ -917,22 +917,22 @@ class website {
         break;
 
       case "/api/system/restart":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Restart"), 1000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Restart"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/die":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Close"), 3000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Close"), 3000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/reboot":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Reboot"), 1000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Reboot"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/shutdown":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_GATEWAY-Shutdown"), 3000);
+        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Shutdown"), 3000);
         res.json({ done: "ok" });
         break;
 
