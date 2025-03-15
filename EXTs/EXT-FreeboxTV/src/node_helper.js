@@ -128,7 +128,7 @@ module.exports = NodeHelper.create({
 
   async startPlayer (name) {
     if (!this.FreeboxTV[name]) return log(`Channel not found: ${name}`);
-    this.sendSocketNotification("WILL_PLAYING");
+    this.sendSocketNotification("WILL_PLAYING", name);
     var link = this.FreeboxTV[name];
     this.TV.link = link;
     this.TV.filename = this.TV.link?.split("/").pop();

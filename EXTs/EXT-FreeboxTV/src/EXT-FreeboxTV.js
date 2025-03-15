@@ -144,6 +144,7 @@ Module.register("EXT-FreeboxTV", {
         this.FreeboxTV.playing = false;
         this.canStop = true;
         this.sendNotification("Bugsounet_FREEBOXTV-DISCONNECTED");
+        this.sendNotification("Bugsounet_FREEBOXTV-PLAYING", null);
         break;
       case "STARTED":
         this.FreeboxTV.playing = true;
@@ -159,6 +160,7 @@ Module.register("EXT-FreeboxTV", {
         break;
       case "WILL_PLAYING":
         this.sendNotification("Bugsounet_VLCServer-WILL_PLAYING");
+        this.sendNotification("Bugsounet_FREEBOXTV-PLAYING", payload);
         break;
     }
   },
