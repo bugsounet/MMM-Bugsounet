@@ -2,5 +2,6 @@
   "AlertInformation": "Information",
   "AlertWarning": "Avertissement",
   "AlertError": "Erreur",
-  "AlertSuccess": "Réussie"
+  "AlertSuccess": "Réussie",
+  "EXTStop": "Tous les processus Extented sont maintenant arrêtés"
 }
