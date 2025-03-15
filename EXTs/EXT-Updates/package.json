@@ -14,7 +14,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Updates",
-    "setup": "node installer/setup --path=EXTs/EXT-Updates"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Updates"
   },
   "dependencies": {
     "ps-node": "^0.1.6"
