@@ -64,6 +64,9 @@ class EXTs {
     this.EXT["EXT-Pages"].actual = 0;
     this.EXT["EXT-Pages"].total = 0;
     this.EXT["EXT-FreeboxTV"].channels = [];
+    this.EXT["EXT-FreeboxTV"].playing = null;
+    this.EXT["EXT-RadioPlayer"].channels = [];
+    this.EXT["EXT-RadioPlayer"].playing = [];
   }
 
   setBugsounet_Ready () {
@@ -277,8 +280,12 @@ class EXTs {
         this.disconnectEXT("EXT-Spotify");
         break;
       case "Bugsounet_FREEBOXTV-CHANNELS":
-        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[CONNECT] EXT-FreeboxTV don't say to me HELLO!");
+        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[RULES] EXT-FreeboxTV don't say to me HELLO!");
         this.EXT["EXT-FreeboxTV"].channels = payload;
+        break;
+      case "Bugsounet_FREEBOXTV-PLAYING":
+        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[RULES] EXT-FreeboxTV don't say to me HELLO!");
+        this.EXT["EXT-FreeboxTV"].playing = payload;
         break;
       case "Bugsounet_FREEBOXTV-CONNECTED":
         if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[CONNECT] EXT-FreeboxTV don't say to me HELLO!");
@@ -317,10 +324,11 @@ class EXTs {
         logBugsounet("[EXTs] Sorry, i don't understand what is", noti, payload || "");
         break;
     }
+
     if (this.EXT["EXT-Website"].hello || this.EXT["EXT-SmartHome"].hello) {
       this.sendStatusTimeout = setTimeout(() => {
         this.sendNotification("Bugsounet_STATUS", this.EXT);
-      }, 300);
+      }, 500);
     }
     logBugsounet("[EXTs] Status:", this.EXT);
   }
