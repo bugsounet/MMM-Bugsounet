@@ -108,9 +108,6 @@ Module.register("EXT-RadioPlayer", {
       case "Bugsounet_RADIO-VOLUME_MAX":
         if (this.radioPlayer.play) this.sendSocketNotification("VOLUME", this.config.maxVolume);
         break;
-      case "Bugsounet_RADIO-START":
-        this.radioCommand(payload);
-        break;
     }
   },
 
@@ -168,12 +165,14 @@ Module.register("EXT-RadioPlayer", {
         };
         iterifyArr(this.Channels);
         if (!this.radioPlayer.ready) {
-          this.sendNotification("Bugsounet_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
+          this.sendNotification("Bugsounet_RADIO-CHANNELS", this.Channels);
           this.radioPlayer.ready = true;
         }
         break;
       case "WILL_PLAYING":
         this.sendNotification("Bugsounet_VLCServer-WILL_PLAYING");
+        this.sendNotification("Bugsounet_RADIO-PLAYING", payload);
         break;
     }
   },
@@ -187,37 +186,6 @@ Module.register("EXT-RadioPlayer", {
       this.sendNotification("Bugsounet_RADIO-DISCONNECTED");
       this.hide(1000, () => {}, { lockString: "EXT-RADIO_LOCK" });
       this.canStop = true;
-    }
-  },
-
-  /** Radio command **/
-  radioCommand (payload) {
-    if (!this.radioPlayer.ready) return;
-    if (payload.link) {
-      if (payload.img) {
-        this.radioPlayer.img = payload.img;
-      } else {
-        this.radioPlayer.img = this.file("radio.jpg");
-      }
-
-      var radioImg = document.getElementById("EXT_RADIO-RadioLogo");
-      var radioName = document.getElementById("EXT_RADIO-RadioName");
-      var marquee1 = document.getElementById("EXT_RADIO-MarqueeSpan1");
-      var marquee2 = document.getElementById("EXT_RADIO-MarqueeSpan2");
-
-      this.radioPlayer.now_playing = this.translate("NO_INFORMATIONS");
-      marquee1.textContent = this.radioPlayer.now_playing;
-      marquee2.textContent = this.radioPlayer.now_playing;
-      radioName.textContent = this.radioPlayer.radio || "EXT-RadioPlayer";
-
-      radioImg.classList.remove("WipeEnter");
-      /* eslint-disable-next-line */
-      let backOffSet = radioImg.offsetWidth;
-      radioImg.classList.add("WipeEnter");
-      radioImg.src = this.radioPlayer.img;
-
-      this.radioPlayer.link = payload.link;
-      this.sendSocketNotification("PLAY", payload.link);
     }
   },
 
@@ -281,6 +249,7 @@ Module.register("EXT-RadioPlayer", {
   },
 
   playStream (channel) {
+    if (!this.radioPlayer.ready) return;
     if (!this.ChannelsCheck(channel)) {
       console.log(`[RADIO] Radio not found: ${channel}`);
       this.sendNotification("Bugsounet_ALERT", {
@@ -290,7 +259,31 @@ Module.register("EXT-RadioPlayer", {
       });
     }
     this.radioPlayer.radio = channel;
-    this.radioCommand(this.Radio[channel]);
+
+    if (this.Radio[channel].img) {
+      this.radioPlayer.img = this.Radio[channel].img;
+    } else {
+      this.radioPlayer.img = this.file("radio.jpg");
+    }
+
+    var radioImg = document.getElementById("EXT_RADIO-RadioLogo");
+    var radioName = document.getElementById("EXT_RADIO-RadioName");
+    var marquee1 = document.getElementById("EXT_RADIO-MarqueeSpan1");
+    var marquee2 = document.getElementById("EXT_RADIO-MarqueeSpan2");
+
+    this.radioPlayer.now_playing = this.translate("NO_INFORMATIONS");
+    marquee1.textContent = this.radioPlayer.now_playing;
+    marquee2.textContent = this.radioPlayer.now_playing;
+    radioName.textContent = this.radioPlayer.radio || "EXT-RadioPlayer";
+
+    radioImg.classList.remove("WipeEnter");
+    /* eslint-disable-next-line */
+    let backOffSet = radioImg.offsetWidth;
+    radioImg.classList.add("WipeEnter");
+    radioImg.src = this.radioPlayer.img;
+
+    this.radioPlayer.link = this.Radio[channel].link;
+    this.sendSocketNotification("PLAY", { link: this.radioPlayer.link, name: this.radioPlayer.radio });
     this.radioPlayer.last = this.Channels.indexOf(channel);
   },
 

@@ -129,13 +129,13 @@ module.exports = NodeHelper.create({
   },
 
   /** radio with VLC **/
-  async playWithVlc (link) {
+  async playWithVlc (radio) {
     clearTimeout(this.statusInterval);
-    this.sendSocketNotification("WILL_PLAYING");
-    this.radio.link = link;
+    this.sendSocketNotification("WILL_PLAYING", radio.name);
+    this.radio.link = radio.link;
     this.radio.filename = this.radio.link?.split("/").pop();
 
-    await this.vlc.playFile(link, { novideo: true, wait: true, timeout: 300 });
+    await this.vlc.playFile(this.radio.link, { novideo: true, wait: true, timeout: 300 });
     this.pulse();
   },
 
