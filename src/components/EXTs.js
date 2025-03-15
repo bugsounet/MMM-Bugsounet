@@ -259,6 +259,14 @@ class EXTs {
         if (!this.EXT["EXT-RadioPlayer"].hello) return this.sendWarn("[DISCONNECT] EXT-RadioPlayer don't say to me HELLO!");
         this.disconnectEXT("EXT-RadioPlayer");
         break;
+      case "Bugsounet_RADIO-CHANNELS":
+        if (!this.EXT["EXT-RadioPlayer"].hello) return this.sendWarn("[RULES] EXT-RadioPlayer don't say to me HELLO!");
+        this.EXT["EXT-RadioPlayer"].channels = payload;
+        break;
+      case "Bugsounet_RADIO-PLAYING":
+        if (!this.EXT["EXT-RadioPlayer"].hello) return this.sendWarn("[RULES] EXT-RadioPlayer don't say to me HELLO!");
+        this.EXT["EXT-RadioPlayer"].playing = payload;
+        break;
       case "Bugsounet_SPOTIFY-CONNECTED":
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[CONNECT] EXT-Spotify don't say to me HELLO!");
         this.EXT["EXT-Spotify"].remote = true;
@@ -279,14 +287,6 @@ class EXTs {
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[RULES] EXT-Spotify don't say to me HELLO!");
         this.disconnectEXT("EXT-Spotify");
         break;
-      case "Bugsounet_FREEBOXTV-CHANNELS":
-        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[RULES] EXT-FreeboxTV don't say to me HELLO!");
-        this.EXT["EXT-FreeboxTV"].channels = payload;
-        break;
-      case "Bugsounet_FREEBOXTV-PLAYING":
-        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[RULES] EXT-FreeboxTV don't say to me HELLO!");
-        this.EXT["EXT-FreeboxTV"].playing = payload;
-        break;
       case "Bugsounet_FREEBOXTV-CONNECTED":
         if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[CONNECT] EXT-FreeboxTV don't say to me HELLO!");
         this.connectEXT("EXT-FreeboxTV");
@@ -294,6 +294,14 @@ class EXTs {
       case "Bugsounet_FREEBOXTV-DISCONNECTED":
         if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[DISCONNECT] EXT-FreeboxTV don't say to me HELLO!");
         this.disconnectEXT("EXT-FreeboxTV");
+        break;
+      case "Bugsounet_FREEBOXTV-CHANNELS":
+        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[RULES] EXT-FreeboxTV don't say to me HELLO!");
+        this.EXT["EXT-FreeboxTV"].channels = payload;
+        break;
+      case "Bugsounet_FREEBOXTV-PLAYING":
+        if (!this.EXT["EXT-FreeboxTV"].hello) return this.sendWarn("[RULES] EXT-FreeboxTV don't say to me HELLO!");
+        this.EXT["EXT-FreeboxTV"].playing = payload;
         break;
       case "Bugsounet_UPDATES-MODULE_UPDATE":
         if (!this.EXT || !this.EXT["EXT-Updates"].hello) return this.sendWarn("[RULES] EXT-Updates don't say to me HELLO!");
