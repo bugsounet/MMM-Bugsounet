@@ -1040,19 +1040,19 @@ class smarthome {
         break;
       case "Restart":
         log("[CALLBACK] Send Restart MM²");
-        setTimeout(() => this.sendSocketNotification("CB_RESTART"), 5000);
+        this.sendSocketNotification("CB_RESTART");
         break;
       case "Close":
         log("[CALLBACK] Send Close MM²");
-        setTimeout(() => this.sendSocketNotification("CB_CLOSE"), 5000);
+        this.sendSocketNotification("CB_CLOSE");
         break;
       case "Reboot":
         log("[CALLBACK] Send Reboot");
-        setTimeout(() => this.sendSocketNotification("CB_REBOOT"), 5000);
+        this.sendSocketNotification("CB_REBOOT");
         break;
       case "Shutdown":
         log("[CALLBACK] Send Shutdown");
-        setTimeout(() => this.sendSocketNotification("CB_SHUTDOWN"), 5000);
+        this.sendSocketNotification("CB_SHUTDOWN");
         break;
       default:
         log("[CALLBACK] Unknow callback:", name);
