@@ -28,7 +28,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Saint",
-    "setup": "node installer/setup --path=EXTs/EXT-Saint"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Saint"
   },
   "engines": {
     "node": ">=20"
