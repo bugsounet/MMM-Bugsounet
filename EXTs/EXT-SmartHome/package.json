@@ -16,7 +16,7 @@
     "install": "exit 1",
     "project": "installer/check_ProjectID.sh",
     "reset": "node ../../installer/reset --path=EXTs/EXT-SmartHome",
-    "setup": "node installer/setup --path=EXTs/EXT-SmartHome",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-SmartHome",
     "smarthome": "sudo node installer/smarthome && npm run certbot"
   },
   "dependencies": {
