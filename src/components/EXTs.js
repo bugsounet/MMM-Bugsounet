@@ -227,21 +227,17 @@ class EXTs {
         }
         break;
       case "Bugsounet_Restart":
-      case "Bugsounet_GATEWAY-Restart":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Updates" && this.EXT["EXT-Updates"].hello) || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello) || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)) {
           this.sendSocketNotification("RESTART");
         }
         break;
       case "Bugsounet_Close":
-      case "Bugsounet_GATEWAY-Close":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("CLOSE");
         break;
       case "Bugsounet_Reboot":
-      case "Bugsounet_GATEWAY-Reboot":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("REBOOT");
         break;
       case "Bugsounet_Shutdown":
-      case "Bugsounet_GATEWAY-Shutdown":
         if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("SHUTDOWN");
         break;
       case "Bugsounet_SCREEN-POWER":
