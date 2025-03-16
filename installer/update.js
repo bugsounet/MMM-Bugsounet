@@ -11,9 +11,10 @@ async function main () {
       utils.error("Error Detected!");
       process.exit(1);
     }
-    utils.success("MMM-Bugsounet Update Done!");
+    utils.success("MMM-Bugsounet: Update Done!");
+    utils.empty();
+    updateEXTs();
   });
-  await updateEXTs();
 }
 
 main();

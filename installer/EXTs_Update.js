@@ -60,6 +60,7 @@ async function searchFoldersFromFiles (files) {
  * update EXT as Promise
  */
 function update (EXT) {
+  utils.empty();
   utils.warning(`➤ Updating ${EXT}`);
   utils.empty();
 
@@ -71,7 +72,7 @@ function update (EXT) {
         utils.empty();
         reject();
       } else {
-        utils.success(`\n${EXT}: Update Done`);
+        utils.success(`\n${EXT}: Update Done!`);
         resolve();
       }
     })
