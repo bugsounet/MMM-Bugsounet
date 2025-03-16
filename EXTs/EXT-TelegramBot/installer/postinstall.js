@@ -1,4 +1,4 @@
-const { empty, info, success, execCMD, getModuleRoot, isWin } = require("../../../installer/utils");
+const { info, success, execCMD, getModuleRoot, isWin } = require("../../../installer/utils");
 
 async function main () {
   if (isWin()) return;
