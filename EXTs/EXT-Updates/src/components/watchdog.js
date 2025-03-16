@@ -4,7 +4,7 @@ var ps = require("ps-node");
 class WatchDog {
   constructor (config) {
     this.config = config;
-    if (this.config.debug) log = (...args) => { console.log("[UPDATES] [UPDATE]", ...args); };
+    if (this.config.debug) log = (...args) => { console.log("[UPDATES] [WATCHDOG]", ...args); };
     this.watcher = null;
   }
 
