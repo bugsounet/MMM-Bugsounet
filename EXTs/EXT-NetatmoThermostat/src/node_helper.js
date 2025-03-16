@@ -6,7 +6,7 @@
  */
 
 var NodeHelper = require("node_helper");
-var moment = require("dayjs");
+var dayjs = require("dayjs");
 var netatmo = require("./components/netatmo");
 
 var logNT = () => { /* do nothing ! */ };
@@ -63,14 +63,14 @@ module.exports = NodeHelper.create({
       })
       .on("authenticated", (expire) => {
         logNT("Authenticated!");
-        let expire_at = moment(Date.now() + (expire * 1000)).format("LLLL");
-        logNT("Token Expire", expire_at);
+        let expire_at = dayjs(dayjs() + (expire * 1000)).format("DD/MM/YYYY hh:mm:ss");
+        logNT("Token Expire:", expire_at);
         this.Authenticated = true;
       })
       .on("refreshed", (expire) => {
         logNT("Token refreshed!");
-        let expire_at = moment(Date.now() + (expire * 1000)).format("LLLL");
-        logNT("New Token Expire", expire_at);
+        let expire_at = dayjs(dayjs() + (expire * 1000)).format("DD/MM/YYYY hh:mm:ss");
+        logNT("New Token Expire:", expire_at);
       });
 
     this.api.homeStatus({ home_id: this.config.home_id });

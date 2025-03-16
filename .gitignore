@@ -34,3 +34,4 @@
 /EXTs/EXT-Detector/bin/
 /EXTs/EXT-Detector/components/lib/node/binding/*
 /EXTs/EXT-Website/backup/config.js.*
+/EXTs/EXT-NetatmoThermostat/token.json

@@ -144,6 +144,7 @@ netatmo.prototype.authenticate = function (args, callback) {
       return this;
     })
     .catch((error) => {
+      console.error("[NETATMO]", error)
       return this.handleFetchError(error, "Authenticate error", true);
     });
 

@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 var netatmo = require("../components/netatmo");
 
-let file = path.resolve(__dirname, "../../../config/config.js");
+let file = path.resolve(__dirname, "../../../../../config/config.js");
 let found = false;
 
 if (fs.existsSync(file)) {
