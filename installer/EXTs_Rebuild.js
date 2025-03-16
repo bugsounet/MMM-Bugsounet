@@ -5,7 +5,7 @@
 
 const path = require("node:path");
 const { fdir } = require("fdir");
-const { empty, success, warning, error, out, execPathCMD, getModuleRoot, EXTClean } = require("./utils");
+const { empty, info, success, warning, error, out, execPathCMD, getModuleRoot, EXTClean } = require("./utils");
 const { getOptions } = require("./functions");
 
 /**
@@ -19,7 +19,7 @@ async function searchFilesInFolders () {
     .crawl(`${getModuleRoot()}/EXTs`)
     .withPromise();
 
-  if (components.length) success(`Found: ${components.length} EXTs to rebuild\n`);
+  if (components.length) success(`Found: ${components.length} EXTs installed\n`);
   else warning("no EXTs installed!");
   return components;
 }
@@ -59,6 +59,11 @@ async function searchFoldersFromFiles (files) {
  */
 async function update (EXT) {
   empty();
+  if (!EXTNeedRebuild(EXT)) {
+    info(`✋ Skipped: ${EXT} (Not needed)`);
+    return;
+  }
+  empty();
   warning(`➤ Rebuild ${EXT}`);
   empty();
   await EXTClean(EXT);
@@ -82,6 +87,24 @@ async function update (EXT) {
         error(data.trim());
       });
   });
+}
+
+/*
+ * check package.json option rebuild of EXT
+ */
+function EXTNeedRebuild (EXT) {
+  var packageJSON;
+  try {
+    packageJSON = require(`${getModuleRoot()}/EXTs/${EXT}/package.json`);
+  } catch {
+    error("Error ${EXT}: package.json not found");
+    empty();
+    process.exit(1);
+  }
+
+  var options = packageJSON.installer || {};
+  if (options.rebuild) return true;
+  return false;
 }
 
 module.exports.rebuildEXTs = rebuildEXTs;
