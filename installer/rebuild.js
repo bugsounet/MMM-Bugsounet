@@ -11,6 +11,7 @@ async function main () {
       process.exit(1);
     }
     success("MMM-Bugsounet: Rebuild Done!");
+    empty();
     rebuildEXTs();
   });
 }
