@@ -75,7 +75,7 @@ function update (EXT) {
         empty();
         reject();
       } else {
-        success(`\n${EXT}: Update Done!`);
+        success(`${EXT}: Update Done!`);
         resolve();
       }
     })

@@ -30,15 +30,15 @@ async function rebuildEXTs () {
   if (!options.EXT) return;
   const files = await searchFilesInFolders();
   if (files.length) {
-    success(`Found: ${files.length} EXTs installed\n`);
+    success(`Found: ${files.length} EXTs installed`);
+    empty();
     const EXTs = await searchFoldersFromFiles(files);
 
     if (EXTs.length) {
       for (const EXT of EXTs) {
-        await update(EXT)
+        await rebuild(EXT)
           .catch(() => process.exit(1));
       }
-      empty();
       success("✅ All EXTs are rebuilded");
       empty();
     }
@@ -60,10 +60,9 @@ async function searchFoldersFromFiles (files) {
 }
 
 /**
- * update EXT as Promise
+ * rebuild EXT as Promise
  */
-async function update (EXT) {
-  empty();
+async function rebuild (EXT) {
   if (!EXTNeedRebuild(EXT)) {
     info(`✋ Skipped: ${EXT} (Not needed)`);
     return;
@@ -81,7 +80,8 @@ async function update (EXT) {
         empty();
         reject();
       } else {
-        success(`\n${EXT}: Rebuild Done!`);
+        success(`${EXT}: Rebuild Done!`);
+        empty(),
         resolve();
       }
     })
