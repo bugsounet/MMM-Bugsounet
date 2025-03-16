@@ -81,7 +81,7 @@ async function update (EXT) {
         empty();
         reject();
       } else {
-        success(`\n${EXT}: Update Done!`);
+        success(`\n${EXT}: Rebuild Done!`);
         resolve();
       }
     })
