@@ -1,12 +1,11 @@
-const utils = require("./utils");
+const { empty, info, success, moduleName, moduleVersion, moduleReset } = require("./utils");
 
 async function main () {
-  // Let's start !
-  utils.empty();
-  utils.info(`Reset ${utils.moduleName()} v${utils.moduleVersion()}`);
-  utils.empty();
-  await utils.moduleReset();
-  utils.success("Done!");
+  empty();
+  info(`Reset ${moduleName()} v${moduleVersion()}`);
+  empty();
+  await moduleReset();
+  success("Done!");
 }
 
 main();

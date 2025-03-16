@@ -5,15 +5,7 @@
 
 const { fdir } = require("fdir");
 const esbuild = require("esbuild");
-const utils = require("./utils");
-
-const isWin = utils.isWin();
-const project = utils.moduleName();
-const revision = utils.moduleRev();
-const version = utils.moduleVersion();
-const moduleRoot = utils.getModuleRoot();
-
-var files = [];
+const { empty, success, warning, out, isWin, moduleName, moduleRev, moduleVersion, getModuleRoot } = require("./utils");
 
 /**
  * search all javascript files
@@ -22,20 +14,24 @@ async function searchFiles () {
   const components = await new fdir()
     .withBasePath()
     .filter((path) => path.endsWith(".js"))
-    .crawl(`${moduleRoot}/src`)
+    .crawl(`${getModuleRoot()}/src`)
     .withPromise();
 
-  files = files.concat(components);
-  if (files.length) utils.success(`Found: ${files.length} files to install and minify\n`);
-  else utils.warning("no files found!");
+  return components;
 }
 
 /**
  * Minify all files in array with Promise
  */
 async function minifyFiles () {
-  await searchFiles();
-  if (files.length) await Promise.all(files.map((file) => { return minify(file); })).catch(() => process.exit(1));
+  const files = await searchFiles();
+  if (files.length) {
+    success(`Found: ${files.length} files to install and minify`);
+    empty();
+    await Promise.all(files.map((file) => { return minify(file); })).catch(() => process.exit(1));
+  } else {
+    warning("no files found!");
+  }
 }
 
 /**
@@ -45,14 +41,14 @@ async function minifyFiles () {
  */
 function minify (FileIn) {
   var FileOut, MyFileName;
-  if (isWin) {
-    FileOut = FileIn.replace(`${moduleRoot}\\src\\`, `${moduleRoot}\\`);
+  if (isWin()) {
+    FileOut = FileIn.replace(`${getModuleRoot()}\\src\\`, `${getModuleRoot()}\\`);
   } else {
-    FileOut = FileIn.replace(`${moduleRoot}/src/`, `${moduleRoot}/`);
+    FileOut = FileIn.replace(`${getModuleRoot()}/src/`, `${getModuleRoot()}/`);
   }
-  MyFileName = FileOut.replace(moduleRoot, project);
+  MyFileName = FileOut.replace(getModuleRoot(), moduleName());
 
-  utils.out(`Process File: \x1B[3m${MyFileName}\x1B[0m`);
+  out(`Process File: \x1B[3m${MyFileName}\x1B[0m`);
   return new Promise((resolve, reject) => {
     try {
       esbuild.buildSync({
@@ -61,7 +57,7 @@ function minify (FileIn) {
         minify: true,
         outfile: FileOut,
         banner: {
-          js: `/** ${project}\n  * File: ${MyFileName}\n  * Version: ${version}\n  * Revision: ${revision}\n  * ⚠ This file must not be modified ⚠\n**/`
+          js: `/** ${moduleName()}\n  * File: ${MyFileName}\n  * Version: ${moduleVersion()}\n  * Revision: ${moduleRev()}\n  * ⚠ This file must not be modified ⚠\n**/`
         },
         footer: {
           js: "/** ❤ Coded With Heart by @bugsounet **/"

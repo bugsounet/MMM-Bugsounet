@@ -1,18 +1,17 @@
-const utils = require("./utils");
+const { empty, info, error, success, moduleName, moduleVersion, moduleUpdate } = require("./utils");
 const { updateEXTs } = require("./EXTs_Update");
 
 async function main () {
-  // Let's start !
-  utils.empty();
-  utils.info(`Update ${utils.moduleName()} v${utils.moduleVersion()}`);
-  utils.empty();
-  await utils.moduleUpdate((err) => {
+  empty();
+  info(`Update ${moduleName()} v${moduleVersion()}`);
+  empty();
+  await moduleUpdate((err) => {
     if (err) {
-      utils.error("Error Detected!");
+      error("Error Detected!");
       process.exit(1);
     }
-    utils.success("MMM-Bugsounet: Update Done!");
-    utils.empty();
+    success("MMM-Bugsounet: Update Done!");
+    empty();
     updateEXTs();
   });
 }

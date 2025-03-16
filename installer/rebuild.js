@@ -1,16 +1,15 @@
-const utils = require("./utils");
+const { empty, info, error, success, moduleName, moduleVersion, moduleRebuild } = require("./utils");
 
 async function main () {
-  // Let's start !
-  utils.empty();
-  utils.info(`Rebuild ${utils.moduleName()} v${utils.moduleVersion()}`);
-  utils.empty();
-  await utils.moduleRebuild((err) => {
+  empty();
+  info(`Rebuild ${moduleName()} v${moduleVersion()}`);
+  empty();
+  await moduleRebuild((err) => {
     if (err) {
-      utils.error("Error Detected!");
+      error("Error Detected!");
       process.exit(1);
     }
-    utils.success("Rebuild Done!");
+    success("Rebuild Done!");
   });
 }
 

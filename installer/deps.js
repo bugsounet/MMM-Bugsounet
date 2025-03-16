@@ -1,17 +1,16 @@
-const utils = require("./utils");
-const functions = require("./functions");
+const { isWin, empty, info, success, moduleName, moduleVersion } = require("./utils");
+const { updatePackageInfoLinux, installLinuxDeps } = require("./functions");
 
 async function main () {
-  if (utils.isWin()) return;
-  // Let's start !
-  utils.empty();
-  utils.info(`Welcome to ${utils.moduleName()} v${utils.moduleVersion()} apt dependencies installer`);
-  utils.empty();
-  await functions.updatePackageInfoLinux();
-  await functions.installLinuxDeps();
-  utils.empty();
-  utils.success("All dependencies are installed.");
-  utils.empty();
+  if (isWin()) return;
+  empty();
+  info(`Welcome to ${moduleName()} v${moduleVersion()} apt dependencies installer`);
+  empty();
+  await updatePackageInfoLinux();
+  await installLinuxDeps();
+  empty();
+  success("All dependencies are installed.");
+  empty();
 }
 
 main();

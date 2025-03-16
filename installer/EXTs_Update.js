@@ -5,11 +5,8 @@
 
 const path = require("node:path");
 const { fdir } = require("fdir");
-const utils = require("./utils");
-const functions = require("./functions");
-
-const moduleRoot = utils.getModuleRoot();
-const options = functions.getOptions();
+const { empty, success, warning, error, out, execPathCMD, getModuleRoot } = require("./utils");
+const { getOptions } = require("./functions");
 
 /**
  * search all node_helper.js files in EXTs
@@ -19,11 +16,11 @@ async function searchFilesInFolders () {
     .withRelativePaths()
     .filter((path) => path.endsWith("node_helper.js"))
     .exclude((dirName) => dirName.endsWith("src"))
-    .crawl(`${moduleRoot}/EXTs`)
+    .crawl(`${getModuleRoot()}/EXTs`)
     .withPromise();
 
-  if (components.length) utils.success(`Found: ${components.length} EXTs to update\n`);
-  else utils.warning("no EXTs installed!");
+  if (components.length) success(`Found: ${components.length} EXTs to update\n`);
+  else warning("no EXTs installed!");
   return components;
 }
 
@@ -31,6 +28,7 @@ async function searchFilesInFolders () {
  * update all EXTs with Promise
  */
 async function updateEXTs () {
+  const options = getOptions();
   if (!options.EXT) return;
   const files = await searchFilesInFolders();
   const EXTs = await searchFoldersFromFiles(files);
@@ -40,7 +38,7 @@ async function updateEXTs () {
       await update(EXT)
         .catch(() => process.exit(1));
     }
-    utils.success("\n✅ All EXTs are updated\n");
+    success("\n✅ All EXTs are updated\n");
   }
 }
 
@@ -60,27 +58,27 @@ async function searchFoldersFromFiles (files) {
  * update EXT as Promise
  */
 function update (EXT) {
-  utils.empty();
-  utils.warning(`➤ Updating ${EXT}`);
-  utils.empty();
+  empty();
+  warning(`➤ Updating ${EXT}`);
+  empty();
 
   return new Promise((resolve, reject) => {
-    utils.execPathCMD(`npm run setup:${EXT}`, utils.getModuleRoot(), (err) => {
+    execPathCMD(`npm run setup:${EXT}`, getModuleRoot(), (err) => {
       if (err) {
-        utils.empty();
-        utils.error(`${EXT}: Error Detected!`);
-        utils.empty();
+        empty();
+        error(`${EXT}: Error Detected!`);
+        empty();
         reject();
       } else {
-        utils.success(`\n${EXT}: Update Done!`);
+        success(`\n${EXT}: Update Done!`);
         resolve();
       }
     })
       .on("stdout", function (data) {
-        utils.out(data.trim());
+        out(data.trim());
       })
       .on("stderr", function (data) {
-        utils.error(data.trim());
+        error(data.trim());
       });
   });
 }

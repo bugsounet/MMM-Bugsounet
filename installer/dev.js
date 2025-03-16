@@ -5,13 +5,7 @@
 
 const { copyFileSync } = require("node:fs");
 const { fdir } = require("fdir");
-const utils = require("./utils");
-
-const isWin = utils.isWin();
-const project = utils.moduleName();
-const moduleRoot = utils.getModuleRoot();
-
-var files = [];
+const { empty, warning, success, out, isWin, moduleName, getModuleRoot } = require("./utils");
 
 /**
  * search all javascript files
@@ -20,22 +14,26 @@ async function searchFiles () {
   const components = await new fdir()
     .withBasePath()
     .filter((path) => path.endsWith(".js"))
-    .crawl(`${moduleRoot}/src`)
+    .crawl(`${getModuleRoot()}/src`)
     .withPromise();
 
-  files = files.concat(components);
-  if (files.length) utils.success(`Found: ${files.length} files to install\n`);
-  else utils.warning("no files found!");
+  return components;
 }
 
 /**
  * Install all files in array with Promise
  */
 async function installFiles () {
-  await searchFiles();
+  const files = await searchFiles();
   if (files.length) {
+    success(`Found: ${files.length} files to install`);
+    empty();
     await Promise.all(files.map((file) => { return install(file); })).catch(() => process.exit(1));
-    utils.success("\n✅ All sources files are installed\n");
+    empty();
+    success("✅ All sources files are installed");
+    empty();
+  } else {
+    warning("no files found!");
   }
 }
 
@@ -46,14 +44,14 @@ async function installFiles () {
  */
 function install (FileIn) {
   var FileOut, MyFileName;
-  if (isWin) {
-    FileOut = FileIn.replace(`${moduleRoot}\\src\\`, `${moduleRoot}\\`);
+  if (isWin()) {
+    FileOut = FileIn.replace(`${getModuleRoot()}\\src\\`, `${getModuleRoot()}\\`);
   } else {
-    FileOut = FileIn.replace(`${moduleRoot}/src/`, `${moduleRoot}/`);
+    FileOut = FileIn.replace(`${getModuleRoot()}/src/`, `${getModuleRoot()}/`);
   }
-  MyFileName = FileOut.replace(moduleRoot, project);
+  MyFileName = FileOut.replace(getModuleRoot(), moduleName());
 
-  utils.out(`Process File: \x1B[3m${MyFileName}\x1B[0m`);
+  out(`Process File: \x1B[3m${MyFileName}\x1B[0m`);
   return new Promise((resolve, reject) => {
     try {
       copyFileSync(FileIn, FileOut);
