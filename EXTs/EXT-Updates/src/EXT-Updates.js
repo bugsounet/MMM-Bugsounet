@@ -11,7 +11,7 @@ Module.register("EXT-Updates", {
     timeout: 2 * 60 * 1000,
     welcome: true,
     watchdog: true,
-    bugsounet: false
+    bugsounet: []
   },
 
   start () {
@@ -29,6 +29,7 @@ Module.register("EXT-Updates", {
         break;
       case "DOM_OBJECTS_CREATED":
         this.modulesName = Object.keys(Module.definitions);
+        this.enforceUpdateNotificationConfig();
         break;
       case "Bugsounet_READY":
         if (sender.name === "MMM-Bugsounet") this.sendSocketNotification("CONFIG", this.config);
@@ -253,5 +254,18 @@ Module.register("EXT-Updates", {
   canBeUpdated (module) {
     if (this.updateList.includes(module)) return true;
     else return false;
+  },
+
+  // force to set `sendUpdatesNotifications: true` in updatenotification module
+  // allows to receive update notifications
+  enforceUpdateNotificationConfig () {
+    MM.getModules().enumerate((module) => {
+      if (module.name === "updatenotification" && module.config.sendUpdatesNotifications === false) {
+        console.log("[UPDATES] Enforce updatenotification config: set sendUpdatesNotifications to true");
+        module.config.sendUpdatesNotifications = true;
+        module.sendSocketNotification("CONFIG", module.config);
+        module.sendSocketNotification("SCAN_UPDATES");
+      }
+    });
   }
 });

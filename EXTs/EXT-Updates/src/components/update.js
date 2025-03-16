@@ -1,5 +1,4 @@
 var log = () => { /* do nothing */ };
-const fs = require("node:fs");
 const childProcess = require("child_process");
 
 class Update {
@@ -8,18 +7,14 @@ class Update {
     this.root_path = this.config.root_path;
     this.sendSocketNotification = (...args) => Tools.sendSocketNotification(...args);
     if (this.config.debug) log = (...args) => { console.log("[UPDATES] [UPDATE]", ...args); };
-    this.updateList = [];
-    if (this.config.bugsounet) {
-      try {
-        fs.accessSync(`${__dirname}/updateList.js`, fs.R_OK);
-        this.updateList = eval(require(`${__dirname}/updateList.js`));
-        log("updateList Found:", this.updateList);
-        this.sendSocketNotification("UPDATE_LIST", this.updateList);
-      } catch (e) {
-        console.error("UPDATES] [UPDATE] updateList error:", e.message);
-      }
+    this.updateList = ["MMM-Bugsounet"];
+    if (Array.isArray(this.config.bugsounet) && this.config.bugsounet.length) {
+      this.updateList.push(this.config.bugsounet);
+      this.updateList = [...new Set(this.config.bugsounet)];
+      log("updateList Found:", this.updateList);
+      this.sendSocketNotification("UPDATE_LIST", this.updateList);
     } else {
-      this.updateList = ["MMM-GoogleAssistant"];
+      this.updateList = ["MMM-Bugsounet"];
       this.sendSocketNotification("UPDATE_LIST", this.updateList);
     }
   }
