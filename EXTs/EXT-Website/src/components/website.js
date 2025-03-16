@@ -1683,7 +1683,7 @@ class website {
   }
 
   checkUpdate (module, version) {
-    let remoteFile = `https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/prod/EXTs/${module}/package.json`;
+    let remoteFile = `https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/main/EXTs/${module}/package.json`;
     let result = {
       last: version,
       update: false,
@@ -1811,7 +1811,7 @@ class website {
       last: "0.0.0",
       needUpdate: false
     };
-    let remoteFile = "https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/prod/EXTs/EXT-Website/package.json";
+    let remoteFile = "https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/main/EXTs/EXT-Website/package.json";
     return new Promise((resolve) => {
       fetch(remoteFile)
         .then((response) => response.json())
