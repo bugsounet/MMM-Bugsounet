@@ -439,6 +439,16 @@ async function moduleClean () {
 }
 module.exports.moduleClean = moduleClean;
 
+async function EXTClean (EXT) {
+  info(`➤ Cleaning ${EXT} node_modules...`);
+  if (isWin()) {
+    await execCMD(`rmdir ${moduleRoot}\\EXTs\\${EXT}\\node_modules /Q /S`, () => {}, true);
+  } else {
+    await execCMD(`rm -rf ${moduleRoot}/EXTs/${EXT}/node_modules`, () => {}, true);
+  }
+}
+module.exports.EXTClean = EXTClean;
+
 function moduleSetup (callback = () => {}) {
   info("➤ Setup...");
   var emitter = new events.EventEmitter();
