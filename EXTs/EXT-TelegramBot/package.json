@@ -29,7 +29,8 @@
     "apt": [
       "scrot",
       "grim"
-    ]
+    ],
+    "postInstall": "node postinstall"
   },
   "overrides": {
     "node-telegram-bot-api": {
