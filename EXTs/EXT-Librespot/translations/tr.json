@@ -1,0 +1,6 @@
+{
+  "LibrespotNoInstalled": "librespot kurulu değil!",
+  "LibrespotError": "Librespot: {VALUES}",
+  "TBRestart": "Librespot Sunucusunu yeniden başlatın",
+  "TBRestarted": "Sunucu yeniden başlatıldı, yeni kimlik bilgileri yüklendi"
+}

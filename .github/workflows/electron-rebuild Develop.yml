@@ -1,0 +1,45 @@
+name: "MagicMirror² (develop) and electron-rebuild Testing"
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: Test electron-rebuild
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [23.x]
+    steps:
+      - name: "Use Node.js ${{ matrix.node-version }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          check-latest: true
+
+      - name: Checkout MagicMirror² (develop)
+        uses: actions/checkout@v4
+        with:
+          repository: MagicMirrorOrg/MagicMirror
+          ref: develop
+
+      - name: Install MagicMirror²
+        run: npm install
+
+      - name: Checkout MMM-Bugsounet
+        uses: actions/checkout@v4
+        with:
+          path: MagicMirror/modules/MMM-Bugsounet
+
+      - name: Install MMM-Bugsounet
+        run: npm run setup
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+
+      - name: Install EXT-Screen
+        run: npm run setup:EXT-Screen
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Website
+        run: npm run setup:EXT-Website
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false

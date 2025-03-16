@@ -1,0 +1,9 @@
+{
+  "SpotifyNoResult": "Geen resultaat gevonden",
+  "SpotifySearchFailed": "Zoeken en Afspelen mislukt",
+  "SpotifyListenText": "Luisteren naar",
+  "SpotifySearchTypePlaylist": "Speellijst",
+  "SpotifySearchTypeAlbum": "album",
+  "SpotifySearchTypeTrack": "nummer",
+  "SpotifySearchTypeArtist": "artist"
+}

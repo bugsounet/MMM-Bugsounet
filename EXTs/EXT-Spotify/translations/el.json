@@ -1,0 +1,13 @@
+{
+  "PlayerNoResponse": "No response from the player! ({VALUES})",
+  "PlayerConnected": "Connected to the player! ({VALUES})",
+  "PlayerConnecting": "Please wait, connecting to the player...",
+
+  "SpotifyNoResult": "Δεν βρέθηκε αποτέλεσμα",
+  "SpotifySearchFailed": "Αποτυχία αναζήτησης και αναπαραγωγής",
+  "SpotifyListenText": "Ακρόαση",
+  "SpotifySearchTypePlaylist": "Λίστα αναπαραγωγής",
+  "SpotifySearchTypeAlbum": "Άλμπουμ",
+  "SpotifySearchTypeTrack": "Κομμάτι",
+  "SpotifySearchTypeArtist": "Καλλιτέχνης"
+}

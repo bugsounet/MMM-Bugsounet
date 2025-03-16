@@ -1,0 +1,31 @@
+{
+  "name": "EXT-FreeboxTV",
+  "version": "2.7.0",
+  "description": "Stream Freebox TV Channel",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-FreeboxTV",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-FreeboxTV.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-FreeboxTV",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-FreeboxTV",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-FreeboxTV",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-FreeboxTV",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-FreeboxTV",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-FreeboxTV"
+  },
+  "dependencies": {
+    "vlc-client": "^1.1.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "installer": {
+    "apt": [
+      "vlc"
+    ]
+  },
+  "rev": "241227"
+}

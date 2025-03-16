@@ -1,0 +1,6 @@
+{
+  "VolumePresetError": "Volume: 사전 설정 오류!",
+  "VolumeText": "Volume:",
+  "VolumeHelp": "장치 볼륨 설정",
+  "VolumeDisabled": "Volume 컨트롤에 문제가 생겼습니다."
+}

@@ -1,0 +1,128 @@
+.EXT-NetatmoThermostat {
+  .hidden {
+    display: none;
+  }
+
+  #NETATMO {
+    color: #eee;
+    font-size: 15px;
+    width: 290px;
+    display: inline-block;
+  }
+
+  #NETATMO_EMPTY,
+  #NETATMO_NAME {
+    font-size: 10px;
+    height: 15px;
+  }
+
+  #NETATMO_THERMOSTAT {
+    border-radius: 10px;
+    font-size: 70px;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid;
+  }
+
+  /* use netatmo color !important for netatmo */
+  #NETATMO_THERMOSTAT.heating {
+    background: #f05909;
+    color: #000;
+  }
+
+  #NETATMO_VALUES {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #NETATMO_FIRMWARE {
+    display: flex;
+    flex-wrap: wrap;
+    height: 50px;
+    align-content: end;
+    align-items: center;
+  }
+
+  #NETATMO_RADIO {
+    display: flex;
+    flex-wrap: wrap;
+    height: 35px;
+    place-content: end space-between;
+    align-items: center;
+  }
+
+  #NETATMO_TEMPSET {
+    display: flex;
+    flex-wrap: wrap;
+    height: 50px;
+    align-content: start;
+    align-items: center;
+  }
+
+  #NETATMO_BATTERY {
+    display: flex;
+    flex-wrap: wrap;
+    height: 35px;
+    place-content: start space-between;
+    align-items: center;
+  }
+
+  #NETATMO_RADIO_VALUE,
+  #NETATMO_FIRMWARE_VALUE,
+  #NETATMO_TEMPSET_VALUE {
+    margin-left: 5px;
+  }
+
+  #NETATMO_TEMP_TENDENCY {
+    font-size: 30px;
+    width: 20px;
+    height: 30px;
+    display: flex;
+    place-content: flex-start;
+  }
+
+  #NETATMO_RADIO_ICON,
+  #NETATMO_FIRMWARE_ICON,
+  #NETATMO_BATTERY_ICON,
+  #NETATMO_TEMPSET_ICON {
+    font-size: small;
+  }
+
+  #NETATMO_BATTERY_ICON {
+    font-size: small;
+    margin-top: 3px;
+  }
+
+  #NETATMO_ZONE1 {
+    font-size: small;
+    padding: 5px;
+    flex: 1 1 0;
+  }
+
+  #NETATMO_ZONE3 {
+    font-size: small;
+    padding: 5px;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    place-items: self-end;
+  }
+
+  #NETATMO_ZONE2 {
+    flex: 2 1 0;
+    text-align: center;
+    padding: 5px;
+  }
+
+  #NETATMO_TEMP_VALUE {
+    text-align: center;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

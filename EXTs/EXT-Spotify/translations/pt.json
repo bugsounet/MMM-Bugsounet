@@ -1,0 +1,9 @@
+{
+  "SpotifyNoResult": "Sem resultados",
+  "SpotifySearchFailed": "Falha na procura",
+  "SpotifyListenText": "A ouvir em",
+  "SpotifySearchTypePlaylist": "playlist",
+  "SpotifySearchTypeAlbum": "album",
+  "SpotifySearchTypeTrack": "faixa",
+  "SpotifySearchTypeArtist": "artista"
+}

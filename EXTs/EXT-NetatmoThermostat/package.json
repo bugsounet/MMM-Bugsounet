@@ -1,0 +1,34 @@
+{
+  "name": "EXT-NetatmoThermostat",
+  "version": "1.2.3",
+  "description": "Display Netatmo Thermostat State in MagicMirror²",
+  "keywords": [
+    "netatmo",
+    "thermostat",
+    "smart home"
+  ],
+  "homepage": "https://github.com/bugsounet/EXT-NetatmoThermostat",
+  "bugs": {
+    "url": "https://github.com/bugsounet/EXT-NetatmoThermostat"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/EXT-NetatmoThermostat"
+  },
+  "license": "MIT",
+  "author": "@bugsounet",
+  "main": "EXT-NetatmoThermostat.js",
+  "scripts": {
+    "check": "node --no-deprecation installer/check",
+    "clean": "node ../../installer/clean --path=EXTs/EXT-NetatmoThermostat",
+    "database": "cd data && python stations.py",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-NetatmoThermostat",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-NetatmoThermostat",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-NetatmoThermostat",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-NetatmoThermostat",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-NetatmoThermostat"
+  },
+  "rev": "250103"
+}

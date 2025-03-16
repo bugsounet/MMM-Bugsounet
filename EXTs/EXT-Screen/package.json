@@ -1,0 +1,67 @@
+{
+  "name": "EXT-Screen",
+  "version": "1.0.0",
+  "description": "Screen manager",
+  "keywords": [
+    "magic mirror",
+    "module",
+    "screen",
+    "motion detection"
+  ],
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "bugs": {
+    "url": "https://github.com/bugsounet/MMM-Bugsounet/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
+  },
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-Screen.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Screen",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Screen",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Screen",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Screen",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "pinctrl": "installer/pinctrl.sh",
+    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-Screen",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Screen",
+    "screenSaver": "installer/screenSaver.sh",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Screen"
+  },
+  "dependencies": {
+    "cron-parser": "^5.0.4",
+    "dayjs": "^1.11.13",
+    "long-press-event": "^2.5.0",
+    "node-cron": "^3.0.3",
+    "node-libgpiod": "^0.4.6",
+    "progressbar.js": "^1.1.1",
+    "python-shell": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=20.9.0 <21 || >=22"
+  },
+  "installer": {
+    "rebuild": true,
+    "apt": [
+      "unclutter",
+      "ddcutil",
+      "cec-utils",
+      "python3",
+      "python-is-python3",
+      "python3-gpiozero",
+      "gpiod",
+      "libgpiod2",
+      "libgpiod-dev"
+    ],
+    "windowsNPMRemove": [
+      "@electron/rebuild",
+      "node-libgpiod"
+    ],
+    "windowsRebuild": false
+  },
+  "rev": "250126"
+}

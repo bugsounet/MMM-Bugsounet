@@ -1,0 +1,104 @@
+.CARBURANTS_hidden {
+  display: none !important;
+}
+
+#CARBURANTS_SP95,
+#CARBURANTS_E85,
+#CARBURANTS_GPL,
+#CARBURANTS_E10,
+#CARBURANTS_SP98,
+#CARBURANTS_GAZOLE {
+  display: flex;
+}
+
+#CARBURANTS_SP95_VALUE,
+#CARBURANTS_E85_VALUE,
+#CARBURANTS_GPL_VALUE,
+#CARBURANTS_E10_VALUE,
+#CARBURANTS_SP98_VALUE,
+#CARBURANTS_GAZOLE_VALUE {
+  margin-left: 5px;
+  margin-right: 5px;
+  font-weight: bolder;
+}
+
+#CARBURANTS_ID {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+#CARBURANTS {
+  text-align: left;
+  flex-direction: column;
+  display: inline-flex;
+  font-size: medium;
+}
+
+#CARBURANTS_UPDATE {
+  font-size: x-small;
+  text-align: right;
+}
+
+#CARBURANTS_SP95_DOT,
+#CARBURANTS_E85_DOT,
+#CARBURANTS_GPL_DOT,
+#CARBURANTS_E10_DOT,
+#CARBURANTS_SP98_DOT,
+#CARBURANTS_GAZOLE_DOT {
+  align-self: center;
+  font-size: 5px;
+  color: black;
+  margin-right: 5px;
+}
+
+#CARBURANTS_SP95_DOT.Green,
+#CARBURANTS_E85_DOT.Green,
+#CARBURANTS_GPL_DOT.Green,
+#CARBURANTS_E10_DOT.Green,
+#CARBURANTS_SP98_DOT.Green,
+#CARBURANTS_GAZOLE_DOT.Green {
+  color: green;
+}
+
+#CARBURANTS_SP95_DOT.Yellow,
+#CARBURANTS_E85_DOT.Yellow,
+#CARBURANTS_GPL_DOT.Yellow,
+#CARBURANTS_E10_DOT.Yellow,
+#CARBURANTS_SP98_DOT.Yellow,
+#CARBURANTS_GAZOLE_DOT.Yellow {
+  color: yellow;
+}
+
+#CARBURANTS_SP95_DOT.Red,
+#CARBURANTS_E85_DOT.Red,
+#CARBURANTS_GPL_DOT.Red,
+#CARBURANTS_E10_DOT.Red,
+#CARBURANTS_SP98_DOT.Red,
+#CARBURANTS_GAZOLE_DOT.Red {
+  color: red;
+}
+
+#CARBURANTS_SP95_DOT.Black,
+#CARBURANTS_E85_DOT.Black,
+#CARBURANTS_GPL_DOT.Black,
+#CARBURANTS_E10_DOT.Black,
+#CARBURANTS_SP98_DOT.Black,
+#CARBURANTS_GAZOLE_DOT.Black {
+  color: black;
+}
+
+#CARBURANTS_LOGO {
+  max-height: 100%;
+  width: 60px;
+}
+
+#CARBURANTS_SP95_VALUE.stroked,
+#CARBURANTS_E85_VALUE.stroked,
+#CARBURANTS_GPL_VALUE.stroked,
+#CARBURANTS_E10_VALUE.stroked,
+#CARBURANTS_SP98_VALUE.stroked,
+#CARBURANTS_GAZOLE_VALUE.stroked {
+  text-decoration: line-through;
+}

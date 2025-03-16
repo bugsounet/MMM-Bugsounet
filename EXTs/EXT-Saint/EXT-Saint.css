@@ -1,0 +1,11 @@
+/* MagicMirror²
+ * Module: EXT-Saint
+ */
+
+#EXT-SAINT {
+  display: inline-flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: medium;
+  line-height: 1.5em;
+}

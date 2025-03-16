@@ -1,0 +1,26 @@
+{
+  "name": "EXT-Pages",
+  "version": "3.5.0",
+  "description": "allows you to have pages in your magic mirror",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-Pages",
+  "license": "MIT",
+  "author": [
+    "edward-shen",
+    "bugsounet"
+  ],
+  "main": "EXT-Pages.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Pages",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Pages",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Pages",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Pages",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Pages",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Pages"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "rev": "241225"
+}

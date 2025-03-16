@@ -1,0 +1,20 @@
+{
+  "ALERT_UPDATE_ERROR": "Update error: {MODULE_NAME}",
+  "ALERT_WELCOMEPID": "Welcome to EXT-Updates,<br>MagicMirror² is running on PID {PID}",
+  "HELP_UPDATE": "Update command manager",
+  "HELP_SCAN": "Force scan to check if updates are available",
+  "INIT_INPROGRESS": "EXT-Updates is not yet initialized!",
+  "MODULENOTFOUND": "Module not found: {MODULE_NAME}",
+  "NEEDRESTART": "Don't forget to restart MagicMirror²!",
+  "NOTAVAILABLE": "Unable to Update {MODULE_NAME}",
+  "NOUPDATE_TB": "No new update available.",
+  "TB_UPDATE_ERROR": "Update error: {MODULE_NAME}\nPlease solve it manually.",
+  "TB_WELCOMEPID": "Welcome to EXT-Updates,\nMagicMirror² is running on PID {PID}\n",
+  "UPDATE_DONE": "Update successful: {MODULE_NAME}",
+  "UPDATE_HELPTB": "You can update modules with `/update <module_name>`",
+  "UPDATE_INPROGRESS": "Please wait. Update in progress!",
+  "UPDATE_SCAN": "Forced update scanning...",
+  "UPDATE_AUTO": "Automatic Update available:\n",
+  "UPDATE_MANUAL": "Manual Update:\n",
+  "UPDATING": "Updating: {MODULE_NAME}"
+}

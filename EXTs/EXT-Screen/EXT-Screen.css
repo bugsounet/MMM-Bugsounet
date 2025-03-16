@@ -1,0 +1,76 @@
+/* Main */
+#EXT-Screen {
+  font-size: large;
+  min-width: 250px;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+#EXT-Screen.hidden {
+  display: none;
+}
+
+/* Text */
+#EXT-Screen_TEXT {
+  font-size: large;
+  display: flex;
+}
+
+#EXT-Screen_TEXT.hidden {
+  display: none;
+}
+
+#EXT-Screen_TEXT_TRANSLATE {
+  margin-right: 10px;
+}
+
+/* Style */
+
+#EXT-Screen_STYLE {
+  font-size: large;
+  min-width: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#EXT-Screen_STYLE.Line {
+  height: 40px;
+}
+
+#EXT-Screen_STYLE.Circle {
+  width: 100px;
+  height: 93px;
+  margin-bottom: 10px;
+}
+
+#EXT-Screen_STYLE.SemiCircle {
+  width: 100px;
+}
+
+#EXT-Screen_STYLE.hidden {
+  display: none;
+}
+
+/* Presence */
+#EXT-Screen_PRESENCE {
+  font-size: large;
+  display: flex;
+}
+
+#EXT-Screen_PRESENCE.hidden {
+  display: none;
+}
+
+#EXT-Screen_PRESENCE_TEXT {
+  margin-right: 10px;
+}
+
+/* availability */
+#EXT-Screen_AVAILABILITY {
+  font-size: large;
+  display: flex;
+}
+
+#EXT-Screen_AVAILABILITY_TEXT {
+  margin-right: 10px;
+}

@@ -1,0 +1,40 @@
+{
+  "name": "EXT-PrixCarburants",
+  "version": "2.2.2",
+  "description": "Affiche le prix des carburants sur MagicMirror",
+  "keywords": [
+    "magic mirror",
+    "french",
+    "carburant"
+  ],
+  "homepage": "https://github.com/bugsounet/EXT-PrixCarburants",
+  "bugs": {
+    "url": "https://github.com/bugsounet/EXT-PrixCarburants"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/EXT-PrixCarburants"
+  },
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-PrixCarburants.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-PrixCarburants",
+    "database": "cd data && python stations.py",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-PrixCarburants",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-PrixCarburants",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-PrixCarburants",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-PrixCarburants",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-PrixCarburants"
+  },
+  "dependencies": {
+    "simple-xml-to-json": "^1.2.3",
+    "unzipper": "^0.12.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "250103"
+}

@@ -1,0 +1,7 @@
+{
+  "AlertInformation": "Information",
+  "AlertWarning": "Warning",
+  "AlertError": "Error",
+  "AlertSuccess": "Success",
+  "EXTStop": "All Extented Process are now stopped"
+}
