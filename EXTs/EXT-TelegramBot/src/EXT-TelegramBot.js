@@ -160,7 +160,7 @@ Module.register("EXT-TelegramBot", {
           this.sendSocketNotification("ALLOWEDUSER", [...this.allowed]);
         }
         break;
-      case "EXT_TELBOT-TELL_ADMIN":
+      case "Bugsounet_TELBOT-TELL_ADMIN":
         var r = null;
         if (typeof payload === "string") {
           r = {
