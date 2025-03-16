@@ -88,7 +88,8 @@
       "python-is-python3",
       "make",
       "build-essential"
-    ]
+    ],
+    "EXT": true
   },
   "rev": "250201"
 }

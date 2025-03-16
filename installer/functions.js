@@ -236,7 +236,8 @@ function setOptions () {
     apt: [],
     postInstall: null,
     windowsNPMRemove: [],
-    windowsRebuild: false
+    windowsRebuild: false,
+    EXT: false
   };
   if (!options || typeof options === "string") {
     utils.warning("No installer options!");
