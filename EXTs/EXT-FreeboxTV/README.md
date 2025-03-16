@@ -2,7 +2,7 @@
 
 ## Plugin pour MMM-GoogleAssistant
 
-EXT-Freebox est un plugin pour `MMM-GoogleAssistant`
+EXT-Freebox est un plugin pour `MMM-Bugsounet`
 
 Il permet d'afficher, sur votre Mirroir, les chaines de TV de la [Freebox](https://www.free.fr/freebox/).
 
