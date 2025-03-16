@@ -19,8 +19,6 @@ async function searchFilesInFolders () {
     .crawl(`${getModuleRoot()}/EXTs`)
     .withPromise();
 
-  if (components.length) success(`Found: ${components.length} EXTs installed\n`);
-  else warning("no EXTs installed!");
   return components;
 }
 
@@ -31,14 +29,21 @@ async function rebuildEXTs () {
   const options = getOptions();
   if (!options.EXT) return;
   const files = await searchFilesInFolders();
-  const EXTs = await searchFoldersFromFiles(files);
+  if (files.length) {
+    success(`Found: ${files.length} EXTs installed\n`);
+    const EXTs = await searchFoldersFromFiles(files);
 
-  if (EXTs.length) {
-    for (const EXT of EXTs) {
-      await update(EXT)
-        .catch(() => process.exit(1));
+    if (EXTs.length) {
+      for (const EXT of EXTs) {
+        await update(EXT)
+          .catch(() => process.exit(1));
+      }
+      empty();
+      success("✅ All EXTs are rebuilded");
+      empty();
     }
-    success("\n✅ All EXTs are rebuilded\n");
+  } else {
+    warning("No EXTs installed!");
   }
 }
 
