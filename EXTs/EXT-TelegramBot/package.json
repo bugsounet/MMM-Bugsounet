@@ -17,7 +17,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-TelegramBot",
-    "setup": "node installer/setup --path=EXTs/EXT-TelegramBot"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-TelegramBot"
   },
   "dependencies": {
     "node-telegram-bot-api": "^0.66.0"
