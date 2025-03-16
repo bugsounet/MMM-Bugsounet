@@ -58,11 +58,11 @@ async function searchFoldersFromFiles (files) {
  * update EXT as Promise
  */
 async function update (EXT) {
-  await EXTClean(EXT);
   empty();
   warning(`➤ Rebuild ${EXT}`);
   empty();
-
+  await EXTClean(EXT);
+  empty();
   return new Promise((resolve, reject) => {
     execPathCMD(`npm run setup:${EXT}`, getModuleRoot(), (err) => {
       if (err) {
