@@ -261,7 +261,7 @@ Module.register("EXT-Updates", {
   enforceUpdateNotificationConfig () {
     MM.getModules().enumerate((module) => {
       if (module.name === "updatenotification" && module.config.sendUpdatesNotifications === false) {
-        console.log("[UPDATES] Enforce updatenotification config: set sendUpdatesNotifications to true");
+        console.warn("[UPDATES] Enforce updatenotification config: set sendUpdatesNotifications to true");
         module.config.sendUpdatesNotifications = true;
         module.sendSocketNotification("CONFIG", module.config);
         module.sendSocketNotification("SCAN_UPDATES");

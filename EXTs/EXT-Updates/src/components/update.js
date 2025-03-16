@@ -9,12 +9,11 @@ class Update {
     if (this.config.debug) log = (...args) => { console.log("[UPDATES] [UPDATE]", ...args); };
     this.updateList = ["MMM-Bugsounet"];
     if (Array.isArray(this.config.bugsounet) && this.config.bugsounet.length) {
-      this.updateList.push(this.config.bugsounet);
-      this.updateList = [...new Set(this.config.bugsounet)];
-      log("updateList Found:", this.updateList);
+      this.updateList = this.updateList.concat(this.config.bugsounet);
+      this.updateList = [...new Set(this.updateList)];
+      console.warn("[UPDATES] [UPDATE] bugsounet updateList Found:", this.updateList);
       this.sendSocketNotification("UPDATE_LIST", this.updateList);
     } else {
-      this.updateList = ["MMM-Bugsounet"];
       this.sendSocketNotification("UPDATE_LIST", this.updateList);
     }
   }
