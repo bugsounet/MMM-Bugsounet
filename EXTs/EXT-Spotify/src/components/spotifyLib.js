@@ -402,6 +402,7 @@ class Spotify {
         break;
       case "session_client_changed":
         this.librespotResult.device.name = event.client_name;
+        if (event.client_name === "") this.librespotResult.device.name = this.config.LibrespotPlayer
         break;
       case "volume_changed":
         this.librespotResult.device.volume_percent = (Number(event.volume) * 100 / 65535).toFixed(0);
