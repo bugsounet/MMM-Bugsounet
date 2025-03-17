@@ -227,18 +227,45 @@ class EXTs {
         }
         break;
       case "Bugsounet_Restart":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Updates" && this.EXT["EXT-Updates"].hello) || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello) || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)) {
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-Updates" && this.EXT["EXT-Updates"].hello)
+          || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
           this.sendSocketNotification("RESTART");
+        } else {
+          this.sendWarn(`Bugsounet_Restart by ${sender.name} is not allowed`);
         }
         break;
       case "Bugsounet_Close":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("CLOSE");
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
+          this.sendSocketNotification("CLOSE");
+        } else {
+          this.sendWarn(`Bugsounet_Close by ${sender.name} is not allowed`);
+        }
         break;
       case "Bugsounet_Reboot":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("REBOOT");
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
+          this.sendSocketNotification("REBOOT");
+        } else {
+          this.sendWarn(`Bugsounet_Reboot by ${sender.name} is not allowed`);
+        }
         break;
       case "Bugsounet_Shutdown":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("SHUTDOWN");
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
+          this.sendSocketNotification("SHUTDOWN");
+        } else {
+          this.sendWarn(`Bugsounet_Shutdown by ${sender.name} is not allowed`);
+        }
         break;
       case "Bugsounet_SCREEN-POWER":
         if (!this.EXT["EXT-Screen"].hello) return this.sendWarn("EXT-Screen don't say to me HELLO!");
