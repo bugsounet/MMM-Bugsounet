@@ -228,7 +228,7 @@ class smarthome {
         console.error("[SMARTHOME] Can't start SmartHome web server!");
         console.error("[SMARTHOME] Error:", err.message);
         this.sendSocketNotification("SendNoti", {
-          noti: "GA_ALERT",
+          noti: "Bugsounet_ALERT",
           payload: {
             type: "error",
             message: "Can't start SmartHome web server!",

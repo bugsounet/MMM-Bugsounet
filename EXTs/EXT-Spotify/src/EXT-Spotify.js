@@ -118,7 +118,7 @@ Module.register("EXT-Spotify", {
           case "VOLUME":
             var Volume = param;
             if (isNaN(Volume)) {
-              this.sendNotification("GA_ALERT", {
+              this.sendNotification("Bugsounet_ALERT", {
                 type: "error",
                 message: "Volume MUST be a number ! [0-100]",
                 icon: this.file("components/Spotify-Logo.png")
@@ -135,7 +135,7 @@ Module.register("EXT-Spotify", {
         }
       },
       alert: (params) => {
-        this.sendNotification("GA_ALERT", params);
+        this.sendNotification("Bugsounet_ALERT", params);
       }
     };
     this.configHelper = {
