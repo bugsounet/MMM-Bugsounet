@@ -123,8 +123,6 @@ Module.register("EXT-Pages", {
     if (notification === "Bugsounet_READY" && sender.name === "MMM-Bugsounet") {
       this.sendSocketNotification("INIT");
       logPages("received that all objects are created; will now hide things!");
-      return;
-
       this.Loaded();
       this.animatePageChange(undefined, true);
       this.resetTimerWithDelay();
