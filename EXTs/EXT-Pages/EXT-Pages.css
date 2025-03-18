@@ -24,14 +24,8 @@
   display: none;
 }
 
-#EXT_Pages-GoogleAssistant {
+#EXT_Pages-Bugsounet {
   position: absolute;
-  margin-top: 15rem;
-  left: 1rem;
-}
-
-#EXT_Pages-GoogleAssistantImg {
-  height: 10vh;
 }
 
 #EXT_PAGES-Loading {
