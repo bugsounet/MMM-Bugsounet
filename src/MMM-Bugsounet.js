@@ -11,19 +11,40 @@ var logBugsounet = () => { /* do nothing */ };
 Module.register("MMM-Bugsounet", {
   requiresVersion: "2.30.0",
   defaults: {
-    debug: false
+    debug: false,
+    username: "admin",
+    password: "admin",
+    useAPIDocs: false,
+    useLimiter: true
+  },
+
+  start () {
+    if (this.config.debug) logBugsounet = (...args) => { console.log("[Bugsounet]", ...args); };
+    this.ready = false;
+    this.config.translations = {};
+    this.EXT_DB = [];
+    this.callbacks = {
+      translate: (text) => {
+        return this.translate(text);
+      }
+    };
+    this.AlertCommander = new AlertCommander(this.callbacks);
+    this.sendSocketNotification("PRE-INIT");
   },
 
   getScripts () {
+    console.log(this.file("components/AlertCommander.js"))
     return [
-      "/modules/MMM-Bugsounet/components/AlertCommander.js",
+      this.file("components/AlertCommander.js"),
       "/modules/MMM-Bugsounet/node_modules/sweetalert2/dist/sweetalert2.all.min.js",
-      "/modules/MMM-Bugsounet/components/EXTs.js"
+      this.file("components/EXTs.js"),
+      this.file("components/WebsiteTranslations.js"),
+      this.file("components/sysInfoPage.js")
     ];
   },
 
   getStyles () {
-    return ["/modules/MMM-Bugsounet/MMM-Bugsounet.css"];
+    return ["MMM-Bugsounet.css"];
   },
 
   getTranslations () {
@@ -32,6 +53,20 @@ Module.register("MMM-Bugsounet", {
       fr: "translations/fr.json"
     };
   },
+
+/*  getTranslations () {
+    return {
+      en: "translations/en.json",
+      de: "translations/de.json",
+      es: "translations/es.json",
+      fr: "translations/fr.json",
+      it: "translations/it.json",
+      nl: "translations/nl.json",
+      tr: "translations/tr.json",
+      "zh-cn": "translations/zh-cn.json"
+    };
+  },
+*/
 
   getDom () {
     var dom = document.createElement("div");
@@ -43,13 +78,16 @@ Module.register("MMM-Bugsounet", {
     if (noti.startsWith("Bugsounet_") && this.EXTs) return this.EXTs.ActionsEXTs(noti, payload, sender);
   },
 
-  socketNotificationReceived (noti, payload) {
+  async socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "BUGSOUNET-INIT":
-        this.EXT_Config();
+        await this.EXT_Config();
+        await this.websiteInit();
+        this.sendSocketNotification("INIT", this.config);
         break;
       case "INITIALIZED":
         this.EXTs.setBugsounet_Ready();
+        this.sendSocketNotification("setEXTStatus", this.EXTs.Get_EXT_Status())
         this.sendNotification("Bugsounet_READY");
         logBugsounet("Initialized.");
         break;
@@ -59,21 +97,14 @@ Module.register("MMM-Bugsounet", {
           type: "error"
         }, "MMM-Bugsounet");
         break;
+      case "SENDALERT":
+        this.sendAlert(payload, "MMM-Bugsounet");
+        break;
     }
   },
 
-  start () {
-    if (this.config.debug) logBugsounet = (...args) => { console.log("[Bugsounet]", ...args); };
-    this.callbacks = {
-      translate: (text) => {
-        return this.translate(text);
-      }
-    };
-    this.AlertCommander = new AlertCommander(this.callbacks);
-    this.sendSocketNotification("PRE-INIT", this.config);
-  },
-
   async EXT_Config () {
+        console.log("EXT_Config start");
     const Tools = {
       translate: (...args) => this.translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
@@ -82,12 +113,12 @@ Module.register("MMM-Bugsounet", {
       notificationReceived: (...args) => this.notificationReceived(...args),
       lock: () => this.EXTs.forceLockPagesAndScreen(),
       unLock: () => this.EXTs.forceUnLockPagesAndScreen(),
-      sendAlert: (...args) => this.sendAlert(...args)
+      sendAlert: (...args) => this.sendAlert(...args),
+      sendEXTStatus: (...args) => this.sendSocketNotification("setEXTStatus", ...args)
     };
     this.EXTs = new EXTs(Tools); // a faire verifier les CB
     await this.EXTs.init();
-    this.sendNotification("Bugsounet_DB", this.EXTs.Get_DB());
-    this.sendSocketNotification("INIT");
+    console.log("EXT_Config end");
   },
 
   sendAlert (payload, sender) {
@@ -103,5 +134,30 @@ Module.register("MMM-Bugsounet", {
         sound: payload.sound ? payload.sound : null
       });
     }
-  }
+  },
+
+  async websiteInit () {
+    console.log("websiteInit start");
+    const Tools = {
+      translate: (...args) => this.translate(...args),
+      sendNotification: (...args) => this.sendNotification(...args),
+      sendSocketNotification: (...args) => this.sendSocketNotification(...args)
+    };
+    this.Translations = new WebsiteTranslations(Tools);
+    let init = await this.Translations.init();
+    if (!init) {
+      this.sendNotification("Bugsounet_ALERT", { // <-- to modify
+        message: "Translations Error",
+        type: "error",
+        timer: 5000
+      });
+      return;
+    }
+    this.session = {};
+    this.config.EXT_DB = this.EXTs.Get_DB();
+    this.config.translations = this.Translations.Get_EXT_Translation();
+    this.sysInfo = new sysInfoPage(Tools);
+    this.sysInfo.prepare();
+    console.log("websiteInit end");
+  },
 });

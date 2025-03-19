@@ -9,7 +9,7 @@ class Controler {
 
   /** Check using pm2 **/
   check_PM2_Process () {
-    console.log("[Bugsounet] checking PM2 using...");
+    console.log("[Bugsounet] Checking PM2 using...");
     return new Promise((resolve) => {
       pm2.connect((err) => {
         if (err) {

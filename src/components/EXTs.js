@@ -12,6 +12,7 @@ class EXTs {
     this.notificationReceived = (...args) => Tools.notificationReceived(...args);
     this.socketNotificationReceived = (...args) => Tools.socketNotificationReceived(...args);
     this.sendAlert = (...args) => Tools.sendAlert(...args);
+    this.sendEXTStatus = (...args) => Tools.sendEXTStatus(...args);
 
     this.ExtDB = [
       "EXT-Freebox",
@@ -30,8 +31,7 @@ class EXTs {
       "EXT-TelegramBot",
       "EXT-Updates",
       "EXT-VLCServer",
-      "EXT-Volume",
-      "EXT-Website"
+      "EXT-Volume"
     ];
 
     this.EXT = {
@@ -360,11 +360,12 @@ class EXTs {
         break;
     }
 
-    if (this.EXT["EXT-Website"].hello || this.EXT["EXT-SmartHome"].hello) {
+    if (this.EXT["EXT-SmartHome"].hello) {
       this.sendStatusTimeout = setTimeout(() => {
         this.sendNotification("Bugsounet_STATUS", this.EXT);
       }, 500);
     }
+    this.sendEXTStatus(this.EXT);
     logBugsounet("[EXTs] Status:", this.EXT);
   }
 
