@@ -189,9 +189,9 @@ class website {
         .on("error", (err) => {
           console.error("[Bugsounet] [Web] [Server] Can't start web server!");
           console.error("[Bugsounet] [Web] [Server] Error:", err.message);
-          this.sendSocketNotification("ERROR", "Can't start web server!")
+          this.sendSocketNotification("ERROR", "Can't start web server!");
         });
-    })
+    });
   }
 
   /** log any website traffic **/
@@ -935,7 +935,7 @@ class website {
           sender: req.user?.id ? req.user.id : "MMM-Bugsounet", // <-- to check
           timer: 30 * 1000,
           sound: "modules/MMM-Bugsounet/website/tools/message.mp3",
-          icon: `modules/MMM-Bugsounet/website/assets/img/bugsounet.png`
+          icon: "modules/MMM-Bugsounet/website/assets/img/bugsounet.png"
         });
         res.json({ done: "ok" });
         break;

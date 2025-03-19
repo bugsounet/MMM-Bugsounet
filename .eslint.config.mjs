@@ -118,10 +118,16 @@ const config = [
     "ignores": ["EXTs/EXT-*/*.js", "EXTs/EXT-*/components/**/*.js"]
   },
   {
-    "ignores": ["EXTs/EXT-*/website/assets/js/*.js", "EXTs/EXT-*/website/**/*.min.js"]
+    "ignores": ["website/assets/js/*.js", "website/**/*.min.js"]
   },
   {
-    "ignores": ["EXTs/EXT-Website/website/config/**/*.js", "EXTs/EXT-Website/website/tools/*.js"]
+    "ignores": ["EXTs/EXT-SmartHome/website/assets/js/*.js", "EXTs/EXT-SmartHome/website/**/*.min.js"]
+  },
+  {
+    "ignores": ["website/tools/*.js"]
+  },
+  {
+    "ignores": ["EXTs/EXT-Website-/**/*"]
   }
 ];
 

@@ -4,7 +4,7 @@
  * ©2025
  */
 
-/* global AlertCommander, EXTs */
+/* global AlertCommander, EXTs, WebsiteTranslations, sysInfoPage */
 
 var logBugsounet = () => { /* do nothing */ };
 
@@ -33,10 +33,9 @@ Module.register("MMM-Bugsounet", {
   },
 
   getScripts () {
-    console.log(this.file("components/AlertCommander.js"))
     return [
+      this.file("/node_modules/sweetalert2/dist/sweetalert2.all.min.js"),
       this.file("components/AlertCommander.js"),
-      "/modules/MMM-Bugsounet/node_modules/sweetalert2/dist/sweetalert2.all.min.js",
       this.file("components/EXTs.js"),
       this.file("components/WebsiteTranslations.js"),
       this.file("components/sysInfoPage.js")
@@ -53,20 +52,6 @@ Module.register("MMM-Bugsounet", {
       fr: "translations/fr.json"
     };
   },
-
-/*  getTranslations () {
-    return {
-      en: "translations/en.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      nl: "translations/nl.json",
-      tr: "translations/tr.json",
-      "zh-cn": "translations/zh-cn.json"
-    };
-  },
-*/
 
   getDom () {
     var dom = document.createElement("div");
@@ -87,7 +72,7 @@ Module.register("MMM-Bugsounet", {
         break;
       case "INITIALIZED":
         this.EXTs.setBugsounet_Ready();
-        this.sendSocketNotification("setEXTStatus", this.EXTs.Get_EXT_Status())
+        this.sendSocketNotification("setEXTStatus", this.EXTs.Get_EXT_Status());
         this.sendNotification("Bugsounet_READY");
         logBugsounet("Initialized.");
         break;
@@ -104,7 +89,6 @@ Module.register("MMM-Bugsounet", {
   },
 
   async EXT_Config () {
-        console.log("EXT_Config start");
     const Tools = {
       translate: (...args) => this.translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
@@ -118,7 +102,6 @@ Module.register("MMM-Bugsounet", {
     };
     this.EXTs = new EXTs(Tools); // a faire verifier les CB
     await this.EXTs.init();
-    console.log("EXT_Config end");
   },
 
   sendAlert (payload, sender) {
@@ -137,7 +120,6 @@ Module.register("MMM-Bugsounet", {
   },
 
   async websiteInit () {
-    console.log("websiteInit start");
     const Tools = {
       translate: (...args) => this.translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
@@ -158,6 +140,5 @@ Module.register("MMM-Bugsounet", {
     this.config.translations = this.Translations.Get_EXT_Translation();
     this.sysInfo = new sysInfoPage(Tools);
     this.sysInfo.prepare();
-    console.log("websiteInit end");
-  },
+  }
 });
