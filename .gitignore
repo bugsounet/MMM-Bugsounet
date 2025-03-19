@@ -1,6 +1,15 @@
 **/node_modules/
 /*.js
 /components/**/*.js
+
+/website/tools/.uptimed
+/website/tools/*.js
+/download/*
+!/download/.keep
+/backup/config.*
+/tmp/*
+!/tmp/.keep
+
 /EXTs/EXT-*/EXT-*.js
 /EXTs/EXT-*/node_helper.js
 /EXTs/EXT-*/components/**/*.js
@@ -20,10 +29,6 @@
 !/EXTs/EXT-TelegramBot/cache/.keep
 /EXTs/EXT-TelegramBot/screenshot/screenshot_*.png
 
-/EXTs/EXT-Website/backup/config.*
-/EXTs/EXT-Website/website/tools/.uptimed
-/EXTs/EXT-Website/website/tools/*.js
-
 /EXTs/EXT-SmartHome/smarthome.json
 /EXTs/EXT-SmartHome/website/tokens/*
 !/EXTs/EXT-SmartHome/website/tokens/.keep
@@ -32,7 +37,5 @@
 /EXTs/EXT-PrixCarburants/data/download.zip
 
 /EXTs/EXT-NetatmoThermostat/token.json
-
-/website/tools/.uptimed
 
 /EXTs/EXT-Website-/
