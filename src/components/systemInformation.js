@@ -10,10 +10,9 @@ class systemInfo {
     this.translate = translate;
     this.System = {
       VERSION: {
-        GA: `${require("../../../package.json").version} (${require("../../../package.json").rev})`,
-        MagicMirror: require("../../../../../package.json").version,
+        Bugsounet: `${require("../package.json").version} (${require("../package.json").rev})`,
+        MagicMirror: require("../../../package.json").version,
         ELECTRON: "unknow",
-        NODEMM: "unknow",
         NODECORE: "unknow",
         NPM: "unknow",
         KERNEL: "unknow",
@@ -105,7 +104,7 @@ class systemInfo {
     await this.getStaticData();
     await this.getUptimeRecord();
     setInterval(async () => { await this.uptimed(); }, 5000);
-    console.log("[WEBSITE] [SYSTEMINFO] Initialized");
+    console.log("[Bugsounet] [SysInfo] Initialized");
   }
 
   async Get () {
@@ -140,7 +139,7 @@ class systemInfo {
           resolve();
         })
         .catch((e) => {
-          console.error("[WEBSITE] [SYSTEMINFO] Error", e);
+          console.error("[Bugsounet] [SysInfo] Error", e);
           resolve();
         });
     });
@@ -222,7 +221,7 @@ class systemInfo {
           if (this.System["NETWORK"].type === "wireless") {
             await this.wirelessStatus(this.System["NETWORK"].name, (err, status) => {
               if (err) {
-                console.error("[WEBSITE] [SYSTEMINFO] WirelessTools Error", err.message);
+                console.error("[Bugsounet] [SysInfo] WirelessTools Error", err.message);
                 if (this.System["WIRELESS"].iface) this.System["NETWORK"] = this.forceWireless();
                 resolve();
                 return;
@@ -236,7 +235,7 @@ class systemInfo {
           }
         })
         .catch((e) => {
-          console.error("[WEBSITE] [SYSTEMINFO] Error", e);
+          console.error("[Bugsounet] [SysInfo] Error", e);
           resolve();
         });
     });
@@ -314,16 +313,16 @@ class systemInfo {
       if (fs.existsSync(uptimeFilePath)) {
         fs.readFile(uptimeFilePath, "utf8", (error, data) => {
           if (error) {
-            console.error("[WEBSITE] [SYSTEMINFO] readFile uptimed error!", error);
+            console.error("[Bugsounet] [SysInfo] readFile uptimed error!", error);
             return resolve();
           }
           try {
             var Data = JSON.parse(data);
           } catch (e) {
-            console.error("[WEBSITE] [SYSTEMINFO] readFile data error!", e.toString());
+            console.error("[Bugsounet] [SysInfo] readFile data error!", e.toString());
             return resolve();
           }
-          console.log("[WEBSITE] [SYSTEMINFO] Read Uptimed");
+          console.log("[Bugsounet] [SysInfo] Read Uptimed");
           this.System["UPTIME"].recordCurrent = Data.system;
           this.System["UPTIME"].recordMM = Data.MM;
           this.System["UPTIME"].recordCurrentDHM = this.getDHM(Data.system);
@@ -336,8 +335,8 @@ class systemInfo {
           MM: 1
         };
         fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-          if (error) console.error("[WEBSITE] [SYSTEMINFO] recordFile creation error!", error);
-          else console.log("[WEBSITE] [SYSTEMINFO] Create Uptimed");
+          if (error) console.error("[Bugsounet] [SysInfo] recordFile creation error!", error);
+          else console.log("[Bugsounet] [SysInfo] Create Uptimed");
           resolve();
         });
       }
@@ -362,7 +361,7 @@ class systemInfo {
         MM: this.System["UPTIME"].recordMM
       };
       fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-        if (error) console.error("[WEBSITE] [SYSTEMINFO] recordFile writing error!", error);
+        if (error) console.error("[Bugsounet] [SysInfo] recordFile writing error!", error);
         resolve();
       });
     });

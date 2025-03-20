@@ -44,7 +44,7 @@ async function doTerminalLogs () {
   fitAddonLogs.fit();
 
   socketLogs.on("connect", () => {
-    termLogs.write(`\x1B[1;3;31mEXT-Website v${version.version} (${version.rev}.${version.lang})\x1B[0m \r\n\n`);
+    termLogs.write(`\x1B[1;3;31mMMM-Bugsounet v${version.version} (${version.rev}.${version.lang})\x1B[0m \r\n\n`);
   });
 
   socketLogs.on("disconnect", () => {
@@ -75,7 +75,7 @@ async function doTerminal () {
   }
 
   socketPTY.on("connect", () => {
-    termPTY.write(`\x1B[1;3;31mEXT-Website v${version.version} (${version.rev}.${version.lang})\x1B[0m \r\n\n`);
+    termPTY.write(`\x1B[1;3;31mMMM-Bugsounet v${version.version} (${version.rev}.${version.lang})\x1B[0m \r\n\n`);
   });
 
   socketPTY.on("disconnect", () => {

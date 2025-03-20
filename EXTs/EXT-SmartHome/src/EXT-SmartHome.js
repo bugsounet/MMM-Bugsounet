@@ -115,7 +115,7 @@ Module.register("EXT-SmartHome", {
         this.sendNotification("Bugsounet_ALERT", {
           message: "Hey, I'm here !",
           type: "information",
-          sound: "modules/MMM-Bugsounet/EXTs/EXT-Website/website/tools/locator.mp3",
+          sound: "modules/MMM-Bugsounet/website/tools/locator.mp3",
           timer: 19000
         });
         break;

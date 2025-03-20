@@ -29,9 +29,10 @@ class website {
   constructor (config, cb = () => {}) {
     this.lib = config.lib;
     this.config = config.config;
-    this.sendSocketNotification = (...args) => cb(...args);
+    this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
+    this.sendInternalCallback = (value) => cb.sendInternalCallback(value);
 
-    if (config.debug) log = (...args) => { console.log("[WEBSITE]", ...args); };
+    if (config.debug) log = (...args) => { console.log("[Bugsounet] [Web]", ...args); };
 
     this.website = {
       MMConfig: null, // real config file (config.js)
@@ -49,7 +50,6 @@ class website {
       translations: null,
       loginTranslation: null,
       language: null,
-      GAConfig: {}, // see to be deleted !?
       HyperWatch: null,
       radio: null,
       freeTV: {},
@@ -65,10 +65,10 @@ class website {
     };
     this.MMVersion = global.version;
     this.root_path = global.root_path;
-    this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
-    this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
+    this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
+    this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/website`;
     this.APIDOCS = {};
-    this.secret = this.encode(`EXT-Website v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
+    this.secret = this.encode(`MMM-Bugsounet v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
     this.rateLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
       max: 5,
@@ -113,13 +113,13 @@ class website {
   }
 
   async init (data) {
-    console.log("[WEBSITE] Loading Website...");
+    console.log("[Bugsounet] [Web] Loading Website...");
     this.website.MMConfig = await this.readConfig();
     let Translations = data.translations;
 
     if (!this.website.MMConfig) { // should not happen ! ;)
       this.website.errorInit = true;
-      console.error("[WEBSITE] Error: MagicMirror config.js file not found!");
+      console.error("[Bugsounet] [Web] Error: MagicMirror config.js file not found!");
       this.sendSocketNotification("ERROR", "MagicMirror config.js file not found!");
       return;
     }
@@ -144,12 +144,12 @@ class website {
     this.website.systemInformation.result = await this.website.systemInformation.lib.initData();
 
     if (!this.config.username && !this.config.password) {
-      console.error("[WEBSITE] Your have not defined user/password in config!");
-      console.error("[WEBSITE] Using default credentials");
+      console.error("[Bugsounet] [Web] Your have not defined user/password in config!");
+      console.error("[Bugsounet] [Web] Using default credentials");
     } else {
       if ((this.config.username === this.website.user.username) || (this.config.password === this.website.user.password)) {
-        console.warn("[WEBSITE] WARN: You are using default username or default password");
-        console.warn("[WEBSITE] WARN: Don't forget to change it!");
+        console.warn("[Bugsounet] [Web] WARN: You are using default username or default password");
+        console.warn("[Bugsounet] [Web] WARN: Don't forget to change it!");
       }
       this.website.user.username = this.config.username;
       this.website.user.password = this.config.password;
@@ -167,36 +167,31 @@ class website {
     log("Listening:", this.website.listening);
     log("APIDocs:", this.website.APIDocs);
 
-    console.log("[WEBSITE] [API] Loading API Server...");
+    console.log("[Bugsounet] [Web] [API] Loading API Server...");
     await this.createAPI();
     await this.serverAPI();
 
-    console.log("[WEBSITE] [SERVER] Loading Main Server...");
+    console.log("[Bugsounet] [Web] [Server] Loading Main Server...");
     await this.createWebsite();
-    this.server();
+    await this.server();
   }
 
   /** Start Website Server **/
   server () {
-    this.website.server
-      .listen(8081, "0.0.0.0", () => {
-        console.log("[WEBSITE] [SERVER] Start listening on port 8081");
-        console.log(`[WEBSITE] [SERVER] Available locally at http://${this.website.listening}:8081`);
-        this.website.initialized = true;
-        this.sendSocketNotification("INITIALIZED");
-      })
-      .on("error", (err) => {
-        console.error("[WEBSITE] [SERVER] Can't start web server!");
-        console.error("[WEBSITE] [SERVER] Error:", err.message);
-        this.sendSocketNotification("SendNoti", {
-          noti: "Bugsounet_ALERT",
-          payload: {
-            type: "error",
-            message: "Can't start web server!",
-            timer: 10000
-          }
+    return new Promise((resolve) => {
+      this.website.server
+        .listen(8081, "0.0.0.0", () => {
+          console.log("[Bugsounet] [Web] [Server] Start listening on port 8081");
+          console.log(`[Bugsounet] [Web] [Server] Available locally at http://${this.website.listening}:8081`);
+          this.website.initialized = true;
+          resolve();
+        })
+        .on("error", (err) => {
+          console.error("[Bugsounet] [Web] [Server] Can't start web server!");
+          console.error("[Bugsounet] [Web] [Server] Error:", err.message);
+          this.sendSocketNotification("ERROR", "Can't start web server!");
         });
-      });
+    });
   }
 
   /** log any website traffic **/
@@ -209,7 +204,7 @@ class website {
   /** add custom Headers **/
   customHeaders (req, res, next) {
     let version = require("../package.json").version;
-    res.setHeader("X-Powered-By", `EXT-Website v${version}`);
+    res.setHeader("X-Powered-By", `MMM-Bugsounet v${version}`);
     next();
   }
 
@@ -232,7 +227,7 @@ class website {
         on: {
           onProxyReq: fixRequestBody,
           error: (err, req, res) => {
-            console.error("[WEBSITE] SmartHome Proxy ERROR", err);
+            console.error("[Bugsounet] [Web] SmartHome Proxy ERROR", err);
             if (!this.website.EXTStatus["EXT-SmartHome"].hello) {
               res.redirect("/404");
             } else {
@@ -252,7 +247,7 @@ class website {
         on: {
           onProxyReq: fixRequestBody,
           error: (err, req, res) => {
-            console.error("[WEBSITE] API Proxy ERROR", err);
+            console.error("[Bugsounet] [Web] API Proxy ERROR", err);
             res.writeHead(500, {
               "Content-Type": "text/plain"
             });
@@ -279,10 +274,10 @@ class website {
         {
           onError: (err, req) => {
             let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-            console.error(`[WEBSITE] [${ip}] [${req.method}] ${req.url}`);
-            console.error("[WEBSITE] bodyparser error:", err.type);
+            console.error(`[Bugsounet] [Web] [${ip}] [${req.method}] ${req.url}`);
+            console.error("[Bugsounet] [Web] bodyparser error:", err.type);
             log("body:", err.body);
-            console.error("[WEBSITE] detail:", err.message);
+            console.error("[Bugsounet] [Web] detail:", err.message);
           },
           errorMessage: (err) => {
             return `Body Parser failed to parse request (${err.type}) --> ${err.message}`;
@@ -328,20 +323,20 @@ class website {
         .use("/3rdParty.js", express.static(`${this.WebsitePath}/tools/3rdParty.js`))
         .use("/APIDocs.js", express.static(`${this.WebsitePath}/tools/APIDocs.js`))
         .use("/assets", express.static(`${this.WebsitePath}/assets`, options))
-        .use("/jsoneditor", express.static(`${this.WebsiteModulePath}/node_modules/jsoneditor`))
-        .use("/xterm", express.static(`${this.WebsiteModulePath}/node_modules/xterm`))
-        .use("/xterm-addon-fit", express.static(`${this.WebsiteModulePath}/node_modules/xterm-addon-fit`))
-        .use("/jquery.min.js", express.static(`${this.WebsiteModulePath}/node_modules/jquery/dist/jquery.min.js`))
+        .use("/jsoneditor", express.static(`${this.BugsounetModulePath}/node_modules/jsoneditor`))
+        .use("/xterm", express.static(`${this.BugsounetModulePath}/node_modules/xterm`))
+        .use("/xterm-addon-fit", express.static(`${this.BugsounetModulePath}/node_modules/xterm-addon-fit`))
+        .use("/jquery.min.js", express.static(`${this.BugsounetModulePath}/node_modules/jquery/dist/jquery.min.js`))
 
         .get("/login", this.speedLimiter, this.rateLimiter, (req, res) => {
           const logged = this.hasValidCookie(req);
           if (logged) return res.redirect("/");
-          res.clearCookie("EXT-Website");
+          res.clearCookie("MMM-Bugsounet");
           res.sendFile(`${this.WebsitePath}/login.html`);
         })
 
         .get("/logout", (req, res) => {
-          res.clearCookie("EXT-Website");
+          res.clearCookie("MMM-Bugsounet");
           res.redirect("/login");
         })
 
@@ -454,7 +449,7 @@ class website {
         })
 
         .get("/*", this.speedLimiter, this.rateLimiter, (req, res) => {
-          console.warn("[WEBSITE] Don't find:", req.url);
+          console.warn("[Bugsounet] [Web] Don't find:", req.url);
           res.redirect("/404");
         });
 
@@ -467,21 +462,14 @@ class website {
     return new Promise((resolve) => {
       this.website.serverAPI
         .listen(8085, "127.0.0.1", () => {
-          console.log("[WEBSITE] [API] Start listening on port 8085");
+          console.log("[Bugsounet] [Web] [API] Start listening on port 8085");
           this.sendSocketNotification("SendNoti", "Bugsounet_WEBSITE-API_STARTED");
           resolve();
         })
         .on("error", (err) => {
-          console.error("[WEBSITE] [API] Can't start API server!");
-          console.error("[WEBSITE] [API] Error:", err.message);
-          this.sendSocketNotification("SendNoti", {
-            noti: "Bugsounet_ALERT",
-            payload: {
-              type: "error",
-              message: "Can't start API server!",
-              timer: 10000
-            }
-          });
+          console.error("[Bugsounet] [Web] [API] Can't start API server!");
+          console.error("[Bugsounet] [Web] [API] Error:", err.message);
+          this.sendSocketNotification("ERROR", "Can't start API server!");
         });
     });
   }
@@ -495,7 +483,7 @@ class website {
   /** add custom API Headers **/
   customAPIHeaders (req, res, next) {
     let version = require("../package.json").api;
-    res.setHeader("X-Powered-By", `EXT-Website API v${version}`);
+    res.setHeader("X-Powered-By", `MMM-Bugsounet API v${version}`);
     next();
   }
 
@@ -524,10 +512,10 @@ class website {
           {
             onError: (err, req) => {
               let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-              console.error(`[WEBSITE] [API] [${ip}] [${req.method}] ${req.url}`);
-              console.error("[WEBSITE] [API] bodyparser error:", err.type);
+              console.error(`[Bugsounet] [Web] [API] [${ip}] [${req.method}] ${req.url}`);
+              console.error("[Bugsounet] [Web] [API] bodyparser error:", err.type);
               log("[API] body:", err.body);
-              console.error("[WEBSITE] [API] detail:", err.message);
+              console.error("[Bugsounet] [Web] [API] detail:", err.message);
             },
             errorMessage: (err) => {
               return `Body Parser failed to parse request (${err.type}) --> ${err.message}`;
@@ -556,7 +544,7 @@ class website {
               },
               customCss: ".swagger-ui .topbar { display: none }",
               customCssUrl: "/assets/css/SwaggerDark.css",
-              customSiteTitle: "EXT-Website API",
+              customSiteTitle: "MMM-Bugsounet API",
               customfavIcon: "/assets/img/FavIcon.png"
             })(req, res, next);
           }
@@ -579,11 +567,11 @@ class website {
         .delete("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
 
         .get("/*", this.API_rateLimiter, this.API_speedLimiter, (req, res) => {
-          console.warn("[WEBSITE] [API] Don't find:", req.url);
+          console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
           res.status(404).json({ error: "You Are Lost in Space" });
         });
 
-      console.log(`[WEBSITE] [API] API v${require("../package.json").api}`);
+      console.log(`[Bugsounet] [Web] [API] API v${require("../package.json").api}`);
       resolve();
     });
   }
@@ -680,7 +668,7 @@ class website {
         break;
 
       default:
-        console.warn("[WEBSITE] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
         break;
     }
@@ -871,7 +859,7 @@ class website {
             }, 1000 * 60);
             this.website.healthDownloader = (req_, res_) => {
               if (req_.params[0] === linkExternalBackup.data) {
-                res_.sendFile(`${this.WebsiteModulePath}/download/${linkExternalBackup.data}`);
+                res_.sendFile(`${this.BugsounetModulePath}/download/${linkExternalBackup.data}`);
                 this.website.healthDownloader = function (req_, res_) {
                   res_.redirect("/");
                 };
@@ -884,7 +872,7 @@ class website {
             res.status(500);
           }
         } catch (e) {
-          console.error("[WEBSITE] [API] Request error", e.message);
+          console.error("[Bugsounet] [Web] [API] Request error", e.message);
           res.status(400).send("Bad Request");
         }
         break;
@@ -902,7 +890,7 @@ class website {
         res.status(202).json({ done: "ok" });
         break;
       default:
-        console.warn("[WEBSITE] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
     }
   }
@@ -911,28 +899,27 @@ class website {
   async PostAPI (req, res) {
     switch (req.url) {
       case "/api/EXT/stop":
-        this.sendSocketNotification("SendStop");
-        this.sendSocketNotification("SendNoti", "Bugsounet_STOP");
+        this.sendInternalCallback("STOP");
         res.json({ done: "ok" });
         break;
 
       case "/api/system/restart":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Restart"), 1000);
+        setTimeout(() => this.sendInternalCallback("RESTART"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/die":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Close"), 3000);
+        setTimeout(() => this.sendInternalCallback("DIE"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/reboot":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Reboot"), 1000);
+        setTimeout(() => this.sendInternalCallback("REBOOT"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/shutdown":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Shutdown"), 3000);
+        setTimeout(() => this.sendInternalCallback("SHUTDOWN"), 1000);
         res.json({ done: "ok" });
         break;
 
@@ -941,16 +928,13 @@ class website {
         var alert = req.body["alert"];
         if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).send("Bad Request");
         log("[API] Request send Alert:", alert);
-        this.sendSocketNotification("SendNoti", {
-          noti: "Bugsounet_ALERT",
-          payload: {
-            type: "information",
-            message: alert,
-            sender: req.user?.id ? req.user.id : "EXT-Website",
-            timer: 30 * 1000,
-            sound: "modules/MMM-Bugsounett/EXTs/EXT-Website/website/tools/message.mp3",
-            icon: "modules/MMM-Bugsounet/EXTs/EXT-Website/website/assets/img/GA_Small.png"
-          }
+        this.sendSocketNotification("SENDALERT", {
+          type: "information",
+          message: alert,
+          sender: req.user?.id ? req.user.id : "MMM-Bugsounet", // <-- to check
+          timer: 30 * 1000,
+          sound: "modules/MMM-Bugsounet/website/tools/message.mp3",
+          icon: "modules/MMM-Bugsounet/website/assets/img/bugsounet.png"
         });
         res.json({ done: "ok" });
         break;
@@ -973,7 +957,7 @@ class website {
         }
         break;
       default:
-        console.warn("[WEBSITE] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
     }
   }
@@ -989,7 +973,7 @@ class website {
         break;
 
       default:
-        console.warn("[WEBSITE] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
     }
   }
@@ -1003,21 +987,21 @@ class website {
     try {
       const { cookies } = req;
 
-      if (!cookies || !cookies["EXT-Website"]) {
-        console.warn("[WEBSITE] [AUTH] Missing EXT-Website cookie");
+      if (!cookies || !cookies["MMM-Bugsounet"]) {
+        console.warn("[Bugsounet] [Web] [AUTH] Missing MMM-Bugsounet cookie");
         return res.redirect("/login");
       }
 
-      const accessToken = cookies["EXT-Website"];
+      const accessToken = cookies["MMM-Bugsounet"];
       jwt.verify(accessToken, this.secret, (err, decoded) => {
         if (err) {
-          console.warn("[WEBSITE] [AUTH] decode Error !", err.message);
+          console.warn("[Bugsounet] [Web] [AUTH] decode Error !", err.message);
           return res.redirect("/login");
         }
         const user = decoded.user;
 
         if (!user || user !== this.website.user.username) {
-          console.warn(`[WEBSITE] [AUTH] User ${user} not exists`);
+          console.warn(`[Bugsounet] [Web] [AUTH] User ${user} not exists`);
           return res.redirect("/login");
         }
 
@@ -1025,7 +1009,7 @@ class website {
         next();
       });
     } catch (err) {
-      console.error("[WEBSITE] [AUTH] Error 500!", err.message);
+      console.error("[Bugsounet] [Web] [AUTH] Error 500!", err.message);
       return res.status(500).json({ error: "Internal error" });
     }
   }
@@ -1040,19 +1024,19 @@ class website {
     };
 
     if (!authorization) {
-      console.warn(`[WEBSITE] ${api ? "[API] " : ""}[${ip}] Bad Login: missing authorization type`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: missing authorization type`);
       APIResult.description = "Missing authorization type";
       return res.status(401).json(APIResult);
     }
 
     if (params[0] !== "Basic") {
-      console.warn(`[WEBSITE] ${api ? "[API] " : ""}[${ip}] Bad Login: Basic authorization type only`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: Basic authorization type only`);
       APIResult.description = "Authorization type Basic only";
       return res.status(401).json(APIResult);
     }
 
     if (!params[1]) { // must never happen
-      console.warn(`[WEBSITE] ${api ? "[API] " : ""}[${ip}] Bad Login: missing Basic params`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: missing Basic params`);
       APIResult.description = "Missing Basic params";
       return res.status(401).json(APIResult);
     }
@@ -1069,7 +1053,7 @@ class website {
         { expiresIn: "1h" }
       );
 
-      console.log(`[WEBSITE] ${api ? "[API] " : ""}[${ip}] Welcome ${username}, happy to serve you!`);
+      console.log(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Welcome ${username}, happy to serve you!`);
 
       if (api) {
         this.API_rateLimiter.resetKey(req.ip);
@@ -1083,7 +1067,7 @@ class website {
       } else {
         this.rateLimiter.resetKey(req.ip);
         this.speedLimiter.resetKey(req.ip);
-        res.cookie("EXT-Website", token, {
+        res.cookie("MMM-Bugsounet", token, {
           httpOnly: true,
           //secure: true,
           maxAge: 3600000
@@ -1091,7 +1075,7 @@ class website {
         res.json({ session: token });
       }
     } else {
-      console.warn(`[WEBSITE] ${api ? "[API] " : ""}[${ip}] Bad Login: Invalid username or password`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: Invalid username or password`);
       APIResult.description = "Invalid username or password";
       if (api) res.status(401).json(APIResult);
       else res.status(403).json(APIResult);
@@ -1103,9 +1087,9 @@ class website {
     try {
       const { cookies } = req;
 
-      if (!cookies || !cookies["EXT-Website"]) return null;
+      if (!cookies || !cookies["MMM-Bugsounet"]) return null;
 
-      const accessToken = cookies["EXT-Website"];
+      const accessToken = cookies["MMM-Bugsounet"];
       jwt.verify(accessToken, this.secret, (err, decoded) => {
         if (err) return null;
 
@@ -1118,7 +1102,7 @@ class website {
         return true;
       });
     } catch (err) {
-      console.error("[WEBSITE] Cookie Error !", err.message);
+      console.error("[Bugsounet] [Web] Cookie Error !", err.message);
       return null;
     }
   };
@@ -1132,25 +1116,25 @@ class website {
       const params = authorization?.split(" ");
 
       if (!authorization) {
-        console.warn(`[WEBSITE] [API] [${ip}] Bad Login: missing authorization type`);
+        console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: missing authorization type`);
         return res.status(401).send("Unauthorized");
       }
 
       if (params[0] !== "Bearer") {
-        console.warn(`[WEBSITE] [API] [${ip}] Bad Login: Bearer authorization type only`);
+        console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: Bearer authorization type only`);
         return res.status(401).send("Unauthorized");
       }
 
       if (!params[1]) { // must never happen
-        console.warn(`[WEBSITE] [API] [${ip}] Bad Login: missing Basic params`);
+        console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: missing Basic params`);
         return res.status(401).send("Unauthorized");
       }
 
       const accessToken = params[1];
       jwt.verify(accessToken, this.secret, (err, decoded) => {
         if (err) {
-          if (err.message === "jwt expired") console.warn("[WEBSITE] [API] Token expired !");
-          else console.error("[WEBSITE] [API] Token decode Error !", err.message);
+          if (err.message === "jwt expired") console.warn("[Bugsounet] [Web] [API] Token expired !");
+          else console.error("[Bugsounet] [Web] [API] Token decode Error !", err.message);
           return res.status(401).send("Unauthorized");
         }
         const user = decoded.user;
@@ -1161,7 +1145,7 @@ class website {
         next();
       });
     } catch (err) {
-      console.error("[WEBSITE] [API] Token Fatal Error !", err.message);
+      console.error("[Bugsounet] [Web] [API] Token Fatal Error !", err.message);
       return res.status(500).json({ error: "Internal error" });
     }
   };
@@ -1200,14 +1184,14 @@ class website {
           fs.unlink(file, (err) => {
             if (err) {
               resolve({ error: "Error when deleting file" });
-              return console.error("[WEBSITE] [DELETE] error", err);
+              return console.error("[Bugsounet] [Web] [DELETE] error", err);
             }
             log("Successfully deleted:", file);
           });
           resolve(TMPConfig);
         }
       } catch (e) {
-        console.error("[WEBSITE] [DELETE] Error on reading file", e.message);
+        console.error("[Bugsounet] [Web] [DELETE] Error on reading file", e.message);
         resolve({ error: "Error on reading file" });
       }
     });
@@ -1230,7 +1214,7 @@ class website {
       if (radio?.config?.streams) {
         let file = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-RadioPlayer/${radio.config.streams}`;
         if (fs.existsSync(file)) RadioResult = require(file);
-        else console.error(`[WEBSITE] [Radio] error when loading file: ${file}`);
+        else console.error(`[Bugsounet] [Web] [Radio] error when loading file: ${file}`);
       }
       resolve(RadioResult);
     });
@@ -1248,7 +1232,7 @@ class website {
       });
       return Configured.sort();
     } catch (e) {
-      console.error(`[WEBSITE] Error! ${e}`);
+      console.error(`[Bugsounet] [Web] Error! ${e}`);
       return Configured.sort();
     }
   }
@@ -1261,7 +1245,7 @@ class website {
       if (fs.existsSync(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/node_helper.js`)) {
         let name = require(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/package.json`).name;
         if (name === m) Installed.push(m);
-        else console.warn(`[WEBSITE] Found: ${m} but in package.json name is not the same: ${name}`);
+        else console.warn(`[Bugsounet] [Web] Found: ${m} but in package.json name is not the same: ${name}`);
       }
     });
     return Installed.sort();
@@ -1289,13 +1273,13 @@ class website {
       const configPath = `${this.root_path}/config/config.js`;
       const configPathTMP = `${this.root_path}/config/configTMP.js`;
       const backupFile = `config.js.${this.timeStamp()}`;
-      const backupPath = `${this.WebsiteModulePath}/backup/${backupFile}`;
+      const backupPath = `${this.BugsounetModulePath}/backup/${backupFile}`;
       var source = fs.createReadStream(configPath);
       var destination = fs.createWriteStream(backupPath);
 
       source.pipe(destination, { end: false });
       source.on("end", () => {
-        var header = `/*** GENERATED BY @bugsounet EXT-Website v${require("../package.json").version} ***/\n\nvar config = `;
+        var header = `/*** GENERATED BY @bugsounet MMM-Bugsounet v${require("../package.json").version} ***/\n\nvar config = `;
         var footer = "\n\n/*************** DO NOT EDIT THE LINE BELOW ***************/\nif (typeof module !== 'undefined') {module.exports = config;}\n";
 
         fs.writeFile(configPathTMP, header + util.inspect(MMConfig, {
@@ -1306,7 +1290,7 @@ class website {
         }) + footer, (error) => {
           if (error) {
             resolve({ error: "Error when writing file" });
-            return console.error("[WEBSITE] [WRITE] error", error);
+            return console.error("[Bugsounet] [Web] [WRITE] error", error);
           }
           log("Saved TMP configuration!");
           log("Backup saved in", backupPath);
@@ -1317,7 +1301,7 @@ class website {
             fs.unlink(outputFile, (err) => {
               if (err) {
                 resolve({ error: "Error when deleting file" });
-                return console.error("[WEBSITE] [DELETE] error", err);
+                return console.error("[Bugsounet] [Web] [DELETE] error", err);
               }
             });
             var instream = fs.createReadStream(inputFile);
@@ -1343,7 +1327,7 @@ class website {
               fs.unlink(inputFile, (err) => {
                 if (err) {
                   resolve({ error: "Error when deleting file" });
-                  return console.error("[WEBSITE] [DELETE] error", err);
+                  return console.error("[Bugsounet] [Web] [DELETE] error", err);
                 }
                 // !! ALL is ok !!
                 resolve({
@@ -1359,7 +1343,7 @@ class website {
       });
       destination.on("error", (error) => {
         resolve({ error: "Error when writing file" });
-        console.error("[WEBSITE] [WRITE]", error);
+        console.error("[Bugsounet] [Web] [WRITE]", error);
       });
     });
   }
@@ -1367,10 +1351,10 @@ class website {
   saveExternalConfig (Config) {
     return new Promise((resolve) => {
       var time = Date.now();
-      var configPathTMP = `${this.WebsiteModulePath}/tmp/configTMP.js`;
-      var configPathOut = `${this.WebsiteModulePath}/download/${time}.js`;
+      var configPathTMP = `${this.BugsounetModulePath}/tmp/configTMP.js`;
+      var configPathOut = `${this.BugsounetModulePath}/download/${time}.js`;
 
-      var header = `/*** GENERATED BY @bugsounet EXT-Website v${require("../package.json").version} ***/\n/*** https://forum.bugsounet.fr **/\n\nvar config = `;
+      var header = `/*** GENERATED BY @bugsounet MMM-Bugsounet v${require("../package.json").version} ***/\n/*** https://forum.bugsounet.fr **/\n\nvar config = `;
       var footer = "\n\n/*************** DO NOT EDIT THE LINE BELOW ***************/\nif (typeof module !== 'undefined') {module.exports = config;}\n";
 
       fs.writeFile(configPathTMP, header + util.inspect(Config, {
@@ -1381,7 +1365,7 @@ class website {
       }) + footer, (error) => {
         if (error) {
           resolve({ error: "Error when writing file" });
-          return console.error("[WEBSITE] [WRITE] error", error);
+          return console.error("[Bugsounet] [Web] [WRITE] error", error);
         }
 
         const readFileLineByLine = (inputFile, outputFile) => {
@@ -1406,11 +1390,11 @@ class website {
             fs.appendFileSync(outputFile, `${line}\n`);
           });
           instream.on("end", () => {
-            console.log("[WEBSITE] Saved new backup configuration for downloading !");
+            console.log("[Bugsounet] [Web] Saved new backup configuration for downloading !");
             fs.unlink(inputFile, (err) => {
               if (err) {
                 resolve({ error: "Error when deleting file" });
-                return console.error("[WEBSITE] [DELETE] error", err);
+                return console.error("[Bugsounet] [Web] [DELETE] error", err);
               }
               resolve({ data: `${time}.js` });
             });
@@ -1422,10 +1406,10 @@ class website {
   }
 
   deleteDownload (file) {
-    var inputFile = `${this.WebsiteModulePath}/download/${file}`;
+    var inputFile = `${this.BugsounetModulePath}/download/${file}`;
     fs.unlink(inputFile, (err) => {
       if (err) {
-        return console.error("[WEBSITE] error", err);
+        return console.error("[Bugsounet] [Web] error", err);
       }
       log("Successfully deleted:", inputFile);
     });
@@ -1434,10 +1418,10 @@ class website {
   transformExternalBackup (backup) {
     return new Promise((resolve) => {
       try {
-        var tmpFile = `${this.WebsiteModulePath}/tmp/config.${this.timeStamp()}.tmp`;
+        var tmpFile = `${this.BugsounetModulePath}/tmp/config.${this.timeStamp()}.tmp`;
         fs.writeFile(tmpFile, backup, async (err) => {
           if (err) {
-            console.error("[WEBSITE] [externalBackup]", err);
+            console.error("[Bugsounet] [Web] [externalBackup]", err);
             resolve({ error: "Error when writing external tmp backup file" });
           } else {
             const result = await this.readTMPBackupConfig(tmpFile);
@@ -1450,16 +1434,6 @@ class website {
     });
   }
 
-  /** insert or modify plugins config to MagicMirror config **/
-  configAddOrModify (EXTConfig) {
-    return new Promise((resolve) => {
-      let index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(EXTConfig.module);
-      if (index > -1) this.website.MMConfig.modules[index] = EXTConfig;
-      else this.website.MMConfig.modules.push(EXTConfig);
-      resolve(this.website.MMConfig);
-    });
-  }
-
   /** check plugin in config **/
   checkPluginInConfig (plugin) {
     let index = this.website.EXTConfigured.indexOf(plugin);
@@ -1467,21 +1441,12 @@ class website {
     else return false;
   }
 
-  /** delete plugins config **/
-  configDelete (EXT) {
-    return new Promise((resolve) => {
-      let index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(`MMM-Bugsounet/EXTs/${EXT}`);
-      this.website.MMConfig.modules.splice(index, 1); // delete modules
-      resolve(this.website.MMConfig);
-    });
-  }
-
   /** list of all backups **/
   loadBackupNames () {
     return new Promise((resolve) => {
       const regex = "config.js";
       var List = [];
-      var FileList = fs.readdirSync(`${this.WebsiteModulePath}/backup/`);
+      var FileList = fs.readdirSync(`${this.BugsounetModulePath}/backup/`);
       FileList.forEach((file) => {
         const testFile = file.match(regex);
         if (testFile) List.push(file);
@@ -1496,16 +1461,16 @@ class website {
   deleteBackup () {
     return new Promise((resolve) => {
       const regex = "config.js";
-      var FileList = fs.readdirSync(`${this.WebsiteModulePath}/backup/`);
+      var FileList = fs.readdirSync(`${this.BugsounetModulePath}/backup/`);
       FileList.forEach((file) => {
         const testFile = file.match(regex);
         if (testFile) {
-          let pathFile = `${this.WebsiteModulePath}/backup/${file}`;
+          let pathFile = `${this.BugsounetModulePath}/backup/${file}`;
           try {
             fs.unlinkSync(pathFile);
             log("Removed:", file);
           } catch {
-            console.error("[WEBSITE] Error occurred while trying to remove this file:", file);
+            console.error("[Bugsounet] [Web] Error occurred while trying to remove this file:", file);
           }
         }
       });
@@ -1517,7 +1482,7 @@ class website {
   loadBackupFile (file) {
     return new Promise((resolve) => {
       var BackupConfig = {};
-      let filePath = `${this.WebsiteModulePath}/backup/${file}`;
+      let filePath = `${this.BugsounetModulePath}/backup/${file}`;
       if (fs.existsSync(filePath)) {
         BackupConfig = require(filePath);
         BackupConfig = this.configStartMerge(BackupConfig);
@@ -1658,8 +1623,8 @@ class website {
     }
     else log("Detected:", module);
     this.website.EXTVersions[module] = {
-      version: require(`../../${module}/package.json`).version,
-      rev: require(`../../${module}/package.json`).rev
+      version: require(`../EXTs/${module}/package.json`).version,
+      rev: require(`../EXTs/${module}/package.json`).rev
     };
 
     let scanUpdate = await this.checkUpdate(module, this.website.EXTVersions[module].version);
@@ -1699,7 +1664,7 @@ class website {
           resolve(result);
         })
         .catch((e) => {
-          console.error(`[WEBSITE] Error on fetch last version of ${module}:`, e.message);
+          console.error(`[Bugsounet] [Web] Error on fetch last version of ${module}:`, e.message);
           resolve(result);
         });
     });
@@ -1731,10 +1696,10 @@ class website {
     let langHome = `${this.WebsitePath}/home/${lang}.home`;
     let defaultHome = `${this.WebsitePath}/home/default.home`;
     if (fs.existsSync(langHome)) {
-      console.log(`[WEBSITE] [TRANSLATION] [HOME] Use: ${lang}.home`);
+      console.log(`[Bugsounet] [Web] [Translation] [Home] Use: ${lang}.home`);
       Home = await this.readThisFile(langHome);
     } else {
-      console.log("[WEBSITE] [TRANSLATION] [HOME] Use: default.home");
+      console.log("[Bugsounet] [Web] [Translation] [Home] Use: default.home");
       Home = await this.readThisFile(defaultHome);
     }
     return Home;
@@ -1744,7 +1709,7 @@ class website {
     return new Promise((resolve) => {
       fs.readFile(file, (err, input) => {
         if (err) {
-          console.log("[WEBSITE] [TRANSLATION] [HOME] Error", err);
+          console.log("[Bugsounet] [Web] [Translation] [Home] Error", err);
           resolve();
         }
         resolve(input.toString());
@@ -1756,7 +1721,7 @@ class website {
     return new Promise((resolve) => {
       if (this.website.MMConfig.address === "0.0.0.0") {
         this.website.errorInit = true;
-        console.error("[WEBSITE] Error: You can't use '0.0.0.0' in MagicMirror address config");
+        console.error("[Bugsounet] [Web] Error: You can't use '0.0.0.0' in MagicMirror address config");
         this.sendSocketNotification("ERROR", "You can't use '0.0.0.0' in MagicMirror address config");
         setTimeout(() => process.exit(), 5000);
         resolve(true);
@@ -1804,14 +1769,14 @@ class website {
 
   searchVersion () {
     var APIResult = {
-      version: require(`${this.WebsiteModulePath}/package.json`).version,
-      rev: require(`${this.WebsiteModulePath}/package.json`).rev,
-      api: require(`${this.WebsiteModulePath}/package.json`).api,
+      version: require(`${this.BugsounetModulePath}/package.json`).version,
+      rev: require(`${this.BugsounetModulePath}/package.json`).rev,
+      api: require(`${this.BugsounetModulePath}/package.json`).api,
       lang: this.website.language,
       last: "0.0.0",
       needUpdate: false
     };
-    let remoteFile = "https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/main/EXTs/EXT-Website/package.json";
+    let remoteFile = "https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/refs/heads/main/package.json";
     return new Promise((resolve) => {
       fetch(remoteFile)
         .then((response) => response.json())
@@ -1821,7 +1786,7 @@ class website {
           resolve(APIResult);
         })
         .catch(() => {
-          console.error("[WEBSITE] [API] Error on fetch last version number");
+          console.error("[Bugsounet] [Web] [API] Error on fetch last version number");
           APIResult.error = "Error on fetch last version number";
           resolve(APIResult);
         });

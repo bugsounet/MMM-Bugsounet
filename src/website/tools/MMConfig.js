@@ -192,7 +192,7 @@ async function EditMMConfigJSEditor () {
     }
   });
   document.getElementById("externalSave").onclick = function () {
-    alertify.prompt("EXT-Website", "Save config file as:", "config", function (evt, value) {
+    alertify.prompt("MMM-Bugsounet", "Save config file as:", "config", function (evt, value) {
       let fileName = value;
       if (fileName.indexOf(".") === -1) {
         fileName = `${fileName}.js`;

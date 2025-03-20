@@ -48,27 +48,27 @@ function HyperWatch_destroyBufferButOne () {
 
 const HyperWatch = {
   disable () {
-    if (!HyperWatch_enabled) console.log("[WEBSITE] [HyperWatch] Logger is already disabled");
+    if (!HyperWatch_enabled) console.log("[Bugsounet] [HyperWatch] Logger is already disabled");
     else {
-      console.log("[WEBSITE] [HyperWatch] Logger is now disabled");
+      console.log("[Bugsounet] [HyperWatch] Logger is now disabled");
       HyperWatch_destroyBufferButOne();
       HyperWatch_enabled = false;
     }
   },
   enable () {
-    if (HyperWatch_enabled) console.log("[WEBSITE] [HyperWatch] Logger is already enabled");
+    if (HyperWatch_enabled) console.log("[Bugsounet] [HyperWatch] Logger is already enabled");
     else {
       HyperWatch_enabled = true;
-      console.log("[WEBSITE] [HyperWatch] Logger is now enabled");
+      console.log("[Bugsounet] [HyperWatch] Logger is now enabled");
     }
   },
   scrollback (n) {
-    if (!n || n === 0) return console.log("[WEBSITE] [HyperWatch] scrollback can't be null");
-    if (n < 50) return console.log("[WEBSITE] [HyperWatch] scrollback must be > 50");
-    if (n === HyperWatch_maxbuflen) console.log("[WEBSITE] [HyperWatch] scrollback already", HyperWatch_maxbuflen);
+    if (!n || n === 0) return console.log("[Bugsounet] [HyperWatch] scrollback can't be null");
+    if (n < 50) return console.log("[Bugsounet] [HyperWatch] scrollback must be > 50");
+    if (n === HyperWatch_maxbuflen) console.log("[Bugsounet] [HyperWatch] scrollback already", HyperWatch_maxbuflen);
     else {
       HyperWatch_maxbuflen = n;
-      console.log("[WEBSITE] [HyperWatch] scrollback is now", HyperWatch_maxbuflen);
+      console.log("[Bugsounet] [HyperWatch] scrollback is now", HyperWatch_maxbuflen);
     }
   },
   stream () {
