@@ -354,8 +354,8 @@ module.exports.develop = develop;
 // electron need to be rebuilded
 function electronRebuild (callback = () => {}) {
   var emitter = new events.EventEmitter();
-  const cmd = args.path ? `npx electron-rebuild -m ${moduleRoot}` : "npx electron-rebuild";
-  var child = exec(cmd, { cwd: bugsounetRoot }, function (err) {
+  const cmd = `npx electron-rebuild -m ${moduleRoot}`;
+  var child = exec(cmd, { cwd: moduleRoot }, function (err) {
     if (err) {
       return callback(err);
     }
