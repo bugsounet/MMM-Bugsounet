@@ -8,7 +8,7 @@ const path = require("path");
 const express = require("express");
 
 const app = express();
-const moment = require("dayjs");
+const dayjs = require("dayjs");
 
 var _Debug = () => { /* do nothing */ };
 
@@ -126,7 +126,7 @@ class Spotify {
     var file = path.resolve(__dirname, this.config.PATH + this.config.TOKEN);
     fs.writeFileSync(file, JSON.stringify(token));
     _Debug("Token is written...");
-    _Debug("Token expire", moment(this.token.expires_at).format("DD/MM/YYYY hh:mm:ss"));
+    _Debug("Token expire", dayjs(this.token.expires_at).format("DD/MM/YYYY hh:mm:ss"));
     if (cb) cb();
   }
 
@@ -278,6 +278,7 @@ class Spotify {
     }
     this.doRequest("/v1/me/player", "PUT", null, req, cb);
   }
+
 
   transferByName (device_name, cb) {
     this.getDevices((code, error, result) => {
