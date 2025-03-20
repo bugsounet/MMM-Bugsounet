@@ -8,8 +8,6 @@ This module allows to add a glass effect to MagicMirror² modules
 
 ## Install
 
-**`MMM-Glassy` need `MagicMirror²` v2.27.0 and above**
-
 Clone the module into your `MagicMirror` module folder and execute npm install in the module folder.
 
 ```sh
