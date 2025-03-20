@@ -126,7 +126,7 @@ class Spotify {
     var file = path.resolve(__dirname, this.config.PATH + this.config.TOKEN);
     fs.writeFileSync(file, JSON.stringify(token));
     _Debug("Token is written...");
-    _Debug("Token expire", moment(this.token.expires_at).format("LLLL"));
+    _Debug("Token expire", moment(this.token.expires_at).format("DD/MM/YYYY hh:mm:ss"));
     if (cb) cb();
   }
 
