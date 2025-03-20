@@ -9,7 +9,6 @@ var packageJSON = require("../package.json");
 
 var moduleRoot = path.resolve(__dirname, "../");
 const installerHome = path.resolve(__dirname, "../installer");
-const bugsounetRoot = path.resolve(__dirname);
 
 // color codes
 const reset = "\x1B[0m";
