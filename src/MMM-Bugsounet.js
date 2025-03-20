@@ -85,6 +85,14 @@ Module.register("MMM-Bugsounet", {
       case "SENDALERT":
         this.sendAlert(payload, "MMM-Bugsounet");
         break;
+      case "BUGSOUNET-STOP":
+        this.EXTs.ActionsEXTs("Bugsounet_STOP", undefined, { sender: { name: "MMM-Bugsounet" } });
+        this.sendNotification("Bugsounet_STOP");
+        break;
+      case "SendNoti":
+        if (payload.payload && payload.noti) this.sendNotification(payload.noti, payload.payload);
+        else this.sendNotification(payload);
+        break;
     }
   },
 
@@ -98,7 +106,8 @@ Module.register("MMM-Bugsounet", {
       lock: () => this.EXTs.forceLockPagesAndScreen(),
       unLock: () => this.EXTs.forceUnLockPagesAndScreen(),
       sendAlert: (...args) => this.sendAlert(...args),
-      sendEXTStatus: (...args) => this.sendSocketNotification("setEXTStatus", ...args)
+      sendEXTStatus: (...args) => this.sendSocketNotification("setEXTStatus", ...args),
+      sendHelloEXT: (...args) => this.sendSocketNotification("setHelloEXT", ...args)
     };
     this.EXTs = new EXTs(Tools); // a faire verifier les CB
     await this.EXTs.init();

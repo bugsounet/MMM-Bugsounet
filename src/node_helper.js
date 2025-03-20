@@ -46,6 +46,9 @@ module.exports = NodeHelper.create({
       case "setEXTStatus":
         this.website.setEXTStatus(payload);
         break;
+      case "setHelloEXT":
+        this.website.setEXTVersions(payload);
+        break;
       case "REBOOT":
         this.controler.SystemReboot();
         break;
@@ -74,8 +77,30 @@ module.exports = NodeHelper.create({
         debug: this.config.debug,
         lib: this.lib
       };
+      let callback = {
+        sendSocketNotification: (...args) => this.sendSocketNotification(...args),
+        sendInternalCallback: (value) => {
+          switch (value) {
+            case "STOP":
+              this.sendSocketNotification("BUGSOUNET-STOP");
+              break;
+            case "REBOOT":
+              this.controler.SystemReboot();
+              break;
+            case "SHUTDOWN":
+              this.controler.SystemShutdown();
+              break;
+            case "RESTART":
+              this.controler.restartMM();
+              break;
+            case "DIE":
+              this.controler.doClose();
+              break;
+          }
+        }
+      };
 
-      this.website = new this.lib.website(WebsiteHelperConfig, (...args) => this.sendSocketNotification(...args));
+      this.website = new this.lib.website(WebsiteHelperConfig, callback);
       resolve();
     });
   },

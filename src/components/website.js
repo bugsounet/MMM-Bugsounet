@@ -29,7 +29,8 @@ class website {
   constructor (config, cb = () => {}) {
     this.lib = config.lib;
     this.config = config.config;
-    this.sendSocketNotification = (...args) => cb(...args);
+    this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
+    this.sendInternalCallback = (value) => cb.sendInternalCallback(value);
 
     if (config.debug) log = (...args) => { console.log("[Bugsounet] [Web]", ...args); };
 
@@ -899,28 +900,27 @@ class website {
   async PostAPI (req, res) {
     switch (req.url) {
       case "/api/EXT/stop":
-        this.sendSocketNotification("SendStop");
-        this.sendSocketNotification("SendNoti", "Bugsounet_STOP");
+        this.sendInternalCallback("STOP");
         res.json({ done: "ok" });
         break;
 
       case "/api/system/restart":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Restart"), 1000);
+        setTimeout(() => this.sendInternalCallback("RESTART"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/die":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Close"), 3000);
+        setTimeout(() => this.sendInternalCallback("DIE"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/reboot":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Reboot"), 1000);
+        setTimeout(() => this.sendInternalCallback("REBOOT"), 1000);
         res.json({ done: "ok" });
         break;
 
       case "/api/system/shutdown":
-        setTimeout(() => this.sendSocketNotification("SendNoti", "Bugsounet_Shutdown"), 3000);
+        setTimeout(() => this.sendInternalCallback("SHUTDOWN"), 1000);
         res.json({ done: "ok" });
         break;
 
@@ -1643,8 +1643,8 @@ class website {
     }
     else log("Detected:", module);
     this.website.EXTVersions[module] = {
-      version: require(`../../${module}/package.json`).version,
-      rev: require(`../../${module}/package.json`).rev
+      version: require(`../EXTs/${module}/package.json`).version,
+      rev: require(`../EXTs/${module}/package.json`).rev
     };
 
     let scanUpdate = await this.checkUpdate(module, this.website.EXTVersions[module].version);
