@@ -13,10 +13,9 @@ class sysInfoPage {
     this.timerHide = null;
     this.System = {
       VERSION: {
-        GA: "unknow",
+        Bugsounet: "unknow",
         MagicMirror: "unknow",
         ELECTRON: "unknow",
-        NODEMM: "unknow",
         NODECORE: "unknow",
         NPM: "unknow",
         KERNEL: "unknow",
@@ -66,28 +65,6 @@ class sysInfoPage {
         MMDHM: "unknow",
         recordMM: 0,
         recordMMDHM: "unknow"
-      },
-      PROCESS: {
-        nginx: {
-          pid: 0,
-          cpu: 0,
-          mem: 0
-        },
-        electron: {
-          pid: 0,
-          cpu: 0,
-          mem: 0
-        },
-        librespot: {
-          pid: 0,
-          cpu: 0,
-          mem: 0
-        },
-        pm2: {
-          pid: 0,
-          cpu: 0,
-          mem: 0
-        }
       }
     };
     console.log("[WEBSITE] SysInfo Loaded !");
@@ -176,15 +153,6 @@ class sysInfoPage {
     ELECTRON_Value.id = "WEBSITE-SYSINFO_VERSION-ELECTRON-VALUE";
     ELECTRON_Value.textContent = this.System.VERSION.ELECTRON;
     ELECTRON.appendChild(ELECTRON_Value);
-
-    var MMNode = document.createElement("div");
-    MMNode.id = "WEBSITE-SYSINFO_VERSION-MMNODE";
-    MMNode.textContent = "MagicMirrror² Node:";
-    Sysinfo_version_list.appendChild(MMNode);
-    var MMNode_Value = document.createElement("div");
-    MMNode_Value.id = "WEBSITE-SYSINFO_VERSION-MMNODE-VALUE";
-    MMNode_Value.textContent = this.System.VERSION.NODEMM;
-    MMNode.appendChild(MMNode_Value);
 
     var Node = document.createElement("div");
     Node.id = "WEBSITE-SYSINFO_VERSION-NODE";
@@ -684,8 +652,6 @@ class sysInfoPage {
     MM_Value.textContent = this.System.VERSION.MagicMirror;
     var ELECTRON_Value = document.getElementById("WEBSITE-SYSINFO_VERSION-ELECTRON-VALUE");
     ELECTRON_Value.textContent = this.System.VERSION.ELECTRON;
-    var MMNode_Value = document.getElementById("WEBSITE-SYSINFO_VERSION-MMNODE-VALUE");
-    MMNode_Value.textContent = this.System.VERSION.NODEMM;
     var Node_Value = document.getElementById("WEBSITE-SYSINFO_VERSION-NODE-VALUE");
     Node_Value.textContent = this.System.VERSION.NODECORE;
     var NPM_Value = document.getElementById("WEBSITE-SYSINFO_VERSION-NPM-VALUE");
