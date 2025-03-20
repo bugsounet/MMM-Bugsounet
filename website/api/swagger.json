@@ -3,7 +3,7 @@
   "info": {
     "description": "Control MMM-Bugsounet from API",
     "version": "0.0.0",
-    "title": "EXT-Website API"
+    "title": "MMM-Bugsounet API"
   },
   "servers": [
     {
@@ -71,7 +71,7 @@
         "tags": [
           "Authentification"
         ],
-        "summary": "Basic Authentification with EXT-Website credentials",
+        "summary": "Basic Authentification with MMM-Bugsounet credentials",
         "security": [
           {
             "Basic": []
@@ -174,7 +174,7 @@
         "responses": {
           "200": {
             "description": "Send translated home text HTML",
-            "content" : {
+            "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/translationsHomeText"
@@ -200,16 +200,16 @@
         "tags": [
           "Tools"
         ],
-        "summary": "Returns EXT-Website current version, revision, language, ...",
+        "summary": "Returns MMM-Bugsounet current version, revision, language, ...",
         "security": [
           {
             "Bearer": []
           }
         ],
-        "description": "Get EXT-Website Version informations.<li>Required: `Bearer` token in header.",
+        "description": "Get MMM-Bugsounet Version informations.<li>Required: `Bearer` token in header.",
         "responses": {
           "200": {
-            "description": "Send EXT-Website version tools",
+            "description": "Send MMM-Bugsounet version tools",
             "content": {
               "application/json": {
                 "schema": {
@@ -219,7 +219,7 @@
             }
           },
           "206": {
-            "description": "Send Partial EXT-Website version",
+            "description": "Send Partial MMM-Bugsounet version",
             "content": {
               "application/json": {
                 "schema": {
@@ -475,7 +475,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/EXTVersions"
+                  "$ref": "#/components/schemas/EXTVersions"
                 }
               }
             }
@@ -511,7 +511,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/ArrayPlugins"
+                  "$ref": "#/components/schemas/ArrayPlugins"
                 }
               }
             }
@@ -522,166 +522,6 @@
               "text/html": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "EXT"
-        ],
-        "summary": "Install an EXT in the module folder",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Install an EXT.<li>Required: `Bearer` token in header.<li>Required: `ext` param with `EXT-Name` in header.",
-        "parameters": [
-          {
-            "name": "ext",
-            "in": "header",
-            "description": "Name of the EXT",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "EXT installed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EXT200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing ext in header or params is not in JSON string format",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "EXT not found",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          },
-          "409": {
-           "description": "Conflit",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/409Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error on writing new configuration file",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config500Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "EXT"
-        ],
-        "summary": "Delete an EXT of the module folder",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Delete an EXT.<li>Required: `Bearer` token in header.<li>Required: `ext` param with `EXT-Name` in header.",
-        "parameters": [
-          {
-            "name": "ext",
-            "in": "header",
-            "description": "Name of the EXT",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "EXT deleted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EXT200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing ext in header or params is not in JSON string format",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "EXT not found",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error on writing new configuration file",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config500Error"
                 }
               }
             }
@@ -707,7 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/ArrayPlugins"
+                  "$ref": "#/components/schemas/ArrayPlugins"
                 }
               }
             }
@@ -743,43 +583,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/ArrayPlugins"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/EXT/descriptions": {
-      "get": {
-        "tags": [
-          "EXT"
-        ],
-        "summary": "Returns descriptions of all EXTs (translated)",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Get translated descriptions of all EXTs collection.<li>Required: `Bearer` token in header.<li>No params is needed.",
-        "responses": {
-          "200": {
-            "description": "Sends descriptions of all EXTs",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref" : "#/components/schemas/EXTDescriptions"
+                  "$ref": "#/components/schemas/ArrayPlugins"
                 }
               }
             }
@@ -815,7 +619,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/EXTStatus"
+                  "$ref": "#/components/schemas/EXTStatus"
                 }
               }
             }
@@ -846,7 +650,7 @@
         ],
         "description": "Send new speaker volume configuration.<li>Required: `EXT-Volume` plugin<li>Required: `Bearer` token in header.<li>Required: `volume` param with percent value [0-100] in body (JSON Format).",
         "requestBody": {
-          "description" : "Send new percent speaker volume in volume key",
+          "description": "Send new percent speaker volume in volume key",
           "required": true,
           "content": {
             "application/json": {
@@ -913,7 +717,7 @@
         ],
         "description": "Send new recorder volume configuration.<li>Required: `EXT-Volume` plugin<li>Required: `Bearer` token in header.<li>Required: `volume` param with percent value [0-100] in body (JSON Format).",
         "requestBody": {
-          "description" : "Send new percent recorder volume in volume key",
+          "description": "Send new percent recorder volume in volume key",
           "required": true,
           "content": {
             "application/json": {
@@ -1001,7 +805,7 @@
             }
           },
           "404": {
-            "description": "EXT-Radio not installed or no radio found",
+            "description": "EXT-RadioPlayer not installed or no radio found",
             "content": {
               "text/html": {
                 "schema": {
@@ -1024,7 +828,7 @@
         ],
         "description": "Send request For listening a Radio.<li>Required: `EXT-RadioPlayer` plugin.<li>Required: `Bearer` token in header.<li>Required: `radio` param with radio name value in body (JSON Format).",
         "requestBody": {
-          "description" : "Send request radio in radio key",
+          "description": "Send request radio in radio key",
           "required": true,
           "content": {
             "application/json": {
@@ -1066,7 +870,7 @@
             }
           },
           "404": {
-            "description": "EXT-Radio not installed or radio not found",
+            "description": "EXT-RadioPlayer not installed or radio not found",
             "content": {
               "text/html": {
                 "schema": {
@@ -1181,7 +985,7 @@
         ],
         "description": "Send reqest for listening music on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>Required: `query` with query to send and `type` with query type (artist, album, playlist or track) in body (JSON Format).",
         "requestBody": {
-          "description" : "Send query and type for search and listening",
+          "description": "Send query and type for search and listening",
           "required": true,
           "content": {
             "application/json": {
@@ -1549,7 +1353,7 @@
             }
           },
           "404": {
-            "description": "EXT-Volume not installed",
+            "description": "EXT-Spotify not installed",
             "content": {
               "text/html": {
                 "schema": {
@@ -1571,73 +1375,6 @@
         }
       }
     },
-    "/api/EXT/YouTube": {
-      "put": {
-        "tags": [
-          "EXT"
-        ],
-        "summary": "Send query for displaying YouTube video",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Send YouTube request.<li>Required: `EXT-YouTube` plugin.<li>Required: `Bearer` token in header.<li>`query` param with youtube query content is needed in body (JSON Format).",
-        "requestBody": {
-          "description" : "Send query for YouTube Search",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendYouTube"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Command sended successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EXT200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing query param",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "EXT-YouTube not found",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/EXT/Screen": {
       "put": {
         "tags": [
@@ -1651,7 +1388,7 @@
         ],
         "description": "Send request for turn ON/OFF MagicMirror² screen.<li>Required: `EXT-Screen` plugin.<li>Required: `Bearer` token in header.<li>`power` param with wanted screen state (ON/OFF) is needed in body (JSON Format).",
         "requestBody": {
-          "description" : "Send wanted power state",
+          "description": "Send wanted power state",
           "required": true,
           "content": {
             "application/json": {
@@ -1703,7 +1440,7 @@
             }
           },
           "409": {
-           "description": "Conflit",
+            "description": "Conflit",
             "content": {
               "text/html": {
                 "schema": {
@@ -1772,7 +1509,7 @@
         ],
         "description": "Send request For watching TV channel.<li>Required: `EXT-FreeboxTV` plugin.<li>Required: `Bearer` token in header.<li>Reserved for French users.<li>Required: `TV` param with TV channel name value in body (JSON Format).",
         "requestBody": {
-          "description" : "Send wanted TV channel",
+          "description": "Send wanted TV channel",
           "required": true,
           "content": {
             "application/json": {
@@ -1824,7 +1561,7 @@
             }
           },
           "409": {
-           "description": "Conflit",
+            "description": "Conflit",
             "content": {
               "text/html": {
                 "schema": {
@@ -1883,7 +1620,7 @@
         ],
         "description": "Update new configuration of MagicMirror².<li>Required: `Bearer` token in header.<li>Required: `config` param with MagicMirror² configuration value in body (JSON Format).<li>Required: `config` must be encoded in base64.<li>Last configuration will be saved into a file.",
         "requestBody": {
-          "description" : "Send new base64 encoded config in config key",
+          "description": "Send new base64 encoded config in config key",
           "required": true,
           "content": {
             "application/json": {
@@ -1937,448 +1674,6 @@
         }
       }
     },
-    "/api/config/EXT": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "summary": "Returns current configuration of an EXT",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Get configuration of an EXT.<li>Required: `Bearer` token in header.<li>Required: `ext` param with `EXT-Name` in header.<br><br><b>For securtity, response will be encoded in base64",
-        "parameters": [
-          {
-            "name": "ext",
-            "in": "header",
-            "description": "EXT Name to get current configuration",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sends EXT configuration",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendConfig"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing EXT name in header",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "EXT not found in configuration",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Configuration"
-        ],
-        "summary": "Update an EXT configuration",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Update new configuration of MagicMirror².<li>Required: `Bearer` token in header.<li>Required: `ext` param with `EXT-Name` in header.<li>Required: `config` param with MagicMirror² configuration in body (JSON Format).<li>Required: `config` must be encoded in base64.<li>Last configuration will be saved into a file.",
-        "parameters": [
-          {
-            "name": "ext",
-            "in": "header",
-            "description": "Name of the EXT",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description" : "Send new base64 encoded config in config key",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendConfig"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Configuration of the EXT updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing ext or config in header or params is not in JSON string format",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error on writing new configuration file",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config500Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Configuration"
-        ],
-        "summary": "Delete an EXT configuration",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Update new configuration of MagicMirror².<li>Required: `Bearer` token in header.<li>Required: `ext` param with `EXT-Name` in header.<li>Last configuration will be saved into a file.",
-        "parameters": [
-          {
-            "name": "ext",
-            "in": "header",
-            "description": "Name of the EXT",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Configuration deleted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing ext or config in header or params is not in JSON string format",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "EXT not found",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error on writing new configuration file",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config500Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/config/default": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "summary": "Returns default configuration of an EXT",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Get default configuration of an EXT.<li>Required: `Bearer` token in header.<li>Required: `ext` param with `EXT-Name` in header.<br><br><b>For securtity, response will be encoded in base64.",
-        "parameters": [
-          {
-            "name": "ext",
-            "in": "header",
-            "description": "EXT Name to get default configuration",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sends EXT configuration",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendConfig"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing EXT name in header",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "EXT not found in configuration",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/config/schema": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "summary": "Returns template configuration schema of an EXT",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Get template schema configuration of an EXT.<li>Required: `Bearer` token in header.<li>Required: `ext` param with `EXT-Name` in header.<br><br><b>For securtity, response will be encoded in base64.",
-        "parameters": [
-          {
-            "name": "ext",
-            "in": "header",
-            "description": "EXT Name to get template configuration schema",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sends template configuration schema",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConfigSchema"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing EXT name in header",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "EXT not found in configuration",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config404Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/config/webview": {
-      "get": {
-        "tags": [
-          "Configuration"
-        ],
-        "summary": "Inspect actual MagicMirror² webview electron configuration option",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Get electron webview option.<li>Required: `Bearer` token in header.<li>No params is needed.",
-        "responses": {
-          "200": {
-            "description": "Send result if webview is activated in MagicMirror² configuration",
-            "content": {
-              "application/json": {
-                "example": {
-                  "webview" : false
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Configuration"
-        ],
-        "summary": "Set webview electron configuration option",
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Set electron webview option.<li>Required: `Bearer` token in header.<li>No params is needed.<li>Last configuration will be saved into a file.",
-        "responses": {
-          "200": {
-            "description": "Send result if webview is activated in MagicMirror² configuration",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config200"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Webview option already set",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config400Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing valid authentication token",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/401Error"
-                }
-              }
-            }
-          },
-          "409": {
-           "description": "Conflit",
-            "content": {
-              "text/html": {
-                "schema": {
-                  "$ref": "#/components/schemas/409Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/backups": {
       "get": {
         "tags": [
@@ -2397,7 +1692,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/BackupList"
+                  "$ref": "#/components/schemas/BackupList"
                 }
               }
             }
@@ -2431,7 +1726,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/Result200"
+                  "$ref": "#/components/schemas/Result200"
                 }
               }
             }
@@ -2478,7 +1773,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/SendConfig"
+                  "$ref": "#/components/schemas/SendConfig"
                 }
               }
             }
@@ -2533,7 +1828,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref" : "#/components/schemas/Config200"
+                  "$ref": "#/components/schemas/Config200"
                 }
               }
             }
@@ -2582,9 +1877,9 @@
             "Bearer": []
           }
         ],
-        "description": "Analyse text base backup.<li>Required: `Bearer` token in header.<li>Required: `config` param with MagicMirror² configuration in body (JSON Format).<li>Required: `config` must be in text format and encoded in base64.<br><br><b>For securtity, response will be encoded in base64<br>Return an EXT-Website config compliant",
+        "description": "Analyse text base backup.<li>Required: `Bearer` token in header.<li>Required: `config` param with MagicMirror² configuration in body (JSON Format).<li>Required: `config` must be in text format and encoded in base64.<br><br><b>For securtity, response will be encoded in base64<br>Return an MMM-Bugsounet config compliant",
         "requestBody": {
-          "description" : "Send base64 encoded config in config key",
+          "description": "Send base64 encoded config in config key",
           "required": true,
           "content": {
             "application/json": {
@@ -2649,7 +1944,7 @@
         ],
         "description": "Analyse MagicMirror² configuration an offer an download link.<li>Required: `Bearer` token in header.<li>Required: `config` param with MagicMirror² configuration in body (JSON Format).<li>Required: `config` encoded in base64.",
         "requestBody": {
-          "description" : "Send base64 encoded config in config key",
+          "description": "Send base64 encoded config in config key",
           "required": true,
           "content": {
             "application/json": {
@@ -2716,7 +2011,7 @@
         ],
         "description": "Send MagicMirror² notification and payload.<li>Required: `Bearer` token in header.<li>Required: `notification` param with notification name in body (JSON Format).<li>Optional: `payload` param with additional parameter in body (JSON Format).",
         "requestBody": {
-          "description" : "Send notification request with payload (optional)",
+          "description": "Send notification request with payload (optional)",
           "required": true,
           "content": {
             "application/json": {
@@ -2773,7 +2068,7 @@
         ],
         "description": "Send Alert on MagicMirror² screen.<li>Required: `Bearer` token in header.<li>Required: `alert` param with message content in body (JSON Format).",
         "requestBody": {
-          "description" : "Send Alert on MagicMirror²",
+          "description": "Send Alert on MagicMirror²",
           "required": true,
           "content": {
             "application/json": {
@@ -2815,7 +2110,7 @@
             }
           },
           "404": {
-            "description": "GA-Alert not found",
+            "description": "Bugsounet-Alert not found",
             "content": {
               "text/html": {
                 "schema": {
@@ -2833,7 +2128,7 @@
       "Basic": {
         "type": "http",
         "scheme": "basic",
-        "description": "`EXT-Website` credentials for Authentication."
+        "description": "`MMM-Bugsounet` credentials for Authentication."
       },
       "Bearer": {
         "type": "http",
@@ -2850,8 +2145,8 @@
             "description": "API state"
           },
           "docs": {
-            "type" : "string",
-            "description" : "APi documentation enabled"
+            "type": "string",
+            "description": "APi documentation enabled"
           }
         },
         "example": {
@@ -2957,96 +2252,6 @@
           "Home_Welcome": {
             "type": "string"
           },
-          "Plugins": {
-            "type": "string"
-          },
-          "Plugins_Welcome": {
-            "type": "string"
-          },
-          "Plugins_Table_Reset": {
-            "type": "string"
-          },
-          "Plugins_Table_Showing": {
-            "type": "string"
-          },
-          "Plugins_Table_Plugins": {
-            "type": "string"
-          },
-          "Plugins_Table_Name": {
-            "type": "string"
-          },
-          "Plugins_Table_Description":{
-            "type": "string"
-          },
-          "Plugins_Table_Actions": {
-            "type": "string"
-          },
-          "Plugins_Table_Configuration": {
-            "type": "string"
-          },
-          "Plugins_Table_Search": {
-            "type": "string"
-          },
-          "Plugins_Table_Wiki": {
-            "type": "string"
-          },
-          "Plugins_Table_Install": {
-            "type": "string"
-          },
-          "Plugins_Table_Delete": {
-            "type": "string"
-          },
-          "Plugins_Table_Modify": {
-            "type": "string"
-          },
-          "Plugins_Table_Configure": {
-            "type": "string"
-          },
-          "Plugins_Table_DeleteConfig": {
-            "type": "string"
-          },
-          "Plugins_Delete_TerminalHeader": {
-            "type": "string"
-          },
-          "Plugins_Delete_Message": {
-            "type": "string"
-          },
-          "Plugins_Delete_Progress": {
-            "type": "string"
-          },
-          "Plugins_Delete_Confirmed": {
-            "type": "string"
-          },
-          "Plugins_Install_TerminalHeader": {
-            "type": "string"
-          },
-          "Plugins_Install_Message": {
-            "type": "string"
-          },
-          "Plugins_Install_Progress": {
-            "type": "string"
-          },
-          "Plugins_Install_Confirmed": {
-            "type": "string"
-          },
-          "Plugins_Initial_Title": {
-            "type": "string"
-          },
-          "Plugins_DeleteConfig_Title": {
-            "type": "string"
-          },
-          "Plugins_DeleteConfig_Confirmed": {
-            "type": "string"
-          },
-          "Plugins_Modify_Title": {
-            "type": "string"
-          },
-          "Plugins_Error_Snowboy": {
-            "type": "string"
-          },
-          "Plugins_Error_Porcupine": {
-            "type": "string"
-          },
           "Terminal": {
             "type": "string"
           },
@@ -3110,19 +2315,13 @@
           "Tools_Backup_Found": {
             "type": "string"
           },
-          "Tools_Backup_Text":{
+          "Tools_Backup_Text": {
             "type": "string"
           },
           "Tools_Backup_Deleted": {
             "type": "string"
           },
           "Tools_Screen_Text": {
-            "type": "string"
-          },
-          "Tools_GoogleAssistant_Text": {
-            "type": "string"
-          },
-          "Tools_GoogleAssistant_Query": {
             "type": "string"
           },
           "Tools_Alert_Text": {
@@ -3173,12 +2372,6 @@
           "Tools_Update_Text2": {
             "type": "string"
           },
-          "Tools_YouTube_Text": {
-            "type": "string"
-          },
-          "Tools_YouTube_Query": {
-            "type": "string"
-          },
           "Tools_Stop_Text": {
             "type": "string"
           },
@@ -3188,13 +2381,13 @@
           "Tools_Radio_Text2": {
             "type": "string"
           },
-          "About":{
+          "About": {
             "type": "string"
           },
           "About_Title": {
             "type": "string"
           },
-          "About_Info_by":{
+          "About_Info_by": {
             "type": "string"
           },
           "About_Info_Support": {
@@ -3386,7 +2579,7 @@
           "System_ProcessSystem": {
             "type": "string"
           },
-          "System_CPU":{
+          "System_CPU": {
             "type": "string"
           },
           "System_Memory": {
@@ -3489,40 +2682,10 @@
           "Login_Error": "Erreur: L'identification a échouée.",
           "Login_Login": "Se Connecter",
           "Home": "Accueil",
-          "Home_Welcome": "Bienvenue sur MMM-GoogleAssistant",
-          "Plugins": "Gestionnaire de plugins",
-          "Plugins_Welcome": "Gestionnaire de plugins EXT",
-          "Plugins_Table_Reset": "Reinitialiser les filtres",
-          "Plugins_Table_Showing": "Affiche ",
-          "Plugins_Table_Plugins": " Plugin(s)",
-          "Plugins_Table_Name": "Noms des plugins",
-          "Plugins_Table_Description": "Descriptions",
-          "Plugins_Table_Actions": "Requêtes",
-          "Plugins_Table_Configuration": "Configurations",
-          "Plugins_Table_Search": "Rechercher...",
-          "Plugins_Table_Wiki": "Ouvrir le wiki de",
-          "Plugins_Table_Install": "Installer",
-          "Plugins_Table_Delete": "Désinstaller",
-          "Plugins_Table_Modify": "Modifier la configuration",
-          "Plugins_Table_Configure": "Prêt à être configuré !",
-          "Plugins_Table_DeleteConfig": "Supprimer la configuration",
-          "Plugins_Delete_TerminalHeader": "MagicMirror² Terminal",
-          "Plugins_Delete_Message": "Voulez-vous supprimer ce plugin ?",
-          "Plugins_Delete_Progress": "Suppression en cours...",
-          "Plugins_Delete_Confirmed": "Suppression effectuée !",
-          "Plugins_Install_TerminalHeader": "MagicMirror² Terminal",
-          "Plugins_Install_Message": "Voulez-vous installer ce plugin ?",
-          "Plugins_Install_Progress": "Installation en cours...",
-          "Plugins_Install_Confirmed": "Installation effectuée !",
-          "Plugins_Initial_Title": "Configuration initiale de",
-          "Plugins_DeleteConfig_Title": "Supprimer la configuration de",
-          "Plugins_DeleteConfig_Confirmed": "Configuration supprimée !",
-          "Plugins_Modify_Title": "Modification de la configuration de",
-          "Plugins_Error_Snowboy": "n'est la compatible avec le detecteur de type Snowboy",
-          "Plugins_Error_Porcupine": "n'est la compatible avec le detecteur de type Porcupine",
+          "Home_Welcome": "Bienvenue sur MMM-Bugsounet",
           "Terminal": "Visionner le Terminal",
           "TerminalOpen": "Ouvrir un Terminal",
-          "TerminalGW": "MMM-GoogleAssistant Terminal",
+          "TerminalGW": "MMM-Bugsounet Terminal",
           "Configuration": "Config. de MagicMirror²",
           "Configuration_Welcome": "Configuration actuelle de MagicMirror²",
           "Configuration_EditLoad": "Editer ou Charger une sauvegarde",
@@ -3530,22 +2693,20 @@
           "Configuration_Edit_AcualConfig": "Configuration Actuelle",
           "Tools": "Outils",
           "Tools_Welcome": "Boite à outils",
-          "Tools_subTitle": "MMM-GoogleAssistant peut vous offrir plus de contrôle ! (Les fonctions disponibles sont uniquement affichées)",
+          "Tools_subTitle": "MMM-Bugsounet peut vous offrir plus de contrôle ! (Les fonctions disponibles sont uniquement affichées)",
           "Tools_Restart": "Redémarrer MagicMirror²",
           "Tools_Restart_Text1": "Veuillez patienter...",
           "Tools_Restart_Text2": "Redémarrage",
           "Tools_Die": "Arrêter MagicMirror²",
           "Tools_Die_Text1": "À bientôt !",
           "Tools_Die_Text2": "Pour une meilleure utilisation...",
-          "Tools_Die_Text3": "de MMM-GoogleAssistant et de MagicMirror²!",
+          "Tools_Die_Text3": "de MMM-Bugsounet et de MagicMirror²!",
           "Tools_Webview_Header": "Modifier les options d'électron pour une utilisation correcte avec les plugins EXT",
           "Tools_Webview_Needed": "Nécessaire pour:",
           "Tools_Backup_Found": "sauvegardes trouvées",
           "Tools_Backup_Text": "Supprimer toutes les sauvegardes",
           "Tools_Backup_Deleted": "Toutes les sauvegardes ont bien été supprimées!",
           "Tools_Screen_Text": "Allumer ou éteindre votre écran",
-          "Tools_GoogleAssistant_Text": "Active MMM-GoogleAssistant avec votre demande",
-          "Tools_GoogleAssistant_Query": "Entrez votre demande",
           "Tools_Alert_Text": "Affiche un message sur votre mirroir",
           "Tools_Alert_Query": "Entrez votre message",
           "Tools_Volume_Text_Record": "Defini le volume d'enregistrement du microphone",
@@ -3562,13 +2723,11 @@
           "Tools_Update_Header": "Mises à jour disponibles",
           "Tools_Update_Text": "Modules et EXT Plugins:",
           "Tools_Update_Text2": "Dépendences NPM:",
-          "Tools_YouTube_Text": "Lance une vidéo YouTube",
-          "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
           "Tools_Stop_Text": "Arrête tous les plugins en fonctionnement",
           "Tools_Radio_Text": "Ecouter la Radio",
           "Tools_Radio_Text2": "No radio found!",
           "About": "À Propos",
-          "About_Title": "À Propos de MMM-GoogleAssistant",
+          "About_Title": "À Propos de MMM-Bugsounet",
           "About_Info_by": "par @bugsounet",
           "About_Info_Support": "Support",
           "About_Info_Donate": "Faire un don",
@@ -3675,7 +2834,7 @@
           }
         },
         "example": {
-          "homeText": "<p>Bonjour, bienvenue sur MMM-GoogleAssistant</p>\n<p>Cet outil va aider à configurer ou à gérer votre miroir</p>\n<p>Que peut vraiment faire cet outil ?</p>\n<ul>\n  <li>Permet d'avoir un contrôle à distance (localement ou internet)</li>\n  <li>Permet d'installer/supprimer les plugins EXTs</li>\n  <li>Permet de configurer/modifier votre EXT avec un exemple de configuration</li>\n  <li>Permet de configurer MagicMirror²</li>\n  <li>Permet de créer une sauvegarde de votre fichier de configuration à chaque modification</li>\n  <li>Permet d'afficher des journaux MagicMirror² en temps réel</li>\n  <li>Permet de vous connecter à votre système grace au terminal intégré</li>\n  <li>Permet de redémarrer ou d'arrêter manuellement MagicMirror²</li>\n  <li>Permet d'éteindre ou d'allumer votre écran</li>\n  <li>Permet d'afficher divers informations système</li>\n  <li>...</li>\n</ul>\n<br>\n<p>Merci aux traducteurs:</p>\n<ul>\n  <li>@CalcU (Espagnol)</li>\n  <li>@lxne (Allemand)</li>\n  <li>@bitass (Néerlandais)</li>\n  <li>@pitchx (Français revu)</li>\n  <li>@maxmax (Espagnol)</li>\n  <li>@dvbit (Italien)</li>\n  <li>@toramanderler (Turc)</li>\n</ul>\n<p>Je vous souhaite une agréable découverte!</p>\n<p>Bonne utilisation,<br>@bugsounet</p>\n"
+          "homeText": "<p>Bonjour, bienvenue sur MMM-Bugsounet</p>\n<p>Cet outil va aider à configurer ou à gérer votre miroir</p>\n<p>Que peut vraiment faire cet outil ?</p>\n<ul>\n  <li>Permet d'avoir un contrôle à distance (localement ou internet)</li>\n  <li>Permet de configurer MagicMirror²</li>\n  <li>Permet de créer une sauvegarde de votre fichier de configuration à chaque modification</li>\n  <li>Permet d'afficher des journaux MagicMirror² en temps réel</li>\n  <li>Permet de vous connecter à votre système grace au terminal intégré</li>\n  <li>Permet de redémarrer ou d'arrêter manuellement MagicMirror²</li>\n  <li>Permet d'éteindre ou d'allumer votre écran</li>\n  <li>Permet d'afficher divers informations système</li>\n  <li>...</li>\n</ul>\n<br>\n<p>Merci aux traducteurs:</p>\n<ul>\n  <li>@CalcU (Espagnol)</li>\n  <li>@lxne (Allemand)</li>\n  <li>@bitass (Néerlandais)</li>\n  <li>@pitchx (Français revu)</li>\n  <li>@maxmax (Espagnol)</li>\n  <li>@dvbit (Italien)</li>\n  <li>@toramanderler (Turc)</li>\n</ul>\n<p>Je vous souhaite une agréable découverte!</p>\n<p>Bonne utilisation,<br>@bugsounet</p>\n"
         }
       },
       "version": {
@@ -3683,27 +2842,27 @@
         "properties": {
           "version": {
             "type": "string",
-            "description": "EXT-Website version"
+            "description": "MMM-Bugsounet version"
           },
           "api": {
             "type": "string",
-            "description": "EXT-Website API version"
+            "description": "MMM-Bugsounet API version"
           },
           "rev": {
             "type": "string",
-            "description": "EXT-Website revision"
+            "description": "MMM-Bugsounet revision"
           },
           "lang": {
             "type": "string",
-            "description": "EXT-Website language"
+            "description": "MMM-Bugsounet language"
           },
           "last": {
             "type": "string",
-            "description": "EXT-Website last know version"
+            "description": "MMM-Bugsounet last know version"
           },
           "needUpdate": {
             "type": "boolean",
-            "description": "EXT-Website needs an update"
+            "description": "MMM-Bugsounet needs an update"
           }
         },
         "example": {
@@ -3724,23 +2883,23 @@
           },
           "version": {
             "type": "string",
-            "description": "EXT-Website version"
+            "description": "MMM-Bugsounet version"
           },
           "rev": {
             "type": "string",
-            "description": "EXT-Website revision"
+            "description": "MMM-Bugsounet revision"
           },
           "lang": {
             "type": "string",
-            "description": "EXT-Website language"
+            "description": "MMM-Bugsounet language"
           },
           "last": {
             "type": "string",
-            "description": "EXT-Website last know version"
+            "description": "MMM-Bugsounet last know version"
           },
           "needUpdate": {
             "type": "boolean",
-            "description": "EXT-Website needs an update"
+            "description": "MMM-Bugsounet needs an update"
           }
         },
         "example": {
@@ -3785,19 +2944,6 @@
           "error": "Error when writing file"
         }
       },
-      "ConfigSchema": {
-        "type": "object",
-        "description": "Stringified sample schema and encoded in base64",
-        "properties": {
-          "schema": {
-            "type": "string",
-            "description": "Encoded (base64) result"
-          }
-        },
-        "example": {
-          "schema": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYnVnc291bmV0IiwiaWF0IjoxNzE3OTI4ODI3LCJleHAiOjE3MTc5MzI0Mjd9.FfHJb8iXiez_9MZN23PT19F3tbwQNRQnbgZs99AZU0U"
-        }
-      },
       "Config200": {
         "type": "object",
         "description": "Configuration updated",
@@ -3813,7 +2959,7 @@
         },
         "example": {
           "done": "ok",
-          "backup": "config.js.GA.20240608-09:58:25"
+          "backup": "config.js.20240608-09:58:25"
         }
       },
       "SendConfig": {
@@ -3868,36 +3014,6 @@
           "payload": null
         }
       },
-      "SendQuery": {
-        "type": "object",
-        "required": [
-          "query"
-        ],
-        "properties": {
-          "query": {
-            "type": "string",
-            "description": "MMM-GoogleAssistant text query"
-          }
-        },
-        "example": {
-          "query": "What time is it ?"
-        }
-      },
-      "SendYouTube": {
-        "type": "object",
-        "required": [
-          "query"
-        ],
-        "properties": {
-          "query": {
-            "type": "string",
-            "description": "YouTube video request"
-          }
-        },
-        "example": {
-          "query": "K-391 summertime"
-        }
-      },
       "SendScreen": {
         "type": "object",
         "required": [
@@ -3913,11 +3029,11 @@
           "power": "OFF"
         }
       },
-      "SendFreeboxTVList" : {
+      "SendFreeboxTVList": {
         "description": "Array of all available TV channel",
         "type": "array",
         "items": {
-          "type" : "string"
+          "type": "string"
         },
         "example": [
           "France2",
@@ -4012,9 +3128,9 @@
           "VERSION": {
             "type": "object",
             "properties": {
-              "GA": {
+              "Bugsounet": {
                 "type": "string",
-                "description": "MMM-GoogleAssistant version and revision"
+                "description": "MMM-Bugsounet version and revision"
               },
               "MagicMirror": {
                 "type": "string",
@@ -4113,8 +3229,8 @@
           },
           "STORAGE": {
             "type": "array",
-            "items" : {
-              "type" : "object",
+            "items": {
+              "type": "object",
               "properties": {
                 "/": {
                   "type": "object",
@@ -4136,15 +3252,15 @@
           "CPU": {
             "type": "object",
             "properties": {
-              "usage":  {
+              "usage": {
                 "type": "string",
                 "description": "CPU use in %"
               },
-              "type":  {
+              "type": {
                 "type": "string",
                 "description": "Type of CPU"
               },
-              "temp":  {
+              "temp": {
                 "type": "object",
                 "properties": {
                   "imperial": {
@@ -4155,7 +3271,7 @@
                     "type": "string",
                     "description": "Current temperature in °C"
                   },
-                  "F":{
+                  "F": {
                     "type": "string",
                     "description": "Current temperature in °F"
                   }
@@ -4203,88 +3319,14 @@
                 "type": "string"
               }
             }
-          },
-          "PROCESS": {
-            "type": "object",
-            "properties": {
-              "nginx": {
-                "type": "object",
-                "properties": {
-                  "pid": {
-                    "type": "number",
-                    "description": "PID number"
-                  },
-                  "cpu": {
-                    "type": "number",
-                    "description": "Used CPU in %"
-                  },
-                  "mem": {
-                    "type": "number",
-                    "description": "Used memory in %"
-                  }
-                }
-              },
-              "electron": {
-                "type": "object",
-                "properties": {
-                  "pid": {
-                    "type": "number",
-                    "description": "PID number"
-                  },
-                  "cpu": {
-                    "type": "number",
-                    "description": "Used CPU in %"
-                  },
-                  "mem": {
-                    "type": "number",
-                    "description": "Used memory in %"
-                  }
-                }
-              },
-              "librespot": {
-                "type": "object",
-                "properties": {
-                  "pid": {
-                    "type": "number",
-                    "description": "PID number"
-                  },
-                  "cpu": {
-                    "type": "number",
-                    "description": "Used CPU in %"
-                  },
-                  "mem": {
-                    "type": "number",
-                    "description": "Used memory in %"
-                  }
-                }
-              },
-              "pm2": {
-                "type": "object",
-                "properties": {
-                  "pid": {
-                    "type": "number",
-                    "description": "PID number"
-                  },
-                  "cpu": {
-                    "type": "number",
-                    "description": "Used CPU in %"
-                  },
-                  "mem": {
-                    "type": "number",
-                    "description": "Used memory in %"
-                  }
-                }
-              }
-            }
           }
         },
         "example": {
           "VERSION": {
-            "GA": "7.0.2 (240528)",
+            "Bugsounet": "1.0.0 (240528)",
             "MagicMirror": "2.27.0",
             "ELECTRON": "29.1.6",
-            "NODEMM": "20.9.0",
-            "NODECORE": "21.7.3",
+            "NODECORE": "20.18.1",
             "NPM": "10.5.0",
             "KERNEL": "6.1.0-rpi8-rpi-v8",
             "OS": "Raspbian 12 (bookworm arm)"
@@ -4347,32 +3389,10 @@
             "MMDHM": "2 heures 3 minutes",
             "recordMM": 337782.520799713,
             "recordMMDHM": "3 jours 21 heures 49 minutes"
-          },
-          "PROCESS": {
-            "nginx": {
-              "pid": 1309,
-              "cpu": 0,
-              "mem": 0
-            },
-            "electron": {
-              "pid": 31827,
-              "cpu": 0.01,
-              "mem": 17
-            },
-            "librespot": {
-              "pid": 31637,
-              "cpu": 0,
-              "mem": 0.1
-            },
-            "pm2": {
-              "pid": 1029,
-              "cpu": 0.76,
-              "mem": 1.6
-            }
           }
         }
       },
-      "EXTVersions" : {
+      "EXTVersions": {
         "description": "On each connected plugin",
         "type": "object",
         "properties": {
@@ -4410,27 +3430,6 @@
             "update": false,
             "beta": false
           },
-          "EXT-Browser": {
-            "version": "1.4.3",
-            "rev": "240519",
-            "last": "1.4.3",
-            "update": false,
-            "beta": false
-          },
-          "EXT-MusicPlayer": {
-            "version": "1.5.1",
-            "rev": "240519",
-            "last": "1.5.1",
-            "update": false,
-            "beta": false
-          },
-          "EXT-Touch": {
-            "version": "1.0.1",
-            "rev": "240420",
-            "last": "1.0.1",
-            "update": false,
-            "beta": false
-          },
           "EXT-TelegramBot": {
             "version": "2.5.5",
             "rev": "240529",
@@ -4438,7 +3437,7 @@
             "update": false,
             "beta": false
           },
-          "EXT-Website": {
+          "MMM-Bugsounet": {
             "version": "1.1.0",
             "rev": "240527",
             "last": "1.1.0",
@@ -4447,170 +3446,56 @@
           }
         }
       },
-      "ArrayPlugins" : {
+      "ArrayPlugins": {
         "description": "Array of plugins",
         "type": "array",
         "items": {
-          "type" : "string"
+          "type": "string"
         },
         "example": [
           "EXT-Detector",
           "EXT-Screen",
-          "EXT-Website",
-          "EXT-YouTube"
+          "MMM-Bugsounet"
         ]
       },
-      "EXTDescriptions" : {
-        "description": "On each plugin -> description",
+      "EXTStatus": {
         "type": "object",
         "properties": {
-          "EXT-Name": {
-            "type": "string"
-          }
-        },
-        "example": {
-          "EXT-Background": "Modifiez l'arrière-plan par défaut de l'assistant Google par le vôtre ou avec des gifs animés pour chaque statut de l'assistant.",
-          "EXT-Browser": "Affiche n'importe quelle page Internet comme un vrai navigateur en plein écran",
-          "EXT-Detector": "Écouteur multi-mots clés pour activer MMM-GoogleAssistant",
-          "EXT-FreeboxTV": "Lecteur des chaines de TV du fournisseur d'accès Internet français: Free",
-          "EXT-GooglePhotos": "Affiche votre répertoire d'albums avec l'API Google photos en arrière-plan ou sur une position defini de MagicMirror²",
-          "EXT-Keyboard": "Contrôle votre mirror avec un clavier",
-          "EXT-Librespot": "Autorise la lecture de musique Spotify sur votre miroir avec Librespot.",
-          "EXT-MusicPlayer": "Joue n'importe quelle musique trouvée sur une clé USB ou depuis un répertoire.",
-          "EXT-Pages": "Ce plugin permet d'avoir plusieures pages animées",
-          "EXT-Photos": "Affichage de toutes les photos découvertes par l'assistant en plein écran",
-          "EXT-RadioPlayer": "Permet d'écouter les stations de radio sur MagicMirror².",
-          "EXT-Screen": "Après un temps configuré sans aucune interaction de l'utilisateur, l'écran s'éteindra et masquera tous les modules pour le mode économie.",
-          "EXT-ScreenTouch": "Permet d'allumer/éteindre votre écran avec l'écran tactile.",
-          "EXT-Spotify": "Ce plugin affiche la lecture spotify actuelle de tous les appareils.",
-          "EXT-StreamDeck": "Contrôle votre mirroir avec un StreamDeck par elgato©",
-          "EXT-TelegramBot": "Permet de contrôler à distance les plugins dans Telegram.",
-          "EXT-Touch": "Permet d'activer MMM-GoogleAssistant avec un écran tatile en appuyant uniquement sur l'icône Google.",
-          "EXT-Updates": "Ce plugin permet de mettre à jour automatiquement si une mise à jour est détectée.",
-          "EXT-VLCServer": "Permet de lire les contenus audio/video.",
-          "EXT-Volume": "Contrôle le niveau sonore de votre miroir.",
-          "EXT-Website": "Contrôler MMM-GoogleAssistant depuis une page web.",
-          "EXT-Welcome": "Permet d'envoyer un message de bienvenue au démarrage de MagicMirror².",
-          "EXT-YouTube": "Permet de lire des vidéos YouTube (réservées aux donateurs).",
-          "EXT-YouTubeCast": "Permet la diffusion d'une vidéo YouTube sur MagicMirror²."
-        }
-      },
-      "EXTStatus" : {
-        "type": "object",
-        "properties": {
-          "EXT-Background": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-Browser": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-Detector": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
           "EXT-FreeboxTV": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-GooglePhotos": {
-            "type": "object",
-            "properties" : {
-              "hello": {
                 "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-Keyboard": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
                 "description": "True when this plugin is running and need some rules"
               }
             }
           },
           "EXT-Librespot": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-MusicPlayer": {
-            "type": "object",
-            "properties" : {
-              "hello": {
                 "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
                 "description": "True when this plugin is running and need some rules"
               }
             }
           },
           "EXT-Pages": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               },
               "actual": {
@@ -4623,54 +3508,28 @@
               }
             }
           },
-          "EXT-Photos": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
           "EXT-RadioPlayer": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-RemoteControler": {
-            "type": "object",
-            "properties" : {
-              "hello": {
                 "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
                 "description": "True when this plugin is running and need some rules"
               }
             }
           },
           "EXT-Screen": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               },
               "power": {
@@ -4681,26 +3540,26 @@
           },
           "EXT-SmartHome": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               }
             }
           },
           "EXT-Spotify": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               },
               "remote": {
@@ -4713,41 +3572,28 @@
               }
             }
           },
-          "EXT-StreamDeck": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
           "EXT-TelegramBot": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               }
             }
           },
           "EXT-Updates": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               },
               "update": {
@@ -4758,26 +3604,26 @@
           },
           "EXT-VLCServer": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               }
             }
           },
           "EXT-Volume": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
+                "type": "boolean",
                 "description": "True when this plugin is running and need some rules"
               },
               "speaker": {
@@ -4794,80 +3640,37 @@
               }
             }
           },
-          "EXT-Website": {
+          "MMM-Bugsounet": {
             "type": "object",
-            "properties" : {
+            "properties": {
               "hello": {
                 "type": "boolean",
                 "description": "True when this plugin starts"
               },
               "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-Welcome": {
-            "type": "object",
-            "properties" : {
-              "hello": {
                 "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
                 "description": "True when this plugin is running and need some rules"
               }
             }
-          },
-          "EXT-YouTube": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "EXT-YouTubeCast": {
-            "type": "object",
-            "properties" : {
-              "hello": {
-                "type": "boolean",
-                "description": "True when this plugin starts"
-              },
-              "connected": {
-                "type" : "boolean",
-                "description": "True when this plugin is running and need some rules"
-              }
-            }
-          },
-          "GA_Ready": {
-            "type": "boolean",
-            "description": "True when MMM-GoogleAssistant is iniatilized"
           }
         }
       },
-      "BackupList" : {
+      "BackupList": {
         "description": "Array of all available backups",
         "type": "array",
         "items": {
-          "type" : "string"
+          "type": "string"
         },
         "example": [
-          "config.js.GA.20240610-00:15:37",
-          "config.js.GA.20240610-00:13:35",
-          "config.js.GA.20240610-00:13:06",
-          "config.js.GA.20240610-00:01:55",
-          "config.js.GA.20240609-15:50:15",
-          "config.js.GA.20240609-14:45:16",
-          "config.js.GA.20240609-14:22:22",
-          "config.js.GA.20240609-14:21:50",
-          "config.js.GA.20240609-14:14:42"
+          "config.js.20240610-00:15:37",
+          "config.js.20240610-00:13:35",
+          "config.js.20240610-00:13:06",
+          "config.js.20240610-00:01:55",
+          "config.js.20240609-15:50:15",
+          "config.js.20240609-14:45:16",
+          "config.js.20240609-14:22:22",
+          "config.js.20240609-14:21:50",
+          "config.js.20240609-14:14:42"
         ]
       },
       "SendVolume": {
@@ -4885,11 +3688,11 @@
           "volume": 50
         }
       },
-      "SendRadioList" : {
+      "SendRadioList": {
         "description": "Array of all available Radio",
         "type": "array",
         "items": {
-          "type" : "string"
+          "type": "string"
         },
         "example": [
           "Chérie FM",
@@ -4948,7 +3751,7 @@
         },
         "example": {
           "query": "Michael jackson",
-          "type" : "artist"
+          "type": "artist"
         }
       }
     }
