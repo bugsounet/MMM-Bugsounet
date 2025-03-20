@@ -68,7 +68,7 @@ class EXTs {
     this.EXT["EXT-FreeboxTV"].channels = [];
     this.EXT["EXT-FreeboxTV"].playing = null;
     this.EXT["EXT-RadioPlayer"].channels = [];
-    this.EXT["EXT-RadioPlayer"].playing = [];
+    this.EXT["EXT-RadioPlayer"].playing = null;
   }
 
   setBugsounet_Ready () {
