@@ -97,6 +97,7 @@
     "node": ">=23"
   },
   "installer": {
+    "rebuild": true,
     "apt": [
       "pulseaudio",
       "python3",
