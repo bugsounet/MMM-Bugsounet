@@ -38,6 +38,7 @@ class EXTs {
     this.EXT = {
       Bugsounet_Ready: false
     };
+    this.previousEXT = {};
     this.sendStatusTimeout = null;
     console.log("[Bugsounet] EXTs Ready");
   }
@@ -194,6 +195,7 @@ class EXTs {
   /** Notification Actions **/
   ActionsEXTs (noti, payload, sender) {
     if (!this.EXT.Bugsounet_Ready) return this.sendWarn("MMM-Bugsounet is not ready");
+
     let EXTNoti = [
       "Bugsounet_HELLO",
       "Bugsounet_ALERT",
@@ -226,6 +228,8 @@ class EXTs {
       logBugsounet("[EXTs] Sorry, i don't understand what is", noti, payload || "");
       return;
     }
+
+    this.previousEXT = JSON.stringify(this.EXT);
 
     switch (noti) {
       case "Bugsounet_HELLO":
@@ -359,11 +363,13 @@ class EXTs {
         break;
     }
 
-    logBugsounet(`[EXTs] Change for ${noti} (${sender?.name}):`, payload);
-    logBugsounet("Status:", this.EXT);
-    this.sendEXTStatus(this.EXT);
-    if (this.EXT["EXT-SmartHome"].hello) {
-      this.sendNotification("Bugsounet_STATUS", this.EXT);
+    let isEqual = this.previousEXT === JSON.stringify(this.EXT);
+    if (!isEqual) {
+      logBugsounet(`[${noti}] Status for ${sender?.name} is now:`, this.EXT[sender?.name]);
+      this.sendEXTStatus(this.EXT);
+      if (this.EXT["EXT-SmartHome"].hello) {
+        this.sendNotification("Bugsounet_STATUS", this.EXT);
+      }
     }
   }
 
