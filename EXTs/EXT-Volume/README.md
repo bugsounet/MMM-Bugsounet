@@ -10,4 +10,4 @@ This plugin is an Extented plugin for `MMM-Bugsounet`
 
 ## Installation / update / configuration
 
-Read the docs in [wiki](https://wiki.bugsounet.fr/EXT-Volume)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki)
