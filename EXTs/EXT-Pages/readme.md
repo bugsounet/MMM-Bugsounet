@@ -1,4 +1,4 @@
-# EXT-Pages - Extented for `MMM-GoogleAssistant`
+# EXT-Pages - Extented for `MMM-Bugsounett`
 
 This MagicMirror² Module allows you to have animated pages in your magic mirror!
 
@@ -10,7 +10,7 @@ Or, want to have grouped modules that are themed together? Look no further!
 
 ## Installation, update & Guides
 
-Read the docs in [wiki](https://wiki.bugsounet.fr/en/EXT-Pages)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki)
 
 ## Credits
 
