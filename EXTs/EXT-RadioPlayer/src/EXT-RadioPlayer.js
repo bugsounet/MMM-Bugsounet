@@ -184,6 +184,7 @@ Module.register("EXT-RadioPlayer", {
       this.canStop = true;
     } else {
       this.sendNotification("Bugsounet_RADIO-DISCONNECTED");
+      this.sendNotification("Bugsounet_RADIO-PLAYING", null);
       this.hide(1000, () => {}, { lockString: "EXT-RADIO_LOCK" });
       this.canStop = true;
     }
