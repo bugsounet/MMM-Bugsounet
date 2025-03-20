@@ -50,7 +50,6 @@ class website {
       translations: null,
       loginTranslation: null,
       language: null,
-      GAConfig: {}, // see to be deleted !?
       HyperWatch: null,
       radio: null,
       freeTV: {},
@@ -1435,30 +1434,11 @@ class website {
     });
   }
 
-  /** insert or modify plugins config to MagicMirror config **/
-  configAddOrModify (EXTConfig) {
-    return new Promise((resolve) => {
-      let index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(EXTConfig.module);
-      if (index > -1) this.website.MMConfig.modules[index] = EXTConfig;
-      else this.website.MMConfig.modules.push(EXTConfig);
-      resolve(this.website.MMConfig);
-    });
-  }
-
   /** check plugin in config **/
   checkPluginInConfig (plugin) {
     let index = this.website.EXTConfigured.indexOf(plugin);
     if (index > -1) return true;
     else return false;
-  }
-
-  /** delete plugins config **/
-  configDelete (EXT) {
-    return new Promise((resolve) => {
-      let index = this.website.MMConfig.modules.map((e) => { return e.module; }).indexOf(`MMM-Bugsounet/EXTs/${EXT}`);
-      this.website.MMConfig.modules.splice(index, 1); // delete modules
-      resolve(this.website.MMConfig);
-    });
   }
 
   /** list of all backups **/
