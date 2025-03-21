@@ -26,9 +26,5 @@
   "M6 Music": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=430&flavour=ld",
   "MCM": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=621&flavour=sd",
   "MCM TOP": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=622&flavour=sd",
-  "RFM TV": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=623&flavour=sd",
-  "C Music": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=683&flavour=sd",
-  "MTV 00s": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=233&flavour=sd",
-  "MTV 80s": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=232&flavour=sd",
-  "MTV 90s": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=1556&flavour=ld"
+  "RFM TV": "rtsp://mafreebox.freebox.fr/fbxtv_pub/stream?namespace=1&service=623&flavour=sd"
 }
