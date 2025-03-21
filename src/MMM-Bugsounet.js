@@ -203,7 +203,6 @@ Module.register("MMM-Bugsounet", {
     text += "*" + `MMM-Bugsounet:* \`${result["VERSION"]["Bugsounet"]}\`\n`;
     text += "*" + `MagicMirror²:* \`${result["VERSION"]["MagicMirror"]}\`\n`;
     text += "*" + `Electron:* \`${result["VERSION"]["ELECTRON"]}\`\n`;
-    text += "*" + `MagicMirror² ${this.translate("GW_System_NodeVersion")}* \`${result["VERSION"]["NODEMM"]}\`\n`;
     text += `*${this.translate("GW_System_NodeVersion")}* \`${result["VERSION"]["NODECORE"]}\`\n`;
     text += `*${this.translate("GW_System_NPMVersion")}* \`${result["VERSION"]["NPM"]}\`\n`;
     text += `*${this.translate("GW_System_OSVersion")}* \`${result["VERSION"]["OS"]}\`\n`;
