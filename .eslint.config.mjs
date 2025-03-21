@@ -3,12 +3,13 @@ import eslintPluginStylistic from "@stylistic/eslint-plugin";
 import eslintPluginDepend from "eslint-plugin-depend";
 import eslintPluginImportX from "eslint-plugin-import-x";
 import eslintPluginJs from "@eslint/js";
-import eslintPluginPackageJson from "eslint-plugin-package-json/configs/recommended";
+import eslintPluginPackageJson from "eslint-plugin-package-json";
 
 const config = [
   eslintPluginDepend.configs["flat/recommended"],
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginJs.configs.recommended,
+  eslintPluginPackageJson.configs.recommended,
   {
     "files": ["**/*.js"],
     "languageOptions": {
@@ -103,10 +104,8 @@ const config = [
     }
   },
   {
-    "files": ["package.json"],
-    ...eslintPluginPackageJson,
+    "files": ["**/package.json"],
     "rules": {
-      ...eslintPluginPackageJson.rules,
       "package-json/valid-name": "off",
       "depend/ban-dependencies": ["error", {"allowed": ["jquery"]}]
     }
