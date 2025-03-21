@@ -681,15 +681,15 @@ class smarthome {
 
         // FreeboxTV
         if (input.startsWith("TV ")) {
-          element = input.split("TV ");
-          this.send("TVPlay", element[1]);
+          element = input.split(/(^TV\s)/s);
+          this.send("TVPlay", element[2]);
           params.newInput = input;
         }
 
         // RadioPlayer
         if (input.startsWith("Radio ")) {
-          element = input.split("Radio ");
-          this.send("RadioPlay", element[1]);
+          element = input.split(/(^Radio\s)/s);
+          this.send("RadioPlay", element[2]);
           params.newInput = input;
         }
 
