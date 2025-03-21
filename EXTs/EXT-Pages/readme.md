@@ -1,4 +1,4 @@
-# EXT-Pages - Extented for `MMM-Bugsounett`
+# EXT-Pages - Extented for `MMM-Bugsounet`
 
 This MagicMirror² Module allows you to have animated pages in your magic mirror!
 
