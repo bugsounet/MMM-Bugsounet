@@ -73,9 +73,9 @@ module.exports = NodeHelper.create({
   },
 
   async parseWebsite () {
-    const bugsounet = await this.libraries("website");
+    const bugsounet = await this.libraries();
     return new Promise((resolve) => {
-      if (bugsounet) return this.bugsounetError(bugsounet, "Website");
+      if (bugsounet) return this.bugsounetError(bugsounet);
       let WebsiteHelperConfig = {
         config: {
           username: this.config.username,
@@ -113,10 +113,8 @@ module.exports = NodeHelper.create({
     });
   },
 
-  libraries (type) {
-    let Libraries = [];
-
-    let website = [
+  libraries () {
+    let Libraries = [
       { "./components/hyperwatch.js": "HyperWatch" },
       { "./components/systemInformation.js": "SystemInformation" },
       { "./components/website.js": "website" }
@@ -124,15 +122,7 @@ module.exports = NodeHelper.create({
 
     let errors = 0;
 
-    switch (type) {
-      case "website":
-        log("Loading website Libraries...");
-        Libraries = website;
-        break;
-      default:
-        console.log(`${type}: Unknow library database...`);
-        return;
-    }
+    log("Loading website Libraries...");
 
     return new Promise((resolve) => {
       Libraries.forEach((library) => {
@@ -157,14 +147,13 @@ module.exports = NodeHelper.create({
       resolve(errors);
       if (errors) {
         console.error("[Bugsounet] [Lib] Some libraries missing!");
-        //this.sendSocketNotification("NOT_INITIALIZED", { message: "Library loading Error!" });
-      } else console.log(`[Bugsounet] [Lib] All ${type} libraries loaded!`);
+      } else console.log("[Bugsounet] [Lib] All website libraries loaded!");
     });
   },
 
-  bugsounetError (bugsounet, family) {
-    console.error(`[Bugsounet] [Lib] [${family}] Warning: ${bugsounet} needed library not loaded !`);
+  bugsounetError (bugsounet) {
+    console.error(`[Bugsounet] [Lib] Warning: ${bugsounet} needed library not loaded !`);
     console.error("[Bugsounet] [Lib] Try to solve it with `npm run rebuild` in MMM-Bugsounet folder");
-    this.sendSocketNotification("WARNING", `[${family}] Try to solve it with 'npm run rebuild' in MMM-Bugsounet folder`);
+    this.sendSocketNotification("WARNING", "Try to solve it with 'npm run rebuild' in MMM-Bugsounet folder");
   }
 });
