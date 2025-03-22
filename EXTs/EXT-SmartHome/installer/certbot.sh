@@ -27,5 +27,5 @@ certbot -d $domain --nginx || {
 }
 
 Installer_success "[SMARTHOME] Certificate installed !\n"
-Installer_success "[GA] MMM-GoogleAssistant is now available at https://$domain"
+Installer_success "[Bugsounet] MMM-Bugsounet is now available at https://$domain"
 Installer_success "[SMARTHOME] SmartHome is now available at https://$domain/smarthome/"
