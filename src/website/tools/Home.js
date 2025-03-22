@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, getVersion, loadTranslation, getHomeText, forceMobileRotate, doTranslateNavBar */
+/* global $, setTranslation, getVersion, loadTranslation, getHomeText, forceMobileRotate, doTranslateNavBar */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -28,13 +28,13 @@ window.addEventListener("load", async () => {
 });
 
 function doIndex () {
-  $(document).prop("title", translation.Home);
-  $("#welcome").text(translation.Home_Welcome);
+  document.title = translation.Home;
+  setTranslation("welcome", translation.Home_Welcome);
   if (version.needUpdate) {
     $("#alert").removeClass("invisible");
     $("#alert").removeClass("alert-success");
     $("#alert").addClass("alert-warning");
-    $("#messageText").text(`${translation.Update} v${version.last}`);
+    setTranslation("messageText", `${translation.Update} v${version.last}`);
   }
 }
 

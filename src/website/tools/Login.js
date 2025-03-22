@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, loadLoginTranslation, alertify */
+/* global $, setTranslation, loadLoginTranslation, alertify */
 
 // define all vars
 var translation = {};
@@ -15,11 +15,11 @@ window.addEventListener("load", async () => {
 
 function doLogin () {
   $("#Login-submit").addClass("disabled");
-  $(document).prop("title", translation.welcome);
-  $("#Welcome").text(translation.welcome);
+  document.title = translation.welcome;
+  setTranslation("Welcome", translation.welcome);
   $("#username").attr("placeholder", translation.username);
   $("#password").attr("placeholder", translation.password);
-  $("#Login-submit").text(translation.login);
+  setTranslation("Login-submit", translation.login);
 
   $("#login").on("input change", function () {
     if ($("#username").val() !== "" && $("#password").val() !== "") $("#Login-submit").removeClass("disabled");

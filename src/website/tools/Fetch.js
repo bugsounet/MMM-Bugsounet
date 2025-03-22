@@ -46,7 +46,7 @@ function checkEXTStatus () {
   return new Promise((resolve) => {
     Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Status", (Status) => resolve(Status), (err) => {
       let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
-      if (err.status === 403 || err.status === 401) $(location).attr("href", "/");
+      if (err.status === 403 || err.status === 401) location.href = "/login";
       if (!err.status) alertify.error("Connexion Lost!");
       else alertify.error(`[Status] Server return Error ${err.status} (${error})`);
     });
@@ -291,7 +291,6 @@ function forceMobileRotate () {
 async function doTranslateNavBar () {
   let Docs = await getAPIDocs();
   setTranslation("Home", translation.Home);
-  setTranslation("Plugins", translation.Plugins);
   setTranslation("Terminal", translation.Terminal);
   setTranslation("Configuration", translation.Configuration);
   setTranslation("Tools", translation.Tools);

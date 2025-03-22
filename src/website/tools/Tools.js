@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, alertify, getCurrentToken, getVersion, loadRadio, loadTranslation, doTranslateNavBar, checkEXTStatus, loadBackupNames, forceMobileRotate */
+/* global $, setTranslation, alertify, getCurrentToken, getVersion, loadRadio, loadTranslation, doTranslateNavBar, checkEXTStatus, loadBackupNames, forceMobileRotate */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 
 async function doTools () {
   // translate
-  $(document).prop("title", translation.Tools);
+  document.title = translation.Tools;
   EXTStatus = await checkEXTStatus();
 
   // live stream every secs of EXT for update
@@ -37,22 +37,22 @@ async function doTools () {
     updateTools();
   }, 1000);
 
-  $("#title").text(translation.Tools_Welcome);
-  $("#subtitle").text(translation.Tools_subTitle);
-  $("#stop").text(translation.Tools_Die);
-  $("#restart").text(translation.Tools_Restart);
-  $("#Die").text(translation.Confirm);
-  $("#Restart").text(translation.Confirm);
+  setTranslation("title", translation.Tools_Welcome);
+  setTranslation("subtitle", translation.Tools_subTitle);
+  setTranslation("stop", translation.Tools_Die);
+  setTranslation("restart", translation.Tools_Restart);
+  setTranslation("Die", translation.Confirm);
+  setTranslation("Restart", translation.Confirm);
 
   // backups
   var allBackup = await loadBackupNames();
   if (allBackup.length > 5) {
-    $("#backupFound").text(allBackup.length);
-    $("#backupFoundText").text(translation.Tools_Backup_Found);
-    $("#backupText").text(translation.Tools_Backup_Text);
-    $("#backup-Delete").text(translation.Delete);
-    $("#backup-Error").text(translation.Error);
-    $("#backup-Done").text(translation.Done);
+    setTranslation("backupFound", allBackup.length);
+    setTranslation("backupFoundText", translation.Tools_Backup_Found);
+    setTranslation("backupText", translation.Tools_Backup_Text);
+    setTranslation("backup-Delete", translation.Delete);
+    setTranslation("backup-Error", translation.Error);
+    setTranslation("backup-Done", translation.Done);
     $("#backup-Box").css("display", "block");
 
     document.getElementById("backup-Delete").onclick = function () {
@@ -76,9 +76,9 @@ async function doTools () {
 
   // screen control
   if (EXTStatus["EXT-Screen"].hello) {
-    if (EXTStatus["EXT-Screen"].power) $("#Screen-Control").text(translation.TurnOff);
-    else $("#Screen-Control").text(translation.TurnOn);
-    $("#Screen-Text").text(translation.Tools_Screen_Text);
+    if (EXTStatus["EXT-Screen"].power) setTranslation("Screen-Control", translation.TurnOff);
+    else setTranslation("Screen-Control", translation.TurnOn);
+    setTranslation("Screen-Text", translation.Tools_Screen_Text);
     $("#Screen-Box").css("display", "block");
 
     document.getElementById("Screen-Control").onclick = function () {
@@ -91,8 +91,8 @@ async function doTools () {
 
   // Bugsounet-Alert query
   $("#Alert-Query").prop("placeholder", translation.Tools_Alert_Query);
-  $("#Alert-Text").text(translation.Tools_Alert_Text);
-  $("#Alert-Send").text(translation.Send);
+  setTranslation("Alert-Text", translation.Tools_Alert_Text);
+  setTranslation("Alert-Send", translation.Send);
   $("#Alert-Box").css("display", "block");
   $("#Alert-Query").keyup(function () {
     if ($(this).val().length > 5) {
@@ -111,10 +111,10 @@ async function doTools () {
 
   // Volume control
   if (EXTStatus["EXT-Volume"].hello) {
-    $("#Volume-Text").text(translation.Tools_Volume_Text);
-    $("#Volume-Text2").text(translation.Tools_Volume_Text2);
-    $("#Volume-Text3").text(translation.Tools_Volume_Text3);
-    $("#Volume-Send").text(translation.Confirm);
+    setTranslation("Volume-Text", translation.Tools_Volume_Text);
+    setTranslation("Volume-Text2", translation.Tools_Volume_Text2);
+    setTranslation("Volume-Text3", translation.Tools_Volume_Text3);
+    setTranslation("Volume-Send", translation.Confirm);
     $("#Volume-Box").css("display", "block");
 
     document.getElementById("Volume-Send").onclick = function () {
@@ -124,10 +124,10 @@ async function doTools () {
     };
 
     // mic control
-    $("#Volume-Text-Record").text(translation.Tools_Volume_Text_Record);
-    $("#Volume-Text-Record2").text(translation.Tools_Volume_Text2);
-    $("#Volume-Text-Record3").text(translation.Tools_Volume_Text3);
-    $("#Volume-Send-Record").text(translation.Confirm);
+    setTranslation("Volume-Text-Record", translation.Tools_Volume_Text_Record);
+    setTranslation("Volume-Text-Record2", translation.Tools_Volume_Text2);
+    setTranslation("Volume-Text-Record3", translation.Tools_Volume_Text3);
+    setTranslation("Volume-Send-Record", translation.Confirm);
     $("#Volume-Box-Record").css("display", "block");
 
     document.getElementById("Volume-Send-Record").onclick = function () {
@@ -139,9 +139,9 @@ async function doTools () {
 
   // Update Control
   if (EXTStatus["EXT-Updates"].hello) {
-    $("#Update-Header").text(translation.Tools_Update_Header);
-    $("#Update-Text").text(translation.Tools_Update_Text);
-    $("#Update-Text2").text(translation.Tools_Update_Text2);
+    setTranslation("Update-Header", translation.Tools_Update_Header);
+    setTranslation("Update-Text", translation.Tools_Update_Text);
+    setTranslation("Update-Text2", translation.Tools_Update_Text2);
     document.getElementById("Update-Confirm").onclick = function () {
       $("#Update-Confirm").addClass("disabled");
       Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
@@ -153,15 +153,15 @@ async function doTools () {
   // Spotify Control
   if (EXTStatus["EXT-Spotify"].hello) {
     var type = null;
-    $("#Spotify-Text").text(translation.Tools_Spotify_Text);
-    $("#Spotify-Text2").text(translation.Tools_Spotify_Text2);
-    $("#Spotify-Send").text(translation.Send);
-    $("#Spotify-Artist-Text").text(translation.Tools_Spotify_Artist);
-    $("#Spotify-Track-Text").text(translation.Tools_Spotify_Track);
-    $("#Spotify-Album-Text").text(translation.Tools_Spotify_Album);
-    $("#Spotify-Playlist-Text").text(translation.Tools_Spotify_Playlist);
+    setTranslation("Spotify-Text", translation.Tools_Spotify_Text);
+    setTranslation("Spotify-Text2", translation.Tools_Spotify_Text2);
+    setTranslation("Spotify-Send", translation.Send);
+    setTranslation("Spotify-Artist-Text", translation.Tools_Spotify_Artist);
+    setTranslation("Spotify-Track-Text", translation.Tools_Spotify_Track);
+    setTranslation("Spotify-Album-Text", translation.Tools_Spotify_Album);
+    setTranslation("Spotify-Playlist-Text", translation.Tools_Spotify_Playlist);
     $("#Spotify-Query").prop("placeholder", translation.Tools_Spotify_Query);
-    $("#Spotify-Send").text(translation.Send);
+    setTranslation("Spotify-Send", translation.Send);
     $("#Spotify-Box").css("display", "block");
     $("#Spotify-Query").keyup(function () {
       if ($(this).val().length > 1 && type) {
@@ -273,8 +273,8 @@ async function doTools () {
 
   // RadioPlayer query
   if (EXTStatus["EXT-RadioPlayer"].hello) {
-    $("#Radio-Text").text(translation.Tools_Radio_Text);
-    $("#Radio-Send").text(translation.Listen);
+    setTranslation("Radio-Text", translation.Tools_Radio_Text);
+    setTranslation("Radio-Send", translation.Listen);
     var radio = await loadRadio();
     if (radio.length) {
       radio.forEach((station) => {
@@ -287,7 +287,7 @@ async function doTools () {
     }
     else {
       $("#Radio-Query").css("display", "none");
-      $("#Radio-Text2").text(translation.Tools_Radio_Text2);
+      setTranslation("Radio-Text2", translation.Tools_Radio_Text2);
       $("#Radio-Text2").css("display", "block");
       $("#Radio-Send").addClass("disabled");
     }
@@ -310,8 +310,8 @@ async function doTools () {
   }
 
   // Stop Command
-  $("#Stop-Text").text(translation.Tools_Stop_Text);
-  $("#Stop-Send").text(translation.Send);
+  setTranslation("Stop-Text", translation.Tools_Stop_Text);
+  setTranslation("Stop-Send", translation.Send);
   document.getElementById("Stop-Send").onclick = function () {
     Request("/api/EXT/stop", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "STOP", () => {
       alertify.success(translation.RequestDone);
@@ -321,18 +321,18 @@ async function doTools () {
 
 function updateTools () {
   if (EXTStatus["EXT-Screen"].hello) {
-    if (EXTStatus["EXT-Screen"].power) $("#Screen-Control").text(translation.TurnOff);
-    else $("#Screen-Control").text(translation.TurnOn);
+    if (EXTStatus["EXT-Screen"].power) setTranslation("Screen-Control", translation.TurnOff);
+    else setTranslation("Screen-Control", translation.TurnOn);
   }
 
   if (EXTStatus["EXT-Volume"].hello) {
-    $("#Volume-Set").text(`${EXTStatus["EXT-Volume"].speaker}%`);
-    $("#Volume-Set-Record").text(`${EXTStatus["EXT-Volume"].recorder}%`);
+    setTranslation("Volume-Set", `${EXTStatus["EXT-Volume"].speaker}%`);
+    setTranslation("Volume-Set-Record", `${EXTStatus["EXT-Volume"].recorder}%`);
   }
 
   if (EXTStatus["EXT-Updates"].hello) {
     let needUpdate = 0;
-    $("#Update-Confirm").text(translation.Confirm);
+    setTranslation("Update-Confirm", translation.Confirm);
     var updateModules = EXTStatus["EXT-Updates"].module;
     if (!updateModules) return $("#Update-Box").css("display", "none");
     if (!Object.keys(updateModules).length) return $("#Update-Box").css("display", "none");

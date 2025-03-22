@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, getVersion, loadTranslation, forceMobileRotate, doTranslateNavBar, io, Terminal, FitAddon */
+/* global setTranslation, getVersion, loadTranslation, forceMobileRotate, doTranslateNavBar, io, Terminal, FitAddon */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -33,9 +33,9 @@ window.addEventListener("load", async () => {
 });
 
 async function doTerminalLogs () {
-  $(document).prop("title", translation.Terminal);
-  $("#TerminalHeader").text(translation.Terminal);
-  $("#openTerminal").text(translation.TerminalOpen);
+  document.title = translation.Terminal;
+  setTranslation("TerminalHeader", translation.Terminal);
+  setTranslation("openTerminal", translation.TerminalOpen);
   var socketLogs = io();
   const termLogs = new Terminal({ cursorBlink: true });
   const fitAddonLogs = new FitAddon.FitAddon();
@@ -62,8 +62,8 @@ async function doTerminalLogs () {
 }
 
 async function doTerminal () {
-  $(document).prop("title", translation.Terminal);
-  $("#PTYHeader").text(translation.TerminalGW);
+  document.title = translation.Terminal;
+  setTranslation("PTYHeader", translation.TerminalGW);
   var socketPTY = io();
   const termPTY = new Terminal({ cursorBlink: true });
   const fitAddonPTY = new FitAddon.FitAddon();

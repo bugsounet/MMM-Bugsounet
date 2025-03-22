@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, loadTranslation, forceMobileRotate, doTranslateNavBar, loadMMConfig, JSONEditor, loadBackupNames, loadBackupConfig, getCurrentToken, alertify, FileReaderJS, saveAs */
+/* global $, setTranslation, loadTranslation, forceMobileRotate, doTranslateNavBar, loadMMConfig, JSONEditor, loadBackupNames, loadBackupConfig, getCurrentToken, alertify, FileReaderJS, saveAs */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -33,8 +33,8 @@ window.addEventListener("load", async () => {
 //make viewJSEditor
 async function viewJSEditor () {
   $(document).prop("title", translation.Configuration);
-  $("#MMConfigHeader").text(translation.Configuration_Welcome);
-  $("#EditLoadButton").text(translation.Configuration_EditLoad);
+  setTranslation("MMConfigHeader", translation.Configuration_Welcome);
+  setTranslation("EditLoadButton", translation.Configuration_EditLoad);
   var modules = await loadMMConfig();
   const container = document.getElementById("jsoneditor");
 
@@ -53,14 +53,14 @@ async function viewJSEditor () {
 }
 
 async function EditMMConfigJSEditor () {
-  $(document).prop("title", translation.Configuration);
-  $("#MMConfigHeader").text(translation.Configuration_Edit_Title);
-  $("#wait").text(translation.Wait);
-  $("#done").text(translation.Done);
-  $("#error").text(translation.Error);
-  $("#errorConfig").text(translation.Error);
-  $("#save").text(translation.Save);
-  $("#load").text(translation.Load);
+  document.title = translation.Configuration;
+  setTranslation("MMConfigHeader", translation.Configuration_Edit_Title);
+  setTranslation("wait", translation.Wait);
+  setTranslation("done", translation.Done);
+  setTranslation("error", translation.Error);
+  setTranslation("errorConfig", translation.Error);
+  setTranslation("save", translation.Save);
+  setTranslation("load", translation.Load);
   $("#wait").css("display", "none");
   $("#done").css("display", "none");
   $("#error").css("display", "none");
@@ -139,10 +139,10 @@ async function EditMMConfigJSEditor () {
       $("#alert").addClass("alert-danger");
       let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
       if (!err.status) {
-        $("#messageText").text(err);
+        setTranslation("messageText", err);
         alertify.error("Connexion Lost!");
       } else {
-        $("#messageText").text(err.statusText);
+        setTranslation("messageText", err.statusText);
         alertify.error(`[loadBackup] Server return Error ${err.status} (${error})`);
       }
     });
@@ -166,10 +166,10 @@ async function EditMMConfigJSEditor () {
       $("#alert").addClass("alert-danger");
       let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
       if (!err.status) {
-        $("#messageText").text(err);
+        setTranslation("messageText", err);
         alertify.error("Connexion Lost!");
       } else {
-        $("#messageText").text(err.statusText);
+        setTranslation("messageText", err.statusText);
         alertify.error(`[writeConfig] Server return Error ${err.status} (${error})`);
       }
     });

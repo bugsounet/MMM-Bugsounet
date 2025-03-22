@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, loadTranslation, getCurrentToken */
+/* global setTranslation, loadTranslation, getCurrentToken */
 
 // define all vars
 var translation = {};
@@ -16,9 +16,9 @@ window.addEventListener("load", async () => {
 });
 
 function doRestart () {
-  $(document).prop("title", translation.Tools);
-  $("#text1").text(translation.Tools_Restart_Text1);
-  $("#text2").text(translation.Tools_Restart_Text2);
+  document.title = translation.Tools;
+  setTranslation("text1", translation.Tools_Restart_Text1);
+  setTranslation("text2", translation.Tools_Restart_Text2);
 
   Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "REBOOT", null, null);
 
