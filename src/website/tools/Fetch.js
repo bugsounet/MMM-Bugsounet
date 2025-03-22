@@ -290,14 +290,14 @@ function forceMobileRotate () {
 /* eslint-disable-next-line */
 async function doTranslateNavBar () {
   let Docs = await getAPIDocs();
-  $("#Home").text(translation.Home);
-  $("#Plugins").text(translation.Plugins);
-  $("#Terminal").text(translation.Terminal);
-  $("#Configuration").text(translation.Configuration);
-  $("#Tools").text(translation.Tools);
-  $("#About").text(translation.About);
-  $("#System").text(translation.System);
-  $("#Logout").text(translation.Logout);
+  setTranslation("Home", translation.Home);
+  setTranslation("Plugins", translation.Plugins);
+  setTranslation("Terminal", translation.Terminal);
+  setTranslation("Configuration", translation.Configuration);
+  setTranslation("Tools", translation.Tools);
+  setTranslation("About", translation.About);
+  setTranslation("System", translation.System);
+  setTranslation("Logout", translation.Logout);
   if (!Docs) $("#APIDocsItem").hide();
 
   $("#accordionSidebar").removeClass("invisible");
@@ -305,7 +305,6 @@ async function doTranslateNavBar () {
   var path = location.pathname;
 
   if (path === "/"
-    || path === "/EXT"
     || path === "/Terminal"
     || path === "/MMConfig"
     || path === "/3rdpartymodules"
@@ -315,14 +314,18 @@ async function doTranslateNavBar () {
     || path === "/APIDocs"
   ) $(`a[href="${path}"]`).removeAttr("href");
 
-  if (path === "/install"
-    || path === "/delete"
-    || path === "/EXTModifyConfig"
-    || path === "/EXTCreateConfig"
-  ) path = "/EXT";
   if (path === "/EditMMConfig") path = "/MMConfig";
   if (path === "/Die" || path === "/Restart") path = "/Tools";
   if (path === "/SystemDie" || path === "/SystemRestart") path = "/System";
   if (path === "/ptyProcess") path = "/Terminal";
   $(`a[href="${path}"]`).closest("a").addClass("active");
+}
+
+function setTranslation (id, content) {
+  try {
+    document.getElementById(id).textContent = content;
+  } catch (e) {
+    console.error(`id: ${id}`, `content: ${content}`);
+    console.error(e);
+  }
 }

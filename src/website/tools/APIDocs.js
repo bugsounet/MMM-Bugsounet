@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, loadTranslation, doTranslateNavBar */
+/* global loadTranslation, doTranslateNavBar */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -16,9 +16,8 @@ var translation = {};
 
 // Load rules
 window.addEventListener("load", async () => {
+  document.title = "API Docs";
   translation = await loadTranslation();
-
-  $(document).prop("title", "API Docs");
 
   doTranslateNavBar();
 });

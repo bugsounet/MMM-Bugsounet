@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, loadTranslation, getCurrentToken */
+/* global setTranslation, loadTranslation, getCurrentToken */
 
 // define all vars
 var translation = {};
@@ -15,9 +15,9 @@ window.addEventListener("load", async () => {
 });
 
 function doDie () {
-  $(document).prop("title", translation.Tools);
-  $("#text1").text(translation.Tools_Die_Text1);
-  $("#text2").text(translation.Tools_Die_Text2);
-  $("#text3").text(translation.Tools_Die_Text3);
+  document.title = translation.Tools;
+  setTranslation("text1", translation.Tools_Die_Text1);
+  setTranslation("text2", translation.Tools_Die_Text2);
+  setTranslation("text3", translation.Tools_Die_Text3);
   Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "DIE", null, null);
 }
