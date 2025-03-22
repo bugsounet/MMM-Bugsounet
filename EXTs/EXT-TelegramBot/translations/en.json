@@ -59,7 +59,5 @@
   "EXT-TELBOT_SHOW_DONE": " is now shown",
   "EXT-TELBOT_SHOW_LOCKED": " is already locked by another program, can't show it",
   "EXT-TELBOT_MODULE_NOTFOUND": "Module not found: ",
-  "EXT-TELBOT_MODULE_NAME": "Name of the module missing",
-  "EXT-TELBOT_STOP": "Stops running plugins",
-  "EXT-TELBOT_COMMAND-SENDED": "The stop command has been requested."
+  "EXT-TELBOT_MODULE_NAME": "Name of the module missing"
 }

@@ -269,21 +269,11 @@ Module.register("EXT-TelegramBot", {
         command: "clean",
         callback: "TELBOT_clean",
         description: this.translate("EXT-TELBOT_CLEAN")
-      },
-      {
-        command: "stop",
-        callback: "TELBOT_Stop",
-        description: this.translate("EXT-TELBOT_STOP")
       }
     ];
     defaultCommands.forEach((c) => {
       Register.add(c);
     });
-  },
-
-  TELBOT_Stop (command, handler) {
-    this.sendNotification("Bugsounet_STOP");
-    handler.reply("TEXT", this.translate("EXT-TELBOT_COMMAND-SENDED"));
   },
 
   TELBOT_clean (command, handler) {

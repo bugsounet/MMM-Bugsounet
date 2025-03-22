@@ -59,7 +59,5 @@
   "EXT-TELBOT_SHOW_DONE": " est maintenant actif",
   "EXT-TELBOT_SHOW_LOCKED": " est bloqué par un autre programme, activation impossible",
   "EXT-TELBOT_MODULE_NOTFOUND": "Module non trouvé: ",
-  "EXT-TELBOT_MODULE_NAME": "Nom du module manquant",
-  "EXT-TELBOT_STOP": "Arrête les plugins en fonctionement",
-  "EXT-TELBOT_COMMAND-SENDED": "La commande d'arrêt a été sollicitée."
+  "EXT-TELBOT_MODULE_NAME": "Nom du module manquant"
 }
