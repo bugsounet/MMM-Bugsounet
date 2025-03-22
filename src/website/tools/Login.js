@@ -33,7 +33,7 @@ function doLogin () {
     let credentials = `${$("#username").val()}:${$("#password").val()}`;
     let encode = btoa(credentials);
     Request("/auth", "POST", { Authorization: `Basic ${encode}` }, null, "Login", (response) => {
-      localStorage.setItem("EXT-WEBSITE", JSON.stringify(response.session));
+      localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
       $(location).attr("href", "/");
     }, (err) => {
       $("#username").val("");

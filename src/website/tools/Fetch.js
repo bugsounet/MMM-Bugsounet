@@ -3,7 +3,7 @@
 /* global $, alertify, translation, PleaseRotate */
 
 function getCurrentToken () {
-  return JSON.parse(localStorage.getItem("EXT-WEBSITE"));
+  return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
 }
 
 /* eslint-disable-next-line */
@@ -281,7 +281,7 @@ function forceMobileRotate () {
     forcePortrait: false,
     message: translation.Rotate_Msg,
     subMessage: translation.Rotate_Continue,
-    allowClickBypass: false,
+    allowClickBypass: true,
     onlyMobile: true
   };
   PleaseRotate.start(Options);
