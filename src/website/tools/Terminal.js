@@ -43,6 +43,10 @@ async function doTerminalLogs () {
   termLogs.open(document.getElementById("terminal"));
   fitAddonLogs.fit();
 
+  window.addEventListener("resize", function () {
+    fitAddonLogs.fit();
+  });
+
   socketLogs.on("connect", () => {
     termLogs.write(`\x1B[1;3;31mMMM-Bugsounet v${version.version} (${version.rev}.${version.lang})\x1B[0m \r\n\n`);
   });
@@ -70,6 +74,14 @@ async function doTerminal () {
   termPTY.loadAddon(fitAddonPTY);
   termPTY.open(document.getElementById("terminal"));
   fitAddonPTY.fit();
+
+  window.addEventListener("resize", function () {
+    fitAddonPTY.fit();
+    if (termPTY.rows && termPTY.cols) {
+      socketPTY.emit("terminal.size", { cols: termPTY.cols, rows: termPTY.rows });
+    }
+  });
+
   if (termPTY.rows && termPTY.cols) {
     socketPTY.emit("terminal.size", { cols: termPTY.cols, rows: termPTY.rows });
   }
