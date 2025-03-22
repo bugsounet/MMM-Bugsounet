@@ -166,6 +166,31 @@ Module.register("MMM-Bugsounet", {
       description: this.translate("TB_SYSINFO_DESCRIPTION"),
       callback: "cmd_sysinfo"
     });
+    commander.add({
+      command: "stop",
+      description: this.translate("GW_Tools_Stop_Text"),
+      callback: "tbStopEXT"
+    });
+    commander.add({
+      command: "reboot",
+      description: this.translate("GW_System_Box_Restart"),
+      callback: "tbReboot"
+    });
+    commander.add({
+      command: "shutdown",
+      description: this.translate("GW_System_Box_Shutdown"),
+      callback: "tbShutdown"
+    });
+    commander.add({
+      command: "close",
+      description: this.translate("GW_Tools_Die"),
+      callback: "tbClose"
+    });
+    commander.add({
+      command: "restart",
+      description: this.translate("GW_Tools_Restart"),
+      callback: "tbRestart"
+    });
   },
 
   cmd_sysinfo (command, handler) {
@@ -255,5 +280,31 @@ Module.register("MMM-Bugsounet", {
 
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
     delete this.session[session];
+  },
+
+  tbReboot (command, handler) {
+    this.sendSocketNotification("REBOOT");
+    handler.reply("TEXT", this.translate("GW_RequestDone"));
+  },
+
+  tbShutdown (command, handler) {
+    this.sendSocketNotification("SHUTDOWN");
+    handler.reply("TEXT", this.translate("GW_RequestDone"));
+  },
+
+  tbClose (command, handler) {
+    this.sendSocketNotification("CLOSE");
+    handler.reply("TEXT", this.translate("GW_RequestDone"));
+  },
+
+  tbRestart (command, handler) {
+    this.sendSocketNotification("RESTART");
+    handler.reply("TEXT", this.translate("GW_RequestDone"));
+  },
+
+  tbStopEXT (command, handler) {
+    this.EXTs.ActionsEXTs("Bugsounet_STOP", undefined, { sender: { name: "MMM-Bugsounet" } });
+    this.sendNotification("Bugsounet_STOP");
+    handler.reply("TEXT", this.translate("GW_RequestDone"));
   }
 });
