@@ -57,6 +57,8 @@
   "dependencies": {
     "@electron/rebuild": "^3.7.1",
     "@mdi/font": "^7.4.47",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.13",
@@ -78,9 +80,7 @@
     "stream": "^0.0.3",
     "swagger-ui-express": "^5.0.1",
     "sweetalert2": "^11.17.2",
-    "systeminformation": "^5.25.11",
-    "xterm": "^5.3.0",
-    "xterm-addon-fit": "^0.8.0"
+    "systeminformation": "^5.25.11"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^4.2.0",

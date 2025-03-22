@@ -324,8 +324,8 @@ class website {
         .use("/APIDocs.js", express.static(`${this.WebsitePath}/tools/APIDocs.js`))
         .use("/assets", express.static(`${this.WebsitePath}/assets`, options))
         .use("/jsoneditor", express.static(`${this.BugsounetModulePath}/node_modules/jsoneditor`))
-        .use("/xterm", express.static(`${this.BugsounetModulePath}/node_modules/xterm`))
-        .use("/xterm-addon-fit", express.static(`${this.BugsounetModulePath}/node_modules/xterm-addon-fit`))
+        .use("/xterm", express.static(`${this.BugsounetModulePath}/node_modules/@xterm/xterm`))
+        .use("/xterm-addon-fit", express.static(`${this.BugsounetModulePath}/node_modules/@xterm/addon-fit`))
         .use("/jquery.min.js", express.static(`${this.BugsounetModulePath}/node_modules/jquery/dist/jquery.min.js`))
 
         .get("/login", this.speedLimiter, this.rateLimiter, (req, res) => {
