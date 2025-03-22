@@ -1,14 +1,12 @@
-# MMM-Glassy
+# EXT-Glassy
 
 This module allows to add a glass effect to MagicMirror² modules
 
 ## Screenshot
 
-![Screenshot](https://github.com/bugsounet/MMM-Glassy/blob/dev/Screenshot.png?raw=true)
+![Screenshot](https://github.com/bugsounet/MMM-Bugsounet/blob/dev/EXTs/EXT-Glassy/Screenshot.png?raw=true)
 
 ## Install
-
-**`MMM-Glassy` need `MagicMirror²` v2.27.0 and above**
 
 Clone the module into your `MagicMirror` module folder and execute npm install in the module folder.
 

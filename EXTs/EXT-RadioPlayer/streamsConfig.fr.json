@@ -79,8 +79,8 @@
     "link": "http://hitwest-angers.ice.infomaniak.ch/hitwest-angers-128.mp3",
     "img": "https://static2.mytuner.mobi/media/tvos_radios/BduT3TKSmx.jpg"
   },
-  "Fugi FM": {
-    "link": "http://92.175.228.15:8000/stream.mp3",
-    "img": "https://static2.mytuner.mobi/media/tvos_radios/EP5a6W8QdS.png"
+  "RVM": {
+    "link": "https://stream.rcs.revma.com/pz66me32fchvv",
+    "img": "https://images.lesindesradios.fr/fit-in/300x2000/filters:format(webp)/filters:quality(100)/radios/rvm/images/logo.png"
   }
 }

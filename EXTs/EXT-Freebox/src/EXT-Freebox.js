@@ -69,9 +69,11 @@ Module.register("EXT-Freebox", {
   socketNotificationReceived (notification, payload) {
     switch (notification) {
       case "INITIALIZED":
-        this.Init = true;
+        if (!this.Init) {
+          this.Init = true;
+          this.sendNotification("Bugsounet_HELLO", this.name);
+        }
         this.cache(payload);
-        this.sendNotification("Bugsounet_HELLO", this.name);
         break;
       case "CACHE":
         this.cache(payload);

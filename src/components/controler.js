@@ -9,7 +9,7 @@ class Controler {
 
   /** Check using pm2 **/
   check_PM2_Process () {
-    console.log("[Bugsounet] checking PM2 using...");
+    console.log("[Bugsounet] Checking PM2 using...");
     return new Promise((resolve) => {
       pm2.connect((err) => {
         if (err) {
@@ -51,7 +51,7 @@ class Controler {
   /** MagicMirror restart and stop **/
   restartMM () {
     if (this.usePM2) {
-      console.log("[Bugsounet] PM2 will restarting MagicMirror...");
+      console.log("[Bugsounet] PM2 will restarting MagicMirror²...");
       pm2.restart(this.PM2Process, (err) => {
         if (err) {
           console.error(`[Bugsounet] Restart:${err}`);
@@ -62,7 +62,7 @@ class Controler {
   }
 
   doRestart () {
-    console.log("[Bugsounet] Restarting MagicMirror...");
+    console.log("[Bugsounet] Restarting MagicMirror²...");
     const out = process.stdout;
     const err = process.stderr;
     const subprocess = spawn("npm start", { cwd: this.root_path, shell: true, detached: true, stdio: ["ignore", out, err] });
@@ -71,7 +71,7 @@ class Controler {
   }
 
   doClose () {
-    console.log("[Bugsounet] Closing MagicMirror...");
+    console.log("[Bugsounet] Closing MagicMirror²...");
     if (this.usePM2) {
       pm2.stop(this.PM2Process, (err) => {
         if (err) {

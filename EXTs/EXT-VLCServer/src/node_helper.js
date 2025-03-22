@@ -83,7 +83,7 @@ module.exports = NodeHelper.create({
           if (packet.process.name === "VLCServer") {
             if (packet.data.includes("main interface error:")) {
               console.error("[VLC]", packet.data);
-              this.sendSocketNotification("ERROR", { message: "VLC_ErrorPacket" });
+              this.sendSocketNotification("WARNING", { message: "VLC_ErrorPacket" });
             } else {
               log("[PACKET DATA]", packet.data);
             }

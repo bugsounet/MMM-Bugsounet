@@ -1,7 +1,5 @@
 # EXT-FreeboxTV
 
-## Plugin pour MMM-GoogleAssistant
-
 EXT-Freebox est un plugin pour `MMM-Bugsounet`
 
 Il permet d'afficher, sur votre Mirroir, les chaines de TV de la [Freebox](https://www.free.fr/freebox/).
@@ -44,8 +42,8 @@ Voici les chaines actuellement disponibles:
 
 ## Screenshoot
 
-![screenshoot](https://raw.githubusercontent.com/bugsounet/EXT-FreeboxTV/dev/resources/screenshoot.jpg)
+![screenshoot](https://github.com/bugsounet/MMM-Bugsounet/blob/dev/EXTs/EXT-FreeboxTV/resources/screenshoot.jpg?raw=true)
 
 ## Installation / update / configuration
 
-Une page [wiki](https://wiki.bugsounet.fr/EXT-FreeboxTV) a été créé
+Une page [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki) a été créé

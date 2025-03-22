@@ -33,7 +33,8 @@ Module.register("EXT-Spotify", {
       PATH: "../",
       TOKEN: "tokenSpotify.json",
       CLIENT_ID: this.config.CLIENT_ID,
-      CLIENT_SECRET: this.config.CLIENT_SECRET
+      CLIENT_SECRET: this.config.CLIENT_SECRET,
+      LibrespotPlayer: "MagicMirror²"
     };
     this.init = false;
     this.SpotifyCurrentID = null;
@@ -42,7 +43,8 @@ Module.register("EXT-Spotify", {
     let Librespot = config.modules.find((m) => m.module === "MMM-Bugsounet/EXTs/EXT-Librespot");
     if (Librespot && !Librespot.disabled) {
       this.Player.usePlayer = true;
-      logSpotify("Player Found!");
+      logSpotify("Player Found:", Librespot.config.deviceName);
+      this.Visual.LibrespotPlayer = `${this.translate("SpotifyListenText")} ${Librespot.config.deviceName}`;
       if (Librespot) {
         try {
           this.Player.minVolume = Librespot.config.minVolume ? Librespot.config.minVolume : 30;
@@ -116,7 +118,7 @@ Module.register("EXT-Spotify", {
           case "VOLUME":
             var Volume = param;
             if (isNaN(Volume)) {
-              this.sendNotification("GA_ALERT", {
+              this.sendNotification("Bugsounet_ALERT", {
                 type: "error",
                 message: "Volume MUST be a number ! [0-100]",
                 icon: this.file("components/Spotify-Logo.png")
@@ -133,7 +135,7 @@ Module.register("EXT-Spotify", {
         }
       },
       alert: (params) => {
-        this.sendNotification("GA_ALERT", params);
+        this.sendNotification("Bugsounet_ALERT", params);
       }
     };
     this.configHelper = {

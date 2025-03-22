@@ -4,7 +4,7 @@ Il permet d'afficher le `Saint du Jour` sur votre Miroir
 
 ## Screenshot
 
-![Screenshot](https://raw.githubusercontent.com/bugsounet/MMM-Saint/dev/Screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/bugsounet/MMM-Bugsounet/dev/EXTs/EXT-Saint/Screenshot.png)
 
 ## Installation
 
