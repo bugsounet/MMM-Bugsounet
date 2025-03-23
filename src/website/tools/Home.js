@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, setTranslation, getVersion, loadTranslation, getHomeText, forceMobileRotate, doTranslateNavBar */
+/* global setTranslation, getVersion, loadTranslation, getHomeText, forceMobileRotate, doTranslateNavBar */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -24,16 +24,16 @@ window.addEventListener("load", async () => {
   forceMobileRotate();
   doIndex();
   doTranslateNavBar();
-  $("#HomeText").html(homeText);
+  document.getElementById("HomeText").innerHTML = homeText;
 });
 
 function doIndex () {
   document.title = translation.Home;
   setTranslation("welcome", translation.Home_Welcome);
   if (version.needUpdate) {
-    $("#alert").removeClass("invisible");
-    $("#alert").removeClass("alert-success");
-    $("#alert").addClass("alert-warning");
+    document.getElementById("alert").classList.remove("invisible");
+    document.getElementById("alert").classList.remove("alert-success");
+    document.getElementById("alert").classList.add("alert-warning");
     setTranslation("messageText", `${translation.Update} v${version.last}`);
   }
 }
