@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, loadTranslation, forceMobileRotate, doTranslateNavBar, checkSystem, getEXTVersions */
+/* global setTranslation, loadTranslation, forceMobileRotate, doTranslateNavBar, checkSystem, getEXTVersions */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -38,125 +38,137 @@ async function doSystem (cb = null) {
   });
 
   //CPU
-  $("#SPEED").text(system.CPU.speed);
-  $("#GOVERNOR").text(system.CPU.governor);
+  setTranslation("SPEED", system.CPU.speed);
+  setTranslation("GOVERNOR", system.CPU.governor);
 
-  $("#TempText").text(`${system.CPU.temp.imperial ? system.CPU.temp.F : system.CPU.temp.C}°`);
+  setTranslation("TempText", `${system.CPU.temp.imperial ? system.CPU.temp.F : system.CPU.temp.C}°`);
+
+  const TempDisplay = document.getElementById("TempDisplay");
+  const TempText = document.getElementById("TempText");
+
+  const LoadDisplay = document.getElementById("LoadDisplay");
+  const LoadText = document.getElementById("LoadText");
+
+  const MemoryDisplay = document.getElementById("MemoryDisplay");
+  const MemoryText = document.getElementById("MemoryText");
+
+  const SwapDisplay = document.getElementById("SwapDisplay");
+  const SwapText = document.getElementById("SwapText");
 
   if (system.CPU.temp.C <= 50) {
-    $("#TempDisplay").removeClass("bg-google-yellow");
-    $("#LoadDisplay").removeClass("bg-google-red");
-    $("#TempDisplay").addClass("bg-google-green");
+    TempDisplay.classList.remove("bg-google-yellow");
+    LoadDisplay.classList.remove("bg-google-red");
+    TempDisplay.classList.add("bg-google-green");
 
-    $("#TempText").removeClass("text-google-yellow");
-    $("#TempText").removeClass("text-google-red");
-    $("#TempText").addClass("text-google-green");
+    TempText.classList.remove("text-google-yellow");
+    TempText.classList.remove("text-google-red");
+    TempText.classList.add("text-google-green");
   } else if (system.CPU.temp.C > 50 && system.CPU.temp.C <= 80) {
-    $("#TempDisplay").removeClass("bg-google-green");
-    $("#TempDisplay").removeClass("bg-google-red");
-    $("#TempDisplay").addClass("bg-google-yellow");
+    TempDisplay.classList.remove("bg-google-green");
+    TempDisplay.classList.remove("bg-google-red");
+    TempDisplay.classList.add("bg-google-yellow");
 
-    $("#TempText").removeClass("text-google-green");
-    $("#TempText").removeClass("text-google-red");
-    $("#TempText").addClass("text-google-yellow");
+    TempText.classList.remove("text-google-green");
+    TempText.classList.remove("text-google-red");
+    TempText.classList.add("text-google-yellow");
   } else if (system.CPU.temp.C > 80) {
-    $("#TempDisplay").removeClass("bg-google-green");
-    $("#TempDisplay").removeClass("bg-google-yellow");
-    $("#TempDisplay").addClass("bg-google-red");
+    TempDisplay.classList.remove("bg-google-green");
+    TempDisplay.classList.remove("bg-google-yellow");
+    TempDisplay.classList.add("bg-google-red");
 
-    $("#TempText").removeClass("text-google-green");
-    $("#TempText").removeClass("text-google-yellow");
-    $("#TempText").addClass("text-google-red");
+    TempText.classList.remove("text-google-green");
+    TempText.classList.remove("text-google-yellow");
+    TempText.classList.add("text-google-red");
   }
 
-  $("#MemoryText").text(system.MEMORY.used);
-  $("#MemoryTotal").text(system.MEMORY.total);
+  setTranslation("MemoryText", system.MEMORY.used);
+  setTranslation("MemoryTotal", system.MEMORY.total);
   if (system.MEMORY.percent <= 50) {
-    $("#MemoryDisplay").removeClass("bg-google-yellow");
-    $("#MemoryDisplay").removeClass("bg-google-red");
-    $("#MemoryDisplay").addClass("bg-google-green");
+    MemoryDisplay.classList.remove("bg-google-yellow");
+    MemoryDisplay.classList.remove("bg-google-red");
+    MemoryDisplay.classList.add("bg-google-green");
 
-    $("#MemoryText").removeClass("text-google-yellow");
-    $("#MemoryText").removeClass("text-google-red");
-    $("#MemoryText").addClass("text-google-green");
+    MemoryText.classList.remove("text-google-yellow");
+    MemoryText.classList.remove("text-google-red");
+    MemoryText.classList.add("text-google-green");
   } else if (system.MEMORY.percent > 50 && system.MEMORY.percent <= 80) {
-    $("#MemoryDisplay").removeClass("bg-google-green");
-    $("#MemoryDisplay").removeClass("bg-google-red");
-    $("#MemoryDisplay").addClass("bg-google-yellow");
+    MemoryDisplay.classList.remove("bg-google-green");
+    MemoryDisplay.classList.remove("bg-google-red");
+    MemoryDisplay.classList.add("bg-google-yellow");
 
-    $("#MemoryText").removeClass("text-google-green");
-    $("#MemoryText").removeClass("text-google-red");
-    $("#MemoryText").addClass("text-google-yellow");
+    MemoryText.classList.remove("text-google-green");
+    MemoryText.classList.remove("text-google-red");
+    MemoryText.classList.add("text-google-yellow");
   } else if (system.MEMORY.percent > 80) {
-    $("#MemoryDisplay").removeClass("bg-google-green");
-    $("#MemoryDisplay").removeClass("bg-google-yellow");
-    $("#MemoryDisplay").addClass("bg-google-red");
+    MemoryDisplay.classList.remove("bg-google-green");
+    MemoryDisplay.classList.remove("bg-google-yellow");
+    MemoryDisplay.classList.add("bg-google-red");
 
-    $("#MemoryText").removeClass("text-google-green");
-    $("#MemoryText").removeClass("text-google-yellow");
-    $("#MemoryText").addClass("text-google-red");
+    MemoryText.classList.remove("text-google-green");
+    MemoryText.classList.remove("text-google-yellow");
+    MemoryText.classList.add("text-google-red");
   }
 
-  $("#SwapText").text(system.MEMORY.swapUsed);
-  $("#SwapTotal").text(system.MEMORY.swapTotal);
+  setTranslation("SwapText", system.MEMORY.swapUsed);
+  setTranslation("SwapTotal", system.MEMORY.swapTotal);
   if (system.MEMORY.swapPercent <= 50) {
-    $("#SwapDisplay").removeClass("bg-google-yellow");
-    $("#SwapDisplay").removeClass("bg-google-red");
-    $("#SwapDisplay").addClass("bg-google-green");
+    SwapDisplay.classList.remove("bg-google-yellow");
+    SwapDisplay.classList.remove("bg-google-red");
+    SwapDisplay.classList.add("bg-google-green");
 
-    $("#SwapText").removeClass("text-google-yellow");
-    $("#SwapText").removeClass("text-google-red");
-    $("#SwapText").addClass("text-google-green");
+    SwapText.classList.remove("text-google-yellow");
+    SwapText.classList.remove("text-google-red");
+    SwapText.classList.add("text-google-green");
   } else if (system.MEMORY.swapPercent > 50 && system.MEMORY.swapPercent <= 80) {
-    $("#SwapDisplay").removeClass("bg-google-green");
-    $("#SwapDisplay").removeClass("bg-google-red");
-    $("#SwapDisplay").addClass("bg-google-yellow");
+    SwapDisplay.classList.remove("bg-google-green");
+    SwapDisplay.classList.remove("bg-google-red");
+    SwapDisplay.classList.add("bg-google-yellow");
 
-    $("#SwapText").removeClass("text-google-green");
-    $("#SwapText").removeClass("text-google-red");
-    $("#SwapText").addClass("text-google-yellow");
+    SwapText.classList.remove("text-google-green");
+    SwapText.classList.remove("text-google-red");
+    SwapText.classList.add("text-google-yellow");
   } else if (system.MEMORY.swapPercent > 80) {
-    $("#SwapDisplay").removeClass("bg-google-green");
-    $("#SwapDisplay").removeClass("bg-google-yellow");
-    $("#SwapDisplay").addClass("bg-google-red");
+    SwapDisplay.classList.remove("bg-google-green");
+    SwapDisplay.classList.remove("bg-google-yellow");
+    SwapDisplay.classList.add("bg-google-red");
 
-    $("#SwapText").removeClass("text-google-green");
-    $("#SwapText").removeClass("text-google-yellow");
-    $("#SwapText").addClass("text-google-red");
+    SwapText.classList.remove("text-google-green");
+    SwapText.classList.remove("text-google-yellow");
+    SwapText.classList.add("text-google-red");
   }
 
-  $("#LoadText").text(`${system.CPU.usage}%`);
+  setTranslation("LoadText", `${system.CPU.usage}%`);
   if (system.CPU.usage <= 50) {
-    $("#LoadDisplay").removeClass("bg-google-yellow");
-    $("#LoadDisplay").removeClass("bg-google-red");
-    $("#LoadDisplay").addClass("bg-google-green");
+    LoadDisplay.classList.remove("bg-google-yellow");
+    LoadDisplay.classList.remove("bg-google-red");
+    LoadDisplay.classList.add("bg-google-green");
 
-    $("#LoadText").removeClass("text-google-yellow");
-    $("#LoadText").removeClass("text-google-red");
-    $("#LoadText").addClass("text-google-green");
+    LoadText.classList.remove("text-google-yellow");
+    LoadText.classList.remove("text-google-red");
+    LoadText.classList.add("text-google-green");
   } else if (system.CPU.usage > 50 && system.CPU.usage <= 80) {
-    $("#LoadDisplay").removeClass("bg-google-green");
-    $("#LoadDisplay").removeClass("bg-google-red");
-    $("#LoadDisplay").addClass("bg-google-yellow");
+    LoadDisplay.classList.remove("bg-google-green");
+    LoadDisplay.classList.remove("bg-google-red");
+    LoadDisplay.classList.add("bg-google-yellow");
 
-    $("#LoadText").removeClass("text-google-green");
-    $("#LoadText").removeClass("text-google-red");
-    $("#LoadText").addClass("text-google-yellow");
+    LoadText.classList.remove("text-google-green");
+    LoadText.classList.remove("text-google-red");
+    LoadText.classList.add("text-google-yellow");
   } else if (system.CPU.usage > 80) {
-    $("#LoadDisplay").removeClass("bg-google-green");
-    $("#LoadDisplay").removeClass("bg-google-yellow");
-    $("#LoadDisplay").addClass("bg-google-red");
+    LoadDisplay.classList.remove("bg-google-green");
+    LoadDisplay.classList.remove("bg-google-yellow");
+    LoadDisplay.classList.add("bg-google-red");
 
-    $("#LoadText").removeClass("text-google-green");
-    $("#LoadText").removeClass("text-google-yellow");
-    $("#LoadText").addClass("text-google-red");
+    LoadText.classList.remove("text-google-green");
+    LoadText.classList.remove("text-google-yellow");
+    LoadText.classList.add("text-google-red");
   }
 
   if (Object.entries(EXTVersions).length) {
-    $("#CurrentlyRunning").text(translation.System_CurrentlyRunning);
-    $("#Plugins-Table").removeClass("visually-hidden");
+    setTranslation("CurrentlyRunning", translation.System_CurrentlyRunning);
+    document.getElementById("Plugins-Table").classList.remove("visually-hidden");
     Object.entries(EXTVersions).forEach(([key, value]) => {
-      if (!$(`#Plugins-${key}`).html()) {
+      if (!document.getElementById(`Plugins-${key}`)?.innerHTML) {
         var plugin = document.createElement("tr");
         plugin.id = `Plugins-${key}`;
 
@@ -182,7 +194,7 @@ async function doSystem (cb = null) {
         plugin.appendChild(name);
         plugin.appendChild(version);
         plugin.appendChild(rev);
-        $("#PluginsTable").append(plugin);
+        document.getElementById("PluginsTable").appendChild(plugin);
       }
     });
   }
@@ -190,9 +202,9 @@ async function doSystem (cb = null) {
   // try to create proper storage
   system.STORAGE.forEach((partition, id) => {
     for (let [name, values] of Object.entries(partition)) {
-      if ($(`#Storage-Part${id}`).html()) {
+      if (document.getElementById(`Storage-Part${id}`)?.innerHTML) {
         checkPartColor(id, values.use);
-        makeRefresh(values.use, `#StorageDisplay${id}`, `#StorageUsed${id}`, `${values.use}%`);
+        makeRefresh(values.use, `StorageDisplay${id}`, `StorageUsed${id}`, `${values.use}%`);
         continue;
       }
       var tr = document.createElement("tr");
@@ -236,261 +248,287 @@ async function doSystem (cb = null) {
       tr.appendChild(used);
       tr.appendChild(percent);
       tr.appendChild(size);
-      $("#Storage").append(tr);
+      document.getElementById("Storage").appendChild(tr);
       checkPartColor(id, values.use);
-      makeProgress(values.use, `#StorageDisplay${id}`, `#StorageUsed${id}`, `${values.use}%`);
+      makeProgress(values.use, `StorageDisplay${id}`, `StorageUsed${id}`, `${values.use}%`);
     }
   });
 
-  $("#SysUptime").text(system.UPTIME.currentDHM);
-  $("#MMUptime").text(system.UPTIME.MMDHM);
-  $("#SysUptimeRecord").text(system.UPTIME.recordCurrentDHM);
-  $("#MMUptimeRecord").text(system.UPTIME.recordMMDHM);
+  setTranslation("SysUptime", system.UPTIME.currentDHM);
+  setTranslation("MMUptime", system.UPTIME.MMDHM);
+  setTranslation("SysUptimeRecord", system.UPTIME.recordCurrentDHM);
+  setTranslation("MMUptimeRecord", system.UPTIME.recordMMDHM);
 
   if (SystemFirstScan) {
-    makeProgress(system.CPU.temp.C, "#TempDisplay", "#TempValue", `${system.CPU.temp.imperial ? system.CPU.temp.F : system.CPU.temp.C}°`);
-    makeProgress(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used);
-    makeProgress(system.MEMORY.swapPercent, "#SwapDisplay", "#SwapPercent", system.MEMORY.swapUsed);
-    makeProgress(system.CPU.usage, "#LoadDisplay", "#LoadValue", `${system.CPU.usage}%`);
+    makeProgress(system.CPU.temp.C, "TempDisplay", "TempValue", `${system.CPU.temp.imperial ? system.CPU.temp.F : system.CPU.temp.C}°`);
+    makeProgress(system.MEMORY.percent, "MemoryDisplay", "MemoryPercent", system.MEMORY.used);
+    makeProgress(system.MEMORY.swapPercent, "SwapDisplay", "SwapPercent", system.MEMORY.swapUsed);
+    makeProgress(system.CPU.usage, "LoadDisplay", "LoadValue", `${system.CPU.usage}%`);
   } else {
-    makeRefresh(system.CPU.temp.C, "#TempDisplay", "#TempValue", `${system.CPU.temp.imperial ? system.CPU.temp.F : system.CPU.temp.C}°`);
-    makeRefresh(system.MEMORY.percent, "#MemoryDisplay", "#MemoryPercent", system.MEMORY.used);
-    makeRefresh(system.MEMORY.swapPercent, "#SwapDisplay", "#SwapPercent", system.MEMORY.swapUsed);
-    makeRefresh(system.CPU.usage, "#LoadDisplay", "#LoadValue", `${system.CPU.usage}%`);
+    makeRefresh(system.CPU.temp.C, "TempDisplay", "TempValue", `${system.CPU.temp.imperial ? system.CPU.temp.F : system.CPU.temp.C}°`);
+    makeRefresh(system.MEMORY.percent, "MemoryDisplay", "MemoryPercent", system.MEMORY.used);
+    makeRefresh(system.MEMORY.swapPercent, "SwapDisplay", "SwapPercent", system.MEMORY.swapUsed);
+    makeRefresh(system.CPU.usage, "LoadDisplay", "LoadValue", `${system.CPU.usage}%`);
   }
   SystemFirstScan = false;
 
-  if (system.NETWORK.type === "wireless") {
-    $("#SpeedArea").addClass("visually-hidden");
-    $("#DuplexArea").addClass("visually-hidden");
-    $("#wired-icon").addClass("visually-hidden");
-    $("#wireless-icon").removeClass("visually-hidden");
-    $("#wirelessSignal").removeClass("visually-hidden");
-    $("#wireless").removeClass("signal-0");
-    $("#wireless").removeClass("signal-1");
-    $("#wireless").removeClass("signal-2");
-    $("#wireless").removeClass("signal-3");
-    $("#wireless").removeClass("signal-4");
-    $("#wireless").addClass(`signal-${system.NETWORK.barLevel}`);
-    $("#wirelessInfo").removeClass("visually-hidden");
-    $("#ssid").text(system.NETWORK.ssid);
-    $("#rate").text(system.NETWORK.rate);
-    $("#quality").text(system.NETWORK.quality);
-    $("#signalLevel").text(system.NETWORK.signalLevel);
-    $("#frequency").text(system.NETWORK.frequency);
-  } else if (system.NETWORK.type === "wired") {
-    $("#SpeedArea").removeClass("visually-hidden");
-    $("#DuplexArea").removeClass("visually-hidden");
-    $("#wirelessSignal").addClass("visually-hidden");
-    $("#wired-icon").removeClass("visually-hidden");
-    $("#wireless-icon").addClass("visually-hidden");
-    $("#wirelessInfo").addClass("visually-hidden");
-    $("#speed").text(system.NETWORK.speed);
-    $("#duplex").text(system.NETWORK.duplex);
-  } else {
-    $("#SpeedArea").addClass("visually-hidden");
-    $("#DuplexArea").addClass("visually-hidden");
-    $("#wirelessSignal").addClass("visually-hidden");
-    $("#wired-icon").addClass("visually-hidden");
-    $("#wireless-icon").addClass("visually-hidden");
-    $("#wirelessInfo").addClass("visually-hidden");
-  }
-  $("#IP").text(system.NETWORK.ip);
-  $("#interface").text(system.NETWORK.name);
+  const SpeedArea = document.getElementById("SpeedArea");
+  const DuplexArea = document.getElementById("DuplexArea");
+  const wiredIcon = document.getElementById("wired-icon");
+  const wirelessIcon = document.getElementById("wireless-icon");
+  const wirelessSignal = document.getElementById("wirelessSignal");
+  const wireless = document.getElementById("wireless");
+  const wirelessInfo = document.getElementById("wirelessInfo");
 
-  $("#ElectronOK").removeClass("visually-hidden");
-  $("#ElectronNOK").addClass("visually-hidden");
-  $("#ElectronValues").removeClass("visually-hidden");
-  $("#ElectronPid").text(system.PROCESS.electron.pid);
-  $("#ElectronCPU").text(system.PROCESS.electron.cpu);
-  $("#ElectronMemory").text(system.PROCESS.electron.mem);
+  if (system.NETWORK.type === "wireless") {
+    SpeedArea.classList.add("visually-hidden");
+    DuplexArea.classList.add("visually-hidden");
+    wiredIcon.classList.add("visually-hidden");
+    wirelessIcon.classList.remove("visually-hidden");
+    wirelessSignal.classList.remove("visually-hidden");
+    wireless.classList.remove("signal-0");
+    wireless.classList.remove("signal-1");
+    wireless.classList.remove("signal-2");
+    wireless.classList.remove("signal-3");
+    wireless.classList.remove("signal-4");
+    wireless.classList.add(`signal-${system.NETWORK.barLevel}`);
+    wirelessInfo.classList.remove("visually-hidden");
+    setTranslation("ssid", system.NETWORK.ssid);
+    setTranslation("rate", system.NETWORK.rate);
+    setTranslation("quality", system.NETWORK.quality);
+    setTranslation("signalLevel", system.NETWORK.signalLevel);
+    setTranslation("frequency", system.NETWORK.frequency);
+  } else if (system.NETWORK.type === "wired") {
+    SpeedArea.classList.remove("visually-hidden");
+    DuplexArea.classList.remove("visually-hidden");
+    wirelessSignal.classList.add("visually-hidden");
+    wiredIcon.classList.remove("visually-hidden");
+    wirelessIcon.classList.add("visually-hidden");
+    wirelessInfo.classList.add("visually-hidden");
+    setTranslation("speed", system.NETWORK.speed);
+    setTranslation("duplex", system.NETWORK.duplex);
+  } else {
+    SpeedArea.classList.add("visually-hidden");
+    DuplexArea.classList.add("visually-hidden");
+    wirelessSignal.classList.add("visually-hidden");
+    wiredIcon.classList.add("visually-hidden");
+    wirelessIcon.classList.add("visually-hidden");
+    wirelessInfo.classList.add("visually-hidden");
+  }
+  setTranslation("IP", system.NETWORK.ip);
+  setTranslation("interface", system.NETWORK.name);
 
   if (cb) cb();
 }
 
 function checkPartColor (id, value) {
   var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+
+  const Storage = document.getElementById(`Storage${id}`);
+  const StorageText = document.getElementById(`StorageText${id}`);
+  const StorageDisplay = document.getElementById(`StorageDisplay${id}`);
+
   if (vw < 768) {
-    $(`#Storage${id}`).addClass("visually-hidden");
-    $(`#StorageText${id}`).removeClass("visually-hidden");
+    Storage?.classList.add("visually-hidden");
+    StorageText?.classList.remove("visually-hidden");
   } else {
-    $(`#Storage${id}`).removeClass("visually-hidden");
-    $(`#StorageText${id}`).addClass("visually-hidden");
+    Storage?.classList.remove("visually-hidden");
+    StorageText?.classList.add("visually-hidden");
   }
 
   if (value <= 50) {
-    $(`#StorageDisplay${id}`).removeClass("bg-google-yellow");
-    $(`#StorageDisplay${id}`).removeClass("bg-google-red");
-    $(`#StorageDisplay${id}`).addClass("bg-google-green");
+    StorageDisplay?.classList.remove("bg-google-yellow");
+    StorageDisplay?.classList.remove("bg-google-red");
+    StorageDisplay?.classList.add("bg-google-green");
 
-    $(`#StorageText${id}`).removeClass("text-google-yellow");
-    $(`#StorageText${id}`).removeClass("text-google-red");
-    $(`#StorageText${id}`).addClass("text-google-green");
+    StorageText?.classList.remove("text-google-yellow");
+    StorageText?.classList.remove("text-google-red");
+    StorageText?.classList.add("text-google-green");
 
   } else if (value > 50 && value <= 80) {
-    $(`#StorageDisplay${id}`).removeClass("bg-google-green");
-    $(`#StorageDisplay${id}`).removeClass("bg-google-red");
-    $(`#StorageDisplay${id}`).addClass("bg-google-yellow");
+    StorageDisplay?.classList.remove("bg-google-green");
+    StorageDisplay?.classList.remove("bg-google-red");
+    StorageDisplay?.classList.add("bg-google-yellow");
 
-    $(`#StorageText${id}`).removeClass("text-google-green");
-    $(`#StorageText${id}`).removeClass("text-google-red");
-    $(`#StorageText${id}`).addClass("text-google-yellow");
+    StorageText?.classList.remove("text-google-green");
+    StorageText?.classList.remove("text-google-red");
+    StorageText?.classList.add("text-google-yellow");
 
   } else if (value > 80) {
-    $(`#StorageDisplay${id}`).removeClass("bg-google-green");
-    $(`#StorageDisplay${id}`).removeClass("bg-google-yellow");
-    $(`#StorageDisplay${id}`).addClass("bg-google-red");
+    StorageDisplay?.classList.remove("bg-google-green");
+    StorageDisplay?.classList.remove("bg-google-yellow");
+    StorageDisplay?.classList.add("bg-google-red");
 
-    $(`#StorageText${id}`).removeClass("text-google-green");
-    $(`#StorageText${id}`).removeClass("text-google-yellow");
-    $(`#StorageText${id}`).addClass("text-google-red");
+    StorageText?.classList.remove("text-google-green");
+    StorageText?.classList.remove("text-google-yellow");
+    StorageText?.classList.add("text-google-red");
   }
 }
 
 function makeProgress (Value, Progress, Text, Display, i = 0) {
-  $(Text).text(Display);
+  setTranslation(Text, Display);
   var percent = i;
   if (percent <= Value) {
     percent = percent + 1;
-    $(Progress).css("width", `${percent}%`);
+    document.getElementById(Progress).style.width = `${percent}%`;
     setTimeout(() => {
       makeProgress(Value, Progress, Text, Display, percent);
     }, 10);
   } else {
-    $(Progress).css("width", `${Value}%`);
+    document.getElementById(Progress).style.width = `${Value}%`;
   }
 }
 
 function makeRefresh (Value, Progress, Text, Display) {
-  $(Progress).css("width", `${Value}%`);
-  $(Text).text(Display);
+  document.getElementById(Progress).style.width = `${Value}%`;
+  setTranslation(Text, Display);
 }
 
 function progressOrText (system) {
   var vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  const Load = document.getElementById("Load");
+  const Memory = document.getElementById("Memory");
+  const Swap = document.getElementById("Swap");
+  const Temp = document.getElementById("Temp");
+  const LoadText = document.getElementById("LoadText");
+  const MemoryText = document.getElementById("MemoryText");
+  const MemoryText2 = document.getElementById("MemoryText2");
+  const SwapText = document.getElementById("SwapText");
+  const SwapText2 = document.getElementById("SwapText2");
+  const TempText = document.getElementById("TempText");
+
+  const StorageBox = document.getElementById("Storage-Box");
+  const VersionBox = document.getElementById("Version-Box");
+  const UptimeBox = document.getElementById("Uptime-Box");
+
   if (vw < 768) {
     // hide progress
-    $("#Load").addClass("visually-hidden");
-    $("#Memory").addClass("visually-hidden");
-    $("#Swap").addClass("visually-hidden");
-    $("#Temp").addClass("visually-hidden");
+    Load.classList.add("visually-hidden");
+    Memory.classList.add("visually-hidden");
+    Swap.classList.add("visually-hidden");
+    Temp.classList.add("visually-hidden");
     // display Text
-    $("#LoadText").removeClass("visually-hidden");
-    $("#MemoryText").removeClass("visually-hidden");
-    $("#MemoryText2").removeClass("visually-hidden");
-    $("#SwapText").removeClass("visually-hidden");
-    $("#SwapText2").removeClass("visually-hidden");
-    $("#TempText").removeClass("visually-hidden");
+    LoadText.classList.remove("visually-hidden");
+    MemoryText.classList.remove("visually-hidden");
+    MemoryText2.classList.remove("visually-hidden");
+    SwapText.classList.remove("visually-hidden");
+    SwapText2.classList.remove("visually-hidden");
+    TempText.classList.remove("visually-hidden");
     system.STORAGE.forEach((partition, id) => {
-      $(`#Storage${id}`).addClass("visually-hidden");
-      $(`#StorageText${id}`).removeClass("visually-hidden");
+      let storageID = document.getElementById(`Storage${id}`);
+      let storageText = document.getElementById(`StorageText${id}`);
+      if (storageID) storageID.classList.add("visually-hidden");
+      if (storageText) storageText.classList.remove("visually-hidden");
     });
-    $("#Storage-Box").addClass("col-md-12");
-    $("#Storage-Box").removeClass("col-md-6");
-    $("#Storage-Box").css("width", "100%");
-    $("#Version-Box").addClass("col-md-12");
-    $("#Version-Box").removeClass("col-md-6");
-    $("#Version-Box").css("width", "100%");
-    $("#Uptime-Box").addClass("col-md-12");
-    $("#Uptime-Box").removeClass("col-md-6");
-    $("#Uptime-Box").css("width", "100%");
+    StorageBox.classList.add("col-md-12");
+    StorageBox.classList.remove("col-md-6");
+    StorageBox.style.width = "100%";
+    VersionBox.classList.add("col-md-12");
+    VersionBox.classList.remove("col-md-6");
+    VersionBox.style.width = "100%";
+    UptimeBox.classList.add("col-md-12");
+    UptimeBox.classList.remove("col-md-6");
+    UptimeBox.style.width = "100%";
   } else {
     // display Progress
-    $("#Load").removeClass("visually-hidden");
-    $("#Memory").removeClass("visually-hidden");
-    $("#Swap").removeClass("visually-hidden");
-    $("#Temp").removeClass("visually-hidden");
+    Load.classList.remove("visually-hidden");
+    Memory.classList.remove("visually-hidden");
+    Swap.classList.remove("visually-hidden");
+    Temp.classList.remove("visually-hidden");
     // hide Text
-    $("#LoadText").addClass("visually-hidden");
-    $("#MemoryText").addClass("visually-hidden");
-    $("#MemoryText2").addClass("visually-hidden");
-    $("#SwapText").addClass("visually-hidden");
-    $("#SwapText2").addClass("visually-hidden");
-    $("#TempText").addClass("visually-hidden");
+    LoadText.classList.add("visually-hidden");
+    MemoryText.classList.add("visually-hidden");
+    MemoryText2.classList.add("visually-hidden");
+    SwapText.classList.add("visually-hidden");
+    SwapText2.classList.add("visually-hidden");
+    TempText.classList.add("visually-hidden");
     system.STORAGE.forEach((partition, id) => {
-      $(`#Storage${id}`).removeClass("visually-hidden");
-      $(`#StorageText${id}`).addClass("visually-hidden");
+      let storageID = document.getElementById(`Storage${id}`);
+      let storageText = document.getElementById(`StorageText${id}`);
+      if (storageID) storageID.classList.remove("visually-hidden");
+      if (storageText) storageText.classList.add("visually-hidden");
     });
-    $("#Storage-Box").removeClass("col-md-12");
-    $("#Storage-Box").addClass("col-md-6");
-    $("#Storage-Box").css("width", "50%");
-    $("#Version-Box").removeClass("col-md-12");
-    $("#Version-Box").addClass("col-md-6");
-    $("#Version-Box").css("width", "50%");
-    $("#Uptime-Box").removeClass("col-md-12");
-    $("#Uptime-Box").addClass("col-md-6");
-    $("#Uptime-Box").css("width", "50%");
+    StorageBox.classList.remove("col-md-12");
+    StorageBox.classList.add("col-md-6");
+    StorageBox.style.width = "50%";
+    VersionBox.classList.remove("col-md-12");
+    VersionBox.classList.add("col-md-6");
+    VersionBox.style.width = "50%";
+    UptimeBox.classList.remove("col-md-12");
+    UptimeBox.classList.add("col-md-6");
+    UptimeBox.style.width = "50%";
   }
 }
 
 function doStatic () {
   // Display static values
-  $("#HOSTNAME").text(system.HOSTNAME);
-  $("#CPU").text(system.CPU.type);
-  $("#MMVersion").text(system.VERSION.MagicMirror);
-  $("#ElectronVersion").text(system.VERSION.ELECTRON);
-  $("#GPU").text(system.GPU ? translation.System_GPUAcceleration_Enabled : translation.System_GPUAcceleration_Disabled);
-  $("#NODECORE").text(system.VERSION.NODECORE);
-  $("#NPM").text(system.VERSION.NPM);
-  $("#OS").text(system.VERSION.OS);
-  $("#KERNEL").text(system.VERSION.KERNEL);
+  setTranslation("HOSTNAME", system.HOSTNAME);
+  setTranslation("CPU", system.CPU.type);
+  setTranslation("MMVersion", system.VERSION.MagicMirror);
+  setTranslation("ElectronVersion", system.VERSION.ELECTRON);
+  setTranslation("GPU", system.GPU ? translation.System_GPUAcceleration_Enabled : translation.System_GPUAcceleration_Disabled);
+  setTranslation("NODECORE", system.VERSION.NODECORE);
+  setTranslation("NPM", system.VERSION.NPM);
+  setTranslation("OS", system.VERSION.OS);
+  setTranslation("KERNEL", system.VERSION.KERNEL);
 
   // translate all static
-  $("#ShutdownSystem").text(translation.System_Box_Shutdown);
-  $("#Shutdown").text(translation.System_Shutdown);
-  $("#RestartSystem").text(translation.System_Box_Restart);
-  $("#Restart").text(translation.System_Restart);
+  setTranslation("ShutdownSystem", translation.System_Box_Shutdown);
+  setTranslation("Shutdown", translation.System_Shutdown);
+  setTranslation("RestartSystem", translation.System_Box_Restart);
+  setTranslation("Restart", translation.System_Restart);
 
-  $("#VersionSystem").text(translation.System_Box_Version);
-  $("#NodeVersion").text(translation.System_NodeVersion);
-  $("#NPMVersion").text(translation.System_NPMVersion);
-  $("#OSVersion").text(translation.System_OSVersion);
-  $("#KernelVersion").text(translation.System_KernelVersion);
+  setTranslation("VersionSystem", translation.System_Box_Version);
+  setTranslation("NodeVersion", translation.System_NodeVersion);
+  setTranslation("NPMVersion", translation.System_NPMVersion);
+  setTranslation("OSVersion", translation.System_OSVersion);
+  setTranslation("KernelVersion", translation.System_KernelVersion);
 
-  $("#CPUSystem").text(translation.System_CPUSystem);
-  $("#TypeCPU").text(translation.System_TypeCPU);
-  $("#SpeedCPU").text(translation.System_SpeedCPU);
-  $("#CurrentLoadCPU").text(translation.System_CurrentLoadCPU);
-  $("#GovernorCPU").text(translation.System_GovernorCPU);
-  $("#TempCPU").text(translation.System_TempCPU);
+  setTranslation("CPUSystem", translation.System_CPUSystem);
+  setTranslation("TypeCPU", translation.System_TypeCPU);
+  setTranslation("SpeedCPU", translation.System_SpeedCPU);
+  setTranslation("CurrentLoadCPU", translation.System_CurrentLoadCPU);
+  setTranslation("GovernorCPU", translation.System_GovernorCPU);
+  setTranslation("TempCPU", translation.System_TempCPU);
 
-  $("#MemorySystem").text(translation.System_MemorySystem);
-  $("#TypeMemory").text(translation.System_TypeMemory);
-  $("#SwapMemory").text(translation.System_SwapMemory);
+  setTranslation("MemorySystem", translation.System_MemorySystem);
+  setTranslation("TypeMemory", translation.System_TypeMemory);
+  setTranslation("SwapMemory", translation.System_SwapMemory);
 
-  $("#NetworkSystem").text(translation.System_NetworkSystem);
-  $("#IPNetwork").text(translation.System_IPNetwork);
-  $("#InterfaceNetwork").text(translation.System_InterfaceNetwork);
-  $("#SpeedNetwork").text(translation.System_SpeedNetwork);
-  $("#DuplexNetwork").text(translation.System_DuplexNetwork);
-  $("#WirelessInfo").text(translation.System_WirelessInfo);
-  $("#SSIDNetwork").text(translation.System_SSIDNetwork);
-  $("#FrequencyNetwork").text(translation.System_FrequencyNetwork);
-  $("#SignalNetwork").text(translation.System_SignalNetwork);
-  $("#RateNetwork").text(translation.System_RateNetwork);
-  $("#QualityNetwork").text(translation.System_QualityNetwork);
+  setTranslation("NetworkSystem", translation.System_NetworkSystem);
+  setTranslation("IPNetwork", translation.System_IPNetwork);
+  setTranslation("InterfaceNetwork", translation.System_InterfaceNetwork);
+  setTranslation("SpeedNetwork", translation.System_SpeedNetwork);
+  setTranslation("DuplexNetwork", translation.System_DuplexNetwork);
+  setTranslation("WirelessInfo", translation.System_WirelessInfo);
+  setTranslation("SSIDNetwork", translation.System_SSIDNetwork);
+  setTranslation("FrequencyNetwork", translation.System_FrequencyNetwork);
+  setTranslation("SignalNetwork", translation.System_SignalNetwork);
+  setTranslation("RateNetwork", translation.System_RateNetwork);
+  setTranslation("QualityNetwork", translation.System_QualityNetwork);
 
-  $("#StorageSystem").text(translation.System_StorageSystem);
-  $("#MountStorage").text(translation.System_MountStorage);
-  $("#UsedStorage").text(translation.System_UsedStorage);
-  $("#PercentStorage").text(translation.System_PercentStorage);
-  $("#TotalStorage").text(translation.System_TotalStorage);
+  setTranslation("StorageSystem", translation.System_StorageSystem);
+  setTranslation("MountStorage", translation.System_MountStorage);
+  setTranslation("UsedStorage", translation.System_UsedStorage);
+  setTranslation("PercentStorage", translation.System_PercentStorage);
+  setTranslation("TotalStorage", translation.System_TotalStorage);
 
-  $("#UptimeSystem").text(translation.System_UptimeSystem);
-  $("#CurrentUptime").text(translation.System_CurrentUptime);
-  $("#SysCurrent").text(translation.System_System);
-  $("#RecordUptime").text(translation.System_RecordUptime);
-  $("#SysRecord").text(translation.System_System);
+  setTranslation("UptimeSystem", translation.System_UptimeSystem);
+  setTranslation("CurrentUptime", translation.System_CurrentUptime);
+  setTranslation("SysCurrent", translation.System_System);
+  setTranslation("RecordUptime", translation.System_RecordUptime);
+  setTranslation("SysRecord", translation.System_System);
 
-  $("#NamePlugin").text(translation.System_NamePlugin);
-  $("#VersionPlugin").text(translation.System_VersionPlugin);
-  $("#RevPlugin").text(translation.System_RevPlugin);
-  if (Object.entries(EXTVersions).length) $("#CurrentlyRunning").text(translation.System_CurrentlyRunning);
-  else $("#CurrentlyRunning").text(translation.System_NoPlugins);
+  setTranslation("NamePlugin", translation.System_NamePlugin);
+  setTranslation("VersionPlugin", translation.System_VersionPlugin);
+  setTranslation("RevPlugin", translation.System_RevPlugin);
+  if (Object.entries(EXTVersions).length) setTranslation("CurrentlyRunning", translation.System_CurrentlyRunning);
+  else setTranslation("CurrentlyRunning", translation.System_NoPlugins);
   if (system.GPU) {
-    $("#GPU").removeClass("animated");
-    $("#GPU").removeClass("text-google-red");
-    $("#GPU").addClass("text-google-green");
+    const GPU = document.getElementById("GPU");
+    GPU.classList.remove("animated");
+    GPU.classList.remove("text-google-red");
+    GPU.classList.add("text-google-green");
   }
-  $("#SystemDisplayer").removeClass("visually-hidden");
+  document.getElementById("SystemDisplayer").classList.remove("visually-hidden");
 }
