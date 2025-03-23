@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, setTranslation, loadLoginTranslation, alertify */
+/* global setTranslation, loadLoginTranslation, alertify */
 
 // define all vars
 var translation = {};
@@ -14,32 +14,36 @@ window.addEventListener("load", async () => {
 });
 
 function doLogin () {
-  $("#Login-submit").addClass("disabled");
+  document.getElementById("Login-submit").classList.add("disabled");
   document.title = translation.welcome;
   setTranslation("Welcome", translation.welcome);
-  $("#username").attr("placeholder", translation.username);
-  $("#password").attr("placeholder", translation.password);
+  document.getElementById("username").setAttribute("placeholder", translation.username);
+  document.getElementById("password").setAttribute("placeholder", translation.password);
   setTranslation("Login-submit", translation.login);
 
-  $("#login").on("input change", function () {
-    if ($("#username").val() !== "" && $("#password").val() !== "") $("#Login-submit").removeClass("disabled");
-    else $("#Login-submit").addClass("disabled");
+  const button = document.getElementById("login");
+  button.addEventListener("change", function () {
+    if (document.getElementById("username").value !== "" && document.getElementById("password").value !== "") {
+      document.getElementById("Login-submit").classList.remove("disabled");
+    } else {
+      document.getElementById("Login-submit").classList.add("disabled");
+    }
   });
 
-  $("#login").submit(function (event) {
+  button.addEventListener("submit", function () {
     event.preventDefault();
     alertify.set("notifier", "position", "top-center");
 
-    let credentials = `${$("#username").val()}:${$("#password").val()}`;
+    let credentials = `${document.getElementById("username").value}:${document.getElementById("password").value}`;
     let encode = btoa(credentials);
     Request("/auth", "POST", { Authorization: `Basic ${encode}` }, null, "Login", (response) => {
       localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
-      $(location).attr("href", "/");
+      location.href = "/";
     }, (err) => {
-      $("#username").val("");
-      $("#password").val("");
-      let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
-      let description = err.responseJSON?.description;
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+      let error = err?.error;
+      let description = err?.description;
       if (!err.status) alertify.error("Connexion Lost!");
       else if (err.status === 403 || err.status === 401) alertify.error(`[Login] ${error}: ${description}`);
       else alertify.error(`[Login] Server return Error ${err.status} (${error})`);

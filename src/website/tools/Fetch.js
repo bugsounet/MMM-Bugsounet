@@ -56,7 +56,7 @@ function checkEXTStatus () {
 /* eslint-disable-next-line */
 function loadLoginTranslation () {
   return new Promise((resolve) => {
-    Request("/api/translations/login", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loginTranslation", (tr) => resolve(tr), null);
+    Request("/api/translations/login", "GET", null, null, "loginTranslation", (tr) => resolve(tr), null);
   });
 }
 
@@ -191,7 +191,7 @@ function loadBackupConfig (file) {
   });
 }
 
-function Request (url, type, header, data, from, success, fail) {
+async function Request (url, type, header, data, from, success, fail) {
   // console.log(url, type, header, data, from, success, fail)
   var headers = {
     "Content-Type": "application/json"
@@ -201,21 +201,29 @@ function Request (url, type, header, data, from, success, fail) {
     headers = Object.assign(headers, header);
   }
 
-  fetch(url, {
-    method: type,
-    headers: headers,
-    body: data
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      if (success) success(result);
-    })
-    .catch((err) => {
-      if (fail) return fail(err);
-      let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
-      if (!err.status) alertify.error("Connexion Lost!");
-      else alertify.error(`[${from}] Server return Error ${err.status} (${error})`);
+  var response;
+
+  try {
+    response = await fetch(url, {
+      method: type,
+      headers: headers,
+      body: data
     });
+  } catch {
+    alertify.error("Connexion Lost!");
+    return;
+  }
+
+  if (response.ok) {
+    const result = await response.json();
+    if (success) success(result);
+  } else {
+    const result = await response.json();
+    result.status = response.status;
+    if (fail) return fail(result);
+    let error = result?.error ? result.error : response.statusText;
+    alertify.error(`[${from}] Server return Error ${response.status} (${error})`);
+  }
 }
 
 /* eslint-disable-next-line */
