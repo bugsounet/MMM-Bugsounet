@@ -1,6 +1,6 @@
 /** fetch datas **/
 
-/* global $, alertify, translation, PleaseRotate */
+/* global alertify, translation, PleaseRotate */
 
 function getCurrentToken () {
   return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
@@ -201,24 +201,21 @@ function Request (url, type, header, data, from, success, fail) {
     headers = Object.assign(headers, header);
   }
 
-  $.ajax(
-    {
-      url: url,
-      type: type,
-      headers,
-      dataType: "json",
-      data: data,
-      success: (response) => {
-        if (success) success(response);
-      },
-      error: (err) => {
-        if (fail) return fail(err);
-        let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
-        if (!err.status) alertify.error("Connexion Lost!");
-        else alertify.error(`[${from}] Server return Error ${err.status} (${error})`);
-      }
-    }
-  );
+  fetch(url, {
+    method: type,
+    headers: headers,
+    body: data
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (success) success(result);
+    })
+    .catch((err) => {
+      if (fail) return fail(err);
+      let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
+      if (!err.status) alertify.error("Connexion Lost!");
+      else alertify.error(`[${from}] Server return Error ${err.status} (${error})`);
+    });
 }
 
 /* eslint-disable-next-line */
@@ -242,12 +239,12 @@ function hasPluginConnected (obj, key, value) {
 function processSelectedFiles (fileInput) {
   let files = fileInput.files;
   let file = files[0].name;
-
-  $("#backup").append($("<option>", {
-    value: "default",
-    text: file,
-    selected: true
-  }));
+  let backup = document.getElementById("backup");
+  let option = document.createElement("option");
+  option.value = "default";
+  option.text = file;
+  option.selected = true;
+  backup.appendChild(option);
 }
 
 /** config merge **/
@@ -297,27 +294,22 @@ async function doTranslateNavBar () {
   setTranslation("About", translation.About);
   setTranslation("System", translation.System);
   setTranslation("Logout", translation.Logout);
-  if (!Docs) $("#APIDocsItem").hide();
+  if (!Docs) document.getElementById("APIDocsItem").style.display = "none";
 
-  $("#accordionSidebar").removeClass("invisible");
-  $("li.active").removeClass("active");
+  document.getElementById("accordionSidebar").classList.remove("invisible");
+
   var path = location.pathname;
-
-  if (path === "/"
-    || path === "/Terminal"
-    || path === "/MMConfig"
-    || path === "/3rdpartymodules"
-    || path === "/Tools"
-    || path === "/System"
-    || path === "/About"
-    || path === "/APIDocs"
-  ) $(`a[href="${path}"]`).removeAttr("href");
 
   if (path === "/EditMMConfig") path = "/MMConfig";
   if (path === "/Die" || path === "/Restart") path = "/Tools";
   if (path === "/SystemDie" || path === "/SystemRestart") path = "/System";
   if (path === "/ptyProcess") path = "/Terminal";
-  $(`a[href="${path}"]`).closest("a").addClass("active");
+
+  const ref = document.querySelectorAll(`[href="${path}"]`);
+  if (ref[0]) {
+    ref[0].removeAttribute("href");
+    ref[0].classList.add("active");
+  }
 }
 
 function setTranslation (id, content) {
