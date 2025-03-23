@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, setTranslation, loadTranslation, forceMobileRotate, doTranslateNavBar, loadMMConfig, JSONEditor, loadBackupNames, loadBackupConfig, getCurrentToken, alertify, FileReaderJS, saveAs */
+/* global setTranslation, loadTranslation, forceMobileRotate, doTranslateNavBar, loadMMConfig, JSONEditor, loadBackupNames, loadBackupConfig, getCurrentToken, alertify, FileReaderJS, saveAs */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 
 //make viewJSEditor
 async function viewJSEditor () {
-  $(document).prop("title", translation.Configuration);
+  document.title = translation.Configuration;
   setTranslation("MMConfigHeader", translation.Configuration_Welcome);
   setTranslation("EditLoadButton", translation.Configuration_EditLoad);
   var modules = await loadMMConfig();
@@ -61,14 +61,15 @@ async function EditMMConfigJSEditor () {
   setTranslation("errorConfig", translation.Error);
   setTranslation("save", translation.Save);
   setTranslation("load", translation.Load);
-  $("#wait").css("display", "none");
-  $("#done").css("display", "none");
-  $("#error").css("display", "none");
-  $("#errorConfig").css("display", "none");
-  $("#load").css("display", "none");
-  $("#save").css("display", "none");
-  $("#buttonGrp").removeClass("invisible");
-  $("select option:contains(\"Loading\")").text(translation.Configuration_Edit_AcualConfig);
+  document.getElementById("wait").style.display = "none";
+  document.getElementById("done").style.display = "none";
+  document.getElementById("error").style.display = "none";
+  document.getElementById("errorConfig").style.display = "none";
+  document.getElementById("load").style.display = "none";
+  document.getElementById("save").style.display = "none";
+  document.getElementById("buttonGrp").classList.remove("invisible");
+  let ActualConfig = document.querySelectorAll("option")[0];
+  ActualConfig.textContent = translation.Configuration_Edit_AcualConfig;
   var allBackup = await loadBackupNames();
   var config = {};
   var conf = null;
@@ -77,14 +78,14 @@ async function EditMMConfigJSEditor () {
     mainMenuBar: false,
     onValidationError: (errors) => {
       if (errors.length) {
-        $("#save").css("display", "none");
-        $("#externalSave").addClass("disabled");
-        $("#errorConfig").css("display", "block");
+        document.getElementById("save").style.display = "none";
+        document.getElementById("externalSave").classList.add("disabled");
+        document.getElementById("errorConfig").style.display = "block";
       }
       else {
-        $("#errorConfig").css("display", "none");
-        $("#save").css("display", "block");
-        $("#externalSave").removeClass("disabled");
+        document.getElementById("errorConfig").style.display = "none";
+        document.getElementById("save").style.display = "block";
+        document.getElementById("externalSave").classList.remove("disabled");
       }
     }
   };
@@ -107,37 +108,41 @@ async function EditMMConfigJSEditor () {
         }
       };
       config = await loadBackupConfig(conf);
-      $("#load").css("display", "block");
+      document.getElementById("load").style.display = "block";
     }
   } else {
     conf = "default";
     config = await loadMMConfig();
   }
-  $.each(allBackup, function (i, backup) {
-    $("#backup").append($("<option>", {
-      value: backup,
-      text: backup,
-      selected: (backup === conf) ? true : false
-    }));
+
+  const backup = document.getElementById("backup");
+
+  allBackup.forEach((filename, i) => {
+    let option = document.createElement("option");
+    option.value = filename;
+    option.text = filename;
+    backup.appendChild(option);
+    if (filename === conf) backup.selectedIndex = i + 1;
   });
+
   const container = document.getElementById("jsoneditor");
   const editor = new JSONEditor(container, options, config);
   document.getElementById("load").onclick = function () {
-    $("#load").css("display", "none");
-    $("#wait").css("display", "block");
+    document.getElementById("load").style.display = "none";
+    document.getElementById("wait").style.display = "block";
 
     Request("/api/backups/file", "PUT", { Authorization: `Bearer ${getCurrentToken()}`, backup: conf }, null, "loadBackup", () => {
-      $("#wait").css("display", "none");
-      $("#done").css("display", "block");
-      $("#alert").removeClass("invisible");
-      $("#messageText").text(translation.Restart);
+      document.getElementById("wait").style.display = "none";
+      document.getElementById("done").style.display = "block";
+      document.getElementById("alert").classList.remove("invisible");
+      setTranslation("messageText", translation.Restart);
     }, (err) => {
-      $("#wait").css("display", "none");
-      $("#error").css("display", "block");
-      $("#alert").removeClass("invisible");
-      $("#alert").removeClass("alert-success");
-      $("#alert").addClass("alert-danger");
-      let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
+      document.getElementById("wait").style.display = "none";
+      document.getElementById("error").style.display = "block";
+      document.getElementById("alert").classList.remove("invisible");
+      document.getElementById("alert").classList.remove("alert-success");
+      document.getElementById("alert").classList.add("alert-danger");
+      let error = err.error;
       if (!err.status) {
         setTranslation("messageText", err);
         alertify.error("Connexion Lost!");
@@ -149,27 +154,27 @@ async function EditMMConfigJSEditor () {
   };
   document.getElementById("save").onclick = function () {
     let data = editor.getText();
-    $("#save").css("display", "none");
-    $("#wait").css("display", "block");
+    document.getElementById("save").style.display = "none";
+    document.getElementById("wait").style.display = "block";
     let encode = btoa(data);
 
     Request("api/config/MM", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ config: encode }), "writeConfig", () => {
-      $("#wait").css("display", "none");
-      $("#done").css("display", "block");
-      $("#alert").removeClass("invisible");
-      $("#messageText").text(translation.Restart);
+      document.getElementById("wait").style.display = "none";
+      document.getElementById("done").style.display = "block";
+      document.getElementById("alert").classList.remove("invisible");
+      setTranslation("messageText", translation.Restart);
     }, (err) => {
-      $("#wait").css("display", "none");
-      $("#error").css("display", "block");
-      $("#alert").removeClass("invisible");
-      $("#alert").removeClass("alert-success");
-      $("#alert").addClass("alert-danger");
-      let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
+      document.getElementById("wait").style.display = "none";
+      document.getElementById("error").style.display = "block";
+      document.getElementById("alert").classList.remove("invisible");
+      document.getElementById("alert").classList.remove("alert-success");
+      document.getElementById("alert").classList.add("alert-danger");
+      let error = err.error;
       if (!err.status) {
         setTranslation("messageText", err);
         alertify.error("Connexion Lost!");
       } else {
-        setTranslation("messageText", err.statusText);
+        setTranslation("messageText", error);
         alertify.error(`[writeConfig] Server return Error ${err.status} (${error})`);
       }
     });
@@ -193,7 +198,7 @@ async function EditMMConfigJSEditor () {
   });
   document.getElementById("externalSave").onclick = function () {
     alertify.prompt("MMM-Bugsounet", "Save config file as:", "config", function (evt, value) {
-      let fileName = value;
+      var fileName = value;
       if (fileName.indexOf(".") === -1) {
         fileName = `${fileName}.js`;
       } else {
@@ -207,10 +212,13 @@ async function EditMMConfigJSEditor () {
       let encode = btoa(configToSave);
       Request("/api/backups/external", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ config: encode }), "saveExternalBackup", (back) => {
         alertify.success("Download is ready !");
-        $.get(`${back.file}`, function (data) {
-          const blob = new Blob([data], { type: "application/javascript;charset=utf-8" });
-          saveAs(blob, fileName);
-        });
+        fetch(back.file)
+          .then((response) => response.blob())
+          .then((result) => saveAs(result, fileName))
+          .catch((e) => {
+            console.error("Save Error:", e);
+            alertify.error("Save Error!");
+          });
       }, null);
     }, function () {
       // do nothing
