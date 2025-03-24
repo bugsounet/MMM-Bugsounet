@@ -106,8 +106,7 @@ const config = [
   {
     "files": ["**/package.json"],
     "rules": {
-      "package-json/valid-name": "off",
-      "depend/ban-dependencies": ["error", {"allowed": ["jquery"]}]
+      "package-json/valid-name": "off"
     }
   },
   {
@@ -124,9 +123,6 @@ const config = [
   },
   {
     "ignores": ["website/tools/*.js"]
-  },
-  {
-    "ignores": ["EXTs/EXT-Website-/**/*"]
   }
 ];
 
