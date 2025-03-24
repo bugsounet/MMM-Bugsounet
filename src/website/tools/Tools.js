@@ -53,24 +53,24 @@ async function doTools () {
     setTranslation("backup-Delete", translation.Delete);
     setTranslation("backup-Error", translation.Error);
     setTranslation("backup-Done", translation.Done);
-    $("#backup-Box").css("display", "block");
+    document.getElementById("backup-Box").style.display = "block";
 
     document.getElementById("backup-Delete").onclick = function () {
       Request("/api/backups", "DELETE", { Authorization: `Bearer ${getCurrentToken()}` }, null, "backup-Delete", () => {
-        $("#backup-Delete").css("display", "none");
-        $("#backup-Done").css("display", "inline-block");
+        document.getElementById("backup-Delete").style.display = "none";
+        document.getElementById("backup-Done").style.display = "inline-block";
         alertify.success(translation.Tools_Backup_Deleted);
       }, (err) => {
-        $("#backup-Delete").css("display", "none");
-        $("#backup-Error").css("display", "inline-block");
-        let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
+        document.getElementById("backup-Delete").style.display = "none";
+        document.getElementById("backup-Error").style.display = "inline-block";
+        let error = err.error;
         if (!err.status) alertify.error("Connexion Lost!");
         else alertify.error(`[backup-Delete] Server return Error ${err.status} (${error})`);
       });
     };
 
     document.getElementById("backup-Done").onclick = function () {
-      $("#backup-Box").css("display", "none");
+      document.getElementById("backup-Box").style.display = "none";
     };
   }
 
@@ -79,7 +79,7 @@ async function doTools () {
     if (EXTStatus["EXT-Screen"].power) setTranslation("Screen-Control", translation.TurnOff);
     else setTranslation("Screen-Control", translation.TurnOn);
     setTranslation("Screen-Text", translation.Tools_Screen_Text);
-    $("#Screen-Box").css("display", "block");
+    document.getElementById("Screen-Box").style.display = "block";
 
     document.getElementById("Screen-Control").onclick = function () {
       let powerControler = EXTStatus["EXT-Screen"].power ? "OFF" : "ON";
@@ -90,21 +90,21 @@ async function doTools () {
   }
 
   // Bugsounet-Alert query
-  $("#Alert-Query").prop("placeholder", translation.Tools_Alert_Query);
+  document.getElementById("Alert-Query").setAttribute("placeholder", translation.Tools_Alert_Query);
   setTranslation("Alert-Text", translation.Tools_Alert_Text);
   setTranslation("Alert-Send", translation.Send);
-  $("#Alert-Box").css("display", "block");
-  $("#Alert-Query").keyup(function () {
-    if ($(this).val().length > 5) {
-      $("#Alert-Send").removeClass("disabled");
+  document.getElementById("Alert-Box").style.display = "block";
+  document.getElementById("Alert-Query").addEventListener("keyup", function () {
+    if (this.value.length > 5) {
+      document.getElementById("Alert-Send").classList.remove("disabled");
     } else {
-      $("#Alert-Send").addClass("disabled");
+      document.getElementById("Alert-Send").classList.add("disabled");
     }
   });
 
   document.getElementById("Alert-Send").onclick = function () {
-    $("#Alert-Send").addClass("disabled");
-    Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ alert: $("#Alert-Query").val() }), "Alert", () => {
+    document.getElementById("Alert-Send").classList.add("disabled");
+    Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ alert: document.getElementById("Alert-Query").value }), "Alert", () => {
       alertify.success(translation.RequestDone);
     }, null);
   };
@@ -115,10 +115,10 @@ async function doTools () {
     setTranslation("Volume-Text2", translation.Tools_Volume_Text2);
     setTranslation("Volume-Text3", translation.Tools_Volume_Text3);
     setTranslation("Volume-Send", translation.Confirm);
-    $("#Volume-Box").css("display", "block");
+    document.getElementById("Volume-Box").style.display = "block";
 
     document.getElementById("Volume-Send").onclick = function () {
-      Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: Number($("#Volume-Query").val()) }), "Volume", () => {
+      Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: Number(document.getElementById("Volume-Query").value) }), "Volume", () => {
         alertify.success(translation.RequestDone);
       }, null);
     };
@@ -128,10 +128,10 @@ async function doTools () {
     setTranslation("Volume-Text-Record2", translation.Tools_Volume_Text2);
     setTranslation("Volume-Text-Record3", translation.Tools_Volume_Text3);
     setTranslation("Volume-Send-Record", translation.Confirm);
-    $("#Volume-Box-Record").css("display", "block");
+    document.getElementById("Volume-Box-Record").style.display = "block";
 
     document.getElementById("Volume-Send-Record").onclick = function () {
-      Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: Number($("#Volume-Query-Record").val()) }), "Volume", () => {
+      Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: Number(document.getElementById("Volume-Query-Record").value) }), "Volume", () => {
         alertify.success(translation.RequestDone);
       }, null);
     };
@@ -143,7 +143,7 @@ async function doTools () {
     setTranslation("Update-Text", translation.Tools_Update_Text);
     setTranslation("Update-Text2", translation.Tools_Update_Text2);
     document.getElementById("Update-Confirm").onclick = function () {
-      $("#Update-Confirm").addClass("disabled");
+      document.getElementById("Update-Confirm").classList.add("disabled");
       Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
         alertify.success(translation.RequestDone);
       }, null);
@@ -152,7 +152,7 @@ async function doTools () {
 
   // Spotify Control
   if (EXTStatus["EXT-Spotify"].hello) {
-    var type = null;
+    var type = "track";
     setTranslation("Spotify-Text", translation.Tools_Spotify_Text);
     setTranslation("Spotify-Text2", translation.Tools_Spotify_Text2);
     setTranslation("Spotify-Send", translation.Send);
@@ -160,20 +160,20 @@ async function doTools () {
     setTranslation("Spotify-Track-Text", translation.Tools_Spotify_Track);
     setTranslation("Spotify-Album-Text", translation.Tools_Spotify_Album);
     setTranslation("Spotify-Playlist-Text", translation.Tools_Spotify_Playlist);
-    $("#Spotify-Query").prop("placeholder", translation.Tools_Spotify_Query);
+    document.getElementById("Spotify-Query").setAttribute("placeholder", translation.Tools_Spotify_Query);
     setTranslation("Spotify-Send", translation.Send);
-    $("#Spotify-Box").css("display", "block");
-    $("#Spotify-Query").keyup(function () {
-      if ($(this).val().length > 1 && type) {
-        $("#Spotify-Send").removeClass("disabled");
+    document.getElementById("Spotify-Box").style.display = "block";
+    document.getElementById("Spotify-Query").addEventListener("keyup", function () {
+      if (this.value.length > 1 && type) {
+        document.getElementById("Spotify-Send").classList.remove("disabled");
       } else {
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
       }
     });
 
     document.getElementById("Spotify-Send").onclick = function () {
-      $("#Spotify-Send").addClass("disabled");
-      Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: $("#Spotify-Query").val(), type: type }), "Spotify", () => {
+      document.getElementById("Spotify-Send").classList.add("disabled");
+      Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: document.getElementById("Spotify-Query").value, type: type }), "Spotify", () => {
         alertify.success(translation.RequestDone);
       }, null);
     };
@@ -205,68 +205,68 @@ async function doTools () {
     document.getElementById("Spotify-Artist").onclick = function () {
       if (!this.checked) {
         type = null;
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
         return;
       }
       type = "artist";
-      $("#Spotify-Track").prop("checked", !this.checked);
-      $("#Spotify-Album").prop("checked", !this.checked);
-      $("#Spotify-Playlist").prop("checked", !this.checked);
-      if ($("#Spotify-Query").val().length > 1) {
-        $("#Spotify-Send").removeClass("disabled");
+      document.getElementById("Spotify-Track").checked = !this.checked;
+      document.getElementById("Spotify-Album").checked = !this.checked;
+      document.getElementById("Spotify-Playlist").checked = !this.checked;
+      if (document.getElementById("Spotify-Query").value.length > 1) {
+        document.getElementById("Spotify-Send").classList.remove("disabled");
       } else {
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
       }
     };
 
     document.getElementById("Spotify-Track").onclick = function () {
       if (!this.checked) {
         type = null;
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
         return;
       }
       type = "track";
-      $("#Spotify-Artist").prop("checked", !this.checked);
-      $("#Spotify-Album").prop("checked", !this.checked);
-      $("#Spotify-Playlist").prop("checked", !this.checked);
-      if ($("#Spotify-Query").val().length > 1) {
-        $("#Spotify-Send").removeClass("disabled");
+      document.getElementById("Spotify-Artist").checked = !this.checked;
+      document.getElementById("Spotify-Album").checked = !this.checked;
+      document.getElementById("Spotify-Playlist").checked = !this.checked;
+      if (document.getElementById("Spotify-Query").value.length > 1) {
+        document.getElementById("Spotify-Send").classList.remove("disabled");
       } else {
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
       }
     };
 
     document.getElementById("Spotify-Album").onclick = function () {
       if (!this.checked) {
         type = null;
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
         return;
       }
       type = "album";
-      $("#Spotify-Artist").prop("checked", !this.checked);
-      $("#Spotify-Track").prop("checked", !this.checked);
-      $("#Spotify-Playlist").prop("checked", !this.checked);
-      if ($("#Spotify-Query").val().length > 1) {
-        $("#Spotify-Send").removeClass("disabled");
+      document.getElementById("Spotify-Artist").checked = !this.checked;
+      document.getElementById("Spotify-Track").checked = !this.checked;
+      document.getElementById("Spotify-Playlist").checked = !this.checked;
+      if (document.getElementById("Spotify-Query").value.length > 1) {
+        document.getElementById("Spotify-Send").classList.remove("disabled");
       } else {
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
       }
     };
 
     document.getElementById("Spotify-Playlist").onclick = function () {
       if (!this.checked) {
         type = null;
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
         return;
       }
       type = "playlist";
-      $("#Spotify-Artist").prop("checked", !this.checked);
-      $("#Spotify-Track").prop("checked", !this.checked);
-      $("#Spotify-Album").prop("checked", !this.checked);
-      if ($("#Spotify-Query").val().length > 1) {
-        $("#Spotify-Send").removeClass("disabled");
+      document.getElementById("Spotify-Artist").checked = !this.checked;
+      document.getElementById("Spotify-Track").checked = !this.checked;
+      document.getElementById("Spotify-Album").checked = !this.checked;
+      if (document.getElementById("Spotify-Query").value.length > 1) {
+        document.getElementById("Spotify-Send").classList.remove("disabled");
       } else {
-        $("#Spotify-Send").addClass("disabled");
+        document.getElementById("Spotify-Send").classList.add("disabled");
       }
     };
   }
@@ -278,22 +278,21 @@ async function doTools () {
     var radio = await loadRadio();
     if (radio.length) {
       radio.forEach((station) => {
-        $("#Radio-Query").append($("<option>", {
-          value: station,
-          text: station,
-          selected: false
-        }));
+        let option = document.createElement("option");
+        option.value = station;
+        option.text = station;
+        document.getElementById("Radio-Query").appendChild(option);
       });
     }
     else {
-      $("#Radio-Query").css("display", "none");
+      document.getElementById("Radio-Query").style.display = "none";
       setTranslation("Radio-Text2", translation.Tools_Radio_Text2);
-      $("#Radio-Text2").css("display", "block");
-      $("#Radio-Send").addClass("disabled");
+      document.getElementById("Radio-Text2").style.display = "block";
+      document.getElementById("Radio-Send").classList.add("disabled");
     }
-    $("#Radio-Box").css("display", "block");
+    document.getElementById("Radio-Box").style.display = "block";
     document.getElementById("Radio-Send").onclick = function () {
-      Request("/api/EXT/RadioPlayer", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ radio: $("#Radio-Query").val() }), "RadioPlayer", () => {
+      Request("/api/EXT/RadioPlayer", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ radio: document.getElementById("Radio-Query").value }), "RadioPlayer", () => {
         alertify.success(translation.RequestDone);
       }, null);
     };
@@ -301,9 +300,9 @@ async function doTools () {
 
   // FreeboxTV query
   if (EXTStatus["EXT-FreeboxTV"].hello && version.lang === "fr") {
-    $("#FreeboxTV-Box").css("display", "block");
+    document.getElementById("FreeboxTV-Box").style.display = "block";
     document.getElementById("FreeboxTV-Send").onclick = function () {
-      Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ TV: $("#FreeboxTV-Query").val() }), "FreeboxTV", () => {
+      Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ TV: document.getElementById("FreeboxTV-Query").value }), "FreeboxTV", () => {
         alertify.success(translation.RequestDone);
       }, null);
     };
@@ -334,32 +333,32 @@ function updateTools () {
     let needUpdate = 0;
     setTranslation("Update-Confirm", translation.Confirm);
     var updateModules = EXTStatus["EXT-Updates"].module;
-    if (!updateModules) return $("#Update-Box").css("display", "none");
-    if (!Object.keys(updateModules).length) return $("#Update-Box").css("display", "none");
+    if (!updateModules) return document.getElementById("Update-Box").style.display = "none";
+    if (!Object.keys(updateModules).length) return document.getElementById("Update-Box").style.display = "none";
     if (Object.keys(updateModules).length) {
-      $("#Update-Box").css("display", "block");
+      document.getElementById("Update-Box").style.display = "block";
       for (const [key] of Object.entries(updateModules)) {
         if ($(`#${key}`).length === 0) $("#Update-Modules-Box").append(`<br><span id='${key}'>${key}</span>`);
         if (key.startsWith("EXT-") || key === "MMM-Bugsounet") ++needUpdate;
       }
-      $("#Update-Modules-Box").css("display", "block");
+      document.getElementById("Update-Modules-Box").style.display = "block";
     }
-    if (!needUpdate) $("#Update-Confirm").addClass("disabled");
-    else $("#Update-Confirm").removeClass("disabled");
+    if (!needUpdate) document.getElementById("Update-Confirm").classList.add("disabled");
+    else document.getElementById("Update-Confirm").classList.remove("disabled");
   }
 
   if (this.hasPluginConnected(EXTStatus, "connected", true)) {
-    $("#Stop-Box").css("display", "block");
+    document.getElementById("Stop-Box").style.display = "block";
   }
-  else $("#Stop-Box").css("display", "none");
+  else document.getElementById("Stop-Box").style.display = "none";
 
   if (EXTStatus["EXT-Spotify"].hello) {
     if (EXTStatus["EXT-Spotify"].connected || EXTStatus["EXT-Spotify"].play) {
-      $("#Spotify-Play").css("display", "none");
-      $("#Spotify-Stop").css("display", "block");
+      document.getElementById("Spotify-Play").style.display = "none";
+      document.getElementById("Spotify-Stop").style.display = "block";
     } else {
-      $("#Spotify-Play").css("display", "block");
-      $("#Spotify-Stop").css("display", "none");
+      document.getElementById("Spotify-Play").style.display = "block";
+      document.getElementById("Spotify-Stop").style.display = "none";
     }
   }
 }
