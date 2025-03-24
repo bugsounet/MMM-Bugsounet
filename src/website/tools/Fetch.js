@@ -132,6 +132,13 @@ function loadRadio () {
 }
 
 /* eslint-disable-next-line */
+function loadFreeboxTV () {
+  return new Promise((resolve) => {
+    Request("/api/EXT/FreeboxTV", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadFreeboxTV", (radio) => resolve(radio), null);
+  });
+}
+
+/* eslint-disable-next-line */
 function loadPluginConfig (plugin) {
   return new Promise((resolve) => {
     Request("/api/config/default", "GET", { Authorization: `Bearer ${getCurrentToken()}`, ext: plugin }, null, "loadPluginConfig", (response) => {
@@ -221,8 +228,8 @@ async function Request (url, type, header, data, from, success, fail) {
     const result = await response.json();
     result.status = response.status;
     if (fail) return fail(result);
-    let error = result?.error ? result.error : response.statusText;
-    alertify.error(`[${from}] Server return Error ${response.status} (${error})`);
+    let error = result.error;
+    alertify.error(`[${from}] Server return Error ${response.status}: ${error}`);
   }
 }
 

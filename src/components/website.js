@@ -639,7 +639,7 @@ class website {
       case "/api/backups/file":
         if (!req.headers["backup"]) return res.status(400).send("Bad Request");
         var availableBackups = await this.loadBackupNames();
-        if (availableBackups.indexOf(req.headers["backup"]) === -1) return res.status(404).send("Not Found");
+        if (availableBackups.indexOf(req.headers["backup"]) === -1) return res.status(404).json({ error: "Not Found" });
         log(`[API] Request backup config of ${req.headers["backup"]}`);
         var file = await this.loadBackupFile(req.headers["backup"]);
         var stringify = JSON.stringify(file);
@@ -648,21 +648,21 @@ class website {
         break;
 
       case "/api/EXT/RadioPlayer":
-        if (!this.website.EXTStatus["EXT-RadioPlayer"].hello || !this.website.radio) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-RadioPlayer"].hello || !this.website.radio) return res.status(404).json({ error: "Not Found" });
         var allRadio = Object.keys(this.website.radio);
         res.json(allRadio);
         break;
 
       case "/api/EXT/Updates":
-        if (!this.website.EXTStatus["EXT-Updates"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
         var updates = this.filterObject(this.website.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
         if (!updates.length) return res.status(404).send("Not Found");
         res.json(updates);
         break;
 
       case "/api/EXT/FreeboxTV":
-        if (!this.website.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).send("Not Found");
-        if (this.website.language !== "fr") return res.status(409).send("Reserved for French language");
+        if (!this.website.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).json({ error: "Not Found" });
+        if (this.website.language !== "fr") return res.status(409).json({ error: "Reserved for French language" });
         var allTV = Object.keys(this.website.freeTV);
         res.json(allTV);
         break;
@@ -679,7 +679,7 @@ class website {
     var resultSaveConfig = {};
     switch (req.url) {
       case "/api/config/MM":
-        if (!req.body["config"]) return res.status(400).send("Bad Request");
+        if (!req.body["config"]) return res.status(400).json({ error: "Bad Request" });
         log("[API] Receiving write MagicMirror config...");
         try {
           let decoded = JSON.parse(this.decode(req.body["config"]));
@@ -700,95 +700,85 @@ class website {
         break;
 
       case "/api/EXT/Volume/speaker":
-        if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
         var speaker = req.body["volume"];
-        if (typeof (speaker) !== "number" || speaker < 0 || speaker > 100 || isNaN(speaker)) return res.status(400).send("Bad Request");
+        if (typeof (speaker) !== "number" || speaker < 0 || speaker > 100 || isNaN(speaker)) return res.status(400).json({ error: "Bad Request" });
         log("[API] Request speaker volume change to", speaker);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_VOLUME-SPEAKER_SET", payload: speaker || "0" });
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Volume/recorder":
-        if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
         var recorder = req.body["volume"];
-        if (typeof (recorder) !== "number" || recorder < 0 || recorder > 100) return res.status(400).send("Bad Request");
+        if (typeof (recorder) !== "number" || recorder < 0 || recorder > 100) return res.status(400).json({ error: "Bad Request" });
         log("[API] Request recorder volume change to", recorder);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_VOLUME-RECORDER_SET", payload: recorder || "0" });
         res.json({ done: "ok" });
         break;
 
-      case "/api/EXT/RadioPlayer":
-        if (!this.website.EXTStatus["EXT-RadioPlayer"].hello || !this.website.radio) return res.status(404).send("Not Found");
-        if (!req.body["radio"]) return res.status(400).send("Bad Request");
-        var allRadio = Object.keys(this.website.radio);
-        if (allRadio.indexOf(req.body["radio"]) === -1) return res.status(404).send("Not Found");
-        log("[API] Request radio change to", req.body["radio"]);
-        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_RADIO-PLAY", payload: req.body["radio"] });
-        res.json({ done: "ok" });
-        break;
-
       case "/api/EXT/Updates":
-        if (!this.website.EXTStatus["EXT-Updates"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
         var updates = this.filterObject(this.website.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
-        if (!updates.length) return res.status(404).send("Not Found");
+        if (!updates.length) return res.status(404).json({ error: "Not Found" });
         log("[API] Request send updates");
         this.sendSocketNotification("SendNoti", "Bugsounet_UPDATES-UPDATE");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/play":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
-        if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Already playing");
+        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already playing" });
         log("[API] Request send Spotify play");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/pause":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
-        if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Already pausing");
+        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already pausing" });
         log("[API] Request send Spotify pause");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PAUSE");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/toggle":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         log("[API] Request send Spotify toogle");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY-TOGGLE");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/stop":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
-        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Not playing");
+        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
         log("[API] Request send Spotify stop");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-STOP");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/next":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
-        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Not playing");
+        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
         log("[API] Request send Spotify next");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-NEXT");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/previous":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
-        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).send("Not playing");
+        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
         log("[API] Request send Spotify previous");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PREVIOUS");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         var query = req.body["query"];
         var type = req.body["type"];
         var ArrayType = ["artist", "album", "playlist", "track"];
-        if (!query || typeof (query) !== "string" || !type || ArrayType.indexOf(type) === -1) return res.status(400).send("Bad Request");
+        if (!query || typeof (query) !== "string" || !type || ArrayType.indexOf(type) === -1) return res.status(400).json({ error: "Bad Request" });
         var pl = {
           type: type,
           query: query,
@@ -800,17 +790,17 @@ class website {
         break;
 
       case "/api/EXT/Screen":
-        if (!this.website.EXTStatus["EXT-Screen"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-Screen"].hello) return res.status(404).json({ error: "Not Found" });
         var power = req.body["power"];
-        if (!power || typeof (power) !== "string") return res.status(400).send("Bad Request");
+        if (!power || typeof (power) !== "string") return res.status(400).json({ error: "Bad Request" });
         log("[API] Request send screen power:", power);
         if (power === "OFF") {
-          if (!this.website.EXTStatus["EXT-Screen"].power) return res.status(409).send("Already OFF");
+          if (!this.website.EXTStatus["EXT-Screen"].power) return res.status(409).json({ error: "Already OFF" });
           this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_END");
           return res.json({ done: "ok" });
         }
         if (power === "ON") {
-          if (this.website.EXTStatus["EXT-Screen"].power) return res.status(409).send("Already ON");
+          if (this.website.EXTStatus["EXT-Screen"].power) return res.status(409).json({ error: "Already ON" });
           this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_WAKEUP");
           return res.json({ done: "ok" });
         }
@@ -818,21 +808,31 @@ class website {
         break;
 
       case "/api/EXT/FreeboxTV":
-        if (!this.website.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).json({ error: "Not Found" });
         if (this.website.language !== "fr") return res.status(409).send("Reserved for French language");
         var TV = req.body["TV"];
-        if (!TV || typeof (TV) !== "string") return res.status(400).send("Bad Request");
+        if (!TV || typeof (TV) !== "string") return res.status(400).json({ error: "Bad Request" });
         var allTV = Object.keys(this.website.freeTV);
-        if (allTV.indexOf(TV) === -1) return res.status(404).send("Not Found");
+        if (allTV.indexOf(TV) === -1) return res.status(404).json({ error: "Not Found" });
         log("[API] Request send FreeboxTV channel:", TV);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_FREEBOXTV-PLAY", payload: TV });
         res.json({ done: "ok" });
         break;
 
+      case "/api/EXT/RadioPlayer":
+        if (!this.website.EXTStatus["EXT-RadioPlayer"].hello || !this.website.radio) return res.status(404).json({ error: "Not Found" });
+        if (!req.body["radio"]) return res.status(400).json({ error: "Bad Request" });
+        var allRadio = Object.keys(this.website.radio);
+        if (allRadio.indexOf(req.body["radio"]) === -1) return res.status(404).json({ error: "Not Found" });
+        log("[API] Request radio change to", req.body["radio"]);
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_RADIO-PLAY", payload: req.body["radio"] });
+        res.json({ done: "ok" });
+        break;
+
       case "/api/backups/file":
-        if (!req.headers["backup"]) return res.status(400).send("Bad Request");
+        if (!req.headers["backup"]) return res.status(400).json({ error: "Bad Request" });
         var availableBackups = await this.loadBackupNames();
-        if (availableBackups.indexOf(req.headers["backup"]) === -1) return res.status(404).send("Not Found");
+        if (availableBackups.indexOf(req.headers["backup"]) === -1) return res.status(404).json({ error: "Not Found" });
         log("[API] Request backup:", req.headers["backup"]);
         var file = await this.loadBackupFile(req.headers["backup"]);
         resultSaveConfig = await this.saveConfig(file);
@@ -869,17 +869,17 @@ class website {
             };
             res.json({ file: `/download/${linkExternalBackup.data}`, expire_in: 60 });
           } else {
-            res.status(500);
+            res.status(500).json({ error: "Internal Server Error" });
           }
         } catch (e) {
           console.error("[Bugsounet] [Web] [API] Request error", e.message);
-          res.status(400).send("Bad Request");
+          res.status(400).json({ error: "Bad Request" });
         }
         break;
       case "/api/MM":
         var notification = req.body["notification"];
         var payload = req.body["payload"];
-        if (!notification || typeof (notification) !== "string") return res.status(400).send("Bad Request");
+        if (!notification || typeof (notification) !== "string") return res.status(400).json({ error: "Bad Request" });
         log("Notification:", notification);
         if (payload) {
           log("With payload:", payload);
@@ -924,9 +924,9 @@ class website {
         break;
 
       case "/api/system/alert":
-        if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).send("Not Found");
+        if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).json({ error: "Not Found" });
         var alert = req.body["alert"];
-        if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).send("Bad Request");
+        if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).json({ error: "Bad Request" });
         log("[API] Request send Alert:", alert);
         this.sendSocketNotification("SENDALERT", {
           type: "information",
@@ -953,7 +953,7 @@ class website {
           }
         } catch (e) {
           log("[API] Request error", e.message);
-          res.status(400).send("Bad Request");
+          res.status(400).json({ error: "Bad Request" });
         }
         break;
       default:
@@ -1117,17 +1117,17 @@ class website {
 
       if (!authorization) {
         console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: missing authorization type`);
-        return res.status(401).send("Unauthorized");
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       if (params[0] !== "Bearer") {
         console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: Bearer authorization type only`);
-        return res.status(401).send("Unauthorized");
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       if (!params[1]) { // must never happen
         console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: missing Basic params`);
-        return res.status(401).send("Unauthorized");
+        return res.status(401).json({ error: "Unauthorized" });
       }
 
       const accessToken = params[1];
@@ -1135,10 +1135,10 @@ class website {
         if (err) {
           if (err.message === "jwt expired") console.warn("[Bugsounet] [Web] [API] Token expired !");
           else console.error("[Bugsounet] [Web] [API] Token decode Error !", err.message);
-          return res.status(401).send("Unauthorized");
+          return res.status(401).json({ error: "Unauthorized" });
         }
         const user = decoded.user;
-        if (!user || user !== this.website.user.username) return res.status(401).send("Unauthorized");
+        if (!user || user !== this.website.user.username) return res.status(401).json({ error: "Unauthorized" });
         req.user = user;
         this.API_rateLimiter.resetKey(req.ip);
         this.API_speedLimiter.resetKey(req.ip);
@@ -1200,7 +1200,7 @@ class website {
   /** read streamsConfig.json of EXT-FreeboxTV**/
   readFreeTV () {
     return new Promise((resolve) => {
-      var streamsConfig = undefined;
+      var streamsConfig = {};
       let file = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-FreeboxTV/streamsConfig.json`;
       if (fs.existsSync(file)) streamsConfig = require(file);
       resolve(streamsConfig);

@@ -2,7 +2,7 @@
 * @bugsounet
 **/
 
-/* global $, setTranslation, alertify, getCurrentToken, getVersion, loadRadio, loadTranslation, doTranslateNavBar, checkEXTStatus, loadBackupNames, forceMobileRotate */
+/* global loadFreeboxTV, setTranslation, alertify, getCurrentToken, getVersion, loadRadio, loadTranslation, doTranslateNavBar, checkEXTStatus, loadBackupNames, forceMobileRotate */
 
 // rotate rules
 /* eslint-disable-next-line */
@@ -43,6 +43,9 @@ async function doTools () {
   setTranslation("restart", translation.Tools_Restart);
   setTranslation("Die", translation.Confirm);
   setTranslation("Restart", translation.Confirm);
+
+  document.getElementById("Die-Box").style.display = "block";
+  document.getElementById("Restart-Box").style.display = "block";
 
   // backups
   var allBackup = await loadBackupNames();
@@ -140,8 +143,6 @@ async function doTools () {
   // Update Control
   if (EXTStatus["EXT-Updates"].hello) {
     setTranslation("Update-Header", translation.Tools_Update_Header);
-    setTranslation("Update-Text", translation.Tools_Update_Text);
-    setTranslation("Update-Text2", translation.Tools_Update_Text2);
     document.getElementById("Update-Confirm").onclick = function () {
       document.getElementById("Update-Confirm").classList.add("disabled");
       Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
@@ -300,6 +301,19 @@ async function doTools () {
 
   // FreeboxTV query
   if (EXTStatus["EXT-FreeboxTV"].hello && version.lang === "fr") {
+    var freeboxTV = await loadFreeboxTV();
+    if (freeboxTV.length) {
+      freeboxTV.forEach((TV) => {
+        let option = document.createElement("option");
+        option.value = TV;
+        option.text = TV;
+        document.getElementById("FreeboxTV-Query").appendChild(option);
+      });
+    } else {
+      document.getElementById("FreeboxTV-Query").style.display = "none";
+      document.getElementById("FreeboxTV-Text").textContent = "Aucune source";
+      document.getElementById("FreeboxTV-Send").classList.add("disabled");
+    }
     document.getElementById("FreeboxTV-Box").style.display = "block";
     document.getElementById("FreeboxTV-Send").onclick = function () {
       Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ TV: document.getElementById("FreeboxTV-Query").value }), "FreeboxTV", () => {
@@ -338,8 +352,15 @@ function updateTools () {
     if (Object.keys(updateModules).length) {
       document.getElementById("Update-Box").style.display = "block";
       for (const [key] of Object.entries(updateModules)) {
-        if ($(`#${key}`).length === 0) $("#Update-Modules-Box").append(`<br><span id='${key}'>${key}</span>`);
-        if (key.startsWith("EXT-") || key === "MMM-Bugsounet") ++needUpdate;
+        if (!document.getElementById(`${key}`)) {
+          var br = document.createElement("br");
+          var span = document.createElement("span");
+          span.id = `${key}`;
+          span.textContent = `${key}`;
+          document.getElementById("Update-Modules-Box").appendChild(span);
+          document.getElementById("Update-Modules-Box").appendChild(br);
+        }
+        if (EXTStatus["EXT-Updates"].list.indexOf(key) > -1) ++needUpdate;
       }
       document.getElementById("Update-Modules-Box").style.display = "block";
     }

@@ -58,6 +58,7 @@ class EXTs {
     /** special rules **/
     this.EXT["EXT-Screen"].power = true;
     this.EXT["EXT-Updates"].module = {};
+    this.EXT["EXT-Updates"].list = [];
     this.EXT["EXT-Spotify"].remote = false;
     this.EXT["EXT-Spotify"].play = false;
     this.EXT["EXT-Volume"].speaker = 0;
@@ -220,6 +221,7 @@ class EXTs {
       "Bugsounet_FREEBOXTV-CHANNELS",
       "Bugsounet_FREEBOXTV-PLAYING",
       "Bugsounet_UPDATES-MODULE_UPDATE",
+      "Bugsounet_UPDATES-LIST",
       "Bugsounet_VOLUME_GET",
       "Bugsounet_PAGES-NUMBER_IS"
     ];
@@ -349,6 +351,10 @@ class EXTs {
       case "Bugsounet_UPDATES-MODULE_UPDATE":
         if (!this.EXT || !this.EXT["EXT-Updates"].hello) return this.sendWarn("[RULES] EXT-Updates don't say to me HELLO!");
         this.EXT["EXT-Updates"].module = payload;
+        break;
+      case "Bugsounet_UPDATES-LIST":
+        if (!this.EXT || !this.EXT["EXT-Updates"].hello) return this.sendWarn("[RULES] EXT-Updates don't say to me HELLO!");
+        this.EXT["EXT-Updates"].list = payload;
         break;
       case "Bugsounet_VOLUME_GET":
         if (!this.EXT["EXT-Volume"].hello) return this.sendWarn("[RULES] EXT-Volume don't say to me HELLO!");
