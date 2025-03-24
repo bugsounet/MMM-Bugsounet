@@ -214,7 +214,7 @@ async function Request (url, type, header, data, from, success, fail) {
     return;
   }
 
-  if (response.ok) {
+  if (response.ok && response.status < 400) {
     const result = await response.json();
     if (success) success(result);
   } else {
