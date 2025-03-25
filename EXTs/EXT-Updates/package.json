@@ -1,8 +1,8 @@
 {
   "name": "EXT-Updates",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Apply Updates of EXTs",
-  "homepage": "https://wiki.bugsounet.fr/EXT-Updates",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": "@bugsounet",
   "main": "EXT-Updates.js",
@@ -20,7 +20,7 @@
     "ps-node": "^0.1.6"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "250114"
+  "rev": "250325"
 }

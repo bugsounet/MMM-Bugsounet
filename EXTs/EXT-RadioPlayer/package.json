@@ -1,8 +1,8 @@
 {
   "name": "EXT-RadioPlayer",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "An embedded radio player on MagicMirror.",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-RadioPlayer",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-RadioPlayer.js",
@@ -20,12 +20,12 @@
     "vlc-client": "^1.1.1"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
   "installer": {
     "apt": [
       "vlc"
     ]
   },
-  "rev": "241219"
+  "rev": "250325"
 }

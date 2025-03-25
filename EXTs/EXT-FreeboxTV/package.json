@@ -1,8 +1,8 @@
 {
   "name": "EXT-FreeboxTV",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Stream Freebox TV Channel",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-FreeboxTV",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-FreeboxTV.js",
@@ -20,12 +20,12 @@
     "vlc-client": "^1.1.1"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
   "installer": {
     "apt": [
       "vlc"
     ]
   },
-  "rev": "241227"
+  "rev": "250325"
 }
