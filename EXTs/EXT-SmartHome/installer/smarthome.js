@@ -2,9 +2,9 @@
 
 const fs = require("node:fs");
 var prompt = require("prompt");
-var colors = require("@colors/colors/safe");
 const isValidDomain = require("is-valid-domain");
 const systemd = require("../components/systemd");
+const { empty, error, warning, success, info, isWin } = require("../../../installer/utils");
 
 const Systemd = new systemd("nginx");
 
@@ -31,6 +31,7 @@ var server = `server {
 }`;
 
 async function main () {
+  empty();
   this.domain = await promptDomain();
   await saveDomain();
   await nginx();
@@ -39,25 +40,27 @@ async function main () {
 
 function promptDomain () {
   return new Promise((resolve) => {
-    prompt.message = "[SMARTHOME]";
-    prompt.delimiter = colors.green("~");
+    prompt.message = "";
     prompt.start();
 
     prompt.get({
       properties: {
         domain: {
-          description: colors.yellow("What is your domain name?")
+          description: info("What is your domain name?")
         }
       }
     }, function (err, result) {
       if (err) {
-        console.log(`\n[SMARTHOME] ${err}`);
+        empty();
+        error(`${err}`);
         process.exit(255);
       }
       if (!result.domain || !isValidDomain(result.domain)) {
-        console.error(`[SMARTHOME] ${colors.red("Error: domain name must be a valid!")}`);
-        return promptDomain();
+        error("Error: domain name must be a valid!");
+        return main();
       }
+      success("OK");
+      empty();
       resolve(result.domain);
     });
   });
@@ -65,13 +68,14 @@ function promptDomain () {
 
 function saveDomain () {
   return new Promise((resolve) => {
-    console.log(`[SMARTHOME] ${colors.cyan("Writing your domain name: ")}${colors.blue(this.domain)}`);
+    info(`Writing your domain name: ${this.domain}`);
     fs.writeFile(`${__dirname}/DomainName`, this.domain, (err) => {
       if (err) {
-        console.error(`[SMARTHOME] ${colors.red(`Error:${err.message}`)}`);
+        error(`Error:${err.message}`);
         return process.exit(255);
       }
-      console.log(`[SMARTHOME] ${colors.green("OK\n")}`);
+      success("OK");
+      empty();
       resolve();
     });
   });
@@ -80,15 +84,17 @@ function saveDomain () {
 function nginx () {
   return new Promise((resolve) => {
     server = server.replace("%domain%", this.domain);
-    console.log(`[SMARTHOME] ${colors.cyan("Your nginx server configuration will be:")}`);
-    console.log(colors.blue(server), "\n");
-    console.log(`[SMARTHOME] ${colors.cyan("Writing Gateway configuration file...")}`);
-    fs.writeFile("/etc/nginx/sites-available/Gateway", server, async (err) => {
+    info("Your nginx server configuration will be:");
+    info(server);
+    empty();
+    info("Writing Bugsounet configuration file...");
+    fs.writeFile("/etc/nginx/sites-available/Bugsounet", server, async (err) => {
       if (err) {
-        console.error(`[SMARTHOME] ${colors.red(`Error:${err.message}`)}`);
+        error(`Error:${err.message}`);
         return process.exit(1);
       }
-      console.log(`[SMARTHOME] ${colors.green("OK\n")}`);
+      success("OK, writed in /etc/nginx/sites-available/Bugsounet");
+      empty();
       await deleteDefault();
       await createSymLink();
       resolve(restartNginx());
@@ -97,19 +103,21 @@ function nginx () {
 }
 
 function createSymLink () {
-  console.log(`[SMARTHOME] ${colors.cyan("Create Gateway Symlink...")}`);
+  info("Create Bugsounet Symlink in /etc/nginx/sites-enabled/Bugsounet ...");
   return new Promise((resolve) => {
-    fs.access("/etc/nginx/sites-enabled/Gateway", fs.constants.F_OK, (err) => {
+    fs.access("/etc/nginx/sites-enabled/Bugsounet", fs.constants.F_OK, (err) => {
       if (!err) {
-        console.log(`[SMARTHOME] ${colors.green("OK (Already created)\n")}`);
+        warning("OK (Already created) in /etc/nginx/sites-enabled/Bugsounet");
+        empty();
         resolve();
       } else {
-        fs.symlink("/etc/nginx/sites-available/Gateway", "/etc/nginx/sites-enabled/Gateway", "file", (err) => {
+        fs.symlink("/etc/nginx/sites-available/Bugsounet", "/etc/nginx/sites-enabled/Bugsounet", "file", (err) => {
           if (err) {
-            console.error(`[SMARTHOME] ${colors.red(`Error:${err.message}`)}`);
+            error(`Error:${err.message}`);
             return process.exit(1);
           }
-          console.log(`[SMARTHOME] ${colors.green("OK\n")}`);
+          success("OK");
+          empty();
           resolve();
         });
       }
@@ -118,20 +126,22 @@ function createSymLink () {
 }
 
 function deleteDefault () {
-  console.log(`[SMARTHOME] ${colors.cyan("Delete default Symlink...")}`);
+  info("Delete default Symlink...");
   return new Promise((resolve) => {
     fs.access("/etc/nginx/sites-enabled/default", fs.constants.F_OK, (err) => {
       if (!err) {
         fs.rm("/etc/nginx/sites-enabled/default", (err) => {
           if (err) {
-            console.error(`[SMARTHOME] ${colors.red(`Error:${err.message}`)}`);
+            error(`Error: ${err.message}`);
             return process.exit(1);
           }
-          console.log(`[SMARTHOME] ${colors.green("OK\n")}`);
+          success("OK, deleted /etc/nginx/sites-enabled/default");
+          empty();
           resolve();
         });
       } else {
-        console.log(`[SMARTHOME] ${colors.green("OK (Not found)\n")}`);
+        success("OK (Not found)");
+        empty();
         resolve();
       }
     });
@@ -139,14 +149,26 @@ function deleteDefault () {
 }
 
 async function restartNginx () {
-  console.log(`[SMARTHOME] ${colors.cyan("Restart nginx with new configuration...")}`);
+  info("Restart nginx with new configuration...");
   const nginxRestart = await Systemd.restart();
   if (nginxRestart.error) {
-    console.error(`[SMARTHOME] ${colors.red("Error when restart nginx!")}`);
+    error("Error when restart nginx!");
+    error(`${nginxRestart.error}`);
     return process.exit(1);
   }
-  console.log(`[SMARTHOME] ${colors.green("OK\n")}`);
-  console.log(`[SMARTHOME] ${colors.brightYellow("Before you continue: Don't forget to forward ports 80 and 443 to your Pi's IP address!")}`);
+  success("OK");
+  empty();
+  warning("Before you continue: Don't forget to forward ports 80 and 443 to your Pi's IP address!");
 }
 
-main();
+function isRoot () {
+  return !process.getuid();
+}
+
+
+if (isWin()) {
+  error("This tool can't run under windows!");
+} else {
+  if (isRoot()) main();
+  else error("Root level is needed (sudo)");
+}

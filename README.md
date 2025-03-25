@@ -23,7 +23,6 @@ This module include (with install on demand)
 * EXT-Updates
 * EXT-VLCServer
 * EXT-Volume
-* EXT-Website
 
 Warn, you can't use this module and can't use a fork of it. (module self protected)
 

@@ -115,12 +115,12 @@ Module.register("EXT-SmartHome", {
         this.sendNotification("Bugsounet_ALERT", {
           message: "Hey, I'm here !",
           type: "information",
-          sound: "modules/MMM-Bugsounett/EXTs/EXT-Website/website/tools/locator.mp3",
+          sound: "modules/MMM-Bugsounet/website/tools/locator.mp3",
           timer: 19000
         });
         break;
       case "CB_SPOTIFY-PLAY":
-        this.sendNotification("BugsounetT_SPOTIFY-PLAY");
+        this.sendNotification("Bugsounet_SPOTIFY-PLAY");
         break;
       case "CB_SPOTIFY-PAUSE":
         this.sendNotification("Bugsounet_SPOTIFY-PAUSE");

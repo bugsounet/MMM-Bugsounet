@@ -228,7 +228,7 @@ class smarthome {
         console.error("[SMARTHOME] Can't start SmartHome web server!");
         console.error("[SMARTHOME] Error:", err.message);
         this.sendSocketNotification("SendNoti", {
-          noti: "GA_ALERT",
+          noti: "Bugsounet_ALERT",
           payload: {
             type: "error",
             message: "Can't start SmartHome web server!",
@@ -340,21 +340,23 @@ class smarthome {
 
     this.smarthome.device.traits.push("action.devices.traits.Locator");
 
+    this.smarthome.device.attributes.availableApplications = [];
+    let home = {
+      key: "Home",
+      names: [
+        {
+          name_synonym: ["home"],
+          lang: this.smarthome.lang
+        }
+      ]
+    };
+    this.smarthome.device.attributes.availableApplications.push(home);
+
     if (this.smarthome.EXT["EXT-Spotify"]) {
       log("[DEVICE] Found: EXT-Spotify (action.devices.traits.AppSelector, action.devices.traits.TransportControl)");
       this.smarthome.device.traits.push("action.devices.traits.AppSelector");
-      this.smarthome.device.attributes.availableApplications = [];
-      let home = {
-        key: "home",
-        names: [
-          {
-            name_synonym: ["home"],
-            lang: this.smarthome.lang
-          }
-        ]
-      };
       let spotify = {
-        key: "spotify",
+        key: "Spotify",
         names: [
           {
             name_synonym: ["spotify"],
@@ -362,7 +364,6 @@ class smarthome {
           }
         ]
       };
-      this.smarthome.device.attributes.availableApplications.push(home);
       this.smarthome.device.attributes.availableApplications.push(spotify);
       this.smarthome.device.traits.push("action.devices.traits.TransportControl");
       this.smarthome.device.attributes.transportControlSupportedCommands = [
@@ -389,6 +390,16 @@ class smarthome {
         };
         this.smarthome.device.attributes.availableInputs.push(FBTV);
       });
+      let TV = {
+        key: "TV",
+        names: [
+          {
+            name_synonym: ["TV"],
+            lang: this.smarthome.lang
+          }
+        ]
+      };
+      this.smarthome.device.attributes.availableApplications.push(TV);
     }
 
     if (this.smarthome.EXT["EXT-RadioPlayer"]) {
@@ -406,6 +417,16 @@ class smarthome {
         };
         this.smarthome.device.attributes.availableInputs.push(radio);
       });
+      let RADIO = {
+        key: "RADIO",
+        names: [
+          {
+            name_synonym: ["Radio"],
+            lang: this.smarthome.lang
+          }
+        ]
+      };
+      this.smarthome.device.attributes.availableApplications.push(RADIO);
     }
 
     // Restart MM²
@@ -573,6 +594,7 @@ class smarthome {
     }
 
     result.currentInput = this.translations["Stop"];
+    result.currentApplication = "Home";
 
     if (EXT["EXT-Screen"]) {
       result.on = data.Screen;
@@ -583,13 +605,17 @@ class smarthome {
     }
     if (EXT["EXT-FreeboxTV"] && data.TvIsPlaying) {
       result.currentInput = `TV ${data.TVPlay}`;
+      result.currentApplication = "TV";
     }
     if (EXT["EXT-RadioPlayer"] && data.RadioIsPlaying) {
       result.currentInput = `Radio ${data.RadioPlay}`;
+      result.currentApplication = "Radio";
     }
-    if (EXT["EXT-Spotify"]) {
-      result.currentApplication = data.SpotifyIsConnected ? "spotify" : "home";
+
+    if (EXT["EXT-Spotify"] && data.SpotifyIsPlaying) {
+      result.currentApplication = "Spotify";
     }
+
     log("[HOMEGRAPH] [QUERY] Result:", result);
     return result;
   }
@@ -655,15 +681,15 @@ class smarthome {
 
         // FreeboxTV
         if (input.startsWith("TV ")) {
-          element = input.split("TV ");
-          this.send("TVPlay", element[1]);
+          element = input.split(/(^TV\s)/s);
+          this.send("TVPlay", element[2]);
           params.newInput = input;
         }
 
         // RadioPlayer
         if (input.startsWith("Radio ")) {
-          element = input.split("Radio ");
-          this.send("RadioPlay", element[1]);
+          element = input.split(/(^Radio\s)/s);
+          this.send("RadioPlay", element[2]);
           params.newInput = input;
         }
 
@@ -692,16 +718,29 @@ class smarthome {
         this.send("SpotifyPrevious");
         return {};
       case "action.devices.commands.mediaPause":
-        if (data.SpotifyIsPlaying) this.send("SpotifyPause");
+        this.send("SpotifyPause");
         return {};
       case "action.devices.commands.mediaResume":
-        if (!data.SpotifyIsPlaying) this.send("SpotifyPlay");
+        this.send("SpotifyPlay");
         return {};
       case "action.devices.commands.appSelect":
-        if (params.newApplication === "spotify") {
+        if (params.newApplication === "Spotify") {
           if (!data.SpotifyIsConnected && !data.SpotifyIsPlaying) {
             this.send("SpotifyPlay");
           }
+        }
+        if (params.newApplication === "Radio") {
+          if (!data.RadioIsPlaying) {
+            this.send("RadioPlay");
+          }
+        }
+        if (params.newApplication === "TV") {
+          if (!data.TvIsPlaying) {
+            this.send("TVPlay");
+          }
+        }
+        if (params.newApplication === "Home") {
+          this.send("Stop");
         }
         return { status: "SUCCESS", states: { online: true, currentApplication: params.newApplication } };
       case "action.devices.commands.relativeChannel":
@@ -912,17 +951,20 @@ class smarthome {
       }
 
       state.currentInput = this.translations["Stop"];
+      state.currentApplication = "Home";
 
       if (EXT["EXT-FreeboxTV"] && current.TvIsPlaying) {
         state.currentInput = `TV ${current.TVPlay}`;
+        state.currentApplication = "TV";
       }
 
       if (EXT["EXT-RadioPlayer"] && current.RadioIsPlaying) {
         state.currentInput = `Radio ${current.RadioPlay}`;
+        state.currentApplication = "Radio";
       }
 
-      if (EXT["EXT-Spotify"]) {
-        state.currentApplication = current.SpotifyIsConnected ? "spotify" : "home";
+      if (EXT["EXT-Spotify"] && current.SpotifyIsPlaying) {
+        state.currentApplication = "Spotify";
       }
 
       let body = {

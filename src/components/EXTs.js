@@ -12,6 +12,8 @@ class EXTs {
     this.notificationReceived = (...args) => Tools.notificationReceived(...args);
     this.socketNotificationReceived = (...args) => Tools.socketNotificationReceived(...args);
     this.sendAlert = (...args) => Tools.sendAlert(...args);
+    this.sendEXTStatus = (...args) => Tools.sendEXTStatus(...args);
+    this.sendHelloEXT = (...args) => Tools.sendHelloEXT(...args);
 
     this.ExtDB = [
       "EXT-Freebox",
@@ -30,13 +32,13 @@ class EXTs {
       "EXT-TelegramBot",
       "EXT-Updates",
       "EXT-VLCServer",
-      "EXT-Volume",
-      "EXT-Website"
+      "EXT-Volume"
     ];
 
     this.EXT = {
       Bugsounet_Ready: false
     };
+    this.previousEXT = {};
     this.sendStatusTimeout = null;
     console.log("[Bugsounet] EXTs Ready");
   }
@@ -56,6 +58,7 @@ class EXTs {
     /** special rules **/
     this.EXT["EXT-Screen"].power = true;
     this.EXT["EXT-Updates"].module = {};
+    this.EXT["EXT-Updates"].list = [];
     this.EXT["EXT-Spotify"].remote = false;
     this.EXT["EXT-Spotify"].play = false;
     this.EXT["EXT-Volume"].speaker = 0;
@@ -66,7 +69,7 @@ class EXTs {
     this.EXT["EXT-FreeboxTV"].channels = [];
     this.EXT["EXT-FreeboxTV"].playing = null;
     this.EXT["EXT-RadioPlayer"].channels = [];
-    this.EXT["EXT-RadioPlayer"].playing = [];
+    this.EXT["EXT-RadioPlayer"].playing = null;
   }
 
   setBugsounet_Ready () {
@@ -86,7 +89,7 @@ class EXTs {
     switch (module) {
       case this.ExtDB.find((name) => name === module): //read DB and find module
         this.EXT[module].hello = true;
-        this.sendNotification("Bugsounet_DB-UPDATE", module);
+        this.sendHelloEXT(module);
         logBugsounet("[EXTs] Hello,", module);
         this.onStartPlugin(module);
         break;
@@ -115,14 +118,6 @@ class EXTs {
     if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
       if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
       this.sendNotification("Bugsounet_SCREEN-LOCK");
-    }
-
-    if (this.byPassIsConnected()) {
-      logBugsounet("[EXTs] Connected:", extName, "[byPass Mode]");
-      this.EXT[extName].connected = true;
-      this.lockPagesByGW(extName);
-      if (this.EXT["EXT-Website"].hello || this.EXT["EXT-SmartHome"].hello) this.sendNotification("Bugsounet_STATUS", this.EXT);
-      return;
     }
 
     if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-STOP");
@@ -176,15 +171,6 @@ class EXTs {
     if (this.EXT["EXT-Screen"].hello) this.sendNotification("Bugsounet_SCREEN-UNLOCK");
   }
 
-  // exception with EXT-Website
-  byPassIsConnected () {
-    if (this.EXT["EXT-Website"].hello && this.EXT["EXT-Website"].connected) {
-      logBugsounet("[EXTs] byPass", true);
-      return true;
-    }
-    return false;
-  }
-
   /** hasPluginConnected(obj, key, value)
    * obj: object to check
    * key: key to check in deep
@@ -210,7 +196,43 @@ class EXTs {
   /** Notification Actions **/
   ActionsEXTs (noti, payload, sender) {
     if (!this.EXT.Bugsounet_Ready) return this.sendWarn("MMM-Bugsounet is not ready");
-    clearTimeout(this.sendStatusTimeout);
+
+    let EXTNoti = [
+      "Bugsounet_HELLO",
+      "Bugsounet_ALERT",
+      "Bugsounet_PAGES-Gateway",
+      "Bugsounet_STOP",
+      "Bugsounet_Restart",
+      "Bugsounet_Close",
+      "Bugsounet_Reboot",
+      "Bugsounet_Shutdown",
+      "Bugsounet_SCREEN-POWER",
+      "Bugsounet_RADIO-CONNECTED",
+      "Bugsounet_RADIO-DISCONNECTED",
+      "Bugsounet_RADIO-CHANNELS",
+      "Bugsounet_RADIO-PLAYING",
+      "Bugsounet_SPOTIFY-CONNECTED",
+      "Bugsounet_SPOTIFY-DISCONNECTED",
+      "Bugsounet_SPOTIFY-PLAYING",
+      "Bugsounet_SPOTIFY-PLAYER_CONNECTED",
+      "Bugsounet_SPOTIFY-PLAYER_DISCONNECTED",
+      "Bugsounet_FREEBOXTV-CONNECTED",
+      "Bugsounet_FREEBOXTV-DISCONNECTED",
+      "Bugsounet_FREEBOXTV-CHANNELS",
+      "Bugsounet_FREEBOXTV-PLAYING",
+      "Bugsounet_UPDATES-MODULE_UPDATE",
+      "Bugsounet_UPDATES-LIST",
+      "Bugsounet_VOLUME_GET",
+      "Bugsounet_PAGES-NUMBER_IS"
+    ];
+
+    if (EXTNoti.indexOf(noti) === -1) {
+      logBugsounet("[EXTs] Sorry, i don't understand what is", noti, payload || "");
+      return;
+    }
+
+    this.previousEXT = JSON.stringify(this.EXT);
+
     switch (noti) {
       case "Bugsounet_HELLO":
         this.helloEXT(sender.name);
@@ -227,18 +249,41 @@ class EXTs {
         }
         break;
       case "Bugsounet_Restart":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Updates" && this.EXT["EXT-Updates"].hello) || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello) || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)) {
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-Updates" && this.EXT["EXT-Updates"].hello)
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
           this.sendSocketNotification("RESTART");
+        } else {
+          this.sendWarn(`Bugsounet_Restart by ${sender.name} is not allowed`);
         }
         break;
       case "Bugsounet_Close":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("CLOSE");
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
+          this.sendSocketNotification("CLOSE");
+        } else {
+          this.sendWarn(`Bugsounet_Close by ${sender.name} is not allowed`);
+        }
         break;
       case "Bugsounet_Reboot":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("REBOOT");
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
+          this.sendSocketNotification("REBOOT");
+        } else {
+          this.sendWarn(`Bugsounet_Reboot by ${sender.name} is not allowed`);
+        }
         break;
       case "Bugsounet_Shutdown":
-        if (sender.name === "MMM-Bugsounet" || (sender.name === "EXT-Website" && this.EXT["EXT-Website"].hello)) this.sendSocketNotification("SHUTDOWN");
+        if (sender.name === "MMM-Bugsounet"
+          || (sender.name === "EXT-SmartHome" && this.EXT["EXT-SmartHome"].hello)
+        ) {
+          this.sendSocketNotification("SHUTDOWN");
+        } else {
+          this.sendWarn(`Bugsounet_Shutdown by ${sender.name} is not allowed`);
+        }
         break;
       case "Bugsounet_SCREEN-POWER":
         if (!this.EXT["EXT-Screen"].hello) return this.sendWarn("EXT-Screen don't say to me HELLO!");
@@ -307,6 +352,10 @@ class EXTs {
         if (!this.EXT || !this.EXT["EXT-Updates"].hello) return this.sendWarn("[RULES] EXT-Updates don't say to me HELLO!");
         this.EXT["EXT-Updates"].module = payload;
         break;
+      case "Bugsounet_UPDATES-LIST":
+        if (!this.EXT || !this.EXT["EXT-Updates"].hello) return this.sendWarn("[RULES] EXT-Updates don't say to me HELLO!");
+        this.EXT["EXT-Updates"].list = payload;
+        break;
       case "Bugsounet_VOLUME_GET":
         if (!this.EXT["EXT-Volume"].hello) return this.sendWarn("[RULES] EXT-Volume don't say to me HELLO!");
         this.EXT["EXT-Volume"].speaker = payload.Speaker;
@@ -318,27 +367,16 @@ class EXTs {
         this.EXT["EXT-Pages"].actual = payload.Actual;
         this.EXT["EXT-Pages"].total = payload.Total;
         break;
-      case "Bugsounet_WEBSITE-CONNECTED":
-        if (!this.EXT["EXT-Website"].hello) return this.sendWarn("[CONNECT] EXT-Website don't say to me HELLO!");
-        this.connectEXT("EXT-Website");
-        break;
-      case "Bugsounet_WEBSITE-DISCONNECTED":
-        if (!this.EXT["EXT-Website"].hello) return this.sendWarn("[DISCONNECT] EXT-Website don't say to me HELLO!");
-        this.disconnectEXT("EXT-Website");
-        break;
-
-      /** Warn if not in db **/
-      default:
-        logBugsounet("[EXTs] Sorry, i don't understand what is", noti, payload || "");
-        break;
     }
 
-    if (this.EXT["EXT-Website"].hello || this.EXT["EXT-SmartHome"].hello) {
-      this.sendStatusTimeout = setTimeout(() => {
+    let isEqual = this.previousEXT === JSON.stringify(this.EXT);
+    if (!isEqual) {
+      logBugsounet(`[${noti}] Status for ${sender?.name} is now:`, this.EXT[sender?.name]);
+      this.sendEXTStatus(this.EXT);
+      if (this.EXT["EXT-SmartHome"].hello) {
         this.sendNotification("Bugsounet_STATUS", this.EXT);
-      }, 500);
+      }
     }
-    logBugsounet("[EXTs] Status:", this.EXT);
   }
 
   sendWarn (message) {

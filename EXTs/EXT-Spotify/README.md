@@ -11,4 +11,4 @@ In addition, you can use some plugins:
 
 ## Installation / update / configuration
 
-Read the docs in [wiki](https://wiki.bugsounet.fr/EXT-Spotify)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki)

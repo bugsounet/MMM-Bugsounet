@@ -23,7 +23,6 @@ Module.register("EXT-Pages", {
     homePage: 0,
     indicator: true,
     hideBeforeRotation: false,
-    loading: "loading.png",
     Gateway: {}
   },
 
@@ -370,13 +369,13 @@ Module.register("EXT-Pages", {
   Loading () {
     let Pages = document.createElement("div");
     Pages.id = "EXT_PAGES";
-    let GoogleAssistant = document.createElement("div");
-    GoogleAssistant.id = "EXT_Pages-GoogleAssistant";
-    Pages.appendChild(GoogleAssistant);
-    let GoogleAssistantImg = document.createElement("img");
-    GoogleAssistantImg.id = "EXT_Pages-GoogleAssistantImg";
-    GoogleAssistantImg.src = this.file("loading/works-with-google-assistant.png");
-    GoogleAssistant.appendChild(GoogleAssistantImg);
+    let Bugsounet = document.createElement("div");
+    Bugsounet.id = "EXT_Pages-Bugsounet";
+    Pages.appendChild(Bugsounet);
+    let BugsounetImg = document.createElement("img");
+    BugsounetImg.id = "EXT_Pages-BugsounetImg";
+    BugsounetImg.src = this.file("loading/bugsounet.png");
+    Bugsounet.appendChild(BugsounetImg);
 
     let Waiting = document.createElement("div");
     Waiting.id = "Waiting";
@@ -384,26 +383,18 @@ Module.register("EXT-Pages", {
 
     let WaitingImg = document.createElement("img");
     WaitingImg.id = "EXT_PAGES-Loading";
-    WaitingImg.src = this.file(`loading/${this.config.loading}`);
-    WaitingImg.onerror = () => {
-      WaitingImg.src = this.file("loading/loading.png");
-      this.sendNotification("Bugsounet_ALERT", {
-        message: `Error: Loading picture ${this.config.loading} !`,
-        type: "warning"
-      });
-    };
+    WaitingImg.src = this.file("loading/loading.png");
     Waiting.appendChild(WaitingImg);
 
     document.body.appendChild(Pages);
-    addAnimateCSS("EXT_PAGES-Loading", "rotateIn", 1);
-    addAnimateCSS("EXT_Pages-GoogleAssistant", "flipInX", 1);
+    addAnimateCSS("EXT_Pages-Bugsounet", "flipInX", 1);
   },
 
   /** It's Loaded, hide loading page **/
   Loaded () {
     let Waiting = document.getElementById("EXT_PAGES");
     Waiting.classList.add("hidden");
-    removeAnimateCSS("EXT_PAGES", "rotateIn");
+    removeAnimateCSS("EXT_Pages-Bugsounet", "flipInX");
   },
 
   /**

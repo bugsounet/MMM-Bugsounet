@@ -63,13 +63,13 @@ module.exports = NodeHelper.create({
       })
       .on("authenticated", (expire) => {
         logNT("Authenticated!");
-        let expire_at = dayjs(dayjs() + (expire * 1000)).format("DD/MM/YYYY hh:mm:ss");
+        let expire_at = dayjs(dayjs() + (expire * 1000)).format("DD/MM/YYYY HH:mm:ss");
         logNT("Token Expire:", expire_at);
         this.Authenticated = true;
       })
       .on("refreshed", (expire) => {
         logNT("Token refreshed!");
-        let expire_at = dayjs(dayjs() + (expire * 1000)).format("DD/MM/YYYY hh:mm:ss");
+        let expire_at = dayjs(dayjs() + (expire * 1000)).format("DD/MM/YYYY HH:mm:ss");
         logNT("New Token Expire:", expire_at);
       });
 
