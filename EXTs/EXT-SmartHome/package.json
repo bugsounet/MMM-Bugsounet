@@ -20,7 +20,6 @@
     "smarthome": "sudo node installer/smarthome && npm run certbot"
   },
   "dependencies": {
-    "@colors/colors": "^1.6.0",
     "actions-on-google": "^3.0.0",
     "body-parser": "^1.20.3",
     "googleapis": "^148.0.0",
