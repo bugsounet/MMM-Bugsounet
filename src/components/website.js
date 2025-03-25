@@ -323,12 +323,11 @@ class website {
         .use("/3rdParty.js", express.static(`${this.WebsitePath}/tools/3rdParty.js`))
         .use("/APIDocs.js", express.static(`${this.WebsitePath}/tools/APIDocs.js`))
         .use("/assets", express.static(`${this.WebsitePath}/assets`, options))
+
         .use("/jsoneditor", express.static(`${this.BugsounetModulePath}/node_modules/jsoneditor`))
         .use("/xterm", express.static(`${this.BugsounetModulePath}/node_modules/@xterm/xterm`))
         .use("/xterm-addon-fit", express.static(`${this.BugsounetModulePath}/node_modules/@xterm/addon-fit`))
-        .use("/alertify.min.js", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build/alertify.min.js`))
-        .use("/alertify.min.css", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build/css/alertify.min.css`))
-        .use("/alertify-bootstrap.min.css", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build/css/themes/bootstrap.min.css`))
+        .use("/alertify", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build`))
 
         .get("/login", this.speedLimiter, this.rateLimiter, (req, res) => {
           const logged = this.hasValidCookie(req);
