@@ -64,7 +64,7 @@
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.13",
     "esbuild": "^0.25.1",
-    "express-body-parser-error-handler": "^1.0.7",
+    "express-body-parser-error-handler": "^1.0.9",
     "express-rate-limit": "^7.5.0",
     "express-slow-down": "^2.0.3",
     "fdir": "^6.4.3",
