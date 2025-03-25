@@ -3,6 +3,7 @@
 /components/**/*.js
 
 /website/tools/.uptimed
+!/website/src/Website.bsdesign
 /website/tools/*.js
 /download/*
 !/download/.keep
@@ -37,5 +38,3 @@
 /EXTs/EXT-PrixCarburants/data/download.zip
 
 /EXTs/EXT-NetatmoThermostat/token.json
-
-/EXTs/EXT-Website-/
