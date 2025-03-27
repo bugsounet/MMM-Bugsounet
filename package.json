@@ -60,7 +60,7 @@
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
     "alertifyjs": "^1.14.0",
-    "body-parser": "^1.20.3",
+    "body-parser": "^2.2.0",
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.13",
     "esbuild": "^0.25.1",
