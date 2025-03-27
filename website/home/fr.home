@@ -3,7 +3,6 @@
 <p>Que peut vraiment faire cet outil ?</p>
 <ul>
   <li>Permet d'avoir un contrôle à distance (localement ou internet)</li>
-  <li>Permet d'installer/supprimer les plugins EXTs</li>
   <li>Permet de configurer MagicMirror²</li>
   <li>Permet de créer une sauvegarde de votre fichier de configuration à chaque modification</li>
   <li>Permet d'afficher des journaux MagicMirror² en temps réel</li>

@@ -1,9 +1,7 @@
-<p>Hallo, willkommen bei MMM-GoogleAssistant</p>
+<p>Hallo, willkommen bei MMM-Bugsounet</p>
 <p>Dieses Tool wird Dir dabei helfen, Deinen Spiegel einzurichten oder zu verwalten.</p>
 <p>Was kann dieses Tool wirklich?</p>
 <ul>
-  <li>Installieren/Entfernen von EXT-Plugins</li>
-  <li>Einrichtung/Bearbeitung eines EXT mit Hilfe von Templates</li>
   <li>Konfiguration des MagicMirror</li>
   <li>Sicherungen der Konfiguration.</li>
   <li>Anzeige von MagicMirror-Protokollen in Echtzeit</li>
