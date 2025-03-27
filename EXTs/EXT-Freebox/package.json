@@ -1,18 +1,18 @@
 {
   "name": "EXT-Freebox",
-  "version": "2.3.4",
+  "version": "2.4.0",
   "description": "Display Freebox informations",
   "keywords": [
     "freebox",
     "french"
   ],
-  "homepage": "https://github.com/bugsounet/EXT-Freebox",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "bugs": {
-    "url": "https://github.com/bugsounet/EXT-Freebox"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugsounet/EXT-Freebox"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "license": "MIT",
   "author": "bugs",
@@ -33,7 +33,7 @@
     "ping": "^0.4.4"
   },
   "engines": {
-    "node": ">=20.9.0 <21 || >=22"
+    "node": ">=23"
   },
-  "rev": "250103"
+  "rev": "250325"
 }

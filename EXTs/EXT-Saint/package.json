@@ -1,14 +1,14 @@
 {
   "name": "EXT-Saint",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "Affiche le saint du jour sur MagicMirror²",
   "keywords": [
     "saint",
     "french"
   ],
-  "homepage": "https://github.com/bugsounet/EXT-Saint",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "bugs": {
-    "url": "https://github.com/bugsounet/EXT-Saint/issues"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-Saint"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "250124"
+  "rev": "250325"
 }

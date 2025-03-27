@@ -1,8 +1,8 @@
 {
   "name": "EXT-SmartHome",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "GA EXT-SmartHome Connect",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-SmartHome",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-SmartHome.js",
@@ -27,7 +27,7 @@
     "prompt": "^1.3.0"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
   "installer": {
     "apt": [
@@ -36,5 +36,5 @@
       "python3-certbot-nginx"
     ]
   },
-  "rev": "250111"
+  "rev": "250325"
 }

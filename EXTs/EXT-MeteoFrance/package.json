@@ -1,6 +1,6 @@
 {
   "name": "EXT-MeteoFrance",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "MagicMirror² module that gets weather forecast data from Meteo France",
   "keywords": [
     "magicmirror",
@@ -8,13 +8,13 @@
     "meteofrance",
     "french"
   ],
-  "homepage": "https://github.com/bugsounet/EXT-MeteoFrance#readme",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "bugs": {
-    "url": "https://github.com/bugsounet/EXT-MeteoFrance/issues"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bugsounet/EXT-MeteoFrance"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "license": "MIT",
   "author": [
@@ -40,5 +40,5 @@
       "axios": "^1.8.2"
     }
   },
-  "rev": "250103"
+  "rev": "250325"
 }

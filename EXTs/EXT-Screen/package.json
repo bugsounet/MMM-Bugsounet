@@ -1,6 +1,6 @@
 {
   "name": "EXT-Screen",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "description": "Screen manager",
   "keywords": [
     "magic mirror",
@@ -42,7 +42,7 @@
     "python-shell": "^5.0.0"
   },
   "engines": {
-    "node": ">=20.9.0 <21 || >=22"
+    "node": ">=23"
   },
   "installer": {
     "rebuild": true,
@@ -63,5 +63,5 @@
     ],
     "windowsRebuild": false
   },
-  "rev": "250126"
+  "rev": "250325"
 }

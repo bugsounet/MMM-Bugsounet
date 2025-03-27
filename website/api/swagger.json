@@ -149,7 +149,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -185,7 +185,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -231,7 +231,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -267,7 +267,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -303,7 +303,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -339,7 +339,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -375,7 +375,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -411,7 +411,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -447,7 +447,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -483,7 +483,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -519,7 +519,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -555,7 +555,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -591,7 +591,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -627,7 +627,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -674,7 +674,7 @@
           "400": {
             "description": "Missing volume param or volume out of range (0-100)",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -684,7 +684,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -694,7 +694,7 @@
           "404": {
             "description": "EXT-Volume not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -741,7 +741,7 @@
           "400": {
             "description": "Missing volume param or volume out of range (0-100)",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -751,7 +751,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -761,7 +761,7 @@
           "404": {
             "description": "EXT-Volume not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -797,7 +797,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -807,7 +807,7 @@
           "404": {
             "description": "EXT-RadioPlayer not installed or no radio found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -852,7 +852,7 @@
           "400": {
             "description": "Missing radio param",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -862,7 +862,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -872,7 +872,7 @@
           "404": {
             "description": "EXT-RadioPlayer not installed or radio not found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -908,7 +908,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -918,7 +918,7 @@
           "404": {
             "description": "EXT-Updates not installed or no plugins need any updates",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -952,7 +952,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -962,7 +962,7 @@
           "404": {
             "description": "EXT-Updates not installed or no plugins need any updates",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1009,7 +1009,7 @@
           "400": {
             "description": "Missing volume param",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -1019,7 +1019,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1029,7 +1029,7 @@
           "404": {
             "description": "EXT-Spotify not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1065,7 +1065,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1075,7 +1075,7 @@
           "404": {
             "description": "EXT-Spotify not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1085,7 +1085,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1121,7 +1121,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1131,7 +1131,7 @@
           "404": {
             "description": "EXT-Spotify not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1141,7 +1141,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1177,7 +1177,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1187,7 +1187,7 @@
           "404": {
             "description": "EXT-Spotify not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1197,7 +1197,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1233,7 +1233,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1243,7 +1243,7 @@
           "404": {
             "description": "EXT-Spotify not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1253,7 +1253,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1289,7 +1289,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1299,7 +1299,7 @@
           "404": {
             "description": "EXT-Spotify not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1309,7 +1309,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1345,7 +1345,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1355,7 +1355,7 @@
           "404": {
             "description": "EXT-Spotify not installed",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1365,7 +1365,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1412,7 +1412,7 @@
           "400": {
             "description": "Missing power param",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -1422,7 +1422,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1432,7 +1432,7 @@
           "404": {
             "description": "EXT-Screen not found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1442,7 +1442,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1478,7 +1478,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1488,7 +1488,7 @@
           "404": {
             "description": "EXT-FreeboxTV not installed or no TV channel found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1533,7 +1533,7 @@
           "400": {
             "description": "Missing power param",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -1543,7 +1543,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1553,7 +1553,7 @@
           "404": {
             "description": "EXT-FreeboxTV or channel not found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1563,7 +1563,7 @@
           "409": {
             "description": "Conflit",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/409Error"
                 }
@@ -1599,7 +1599,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1644,7 +1644,7 @@
           "400": {
             "description": "Missing config in header or config is not in JSON string format",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -1654,7 +1654,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1700,7 +1700,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1734,7 +1734,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1781,7 +1781,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1791,7 +1791,7 @@
           "404": {
             "description": "Backup not found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1836,7 +1836,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1846,7 +1846,7 @@
           "404": {
             "description": "Backup not found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -1903,7 +1903,7 @@
           "400": {
             "description": "Missing config in params or config is not in JSON string format",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -1913,7 +1913,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -1968,7 +1968,7 @@
           "400": {
             "description": "Missing config in params or config is not in JSON string format",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -1978,7 +1978,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -2035,7 +2035,7 @@
           "400": {
             "description": "Missing notification in params",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -2045,7 +2045,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -2092,7 +2092,7 @@
           "400": {
             "description": "Missing query param",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config400Error"
                 }
@@ -2102,7 +2102,7 @@
           "401": {
             "description": "Missing valid authentication token",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/401Error"
                 }
@@ -2112,7 +2112,7 @@
           "404": {
             "description": "Bugsounet-Alert not found",
             "content": {
-              "text/html": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Config404Error"
                 }
@@ -2912,24 +2912,56 @@
         }
       },
       "401Error": {
-        "type": "string",
+        "type": "object",
         "description": "No valid authentication",
-        "example": "Unauthorized"
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Unauthorized"
+          }
+        },
+        "example": {
+          "error": "Unauthorized"
+        }
       },
       "409Error": {
-        "type": "string",
+        "type": "object",
         "description": "Conflit on command",
-        "example": "Already in this state"
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Already in this state"
+          }
+        },
+        "example": {
+          "error": "Already in this state"
+        }
       },
       "Config400Error": {
-        "type": "string",
+        "type": "object",
         "description": "Missing params in Header",
-        "example": "Bad Request"
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Bad Request"
+          }
+        },
+        "example": {
+          "error": "Bad Request"
+        }
       },
       "Config404Error": {
-        "type": "string",
+        "type": "object",
         "description": "EXT not found in configuration",
-        "example": "Not Found"
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Not Foundt"
+          }
+        },
+        "example": {
+          "error": "Not Found"
+        }
       },
       "Config500Error": {
         "type": "object",

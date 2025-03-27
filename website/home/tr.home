@@ -1,9 +1,7 @@
-<p>Merhaba, MMM-GoogleAssistant uygulamasına hoş geldiniz!</p>
+<p>Merhaba, MMM-Bugsounet uygulamasına hoş geldiniz!</p>
 <p>Bu araçlar Aynanızı yapılandırmanıza veya yönetmenize yardımcı olacaktır.</p>
 <p>Bu Araç gerçekten ne yapabilir?</p>
 <ul>
-  <li>Tüm EXT eklentilerinin kurulmasına / silinmesine izin verir</li>
-  <li>EXT'nizi bir şablonla yapılandırmanıza / değiştirmenize olanak tanır</li>
   <li>MagicMirror²'ı yapılandırmaya izin verir</li>
   <li>Her değişiklikte konfigürasyon dosyanızın bir yedeğini oluşturmanıza olanak sağlar</li>
   <li>MagicMirror² Günlüklerini gerçek zamanlı olarak görüntüleme</li>

@@ -1,8 +1,8 @@
 {
   "name": "EXT-Librespot",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Librespot plugins for EXT-Spotify.",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-Librespot",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-Librespot.js",
@@ -20,7 +20,7 @@
     "setup:source": "installer/setup-from-source.sh"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "241226"
+  "rev": "250325"
 }

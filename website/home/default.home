@@ -1,10 +1,8 @@
-<p>Hi, welcome to MMM-GoogleAssistant</p>
+<p>Hi, welcome to MMM-Bugsounet</p>
 <p>This tools wilh help you to configure or manage your Mirror</p>
 <p>What this Tool can really do ?</p>
 <ul>
   <li>Allows remote control (locally or internet)</li>
-  <li>Allows to Install / delete all EXT plugins</li>
-  <li>Allows to configure / modify your EXT with a template</li>
   <li>Allows to configure MagicMirror²</li>
   <li>Allows you to create a backup of your configuration file at each modification</li>
   <li>Displaying MagicMirror² Logs in real time</li>

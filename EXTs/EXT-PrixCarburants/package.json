@@ -1,19 +1,19 @@
 {
   "name": "EXT-PrixCarburants",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Affiche le prix des carburants sur MagicMirror",
   "keywords": [
     "magic mirror",
     "french",
     "carburant"
   ],
-  "homepage": "https://github.com/bugsounet/EXT-PrixCarburants",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "bugs": {
-    "url": "https://github.com/bugsounet/EXT-PrixCarburants"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugsounet/EXT-PrixCarburants"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "license": "MIT",
   "author": "bugsounet",
@@ -34,7 +34,7 @@
     "unzipper": "^0.12.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "250103"
+  "rev": "250325"
 }

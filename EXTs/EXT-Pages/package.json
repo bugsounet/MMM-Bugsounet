@@ -1,8 +1,8 @@
 {
   "name": "EXT-Pages",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "allows you to have pages in your magic mirror",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-Pages",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": [
     "edward-shen",
@@ -20,7 +20,7 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-Pages"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=23"
   },
-  "rev": "241225"
+  "rev": "250325"
 }

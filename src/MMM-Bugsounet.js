@@ -49,7 +49,12 @@ Module.register("MMM-Bugsounet", {
   getTranslations () {
     return {
       en: "translations/en.json",
-      fr: "translations/fr.json"
+      fr: "translations/fr.json",
+      de: "translations/de.json",
+      es: "translations/es.json",
+      it: "translations/it.json",
+      nl: "translations/nl.json",
+      tr: "translations/tr.json"
     };
   },
 

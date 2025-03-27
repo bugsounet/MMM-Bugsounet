@@ -1,19 +1,19 @@
 {
   "name": "EXT-Spotify",
-  "version": "2.11.0",
+  "version": "2.15.0",
   "description": "An embedded Spotify Player for MagicMirror.",
   "keywords": [
     "magic mirror",
     "module",
     "spotify"
   ],
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-Spotify",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "bugs": {
-    "url": "https://github.com/bugsounet/EXT-Spotify/issues"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugsounet/EXT-Spotify"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "license": "MIT",
   "author": "bugsounet",
@@ -30,7 +30,7 @@
     "token": "node installer/auth_Spotify"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "241226"
+  "rev": "250325"
 }
