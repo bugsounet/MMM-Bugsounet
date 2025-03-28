@@ -209,6 +209,7 @@ async function Request (url, type, header, data, from, success, fail) {
   }
 
   var response;
+  var result = {};
 
   try {
     response = await fetch(url, {
@@ -222,14 +223,17 @@ async function Request (url, type, header, data, from, success, fail) {
   }
 
   if (response.ok && response.status < 400) {
-    const result = await response.json();
+    result = await response.json();
     if (success) success(result);
   } else {
-    const result = await response.json();
+    try {
+      result = await response.json();
+    } catch {
+      result.error = response.statusText
+    }
     result.status = response.status;
     if (fail) return fail(result);
-    let error = result.error;
-    alertify.error(`[${from}] Server return Error ${response.status}: ${error}`);
+    alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
   }
 }
 
