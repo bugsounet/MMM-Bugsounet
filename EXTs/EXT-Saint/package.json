@@ -6,9 +6,9 @@
     "saint",
     "french"
   ],
-  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "bugs": {
-    "url": "https://github.com/bugsounet/MMM-Bugsounet"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet/issues"
   },
   "repository": {
     "type": "git",
@@ -33,5 +33,5 @@
   "engines": {
     "node": ">=23"
   },
-  "rev": "250325"
+  "rev": "250328"
 }
