@@ -7,9 +7,9 @@
     "thermostat",
     "smart home"
   ],
-  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "bugs": {
-    "url": "https://github.com/bugsounet/MMM-Bugsounet"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet/issues"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,6 @@
   "scripts": {
     "check": "node --no-deprecation installer/check",
     "clean": "node ../../installer/clean --path=EXTs/EXT-NetatmoThermostat",
-    "database": "cd data && python stations.py",
     "deps": "node ../../installer/deps --path=EXTs/EXT-NetatmoThermostat",
     "dev": "node ../../installer/dev --path=EXTs/EXT-NetatmoThermostat",
     "dev:src": "node ../../installer/src --path=EXTs/EXT-NetatmoThermostat",
@@ -30,5 +29,5 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-NetatmoThermostat",
     "setup": "node ../../installer/setup --path=EXTs/EXT-NetatmoThermostat"
   },
-  "rev": "250325"
+  "rev": "250328"
 }

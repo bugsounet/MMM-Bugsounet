@@ -26,4 +26,4 @@ This module include (with install on demand)
 
 Warn, you can't use this module and can't use a fork of it. (module self protected)
 
-[Under-Coding]
+Please read [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki) for more informations

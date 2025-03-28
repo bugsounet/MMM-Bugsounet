@@ -6,16 +6,16 @@
     "freebox",
     "french"
   ],
-  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "bugs": {
-    "url": "https://github.com/bugsounet/MMM-Bugsounet"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "license": "MIT",
-  "author": "bugs",
+  "author": "bugsounet",
   "main": "EXT-Freebox.js",
   "scripts": {
     "clean": "node ../../installer/clean --path=EXTs/EXT-Freebox",
@@ -35,5 +35,5 @@
   "engines": {
     "node": ">=23"
   },
-  "rev": "250325"
+  "rev": "250328"
 }

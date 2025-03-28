@@ -30,14 +30,11 @@ function getAPIDocs () {
 /* eslint-disable-next-line */
 function checkSystem () {
   return new Promise((resolve) => {
-    Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), null);
-  });
-}
-
-/* eslint-disable-next-line */
-function checkWebviewTag () {
-  return new Promise((resolve) => {
-    Request("/api/config/webview", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "checkWebviewTag", (tag) => resolve(tag.webview), null);
+    Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
+      if (err.status === 403 || err.status === 401) location.href = "/login";
+      if (!err.status) alertify.error("Connexion Lost!");
+      else alertify.error(`[Status] Server return Error ${err.status} (${err.error})`);
+    });
   });
 }
 
@@ -45,10 +42,9 @@ function checkWebviewTag () {
 function checkEXTStatus () {
   return new Promise((resolve) => {
     Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Status", (Status) => resolve(Status), (err) => {
-      let error = err.responseJSON?.error ? err.responseJSON.error : (err.responseText ? err.responseText : err.statusText);
       if (err.status === 403 || err.status === 401) location.href = "/login";
       if (!err.status) alertify.error("Connexion Lost!");
-      else alertify.error(`[Status] Server return Error ${err.status} (${error})`);
+      else alertify.error(`[Status] Server return Error ${err.status} (${err.error})`);
     });
   });
 }
@@ -139,51 +135,6 @@ function loadFreeboxTV () {
 }
 
 /* eslint-disable-next-line */
-function loadPluginConfig (plugin) {
-  return new Promise((resolve) => {
-    Request("/api/config/default", "GET", { Authorization: `Bearer ${getCurrentToken()}`, ext: plugin }, null, "loadPluginConfig", (response) => {
-      try {
-        let parse = atob(response.config);
-        let config = JSON.parse(parse);
-        resolve(config);
-      } catch {
-        alertify.error("[loadPluginConfig] Error on decode server response");
-      }
-    }, null);
-  });
-}
-
-/* eslint-disable-next-line */
-function loadPluginTemplate (plugin) {
-  return new Promise((resolve) => {
-    Request("/api/config/schema", "GET", { Authorization: `Bearer ${getCurrentToken()}`, ext: plugin }, null, "loadPluginTemplate", (response) => {
-      try {
-        let parse = atob(response.schema);
-        let schema = JSON.parse(parse);
-        resolve(schema);
-      } catch {
-        alertify.error("[loadPluginTemplate] Error on decode server response");
-      }
-    }, null);
-  });
-}
-
-/* eslint-disable-next-line */
-function loadPluginCurrentConfig (plugin) {
-  return new Promise((resolve) => {
-    Request("/api/config/EXT", "GET", { Authorization: `Bearer ${getCurrentToken()}`, ext: plugin }, null, "loadPluginConfig", (response) => {
-      try {
-        let parse = atob(response.config);
-        let config = JSON.parse(parse);
-        resolve(config);
-      } catch {
-        alertify.error("[loadPluginConfig] Error on decode server response");
-      }
-    }, null);
-  });
-}
-
-/* eslint-disable-next-line */
 function loadBackupConfig (file) {
   return new Promise((resolve) => {
     Request("/api/backups/file", "GET", { Authorization: `Bearer ${getCurrentToken()}`, backup: file }, null, "loadPluginConfig", (response) => {
@@ -209,6 +160,7 @@ async function Request (url, type, header, data, from, success, fail) {
   }
 
   var response;
+  var result = {};
 
   try {
     response = await fetch(url, {
@@ -222,14 +174,17 @@ async function Request (url, type, header, data, from, success, fail) {
   }
 
   if (response.ok && response.status < 400) {
-    const result = await response.json();
+    result = await response.json();
     if (success) success(result);
   } else {
-    const result = await response.json();
+    try {
+      result = await response.json();
+    } catch {
+      result.error = response.statusText;
+    }
     result.status = response.status;
     if (fail) return fail(result);
-    let error = result.error;
-    alertify.error(`[${from}] Server return Error ${response.status}: ${error}`);
+    alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
   }
 }
 
