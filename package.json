@@ -35,6 +35,7 @@
     "setup:EXT-FreeboxTV": "node installer/setup --path=EXTs/EXT-FreeboxTV",
     "setup:EXT-Glassy": "node installer/setup --path=EXTs/EXT-Glassy",
     "setup:EXT-Librespot": "node installer/setup --path=EXTs/EXT-Librespot",
+    "setup:EXT-Librespot:player": "cd EXTs/EXT-Librespot && npm run setup:source",
     "setup:EXT-MeteoFrance": "node installer/setup --path=EXTs/EXT-MeteoFrance",
     "setup:EXT-NetatmoThermostat": "node installer/setup --path=EXTs/EXT-NetatmoThermostat",
     "setup:EXT-Pages": "node installer/setup --path=EXTs/EXT-Pages",
