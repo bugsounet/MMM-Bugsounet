@@ -19,6 +19,7 @@ var system = {};
 // Load rules
 window.addEventListener("load", async () => {
   translation = await loadTranslation();
+  document.title = translation.System;
 
   forceMobileRotate();
   doSystem(() => { doStatic(); });
