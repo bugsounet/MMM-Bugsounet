@@ -16,4 +16,4 @@ It will wake up with a Pir sensor, Touch screen or crontab
 
 ## Installation / update / configuration
 
-Please read [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90-Screen) for more informations
+Please read [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90Screen) for more informations
