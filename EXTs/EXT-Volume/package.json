@@ -2,7 +2,7 @@
   "name": "EXT-Volume",
   "version": "2.15.0",
   "description": "An embedded volume notification displayer on MagicMirror.",
-  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-Volume.js",
@@ -19,5 +19,5 @@
   "engines": {
     "node": ">=23"
   },
-  "rev": "250325"
+  "rev": "250328"
 }

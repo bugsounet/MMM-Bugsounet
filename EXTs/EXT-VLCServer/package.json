@@ -2,7 +2,7 @@
   "name": "EXT-VLCServer",
   "version": "1.4.0",
   "description": "VLC Media Server plugin for MMM-Bugsounet",
-  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-VLCServer.js",
@@ -24,5 +24,5 @@
       "vlc"
     ]
   },
-  "rev": "250325"
+  "rev": "250328"
 }
