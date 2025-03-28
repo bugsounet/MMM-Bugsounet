@@ -126,7 +126,7 @@ class FreeboxRegister {
     if (!silent) {
       console.info(
         "\u001B[32m%s\u001B[0m",
-        "Votre application a maintenant accès à votre Freebox!\nConservez secrètement les informations suivantes pour vous connecter à votre API Freebox avec MMM-Freebox\n"
+        "Votre application a maintenant accès à votre Freebox!\nConservez secrètement les informations suivantes pour vous connecter à votre API Freebox avec EXT-Freebox\n"
 
       );
       console.info(

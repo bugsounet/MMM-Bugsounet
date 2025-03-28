@@ -31,6 +31,7 @@
     "reset": "node installer/reset",
     "setup": "node installer/setup",
     "setup:EXT-Freebox": "node installer/setup --path=EXTs/EXT-Freebox",
+    "setup:EXT-Freebox:register": "node EXTs/EXT-Freebox/installer/Freebox_Login.js",
     "setup:EXT-FreeboxTV": "node installer/setup --path=EXTs/EXT-FreeboxTV",
     "setup:EXT-Glassy": "node installer/setup --path=EXTs/EXT-Glassy",
     "setup:EXT-Librespot": "node installer/setup --path=EXTs/EXT-Librespot",
