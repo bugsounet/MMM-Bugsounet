@@ -10,7 +10,7 @@ Or, want to have grouped modules that are themed together? Look no further!
 
 ## Installation, update & Guides
 
-Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90Pages)
 
 ## Credits
 
