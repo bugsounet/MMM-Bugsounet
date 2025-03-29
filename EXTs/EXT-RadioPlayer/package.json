@@ -1,8 +1,8 @@
 {
   "name": "EXT-RadioPlayer",
   "version": "2.4.0",
-  "description": "An embedded radio player on MagicMirror.",
-  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "description": "An embedded radio player on MagicMirror².",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-RadioPlayer.js",
@@ -27,5 +27,5 @@
       "vlc"
     ]
   },
-  "rev": "250325"
+  "rev": "250329"
 }
