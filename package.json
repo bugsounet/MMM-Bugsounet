@@ -38,6 +38,7 @@
     "setup:EXT-Librespot:player": "cd EXTs/EXT-Librespot && npm run setup:source",
     "setup:EXT-MeteoFrance": "node installer/setup --path=EXTs/EXT-MeteoFrance",
     "setup:EXT-NetatmoThermostat": "node installer/setup --path=EXTs/EXT-NetatmoThermostat",
+    "setup:EXT-NetatmoThermostat:check": "node --no-deprecation EXTs/EXT-NetatmoThermostat/installer/check"
     "setup:EXT-Pages": "node installer/setup --path=EXTs/EXT-Pages",
     "setup:EXT-PrixCarburants": "node installer/setup --path=EXTs/EXT-PrixCarburants",
     "setup:EXT-RadioPlayer": "node installer/setup --path=EXTs/EXT-RadioPlayer",
