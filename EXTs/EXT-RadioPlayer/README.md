@@ -7,4 +7,4 @@ This allows to play radio station on MagicMirror²
 
 ## Installation / update / configuration
 
-Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%9RadioPlayer)
