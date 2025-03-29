@@ -45,6 +45,7 @@
     "setup:EXT-Screen": "node installer/setup --path=EXTs/EXT-Screen",
     "setup:EXT-SmartHome": "node installer/setup --path=EXTs/EXT-SmartHome",
     "setup:EXT-Spotify": "node installer/setup --path=EXTs/EXT-Spotify",
+    "setup:EXT-Spotify:token": "cd EXTs/EXT-Spotify && npm run token",
     "setup:EXT-TelegramBot": "node installer/setup --path=EXTs/EXT-TelegramBot",
     "setup:EXT-Updates": "node installer/setup --path=EXTs/EXT-Updates",
     "setup:EXT-VLCServer": "node installer/setup --path=EXTs/EXT-VLCServer",
