@@ -2,7 +2,7 @@
   "name": "EXT-SmartHome",
   "version": "1.3.0",
   "description": "GA EXT-SmartHome Connect",
-  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-SmartHome.js",
@@ -35,5 +35,5 @@
       "python3-certbot-nginx"
     ]
   },
-  "rev": "250325"
+  "rev": "250329"
 }
