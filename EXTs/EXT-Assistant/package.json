@@ -46,5 +46,8 @@
   "engines": {
     "node": ">=23"
   },
+  "overrides": {
+    "axios": "^1.8.2"
+  },
   "rev": "250120"
 }
