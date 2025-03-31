@@ -39,3 +39,8 @@
 
 /EXTs/EXT-NetatmoThermostat/token.json
 /EXTs/EXT-SmartHome/installer/DomainName
+
+/EXTs/EXT-Assistant/tokenGA.json
+
+/EXTs/EXT-Detector/build/
+/EXTs/EXT-Detector/components/lib/node/binding/Release/
