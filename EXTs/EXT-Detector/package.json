@@ -1,0 +1,48 @@
+{
+  "name": "EXT-Detector",
+  "version": "2.10.2",
+  "description": "Snowboy / Porcupine Simple detector for EXT-Assistant",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-Detector.js",
+  "typings": "components/lib/node/index.d.ts",
+  "binary": {
+    "module_name": "snowboy",
+    "module_path": "./components/lib/node/binding/{configuration}/{node_abi}-{platform}-{arch}/",
+    "remote_path": "./{module_name}/v{version}/{configuration}/",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://github.com/bugsounet/snowboy"
+  },
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Detector",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Detector",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Detector",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Detector",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-Detector",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Detector",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Detector"
+  },
+  "dependencies": {
+    "@mapbox/node-pre-gyp": "^2.0.0",
+    "@picovoice/porcupine-node": "^3.0.6",
+    "@types/node": "^22.13.14",
+    "typescript": "^5.8.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "installer" : {
+    "rebuild": true,
+    "apt": [
+      "libmagic-dev",
+      "libatlas-base-dev",
+      "sox",
+      "libsox-fmt-all",
+      "build-essential"
+    ],
+    "postInstall": "node postinstall.js"
+  },
+  "rev": "250120"
+}

@@ -6,6 +6,8 @@ This "all in one" module is **only** intended for my personal use.
 
 This module include (with install on demand)
 
+* EXT-Assistant
+* EXT-Detector
 * EXT-Freebox
 * EXT-FreeboxTV
 * EXT-Glassy

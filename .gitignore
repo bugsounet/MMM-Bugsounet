@@ -33,9 +33,16 @@
 /EXTs/EXT-SmartHome/smarthome.json
 /EXTs/EXT-SmartHome/website/tokens/*
 !/EXTs/EXT-SmartHome/website/tokens/.keep
+/EXTs/EXT-SmartHome/installer/DomainName
 
 /EXTs/EXT-PrixCarburants/data/database/PrixCarburants_instantane.xml
 /EXTs/EXT-PrixCarburants/data/download.zip
 
 /EXTs/EXT-NetatmoThermostat/token.json
-/EXTs/EXT-SmartHome/installer/DomainName
+
+/EXTs/EXT-Assistant/tokenGA.json
+/EXTs/EXT-Assistant/credentials.json
+/EXTs/EXT-Assistant/tmp/
+
+/EXTs/EXT-Detector/build/
+/EXTs/EXT-Detector/components/lib/node/binding/Release/

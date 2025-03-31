@@ -68,6 +68,8 @@ class Spotify {
 
   async pulse () {
     let idle = false;
+    this.timer = null;
+    clearTimeout(this.timer);
     try {
       let result = await this.updateSpotify(this.config);
       this.notification("SPOTIFY_PLAY", result);
@@ -77,8 +79,6 @@ class Spotify {
       this.notification("SPOTIFY_IDLE");
     }
     this.timer = setTimeout(() => {
-      this.timer = null;
-      clearTimeout(this.timer);
       this.pulse();
     }, idle ? this.config.idleInterval : this.config.updateInterval);
   }
@@ -386,19 +386,20 @@ class Spotify {
   librespot (event) {
     switch (event.event) {
       case "session_disconnected":
-        _Debug("Librespot disconnected");
-        clearInterval(this.librespotTimer);
+        _Debug("EXT-Librespot disconnected");
+        if (!this.timer && this.librespotTimer) {
+          clearInterval(this.librespotTimer);
+          this.librespotTimer = null;
+          this.pulse();
+        }
+        break;
+      case "session_connected":
+        _Debug("EXT-Librespot connected");
         this.librespotTimer = null;
         if (this.timer) {
           clearTimeout(this.timer);
           this.timer = null;
         }
-        this.pulse();
-        break;
-      case "session_connected":
-        _Debug("Librespot connected");
-        clearInterval(this.librespotTimer);
-        this.librespotTimer = null;
         this.SendLibrespotResult();
         break;
       case "session_client_changed":
@@ -447,10 +448,6 @@ class Spotify {
 
   SendLibrespotResult () {
     this.librespotTimer = setInterval(() => {
-      if (this.timer) {
-        clearTimeout(this.timer);
-        this.timer = null;
-      }
       if (this.librespotResult.is_playing) this.librespotResult.progress_ms = this.librespotResult.progress_ms + 1000;
       if (this.librespotResult.progress_ms > this.librespotResult.item.duration_ms) this.librespotResult.progress_ms = this.librespotResult.item.duration_ms;
       this.notification("SPOTIFY_PLAY", this.librespotResult);
