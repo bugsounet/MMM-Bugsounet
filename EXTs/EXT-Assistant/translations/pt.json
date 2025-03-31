@@ -1,0 +1,22 @@
+{
+  "NO_RESPONSE": "Desculpa, não estou a perceber.",
+  "TOO_SHORT": "Desculpa, não estou a perceber.",
+  "CONVERSATION_ERROR": "Erro de conversação. (microfone mal configurado)",
+  "QUERY_REPLY": "Assistente Google irá ser ativado",
+  "QUERY_HELP": "Podes controlar o `Assistente Google` por texto com o seguinte comando.",
+
+  "STOP_HELP": "Parar a Visualização Extendida se estiver em execução",
+  "STOP_EXT": "Eu parei a Visualização Extendida ",
+
+  "GALoading": "A carregar...",
+  "GAReady": "Pronto!",
+  "GABegin": "Olá, em que posso ajudar?",
+  "GAContinue": "Estou a ouvir...",
+  "GAErrorRecipe": "Erro ao carregar esta receita: {VALUES}",
+  "GAErrorCredentials": "[FATAL] Assistant: credentials.json em falta",
+
+  "ShellExecError": "ShellExec returnou alguns Erros",
+  "ShellExecDone": "ShellExec foi executado com sucesso",
+
+  "EXTStop": "Todos os Extented Process estão agora parados"
+}
