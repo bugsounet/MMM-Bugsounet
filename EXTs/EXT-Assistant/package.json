@@ -35,7 +35,7 @@
     "setup": "node installer/setup --path=EXTs/EXT-Assistant"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.12.6",
+    "@grpc/grpc-js": "^1.13.2",
     "google-auth-library": "^9.15.1",
     "google-sr": "^5.0.0",
     "html-entities": "^2.5.2",
