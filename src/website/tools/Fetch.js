@@ -2,6 +2,8 @@
 
 /* global alertify, translation, PleaseRotate */
 
+var Alert = 0;
+
 function getCurrentToken () {
   return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
 }
@@ -17,7 +19,7 @@ function getHomeText () {
 /* eslint-disable-next-line */
 function getVersion () {
   return new Promise((resolve) => {
-    Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getVersion", (version) => resolve(version), null);
+    Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "version", (version) => resolve(version), null);
   });
 }
 
@@ -32,8 +34,15 @@ function checkSystem () {
   return new Promise((resolve) => {
     Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
       if (err.status === 403 || err.status === 401) location.href = "/login";
-      if (!err.status) alertify.error("Connexion Lost!");
-      else alertify.error(`[Status] Server return Error ${err.status} (${err.error})`);
+      if (Alert === 1) {
+        if (!err.status || err.status === 502) {
+          alertify.error("Connexion Lost!");
+          showAlert("No response from MMM-Bugsounet.");
+        } else {
+          alertify.error(`[sysInfo] Server return Error ${err.status} (${err.error})`);
+          showAlert(`[sysInfo] Server return Error ${err.status} (${err.error})`);
+        }
+      }
     });
   });
 }
@@ -41,10 +50,17 @@ function checkSystem () {
 /* eslint-disable-next-line */
 function checkEXTStatus () {
   return new Promise((resolve) => {
-    Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Status", (Status) => resolve(Status), (err) => {
+    Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "status", (Status) => resolve(Status), (err) => {
       if (err.status === 403 || err.status === 401) location.href = "/login";
-      if (!err.status) alertify.error("Connexion Lost!");
-      else alertify.error(`[Status] Server return Error ${err.status} (${err.error})`);
+      if (Alert === 1) {
+        if (!err.status || err.status === 502) {
+          alertify.error("Connexion Lost!");
+          showAlert("No response from MMM-Bugsounet.");
+        } else {
+          alertify.error(`[status] Server return Error ${err.status} (${err.error})`);
+          showAlert(`[status] Server return Error ${err.status} (${err.error})`);
+        }
+      }
     });
   });
 }
@@ -101,6 +117,7 @@ function loadMMConfig () {
         resolve(config);
       } catch {
         alertify.error("[loadMMConfig] Error on decode server response");
+        Alert = 0;
       }
     }, null);
   });
@@ -137,13 +154,14 @@ function loadFreeboxTV () {
 /* eslint-disable-next-line */
 function loadBackupConfig (file) {
   return new Promise((resolve) => {
-    Request("/api/backups/file", "GET", { Authorization: `Bearer ${getCurrentToken()}`, backup: file }, null, "loadPluginConfig", (response) => {
+    Request("/api/backups/file", "GET", { Authorization: `Bearer ${getCurrentToken()}`, backup: file }, null, "loadBackupConfig", (response) => {
       try {
         let parse = atob(response.config);
         let backup = JSON.parse(parse);
         resolve(backup);
       } catch {
         alertify.error("[loadBackupConfig] Error on decode server response");
+        Alert = 0;
       }
     }, null);
   });
@@ -169,22 +187,35 @@ async function Request (url, type, header, data, from, success, fail) {
       body: data
     });
   } catch {
-    alertify.error("Connexion Lost!");
+    Alert++;
+    if (Alert === 1) alertify.error("Connexion Lost!");
+    showAlert("No response from MMM-Bugsounet");
     return;
   }
 
   if (response.ok && response.status < 400) {
     result = await response.json();
     if (success) success(result);
+    if (Alert) hideAlert();
+    Alert = 0;
   } else {
+    Alert++;
     try {
       result = await response.json();
     } catch {
       result.error = response.statusText;
     }
     result.status = response.status;
-    if (fail) return fail(result);
-    alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
+
+    if (fail) fail(result);
+    else {
+      if (result.status === 502) {
+        showAlert("No response from MMM-Bugsounet");
+      } else {
+        showAlert(`[${from}] Server return Error ${response.status}: ${result.error}`);
+      }
+      if (Alert === 1) alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
+    }
   }
 }
 
@@ -288,5 +319,24 @@ function setTranslation (id, content) {
   } catch (e) {
     console.error(`id: ${id}`, `content: ${content}`);
     console.error(e);
+  }
+}
+
+function showAlert (Text) {
+  const messageText = document.getElementById("messageText");
+  if (messageText) {
+    document.getElementById("alert").classList.remove("alert-success");
+    document.getElementById("alert").classList.add("alert-danger");
+    messageText.textContent = Text;
+    document.getElementById("alert").classList.remove("invisible");
+  }
+}
+
+function hideAlert () {
+  const messageText = document.getElementById("messageText");
+  if (messageText) {
+    document.getElementById("alert").classList.add("invisible");
+    document.getElementById("alert").classList.add("alert-success");
+    document.getElementById("alert").classList.remove("alert-danger");
   }
 }

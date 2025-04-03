@@ -9,7 +9,7 @@
 var logBugsounet = () => { /* do nothing */ };
 
 Module.register("MMM-Bugsounet", {
-  requiresVersion: "2.30.0",
+  requiresVersion: "2.31.0",
   defaults: {
     debug: false,
     username: "admin",
