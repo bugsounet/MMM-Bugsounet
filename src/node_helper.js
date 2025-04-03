@@ -9,7 +9,7 @@ const checker = require("./components/checker");
 const controler = require("./components/controler");
 
 module.exports = NodeHelper.create({
-  requiresVersion: "2.30.0",
+  requiresVersion: "2.31.0",
   start () {
     this.lib = { error: 0 };
     this.config = {};
