@@ -47,6 +47,7 @@
     "setup:EXT-Saint": "node installer/setup --path=EXTs/EXT-Saint",
     "setup:EXT-Screen": "node installer/setup --path=EXTs/EXT-Screen",
     "setup:EXT-SmartHome": "node installer/setup --path=EXTs/EXT-SmartHome",
+    "setup:EXT-SmartHome:SmartHome": "cd EXTs/EXT-SmartHome && npm run smarthome",
     "setup:EXT-Spotify": "node installer/setup --path=EXTs/EXT-Spotify",
     "setup:EXT-Spotify:token": "node EXTs/EXT-Spotify/installer/auth_Spotify.js",
     "setup:EXT-TelegramBot": "node installer/setup --path=EXTs/EXT-TelegramBot",
@@ -114,6 +115,6 @@
     ],
     "EXT": true
   },
-  "rev": "250403",
+  "rev": "250404",
   "api": "1.1.0"
 }
