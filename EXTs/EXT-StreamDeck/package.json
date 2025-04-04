@@ -1,0 +1,31 @@
+{
+  "name": "EXT-StreamDeck",
+  "version": "1.6.0",
+  "description": "elgato Streamdeck plugin",
+  "homepage": "https://wiki.bugsounet.fr",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-StreamDeck.js",
+  "scripts": {
+    "clean": "rm -rf node_modules package-lock.json",
+    "dev": "cd installer && node dev.js",
+    "dev:src": "cd installer && node src.js",
+    "lint": "cd ../.. && npm run lint",
+    "lint:fix": "cd ../.. && npm run lint:fix",
+    "postinstall": "installer/postinstall.sh -m",
+    "preinstall": "installer/preinstall.sh -d 'libusb-1.0-0-dev libudev-dev'",
+    "reset": "rm *.js && git reset --hard",
+    "setup": "installer/setup.sh",
+    "test": "npm run lint",
+    "test:minify": "cd installer && node minify.js",
+    "update": "installer/update.sh"
+  },
+  "dependencies": {
+    "@elgato-stream-deck/node": "^6.2.2",
+    "jimp": "^0.22.12"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "241119"
+}
