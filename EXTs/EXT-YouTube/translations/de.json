@@ -1,0 +1,13 @@
+{
+  "YouTubeDescription": "Steuerung des YouTube-Players",
+  "YouTubePlay": "YouTube spielt das Video mit der ID: {VALUES}",
+  "YouTubeSearch": "YouTube sucht: {VALUES}",
+  "YouTubeCmdNotFound": "Befehl nicht gefunden. Für Hilfe probiere /youtube",
+  "YouTubeHelp": "Hilfe für /youtube Befehl?\n\n  *play*: Starte Video mit YouTube-ID\n",
+  "YouTubeSearchHelp": "  *search*: Sucht und spielt einen Titel bzw. ein Video\n",
+  "YouTubeSearchDisabled": "YouTube-Suche ist deaktiviert.",
+  "YouTubeIsPlaying": "Spiele: {VALUES}",
+  "YouTubePasswordMissing": "Passwort fehlt!",
+  "YouTubeLibraryError": "[FATAL] Fehler beim Laden der Bibliothek: {VALUES}",
+  "YouTubeFoundError": "YouTube-Suche meldet Fehler!"
+}

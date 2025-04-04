@@ -1,0 +1,13 @@
+{
+  "YouTubeDescription": "Contrôle du lecteur YouTube",
+  "YouTubePlay": "YouTube va démarrer la lecture de la video ID: {VALUES}",
+  "YouTubeSearch": "YouTube va rechercher: {VALUES}",
+  "YouTubeCmdNotFound": "Commande non trouvée, besoin d'aide ? Essayez /youtube",
+  "YouTubeHelp": "Besoin d'aide pour la commande /youtube ?\n\n  *play*: Démarre la lecture de la vidéo YouTube selon l'ID demandé\n",
+  "YouTubeSearchHelp": "  *search*: Recherche et démarre la lecture de la video Youtube selon votre recherche (titre/artiste)\n",
+  "YouTubeSearchDisabled": "La fonctionnalitée de recherche sur YouTube est désactivée.",
+  "YouTubeIsPlaying": "Lecture: {VALUES}",
+  "YouTubePasswordMissing": "Password manquant!",
+  "YouTubeLibraryError": "[FATAL] Erreur de chargement de la librairie: {VALUES}",
+  "YouTubeFoundError": "La recherche YouTube retourne des erreurs."
+}

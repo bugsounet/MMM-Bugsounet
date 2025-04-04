@@ -1,0 +1,13 @@
+{
+  "YouTubeDescription": "YouTube Player Control",
+  "YouTubePlay": "YouTube will playing video ID: {VALUES}",
+  "YouTubeSearch": "YouTube will search: {VALUES}",
+  "YouTubeCmdNotFound": "Command not found, need help ? try /youtube",
+  "YouTubeHelp": "Need Help for /youtube command ?\n\n  *play*: Start playing video from Youtube ID\n",
+  "YouTubeSearchHelp": "  *search*: Search and play a Title/Artist video\n",
+  "YouTubeSearchDisabled": "YouTube search functionality is disabled.",
+  "YouTubeIsPlaying": "Playing: {VALUES}",
+  "YouTubePasswordMissing": "Password missing!",
+  "YouTubeLibraryError": "[FATAL] Error when loading: {VALUES} library",
+  "YouTubeFoundError": "YouTube Search return some errors!"
+}
