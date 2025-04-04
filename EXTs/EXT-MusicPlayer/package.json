@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "drivelist": "^12.0.2",
-    "usb": "^2.14.0",
+    "usb": "^2.15.0",
     "vlc-client": "^1.1.1"
   },
   "engines": {
