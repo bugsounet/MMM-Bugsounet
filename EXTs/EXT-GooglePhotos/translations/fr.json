@@ -1,0 +1,9 @@
+{
+  "GPFailedOpenURL": "Google Photos: Erreur lors du chargement de l'image",
+  "GPOpen": "Ouverture de Google Photos",
+  "GPAlbumName": "Album:",
+  "GPError": "GooglePhotos: Aucune photos a afficher",
+  "GPNoPhotoFound": "GooglePhotos: Aucune photos trouvé",
+  "GPReceive": "GooglePhotos a reçu {VALUES} photos",
+  "GPUninterestingPhoto": "Photo {NAME} signalée comme non intéressante"
+}

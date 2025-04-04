@@ -1,0 +1,8 @@
+{
+  "GPFailedOpenURL": "Google Photos: 图片加载失败",
+  "GPOpen": "打开 Google Photos",
+  "GPAlbumName": "相册:",
+  "GPError": "GooglePhotos: 没有可显示的照片",
+  "GPNoPhotoFound": "GooglePhotos: 没有找到图片",
+  "GPReceive": "GooglePhotos 接收到 {VALUES} 张照片"
+}

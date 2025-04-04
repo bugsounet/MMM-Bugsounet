@@ -1,0 +1,8 @@
+{
+  "GPFailedOpenURL": "Google Photos: 이미지 로드에 실패했습니다",
+  "GPOpen": "Google Photos를 실행합니다",
+  "GPAlbumName": "앨범:",
+  "GPError": "GooglePhotos: 표시할 사진이 없습니다.",
+  "GPNoPhotoFound": "GooglePhotos: 사진을 찾지 못했습니다.",
+  "GPReceive": "GooglePhotos {VALUES} 사진을 수신했습니다."
+}
