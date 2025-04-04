@@ -1,0 +1,13 @@
+{
+  "YouTubeDescription": "YouTube Oynatıcı Kontrolü",
+  "YouTubePlay": "YouTube şu video kimliğini oynatacak: {VALUES}",
+  "YouTubeSearch": "YouTube şunu arayacak: {VALUES}",
+  "YouTubeCmdNotFound": "Komut bulunamadı, yardıma mı ihtiyacınız var? /youtube'u dene",
+  "YouTubeHelp": "/youtube komutu için Yardıma mı ihtiyacınız var?\n\n *play*: Youtube kimliğinden video oynatmaya başlayın\n",
+  "YouTubeSearchHelp": " *arama*: Bir Başlık/Sanatçı videosunu arayın ve oynatın\n",
+  "YouTubeSearchDisabled": "YouTube arama işlevi devre dışı bırakıldı.",
+  "YouTubeIsPlaying": "Oynatılıyor: {VALUES}",
+  "YouTubePasswordMissing": "Şifre eksik!",
+  "YouTubeLibraryError": "[FATAL] Yükleme sırasında hata oluştu: {VALUES} kitaplık",
+  "YouTubeFoundError": "YouTube Arama bazı hatalar döndürüyor!"
+}

@@ -1,0 +1,6 @@
+{
+  "BrowserOpen": "Apertura Browser",
+  "BrowserClose": "Chiusura Browser",
+  "BrowserError": "Browser: URL Loading error!",
+  "BrowserCrash": "Browser have crash..."
+}

@@ -1,0 +1,32 @@
+{
+  "name": "EXT-YouTubeCast",
+  "version": "1.6.1",
+  "description": "An embedded YouTube Cast Dislayer on MagicMirror.",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-YouTubeCast",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-YouTubeCast.js",
+  "scripts": {
+    "clean": "rm -rf node_modules",
+    "dev": "cd installer && node dev.js",
+    "dev:src": "cd installer && node src.js",
+    "lint": "cd ../.. && npm run lint",
+    "lint:fix": "cd ../.. && npm run lint:fix",
+    "postinstall": "installer/postinstall.sh -m",
+    "preinstall": "installer/preinstall.sh",
+    "reset": "rm -f *.js components/*.js",
+    "test": "npm run lint",
+    "test:minify": "cd installer && node minify.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "gate": "^0.3.0",
+    "peer-ssdp": "0.0.5",
+    "uuid": "^11.1.0",
+    "xml2js": "^0.6.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "250107"
+}

@@ -1,0 +1,13 @@
+{
+  "YouTubeDescription": "YouTube spelerbediening",
+  "YouTubePlay": "YouTube zal de video afspelen ID: {VALUES}",
+  "YouTubeSearch": "YouTube gaat op zoek: {VALUES}",
+  "YouTubeCmdNotFound": "Commando niet gevonden, hulp nodig ? probeer /youtube",
+  "YouTubeHelp": "Hulp nodig voor /youtube commando ?\n\n  *speel*: Begin met het afspelen van video vanaf Youtube ID\n",
+  "YouTubeSearchHelp": "  *zoek*: zoek en speel een Titel/Artist video\n",
+  "YouTubeSearchDisabled": "YouTube zoekfunctie is uitgeschakeld.",
+  "YouTubeIsPlaying": "Speelt: {VALUES}",
+  "YouTubePasswordMissing": "Wachtwoord ontbreekt!",
+  "YouTubeLibraryError": "[FATAL] Fout bij het laden: {VALUES} library",
+  "YouTubeFoundError": "YouTube zoekopdracht retourneert enkele fouten!"
+}
