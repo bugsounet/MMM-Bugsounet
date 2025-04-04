@@ -1,0 +1,31 @@
+{
+  "name": "EXT-MusicPlayer",
+  "version": "1.8.0",
+  "description": "An embedded Music Player on MagicMirror.",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-MusicPlayer",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-MusicPlayer.js",
+  "scripts": {
+    "clean": "rm -rf node_modules",
+    "dev": "cd installer && node dev.js",
+    "dev:src": "cd installer && node src.js",
+    "lint": "cd ../.. && npm run lint",
+    "lint:fix": "cd ../.. && npm run lint:fix",
+    "postinstall": "installer/postinstall.sh -r -m",
+    "preinstall": "installer/preinstall.sh -d 'libudev-dev'",
+    "rebuild": "installer/rebuild.sh",
+    "reset": "rm -f *.js components/*.js",
+    "test": "npm run lint",
+    "test:minify": "cd installer && node minify.js"
+  },
+  "dependencies": {
+    "drivelist": "^12.0.2",
+    "usb": "^2.14.0",
+    "vlc-client": "^1.1.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "241219"
+}
