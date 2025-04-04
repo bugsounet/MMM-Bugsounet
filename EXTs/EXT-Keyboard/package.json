@@ -1,0 +1,25 @@
+{
+  "name": "EXT-Keyboard",
+  "version": "1.6.0",
+  "description": "Keybord plugin",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-Keyboard",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-Keyboard.js",
+  "scripts": {
+    "clean": "rm -rf node_modules",
+    "dev": "cd installer && node dev.js",
+    "dev:src": "cd installer && node src.js",
+    "lint": "cd ../.. && npm run lint",
+    "lint:fix": "cd ../.. && npm run lint:fix",
+    "postinstall": "installer/postinstall.sh -m",
+    "preinstall": "installer/preinstall.sh",
+    "reset": "rm -f *.js",
+    "test": "npm run lint",
+    "test:minify": "cd installer && node minify.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "rev": "241219"
+}
