@@ -32,6 +32,7 @@ class EXTs {
       "EXT-SmartHome",
       "EXT-Spotify",
       "EXT-TelegramBot",
+      "EXT-Touch",
       "EXT-Updates",
       "EXT-VLCServer",
       "EXT-Volume"
@@ -112,6 +113,7 @@ class EXTs {
     if (!plugin) return;
     if (plugin === "EXT-Pages") this.sendNotification("Bugsounet_PAGES-Gateway");
     if (plugin === "EXT-Detector") this.sendNotification("Bugsounet_DETECTOR-START");
+    if (plugin === "EXT-Touch") this.sendNotification("Bugsounet_TOUCH-START");
   }
 
   /** Connect rules **/
@@ -378,6 +380,7 @@ class EXTs {
         switch (this.EXT["EXT-Assistant"].status) {
           case "standby":
             if (this.EXT["EXT-Detector"].hello) this.sendNotification("Bugsounet_DETECTOR-START");
+            if (this.EXT["EXT-Touch"].hello) this.sendNotification("Bugsounet_TOUCH-START");
             if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
               this.sendNotification("Bugsounet_SCREEN-UNLOCK", { show: true });
             }
@@ -389,6 +392,7 @@ class EXTs {
           case "listen":
           case "think":
             if (this.EXT["EXT-Detector"].hello) this.sendNotification("Bugsounet_DETECTOR-STOP");
+            if (this.EXT["EXT-Touch"].hello) this.sendNotification("Bugsounet_TOUCH-BLINK");
             if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
               if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
               this.sendNotification("Bugsounet_SCREEN-LOCK", { show: true });
