@@ -1,9 +1,7 @@
 # EXT-Touch
 
-## Plugin for `MMM-GoogleAssistant`
-
-Activate `MMM-GoogleAssistant` with a Touch Screen by Touching the Google Icon
+Activate `EXT-Assistant` with a Touch Screen by Touching the Google Icon
 
 ## Guide, installation and update
 
-Read the docs in [wiki](http://wiki.bugsounet.fr/en/EXT-Touch)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90Touch)
