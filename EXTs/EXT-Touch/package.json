@@ -19,7 +19,6 @@
     "dev:src": "node ../../installer/src --path=EXTs/EXT-Touch",
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
-    "register": "node installer/Freebox_Login.js",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Touch",
     "setup": "node ../../installer/setup --path=EXTs/EXT-Touch"
   },
