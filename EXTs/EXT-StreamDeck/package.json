@@ -21,7 +21,7 @@
     "update": "installer/update.sh"
   },
   "dependencies": {
-    "@elgato-stream-deck/node": "^6.2.2",
+    "@elgato-stream-deck/node": "^7.1.2",
     "jimp": "^0.22.12"
   },
   "engines": {
