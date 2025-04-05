@@ -21,16 +21,6 @@ Module.register("EXT-Detector", {
         detector: "Snowboy",
         Model: "jarvis",
         Sensitivity: null
-      },
-      {
-        detector: "Porcupine",
-        Model: "ok google",
-        Sensitivity: null
-      },
-      {
-        detector: "Porcupine",
-        Model: "hey google",
-        Sensitivity: null
       }
     ]
   },
@@ -59,8 +49,8 @@ Module.register("EXT-Detector", {
       case "Bugsounet_DETECTOR-STOP":
         if (this.ready) { this.sendSocketNotification("STOP"); }
         break;
-      case "Bugsounet_READY":
-        if (sender.name === "MMM-Bugsounet") this.sendSocketNotification("INIT", this.config);
+      case "Bugsounet_ASSISTANT-READY":
+        if (sender.name === "EXT-Assistant") this.sendSocketNotification("INIT", this.config);
         break;
     }
   },
