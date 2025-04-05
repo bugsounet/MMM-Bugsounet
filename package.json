@@ -51,6 +51,7 @@
     "setup:EXT-Spotify": "node installer/setup --path=EXTs/EXT-Spotify",
     "setup:EXT-Spotify:token": "node EXTs/EXT-Spotify/installer/auth_Spotify.js",
     "setup:EXT-TelegramBot": "node installer/setup --path=EXTs/EXT-TelegramBot",
+    "setup:EXT-Touch": "node installer/setup --path=EXTs/EXT-Touch",
     "setup:EXT-Updates": "node installer/setup --path=EXTs/EXT-Updates",
     "setup:EXT-VLCServer": "node installer/setup --path=EXTs/EXT-VLCServer",
     "setup:EXT-Volume": "node installer/setup --path=EXTs/EXT-Volume",
