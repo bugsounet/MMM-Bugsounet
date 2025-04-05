@@ -6,4 +6,4 @@ It allows to change background of `EXT-Assistant` with animated picture or your 
 
 ## Installation / update / configuration
 
-Read the docs in [wiki](Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90Background)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90Background)
