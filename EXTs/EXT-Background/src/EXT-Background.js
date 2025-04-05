@@ -1,7 +1,7 @@
 /******************
 *  EXT-Background
 *  ©Bugsounet
-*  03/2023
+*  04/2025
 ******************/
 
 Module.register("EXT-Background", {
@@ -11,32 +11,34 @@ Module.register("EXT-Background", {
   },
 
   notificationReceived (notification, payload, sender) {
-    if (notification === "GA_READY") {
-      if (sender.name !== "MMM-GoogleAssistant") return;
+    if (notification === "Bugsounet_ASSISTANT-READY") {
+      if (sender.name !== "EXT-Assistant") return;
       this.sendSocketNotification("INIT");
-      this.sendNotification("EXT_HELLO", this.name);
+      this.sendNotification("Bugsounet_HELLO");
     }
-    if (!sender || (sender.name !== "MMM-GoogleAssistant")) return;
+    if (!sender || (sender.name !== "EXT-Assistant")) return;
 
-    switch (notification) {
-      case "ASSISTANT_THINK":
-      case "ASSISTANT_CONTINUE":
-      case "ASSISTANT_LISTEN":
-        this.setBackground("listen");
-        break;
-      case "ASSISTANT_STANDBY":
-        this.setBackground("standby");
-        break;
-      case "ASSISTANT_REPLY":
-        this.setBackground("reply");
-        break;
-      case "ASSISTANT_HOOK":
-      case "ASSISTANT_CONFIRMATION":
-        this.setBackground("confirmation");
-        break;
-      case "ASSISTANT_ERROR":
-        this.setBackground("error");
-        break;
+    if (notification === "Bugsounet_ASSISTANT-STATUS") {
+      switch (payload) {
+        case "think":
+        case "continue":
+        case "listen":
+          this.setBackground("listen");
+          break;
+        case "standby":
+          this.setBackground("standby");
+          break;
+        case "reply":
+          this.setBackground("reply");
+          break;
+        case "hook":
+        case "confirmation":
+          this.setBackground("confirmation");
+          break;
+        case "error":
+          this.setBackground("error");
+          break;
+      }
     }
   },
 

@@ -1,8 +1,6 @@
 # EXT-Detector
 
-## Plugin for `MMM-GoogleAssistant`
-
-Keywords Detectors for MMM-GoogleAssistant !
+Keywords Detectors for EXT-Assistant !
 
 Multi-keyword listener with
 
@@ -18,6 +16,4 @@ It will include:
 * Computer
 * ...
 
-## Installation / update / configuration
-
-Read the docs in [wiki](http://wiki.bugsounet.fr/en/EXT-Detector)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90Detector)

@@ -27,7 +27,7 @@ class DetectorTouchVisual {
     if (!this.listening) { return; }
     this.listening = false;
     this.RefreshLogo(true);
-    this.sendNotification("GA_ACTIVATE");
+    this.sendNotification("Bugsounet_ASSISTANT-ACTIVATE");
   }
 
   RefreshLogo (disabled) {
