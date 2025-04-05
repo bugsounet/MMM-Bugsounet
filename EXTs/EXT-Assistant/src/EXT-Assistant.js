@@ -148,10 +148,10 @@ Module.register("EXT-Assistant", {
       case "INITIALIZED":
         logGA("Initialized.");
         this.sendNotification("Bugsounet_HELLO");
-        this.sendNotification("Bugsounet_ASSISTANT-READY");
         this.assistantResponse.Version(payload);
         this.assistantResponse.status("standby");
         this.ready = true;
+        this.sendNotification("Bugsounet_ASSISTANT-READY");
         break;
       case "ASSISTANT_RESULT":
         if (payload.volume !== null) this.sendNotification("Bugsounet_VOLUME-SPEAKER_SET", payload.volume);
