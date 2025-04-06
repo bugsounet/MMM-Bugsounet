@@ -1,8 +1,7 @@
 /**
  ** Module : EXT-Browser
  ** @bugsounet
- ** ©10-2024
- ** support: https://www.bugsounet.fr
+ ** ©04-2025
  **/
 
 /* global BrowserDisplay */
@@ -59,15 +58,15 @@ Module.register("EXT-Browser", {
 
   notificationReceived (noti, payload, sender) {
     switch (noti) {
-      case "GA_READY":
-        if (sender.name === "MMM-GoogleAssistant") {
+      case "Bugsounet_ASSISTANT-READY":
+        if (sender.name === "EXT-Assistant") {
           this.sendSocketNotification("INIT");
           this.BrowserDisplay.preparePopup();
-          this.sendNotification("EXT_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
           this.ready = true;
         }
         break;
-      case "EXT_BROWSER-OPEN":
+      case "Bugsounet_BROWSER-OPEN":
         if (!payload || !this.ready) return;
         if (typeof (payload) !== "string") {
           console.error("[BROWSER] EXT_BROWSER-OPEN Error: payload must be a string, received:", payload);
@@ -77,14 +76,14 @@ Module.register("EXT-Browser", {
           this.BrowserDisplay.browser.url = payload;
           this.BrowserDisplay.displayBrowser();
         } else {
-          this.sendNotification("GA_ALERT", {
+          this.sendNotification("Bugsounet_ALERT", {
             message: this.translate("BrowserError"),
             type: "error"
           });
         }
         break;
-      case "EXT_STOP":
-      case "EXT_BROWSER-CLOSE":
+      case "Bugsounet_STOP":
+      case "Bugsounet_BROWSER-CLOSE":
         if (this.BrowserDisplay.browser.running) this.BrowserDisplay.endBrowser(true);
         break;
     }
