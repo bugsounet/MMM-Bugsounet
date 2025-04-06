@@ -130,7 +130,7 @@ class EXTs {
     }
 
     if (this.byPassIsConnected()) {
-      logGA("[EXTs] Connected:", extName, "[byPass Mode]");
+      logBugsounet("[EXTs] Connected:", extName, "[byPass Mode]");
       this.EXT[extName].connected = true;
       this.lockPagesByGW(extName);
       if (this.EXT["EXT-SmartHome"].hello) this.sendNotification("EXT_STATUS", this.EXT);
