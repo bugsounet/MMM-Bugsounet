@@ -350,13 +350,13 @@ Module.register("EXT-Assistant", {
         youtube: null
       };
       logGA("Send response:", opt);
-      this.notificationReceived("Bugsounet_GATEWAY", opt);
+      this.sendNotification("Bugsounet_ASSISTANT-RESPONSE", opt);
     } else if (response.text) {
       if (this.AssistantSearch.GoogleSearch(response.text)) {
         this.sendSocketNotification("GOOGLESEARCH", response.transcription.transcription);
       } else if (this.AssistantSearch.YouTubeSearch(response.text)) {
         logGA("Send response YouTube:", response.transcription.transcription);
-        this.notificationReceived("Bugsounet_GATEWAY", {
+        this.sendNotification("Bugsounet_ASSISTANT-RESPONSE", {
           photos: [],
           urls: [],
           youtube: response.transcription.transcription
@@ -368,7 +368,7 @@ Module.register("EXT-Assistant", {
   sendGoogleResult (link) {
     if (!link) return console.error("[GA] No link to open!");
     logGA("Send response:", link);
-    this.notificationReceived("Bugsounet_GATEWAY", {
+    this.sendNotification("Bugsounet_ASSISTANT-RESPONSE", {
       photos: [],
       urls: [link],
       youtube: null
@@ -570,7 +570,7 @@ Module.register("EXT-Assistant", {
           command.execution.forEach((exec) => {
             logGA(`Native Action: ${exec.command}`, exec.params);
             if (exec.command === "action.devices.commands.SetVolume") {
-              this.EXTs.sendVolume(exec.params.volumeLevel);
+              this.sendNotification("Bugsounet_ASSISTANT-VOLUME", exec.params.volumeLevel);
             }
           });
         });
