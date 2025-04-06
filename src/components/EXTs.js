@@ -17,6 +17,8 @@ class EXTs {
 
     this.ExtDB = [
       "EXT-Assistant",
+      "EXT-Browser",
+      "EXT-Background",
       "EXT-Detector",
       "EXT-Freebox",
       "EXT-FreeboxTV",
@@ -111,6 +113,7 @@ class EXTs {
   /** Rule when a plugin send Hello **/
   onStartPlugin (plugin) {
     if (!plugin) return;
+    if (plugin === "EXT-Background") this.sendNotification("Bugsounet_ASSISTANT-FORCE_FULLSCREEN");
     if (plugin === "EXT-Pages") this.sendNotification("Bugsounet_PAGES-Gateway");
     if (plugin === "EXT-Detector") this.sendNotification("Bugsounet_DETECTOR-START");
     if (plugin === "EXT-Touch") this.sendNotification("Bugsounet_TOUCH-START");
@@ -124,6 +127,14 @@ class EXTs {
     if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
       if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
       this.sendNotification("Bugsounet_SCREEN-LOCK");
+    }
+
+    if (this.byPassIsConnected()) {
+      logGA("[EXTs] Connected:", extName, "[byPass Mode]");
+      this.EXT[extName].connected = true;
+      this.lockPagesByGW(extName);
+      if (this.EXT["EXT-SmartHome"].hello) this.sendNotification("EXT_STATUS", this.EXT);
+      return;
     }
 
     if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-STOP");
@@ -175,6 +186,15 @@ class EXTs {
   forceUnLockPagesAndScreen () {
     if (this.EXT["EXT-Pages"].hello) this.sendNotification("Bugsounet_PAGES-UNLOCK");
     if (this.EXT["EXT-Screen"].hello) this.sendNotification("Bugsounet_SCREEN-UNLOCK");
+  }
+
+  // exception with EXT-Browser
+  byPassIsConnected () {
+    if (this.EXT["EXT-Browser"].hello && this.EXT["EXT-Browser"].connected) {
+      logBugsounet("[EXTs] byPass", true);
+      return true;
+    }
+    return false;
   }
 
   /** hasPluginConnected(obj, key, value)
@@ -230,7 +250,11 @@ class EXTs {
       "Bugsounet_UPDATES-LIST",
       "Bugsounet_VOLUME_GET",
       "Bugsounet_PAGES-NUMBER_IS",
-      "Bugsounet_ASSISTANT-STATUS"
+      "Bugsounet_ASSISTANT-STATUS",
+      "Bugsounet_ASSISTANT-RESPONSE",
+      "Bugsounet_ASSISTANT-VOLUME",
+      "Bugsounet_BROWSER-CONNECTED",
+      "Bugsounet_BROWSER-DISCONNECTED"
     ];
 
     if (EXTNoti.indexOf(noti) === -1) {
@@ -302,6 +326,14 @@ class EXTs {
           }
           else this.sendNotification("Bugsounet_PAGES-PAUSE");
         }
+        break;
+      case "Bugsounet_BROWSER-CONNECTED":
+        if (!this.EXT["EXT-Browser"].hello) return this.sendWarn("[CONNECT] EXT-Browser don't say to me HELLO!");
+        this.connectEXT("EXT-Browser");
+        break;
+      case "Bugsounet_BROWSER-DISCONNECTED":
+        if (!this.EXT["EXT-Browser"].hello) return this.sendWarn("[DISCONNECT] EXT-Browser don't say to me HELLO!");
+        this.disconnectEXT("EXT-Browser");
         break;
       case "Bugsounet_RADIO-CONNECTED":
         if (!this.EXT["EXT-RadioPlayer"].hello) return this.sendWarn("[CONNECT] EXT-RadioPlayer don't say to me HELLO!");
@@ -404,6 +436,12 @@ class EXTs {
             break;
         }
         break;
+      case "Bugsounet_ASSISTANT-RESPONSE":
+        this.AssistantResponse(payload);
+        break;
+      case "Bugsounet_ASSISTANT-VOLUME":
+        this.AssistantVolume(payload);
+        break;
     }
 
     let isEqual = this.previousEXT === JSON.stringify(this.EXT);
@@ -413,6 +451,112 @@ class EXTs {
       if (this.EXT["EXT-SmartHome"].hello) {
         this.sendNotification("Bugsounet_STATUS", this.EXT);
       }
+    }
+  }
+
+
+  /*****************************/
+  /** Scan Assistant Response **/
+  /*****************************/
+  AssistantResponse (response) {
+    if (!response) return; // @todo scan if type array ??
+    logBugsounet("[EXTs] Assistant Response Scan");
+    let tmp = {
+      photos: {
+        urls: response.photos && response.photos.length ? response.photos : [],
+        length: response.photos && response.photos.length ? response.photos.length : 0
+      },
+      links: {
+        urls: response.urls && response.urls.length ? response.urls : [],
+        length: response.urls && response.urls.length ? response.urls.length : 0
+      },
+      youtube: response.youtube
+    };
+
+    // the show must go on !
+    var urls = configMerge({}, urls, tmp);
+    if (urls.photos.length > 0 && this.EXT["EXT-Photos"].hello) {
+      this.EXT["EXT-Photos"].connected = true;
+      this.sendNotification("EXT_PHOTOS-OPEN", urls.photos.urls);
+      logBugsounet("[EXTs] Forced connected: EXT-Photos");
+    }
+    else if (urls.links.length > 0) {
+      this.urlsScan(urls);
+    } else if (urls.youtube && this.EXT["EXT-YouTube"].hello) {
+      this.sendNotification("EXT_YOUTUBE-SEARCH", urls.youtube);
+      logBugsounet("[EXTs] Sended to YT", urls.youtube);
+    }
+    logBugsounet("[EXTs] Response Structure:", urls);
+  }
+
+  /** urls scan : dispatch url, youtube, spotify **/
+  /** use the FIRST discover link only **/
+  urlsScan (urls) {
+    var firstURL = urls.links.urls[0];
+
+    /** YouTube RegExp **/
+    /* eslint-disable no-useless-escape */
+    // need to be fixed
+    var YouTubeLink = new RegExp("youtube\.com\/([a-z]+)\\?([a-z]+)\=([0-9a-zA-Z\-\_]+)", "ig");
+    /* eslint-enable no-useless-escape */
+
+    /** Scan Youtube Link **/
+    var YouTube = YouTubeLink.exec(firstURL);
+
+    if (YouTube) {
+      let Type;
+      if (YouTube[1] === "watch") Type = "id";
+      if (YouTube[1] === "playlist") Type = "playlist";
+      if (!Type) return console.log("[EXTs] [Bugsounet:EXT:YouTube] Unknow Type !", YouTube);
+      if (this.EXT["EXT-YouTube"].hello) {
+        if (Type === "playlist") {
+          this.sendAlert({
+            message: "EXT_YOUTUBE don't support playlist",
+            timer: 5000,
+            type: "warning"
+          }, "MMM-Bugsounet");
+          return;
+        }
+        this.sendNotification("Bugsounet_YOUTUBE-PLAY", YouTube[3]);
+      }
+      return;
+    }
+
+    /** scan spotify links **/
+    /** Spotify RegExp **/
+    /* eslint-disable no-useless-escape */
+    // need to be fixed
+    var SpotifyLink = new RegExp("open\.spotify\.com\/([a-z]+)\/([0-9a-zA-Z\-\_]+)", "ig");
+    /* eslint-enable no-useless-escape */
+    var Spotify = SpotifyLink.exec(firstURL);
+    if (Spotify) {
+      let type = Spotify[1];
+      let id = Spotify[2];
+      if (this.EXT["EXT-Spotify"].hello) {
+        if (type === "track") {
+          // don't know why tracks works only with uris !?
+          this.sendNotification("Bugsounet_SPOTIFY-PLAY", { uris: [`spotify:track:${id}`] });
+        }
+        else {
+          this.sendNotification("Bugsounet_SPOTIFY-PLAY", { context_uri: `spotify:${type}:${id}` });
+        }
+      }
+      return;
+    }
+    // send to Browser
+    if (this.EXT["EXT-Browser"].hello) {
+      // force connexion for rules (don't turn off other EXT)
+      this.EXT["EXT-Browser"].connected = true;
+      this.sendNotification("Bugsounet_BROWSER-OPEN", firstURL);
+      logBugsounet("[EXTs] Forced connected: EXT-Browser");
+    }
+  }
+
+  /** Assistant Volume control **/
+  AssistantVolume (volume) {
+    if (this.EXT["EXT-Volume"].hello) {
+      logBugsounet("Volume Control:", volume);
+      this.sendNotification("Bugsounet_VOLUME-SPEAKER_SET", volume);
     }
   }
 
