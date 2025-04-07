@@ -110,3 +110,8 @@ jobs:
       - name: Run ESBuild EXT-Volume
         run: node installer/minify --path=EXTs/EXT-Volume
         continue-on-error: false
+
+      - name: Run ESBuild EXT-YouTubeCast
+        run: node installer/minify --path=EXTs/EXT-YouTubeCast
+        continue-on-error: false
+
