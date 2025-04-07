@@ -28,7 +28,7 @@
     "@mapbox/node-pre-gyp": "^2.0.0",
     "@picovoice/porcupine-node": "^3.0.6",
     "@types/node": "^22.14.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=23"
