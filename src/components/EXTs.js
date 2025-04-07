@@ -23,6 +23,7 @@ class EXTs {
       "EXT-Freebox",
       "EXT-FreeboxTV",
       "EXT-Glassy",
+      "EXT-Keyboard",
       "EXT-Librespot",
       "EXT-MeteoFrance",
       "EXT-NetatmoThermostat",

@@ -1,7 +1,7 @@
 /****************
 *  EXT-Keyboard *
 *  Bugsounet    *
-*  03/2023      *
+*  04/2025      *
 *****************/
 
 const exec = require("child_process").exec;
@@ -19,7 +19,7 @@ module.exports = NodeHelper.create({
     if (this.config.keys.length && Array.isArray(this.config.keys)) {
       log("keys:", this.config.keys);
     } else {
-      console.log("[KEYBOARD] No keys found in config!");
+      console.warn("[KEYBOARD] No keys found in config!");
       this.sendSocketNotification("WARNING", { message: "No keys found in config!" });
     }
   },
@@ -34,12 +34,12 @@ module.exports = NodeHelper.create({
         var command = payload;
         if (!command) {
           this.sendSocketNotification("WARNING", { message: "ShellExec: no command to execute!" });
-          return console.log("[KEYBOARD] ShellExec: no command to execute!");
+          return console.warn("[KEYBOARD] ShellExec: no command to execute!");
         }
         exec(command, { cwd: cwdPath }, (e, so, se) => {
           log("ShellExec command:", command);
           if (e) {
-            console.log(`[KEYBOARD] ShellExec Error:${e}`);
+            console.error(`[KEYBOARD] ShellExec Error:${e}`);
             this.sendSocketNotification("WARNING", { message: "ShellExec: execute Error !" });
           }
 

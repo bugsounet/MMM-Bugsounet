@@ -1,7 +1,7 @@
 /****************
 *  EXT-Keyboard *
 *  Bugsounet    *
-*  02/2024      *
+*  04/2025      *
 *****************/
 
 Module.register("EXT-Keyboard", {
@@ -11,14 +11,14 @@ Module.register("EXT-Keyboard", {
     keys: [
       {
         keyCode: 107,
-        notification: "EXT_VOLUME-SPEAKER_UP",
+        notification: "Bugsounet_VOLUME-SPEAKER_UP",
         payload: null,
         command: null,
         sound: "up"
       },
       {
         keyCode: 109,
-        notification: "EXT_VOLUME-SPEAKER_DOWN",
+        notification: "Bugsounet_VOLUME-SPEAKER_DOWN",
         payload: null,
         command: null,
         sound: "down"
@@ -39,11 +39,11 @@ Module.register("EXT-Keyboard", {
 
   notificationReceived (noti, payload, sender) {
     switch (noti) {
-      case "GA_READY":
-        if (sender.name === "MMM-GoogleAssistant") {
+      case "Bugsounet_READY":
+        if (sender.name === "MMM-Bugsounet") {
           this.sendSocketNotification("INIT", this.config);
           this.prepare();
-          this.sendNotification("EXT_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
         }
         break;
     }
@@ -52,7 +52,7 @@ Module.register("EXT-Keyboard", {
   socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "WARNING":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: payload.message,
           sound: `${this.resources}keyboard.mp3`
@@ -66,7 +66,7 @@ Module.register("EXT-Keyboard", {
     this.audio.autoplay = true;
     onkeydown = (event) => {
       if (this.config.keyFinder) {
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "information",
           message: `You pressed: ${event.key === " " ? "Space" : event.key} --> keyCode is: ${event.keyCode}`,
           timer: 3000,

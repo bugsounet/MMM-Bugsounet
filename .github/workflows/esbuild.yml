@@ -51,6 +51,10 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-Glassy
         continue-on-error: false
 
+      - name: Run ESBuild EXT-Keyboard
+        run: node installer/minify --path=EXTs/EXT-Keyboard
+        continue-on-error: false
+
       - name: Run ESBuild EXT-Librespot
         run: node installer/minify --path=EXTs/EXT-Librespot
         continue-on-error: false
