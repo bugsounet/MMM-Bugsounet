@@ -1,22 +1,20 @@
 {
   "name": "EXT-YouTubeCast",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "An embedded YouTube Cast Dislayer on MagicMirror.",
   "homepage": "https://wiki.bugsounet.fr/en/EXT-YouTubeCast",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-YouTubeCast.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "dev": "cd installer && node dev.js",
-    "dev:src": "cd installer && node src.js",
-    "lint": "cd ../.. && npm run lint",
-    "lint:fix": "cd ../.. && npm run lint:fix",
-    "postinstall": "installer/postinstall.sh -m",
-    "preinstall": "installer/preinstall.sh",
-    "reset": "rm -f *.js components/*.js",
-    "test": "npm run lint",
-    "test:minify": "cd installer && node minify.js"
+    "clean": "node ../../installer/clean --path=EXTs/EXT-YouTubeCast",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-YouTubeCast",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-YouTubeCast",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-YouTubeCast",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-YouTubeCast",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-YouTubeCast"
   },
   "dependencies": {
     "ejs": "^3.1.10",
@@ -26,7 +24,7 @@
     "xml2js": "^0.6.2"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "250107"
+  "rev": "250407"
 }

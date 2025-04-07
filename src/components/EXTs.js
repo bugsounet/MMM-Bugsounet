@@ -37,7 +37,8 @@ class EXTs {
       "EXT-Touch",
       "EXT-Updates",
       "EXT-VLCServer",
-      "EXT-Volume"
+      "EXT-Volume",
+      "EXT-YouTubeCast"
     ];
 
     this.EXT = {
@@ -139,6 +140,7 @@ class EXTs {
 
     if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-STOP");
     if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-STOP");
+    if (this.EXT["EXT-YouTubeCast"].hello && this.EXT["EXT-YouTubeCast"].connected) this.sendNotification("Bugsounet_YOUTUBECAST-STOP");
     if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-STOP");
 
     logBugsounet("[EXTs] Connected:", extName);
@@ -254,7 +256,9 @@ class EXTs {
       "Bugsounet_ASSISTANT-RESPONSE",
       "Bugsounet_ASSISTANT-VOLUME",
       "Bugsounet_BROWSER-CONNECTED",
-      "Bugsounet_BROWSER-DISCONNECTED"
+      "Bugsounet_BROWSER-DISCONNECTED",
+      "Bugsounet_YOUTUBECAST-CONNECTED",
+      "Bugsounet_YOUTUBECAST-DISCONNECTED"
     ];
 
     if (EXTNoti.indexOf(noti) === -1) {
@@ -441,6 +445,14 @@ class EXTs {
         break;
       case "Bugsounet_ASSISTANT-VOLUME":
         this.AssistantVolume(payload);
+        break;
+      case "Bugsounet_YOUTUBECAST-CONNECTED":
+        if (!this.EXT["EXT-YouTubeCast"].hello) return this.sendWarn("[CONNECT] EXT-YouTubeCast don't say to me HELLO!");
+        this.connectEXT("EXT-YouTubeCast");
+        break;
+      case "Bugsounet_YOUTUBECAST-DISCONNECTED":
+        if (!this.EXT["EXT-YouTubeCast"].hello) return this.sendWarn("[DISCONNECT] EXT-YouTubeCast don't say to me HELLO!");
+        this.disconnectEXT("EXT-YouTubeCast");
         break;
     }
 
