@@ -13,13 +13,13 @@
     "voice control",
     "smart home"
   ],
-  "homepage": "https://wiki.bugsounet.fr/MMM-GoogleAssistant",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "bugs": {
     "url": "https://www.bugsounet.fr"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugsounet/MMM-GoogleAssistant"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "license": "MIT",
   "author": "bugsounet",

@@ -2,7 +2,7 @@
   "name": "EXT-YouTubeCast",
   "version": "1.7.0",
   "description": "An embedded YouTube Cast Dislayer on MagicMirror.",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-YouTubeCast",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-YouTubeCast.js",
