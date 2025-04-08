@@ -71,6 +71,10 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-Pages
         continue-on-error: false
 
+      - name: Run ESBuild EXT-Photos
+        run: node installer/minify --path=EXTs/EXT-Photos
+        continue-on-error: false
+
       - name: Run ESBuild EXT-PrixCarburants
         run: node installer/minify --path=EXTs/EXT-PrixCarburants
         continue-on-error: false

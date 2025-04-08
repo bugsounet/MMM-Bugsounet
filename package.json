@@ -45,6 +45,7 @@
     "setup:EXT-NetatmoThermostat": "node installer/setup --path=EXTs/EXT-NetatmoThermostat",
     "setup:EXT-NetatmoThermostat:check": "node --no-deprecation EXTs/EXT-NetatmoThermostat/installer/check",
     "setup:EXT-Pages": "node installer/setup --path=EXTs/EXT-Pages",
+    "setup:EXT-Photos": "node installer/setup --path=EXTs/EXT-Photos",
     "setup:EXT-PrixCarburants": "node installer/setup --path=EXTs/EXT-PrixCarburants",
     "setup:EXT-RadioPlayer": "node installer/setup --path=EXTs/EXT-RadioPlayer",
     "setup:EXT-Saint": "node installer/setup --path=EXTs/EXT-Saint",

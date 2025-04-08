@@ -28,6 +28,7 @@ class EXTs {
       "EXT-MeteoFrance",
       "EXT-NetatmoThermostat",
       "EXT-Pages",
+      "EXT-Photos",
       "EXT-PrixCarburants",
       "EXT-RadioPlayer",
       "EXT-Saint",
@@ -191,9 +192,10 @@ class EXTs {
     if (this.EXT["EXT-Screen"].hello) this.sendNotification("Bugsounet_SCREEN-UNLOCK");
   }
 
-  // exception with EXT-Browser
+  // exception with EXT-Browser, EXT-Photos
   byPassIsConnected () {
-    if (this.EXT["EXT-Browser"].hello && this.EXT["EXT-Browser"].connected) {
+    if ((this.EXT["EXT-Browser"].hello && this.EXT["EXT-Browser"].connected)
+      || (this.EXT["EXT-Photos"].hello && this.EXT["EXT-Photos"].connected)) {
       logBugsounet("[EXTs] byPass", true);
       return true;
     }
@@ -259,7 +261,9 @@ class EXTs {
       "Bugsounet_BROWSER-CONNECTED",
       "Bugsounet_BROWSER-DISCONNECTED",
       "Bugsounet_YOUTUBECAST-CONNECTED",
-      "Bugsounet_YOUTUBECAST-DISCONNECTED"
+      "Bugsounet_YOUTUBECAST-DISCONNECTED",
+      "Bugsounet_PHOTOS-CONNECTED",
+      "Bugsounet_PHOTOS-DISCONNECTED"
     ];
 
     if (EXTNoti.indexOf(noti) === -1) {
@@ -455,6 +459,14 @@ class EXTs {
         if (!this.EXT["EXT-YouTubeCast"].hello) return this.sendWarn("[DISCONNECT] EXT-YouTubeCast don't say to me HELLO!");
         this.disconnectEXT("EXT-YouTubeCast");
         break;
+      case "Bugsounet_PHOTOS-CONNECTED":
+        if (!this.EXT["EXT-Photos"].hello) return this.sendWarn("[CONNECT] EXT-Photos don't say to me HELLO!");
+        this.connectEXT("EXT-Photos");
+        break;
+      case "Bugsounet_PHOTOS-DISCONNECTED":
+        if (!this.EXT["EXT-Photos"].hello) return this.sendWarn("[DISCONNECT] EXT-Photos don't say to me HELLO!");
+        this.disconnectEXT("EXT-Photos");
+        break;
     }
 
     let isEqual = this.previousEXT === JSON.stringify(this.EXT);
@@ -490,14 +502,14 @@ class EXTs {
     var urls = configMerge({}, urls, tmp);
     if (urls.photos.length > 0 && this.EXT["EXT-Photos"].hello) {
       this.EXT["EXT-Photos"].connected = true;
-      this.sendNotification("EXT_PHOTOS-OPEN", urls.photos.urls);
+      this.sendNotification("Bugsounet_PHOTOS-OPEN", urls.photos.urls);
       logBugsounet("[EXTs] Forced connected: EXT-Photos");
     }
     else if (urls.links.length > 0) {
       this.urlsScan(urls);
     } else if (urls.youtube && this.EXT["EXT-YouTube"].hello) {
-      this.sendNotification("EXT_YOUTUBE-SEARCH", urls.youtube);
-      logBugsounet("[EXTs] Sended to YT", urls.youtube);
+      this.sendNotification("Bugsounet_YOUTUBE-SEARCH", urls.youtube);
+      logBugsounet("[EXTs] Sended to EXT-YouTube:", urls.youtube);
     }
     logBugsounet("[EXTs] Response Structure:", urls);
   }
