@@ -1,8 +1,8 @@
 {
   "name": "EXT-GooglePhotos",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "An embedded Google Photos Displayer on MagicMirror.",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-GooglePhotos",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
   "author": [
     "eouia",
@@ -10,23 +10,21 @@
   ],
   "main": "EXT-GooglePhotos.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "dev": "cd installer && node dev.js",
-    "dev:src": "cd installer && node src.js",
-    "lint": "cd ../.. && npm run lint",
-    "lint:fix": "cd ../.. && npm run lint:fix",
-    "postinstall": "installer/postinstall.sh -m",
-    "preinstall": "installer/preinstall.sh",
-    "reset": "rm -f *.js components/*.js",
-    "test": "npm run lint",
-    "test:minify": "cd installer && node minify.js",
-    "token": "installer/token.sh"
+    "clean": "node ../../installer/clean --path=EXTs/EXT-GooglePhotos",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-GooglePhotos",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-GooglePhotos",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-GooglePhotos",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-GooglePhotos",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-GooglePhotos"
   },
   "dependencies": {
-    "axios": "^1.8.4"
+    "axios": "^1.8.4",
+    "google-auth-library": "^9.15.1"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "250113"
+  "rev": "250408"
 }

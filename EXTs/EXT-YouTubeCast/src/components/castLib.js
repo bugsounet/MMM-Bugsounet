@@ -6,21 +6,14 @@ const dial = require("../components/peer-dial");
 
 const app = express();
 
-var _log = (function () {
-  var context = "[CAST]";
-  return Function.prototype.bind.call(console.log, console, context);
-}());
-
-var log = function () {
-  //do nothing
-};
+var log = () => { /* do nothing */ };
 
 class DialServer {
   constructor (config, callbacks, debug) {
     this.dialServer = null;
     this.config = config;
     this.callbacks = callbacks;
-    if (debug === true) log = _log;
+    if (debug === true) log = (...args) => { console.log("[CAST]", ...args); };
     this.default = {
       castName: "MagicMirror_Cast",
       port: 8569
@@ -92,7 +85,7 @@ class DialServer {
       .on("error", (e) => {
         if (e.code === "EADDRINUSE") this.callbacks("ERROR", `Cast: Port already in use ${this.config.port}`);
         else this.callbacks("WARNING", `Cast: ${e.toString()}`);
-        console.log("[CAST]", e.toString());
+        console.error("[CAST]", e.toString());
       });
   }
 
@@ -101,7 +94,6 @@ class DialServer {
     this.server.close();
     log("Stop listening");
   }
-
 }
 
 module.exports = DialServer;

@@ -41,7 +41,7 @@ class BrowserDisplay {
     webView.addEventListener("crashed", (event) => {
       console.log("[BROWSER] J'ai tout pété mon général !!!");
       console.log("[BROWSER]", event);
-      this.sendNotification("GA_ALERT", {
+      this.sendNotification("Bugsounet_ALERT", {
         message: this.translate("BrowserCrash"),
         type: "error"
       });
@@ -83,11 +83,11 @@ class BrowserDisplay {
   }
 
   startBrowser () {
-    if (!this.browser.running) this.sendNotification("GA_ALERT", {
+    if (!this.browser.running) this.sendNotification("Bugsounet_ALERT", {
       message: this.translate("BrowserOpen"),
       type: "information"
     });
-    this.sendNotification("EXT_BROWSER-CONNECTED");
+    this.sendNotification("Bugsounet_BROWSER-CONNECTED");
     clearTimeout(this.timerBrowser);
     this.timerBrowser = null;
     this.hideModules();
@@ -95,11 +95,11 @@ class BrowserDisplay {
   }
 
   endBrowser (extAlert = false) {
-    if (extAlert) this.sendNotification("GA_ALERT", {
+    if (extAlert) this.sendNotification("Bugsounet_ALERT", {
       message: this.translate("BrowserClose"),
       type: "information"
     });
-    this.sendNotification("EXT_BROWSER-DISCONNECTED");
+    this.sendNotification("Bugsounet_BROWSER-DISCONNECTED");
     this.hideBrowser();
     this.resetBrowser();
     this.showModules();

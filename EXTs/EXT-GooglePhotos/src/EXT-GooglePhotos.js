@@ -1,9 +1,8 @@
 /**
  ** Module : EXT-GooglePhotos
  ** @bugsounet
- ** ©03-2023
+ ** ©04-2025
  ** @eouia code based
- ** support: https://forum.bugsounet.fr
  **/
 
 /** Todo : create a displayer class **/
@@ -107,30 +106,30 @@ Module.register("EXT-GooglePhotos", {
   },
 
   notificationReceived (noti, payload, sender) {
-    if (noti === "GA_READY") {
-      if (sender.name === "MMM-GoogleAssistant") {
+    if (noti === "Bugsounet_READY") {
+      if (sender.name === "MMM-Bugsounet") {
         this.prepare();
         this.sendSocketNotification("INIT", this.config);
         setTimeout(() => { this.showBackgroundGooglePhotoAPI(); }, 5000);
         this.Ready = true;
-        this.sendNotification("EXT_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO", this.name);
       }
     }
     if (!this.Ready) return;
 
     switch (noti) {
-      case "EXT_GOOGLEPHOTOS-STOP":
+      case "Bugsounet_GOOGLEPHOTOS-STOP":
         this.sendSocketNotification("STOP_SCAN");
         this.busy = true;
         break;
-      case "EXT_GOOGLEPHOTOS-START":
+      case "Bugsounet_GOOGLEPHOTOS-START":
         this.busy = false;
         this.sendSocketNotification("START_SCAN");
         break;
-      case "EXT_GPHOTOPHOTOS-UPLOAD":
+      case "Bugsounet_GPHOTOPHOTOS-UPLOAD":
         this.sendSocketNotification("UPLOAD", payload);
         break;
-      case "EXT_GOOGLEPHOTOS-NEXT":
+      case "Bugsounet_GOOGLEPHOTOS-NEXT":
         // stop timer
         clearTimeout(this.GPhotos.updateTimer);
         // change photo
@@ -140,7 +139,7 @@ Module.register("EXT-GooglePhotos", {
           this.updatePhotos();
         }, this.config.displayDelay);
         break;
-      case "EXT_GOOGLEPHOTOS-PREVIOUS":
+      case "Bugsounet_GOOGLEPHOTOS-PREVIOUS":
         // return to index of photo before current
         this.GPhotos.index -= 2;
         // stop timer
@@ -152,7 +151,7 @@ Module.register("EXT-GooglePhotos", {
           this.updatePhotos();
         }, this.config.displayDelay);
         break;
-      case "EXT_GOOGLEPHOTOS-MORE_TIME": // shows photo longer
+      case "Bugsounet_GOOGLEPHOTOS-MORE_TIME": // shows photo longer
         // stop timers
         clearTimeout(this.GPhotos.updateTimer);
         clearTimeout(this.fadeTimeout);
@@ -165,7 +164,7 @@ Module.register("EXT-GooglePhotos", {
           this.updatePhotos();
         }, this.config.displayDelay * this.config.time_extender);
         break;
-      case "EXT_SCREEN-POWER":
+      case "Bugsounet_SCREEN-POWER":
         if (this.config.suspendWhenScreenOff) {
           if (payload === true) {
             this.resume();
@@ -174,12 +173,12 @@ Module.register("EXT-GooglePhotos", {
           }
         }
         break;
-      case "EXT_GOOGLEPHOTOS-SIGNAL_PHOTO":
+      case "Bugsounet_GOOGLEPHOTOS-SIGNAL_PHOTO":
         if (this.config.photoSignalUrl) {
           let current_displayed_photo_index = this.GPhotos.index - 1;
           if (current_displayed_photo_index >= 0) {
             let photoName = this.GPhotos.scanned[current_displayed_photo_index].filename;
-            this.sendNotification("GA_ALERT", {
+            this.sendNotification("Bugsounet_ALERT", {
               type: "warning",
               message: this.translate("GPUninterestingPhoto", { NAME: photoName }),
               icon: this.file("resources/GooglePhoto-Logo.png")
@@ -215,7 +214,7 @@ Module.register("EXT-GooglePhotos", {
           this.GPhotos.scanned = payload;
           this.GPhotos.index = 0;
           if (this.config.debug) {
-            this.sendNotification("GA_ALERT", {
+            this.sendNotification("Bugsounet_ALERT", {
               type: "information",
               message: this.translate("GPReceive", { VALUES: payload.length }),
               icon: this.file("resources/GooglePhoto-Logo.png"),
@@ -230,7 +229,7 @@ Module.register("EXT-GooglePhotos", {
         break;
       case "ERROR":
       case "GPError":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "error",
           message: payload,
           icon: this.file("resources/GooglePhoto-Logo.png")
@@ -342,7 +341,7 @@ Module.register("EXT-GooglePhotos", {
     hidden.onerror = () => {
       console.error("[GPHOTOS] Failed to Load Image.");
       if (!this.busy) {
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: this.translate("GPFailedOpenURL"),
           icon: this.file("resources/GooglePhoto-Logo.png")
@@ -399,7 +398,7 @@ Module.register("EXT-GooglePhotos", {
       clearTimeout(this.GPhotos.updateTimer);
       this.GPhotos.updateTimer = null;
       if (!this.busy) {
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: this.translate("GPNoPhotoFound"),
           icon: this.file("resources/GooglePhoto-Logo.png")
@@ -408,7 +407,7 @@ Module.register("EXT-GooglePhotos", {
       }
       this.GPhotos.warning++;
       if (this.GPhotos.warning >= 5) {
-        if (!this.busy) this.sendNotification("GA_ALERT", {
+        if (!this.busy) this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: this.translate("GPError"),
           icon: this.file("resources/GooglePhoto-Logo.png")
@@ -421,7 +420,7 @@ Module.register("EXT-GooglePhotos", {
       }, 15000);
     } else {
       if (this.GPhotos.albums) {
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "information",
           message: this.translate("GPOpen"),
           icon: this.file("resources/GooglePhoto-Logo.png")

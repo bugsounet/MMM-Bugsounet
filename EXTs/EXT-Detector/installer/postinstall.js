@@ -1,4 +1,4 @@
-const utils = require("../../../installer/utils");
+const { success, error, out, execPathCMD, getModuleRoot } = require("../../../installer/utils");
 
 async function main () {
   const commands = [
@@ -9,23 +9,23 @@ async function main () {
   for (const command of commands) {
     await execCMD(command);
   }
-  utils.success("Done");
+  success("Done");
 }
 
 async function execCMD (command) {
   return new Promise((resolve) => {
-    utils.execPathCMD(command, `${utils.getModuleRoot()}`, (err) => {
+    execPathCMD(command, `${getModuleRoot()}`, (err) => {
       if (err) {
-        utils.error("Error Detected!");
+        error("Error Detected!");
         process.exit(1);
       }
       resolve();
     })
       .on("stdout", function (data) {
-        utils.out(data.trim());
+        out(data.trim());
       })
       .on("stderr", function (data) {
-        utils.error(data.trim());
+        error(data.trim());
       });
   });
 }

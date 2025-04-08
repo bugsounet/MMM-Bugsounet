@@ -43,21 +43,21 @@ Module.register("EXT-Photos", {
   },
 
   notificationReceived (noti, payload, sender) {
-    if (noti === "GA_READY") {
-      if (sender.name === "MMM-GoogleAssistant") {
+    if (noti === "Bugsounet_ASSISTANT-READY") {
+      if (sender.name === "EXT-Assistant") {
         this.sendSocketNotification("INIT");
         this.preparePopup();
         this.ready = true;
-        this.sendNotification("EXT_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO", this.name);
       }
     }
     if (!this.ready) return;
 
     switch (noti) {
-      case "EXT_PHOTOS-OPEN":
+      case "Bugsounet_PHOTOS-OPEN":
         logPhotos("Received:", payload);
         if (!payload || !payload.length) {
-          this.sendNotification("GA_ALERT", {
+          this.sendNotification("Bugsounet_ALERT", {
             message: this.translate("PhotosError"),
             type: "error"
           });
@@ -68,13 +68,13 @@ Module.register("EXT-Photos", {
         this.photos.length = payload.length;
         this.startPhotos();
         break;
-      case "EXT_STOP":
+      case "Bugsounet_STOP":
         if (this.photos.running) {
           this.resetPhotos();
           this.endPhotos();
         }
         break;
-      case "EXT_PHOTOS-CLOSE":
+      case "Bugsounet_PHOTOS-CLOSE":
         if (this.photos.running) {
           this.resetPhotos();
           this.endPhotos(true);
@@ -104,24 +104,24 @@ Module.register("EXT-Photos", {
   },
 
   startPhotos () {
-    if (!this.photos.running) this.sendNotification("GA_ALERT", {
+    if (!this.photos.running) this.sendNotification("Bugsounet_ALERT", {
       message: this.translate("PhotosOpen"),
       type: "information",
       icon: this.file("resources/Photos-Logo.png")
     });
-    this.sendNotification("EXT_PHOTOS-CONNECTED");
+    this.sendNotification("Bugsounet_PHOTOS-CONNECTED");
     this.hideModules();
     this.showPhotos();
     this.photoDisplay();
   },
 
   endPhotos (extAlert = false) {
-    if (extAlert) this.sendNotification("GA_ALERT", {
+    if (extAlert) this.sendNotification("Bugsounet_ALERT", {
       message: this.translate("PhotosClose"),
       type: "information",
       icon: this.file("resources/Photos-Logo.png")
     });
-    this.sendNotification("EXT_PHOTOS-DISCONNECTED");
+    this.sendNotification("Bugsounet_PHOTOS-DISCONNECTED");
     this.hidePhotos();
     this.showModules();
   },
@@ -156,7 +156,7 @@ Module.register("EXT-Photos", {
     logPhotos(`Loading photo #${this.photos.position}/${this.photos.length - 1}`);
     var hidden = document.createElement("img");
     hidden.onerror = () => {
-      this.sendNotification("GA_ALERT", {
+      this.sendNotification("Bugsounet_ALERT", {
         message: this.translate("PhotosError"),
         type: "warning",
         icon: this.file("resources/Photos-Logo.png")

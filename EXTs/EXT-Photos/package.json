@@ -1,25 +1,23 @@
 {
   "name": "EXT-Photos",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "An embedded Photos displayer on MagicMirror.",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-Photos",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-Photos.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "dev": "cd installer && node dev.js",
-    "dev:src": "cd installer && node src.js",
-    "lint": "cd ../.. && npm run lint",
-    "lint:fix": "cd ../.. && npm run lint:fix",
-    "postinstall": "installer/postinstall.sh -m",
-    "preinstall": "installer/preinstall.sh",
-    "reset": "rm -f *.js",
-    "test": "npm run lint",
-    "test:minify": "cd installer && node minify.js"
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Photos",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Photos",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Photos",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Photos",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Photos",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Photos"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=23.0.0"
   },
-  "rev": "241119"
+  "rev": "250408"
 }

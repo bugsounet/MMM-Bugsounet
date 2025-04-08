@@ -1,9 +1,9 @@
 /*
- ****************************
+ *************************************
  * Module : EXT-Touch
- * Activate by touch for GA
+ * Activate by touch for EXT-Assistant
  * @bugsounet
- ****************************
+ *************************************
  */
 
 /* global DetectorTouchVisual */
@@ -20,17 +20,17 @@ Module.register("EXT-Touch", {
 
   notificationReceived (notification, payload, sender) {
     switch (notification) {
-      case "EXT_TOUCH-START":
+      case "Bugsounet_TOUCH-START":
         if (this.ready) this.Touch.RefreshLogo(false);
         break;
-      case "EXT_TOUCH-BLINK":
+      case "Bugsounet_TOUCH-BLINK":
         if (this.ready) this.Touch.RefreshLogo(true);
         break;
-      case "EXT_TOUCH-STOP":
+      case "Bugsounet_TOUCH-STOP":
         if (this.ready) this.Touch.Disabled();
         break;
-      case "GA_READY":
-        if (sender.name === "MMM-GoogleAssistant") { this.sendSocketNotification("INIT"); }
+      case "Bugsounet_ASSISTANT-READY":
+        if (sender.name === "EXT-Assistant") { this.sendSocketNotification("INIT"); }
         break;
     }
   },
@@ -39,7 +39,7 @@ Module.register("EXT-Touch", {
     switch (notification) {
       case "INITIALIZED":
         this.ready = true;
-        this.sendNotification("EXT_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
     }
   },

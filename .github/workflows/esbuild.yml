@@ -27,6 +27,14 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-Assistant
         continue-on-error: false
 
+      - name: Run ESBuild EXT-Background
+        run: node installer/minify --path=EXTs/EXT-Background
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Browser
+        run: node installer/minify --path=EXTs/EXT-Browser
+        continue-on-error: false
+
       - name: Run ESBuild EXT-Detector
         run: node installer/minify --path=EXTs/EXT-Detector
         continue-on-error: false
@@ -39,8 +47,16 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-FreeboxTV
         continue-on-error: false
 
+      - name: Run ESBuild EXT-GooglePhotos
+        run: node installer/minify --path=EXTs/EXT-GooglePhotos
+        continue-on-error: false
+
       - name: Run ESBuild EXT-Glassy
         run: node installer/minify --path=EXTs/EXT-Glassy
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Keyboard
+        run: node installer/minify --path=EXTs/EXT-Keyboard
         continue-on-error: false
 
       - name: Run ESBuild EXT-Librespot
@@ -57,6 +73,10 @@ jobs:
 
       - name: Run ESBuild EXT-Pages
         run: node installer/minify --path=EXTs/EXT-Pages
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-Photos
+        run: node installer/minify --path=EXTs/EXT-Photos
         continue-on-error: false
 
       - name: Run ESBuild EXT-PrixCarburants
@@ -87,6 +107,10 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-TelegramBot
         continue-on-error: false
 
+      - name: Run ESBuild EXT-Touch
+        run: node installer/minify --path=EXTs/EXT-Touch
+        continue-on-error: false
+
       - name: Run ESBuild EXT-Updates
         run: node installer/minify --path=EXTs/EXT-Updates
         continue-on-error: false
@@ -98,3 +122,8 @@ jobs:
       - name: Run ESBuild EXT-Volume
         run: node installer/minify --path=EXTs/EXT-Volume
         continue-on-error: false
+
+      - name: Run ESBuild EXT-YouTubeCast
+        run: node installer/minify --path=EXTs/EXT-YouTubeCast
+        continue-on-error: false
+

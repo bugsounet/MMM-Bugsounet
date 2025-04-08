@@ -69,15 +69,15 @@ Module.register("EXT-YouTubeCast", {
 
   notificationReceived (noti, payload, sender) {
     switch (noti) {
-      case "GA_READY":
-        if (sender.name === "MMM-GoogleAssistant") {
+      case "Bugsounet_READY":
+        if (sender.name === "MMM-Bugsounet") {
           this.sendSocketNotification("INIT", this.config);
           if (this.config.fullscreen) this.preparePopup();
-          this.sendNotification("EXT_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO", this.name);
         }
         break;
-      case "EXT_STOP":
-      case "EXT_YOUTUBECAST-STOP":
+      case "Bugsounet_STOP":
+      case "Bugsounet_YOUTUBECAST-STOP":
         if (!this.castActive) return;
         this.broadcastStatus("END");
         this.castStop();
@@ -89,7 +89,7 @@ Module.register("EXT-YouTubeCast", {
 
       /** cast module **/
       case "CAST_START":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "information",
           message: this.translate("CastStart"),
           icon: this.file("resources/cast-icon.png")
@@ -98,7 +98,7 @@ Module.register("EXT-YouTubeCast", {
         this.castStart(payload);
         break;
       case "CAST_STOP":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "information",
           message: this.translate("CastStop"),
           icon: this.file("resources/cast-icon.png")
@@ -107,7 +107,7 @@ Module.register("EXT-YouTubeCast", {
         this.castStop();
         break;
       case "CAST_WARNING":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "error",
           message: "castName missing in config",
           icon: this.file("resources/cast-icon.png")
@@ -119,11 +119,11 @@ Module.register("EXT-YouTubeCast", {
   broadcastStatus (status) {
     switch (status) {
       case "START":
-        this.sendNotification("EXT_YOUTUBECAST-CONNECTED");
+        this.sendNotification("Bugsounet_YOUTUBECAST-CONNECTED");
         this.castActive = true;
         break;
       case "END":
-        this.sendNotification("EXT_YOUTUBECAST-DISCONNECTED");
+        this.sendNotification("Bugsounet_YOUTUBECAST-DISCONNECTED");
         this.castActive = false;
         break;
     }

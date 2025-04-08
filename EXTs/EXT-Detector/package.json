@@ -1,6 +1,6 @@
 {
   "name": "EXT-Detector",
-  "version": "2.10.2",
+  "version": "2.11.0",
   "description": "Snowboy / Porcupine Simple detector for EXT-Assistant",
   "license": "MIT",
   "author": "bugsounet",
@@ -28,10 +28,10 @@
     "@mapbox/node-pre-gyp": "^2.0.0",
     "@picovoice/porcupine-node": "^3.0.6",
     "@types/node": "^22.14.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
   "installer" : {
     "rebuild": true,
@@ -44,5 +44,5 @@
     ],
     "postInstall": "node postinstall.js"
   },
-  "rev": "250120"
+  "rev": "250405"
 }

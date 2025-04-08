@@ -1,9 +1,7 @@
-# EXT-Browser - Extented for `MMM-GoogleAssistant`
+# EXT-Browser
 
-It allows to display URLs in fullscreen for `MagicMirror²`
-
-This module is an Extented for `MMM-GoogleAssistant`, It can be controled with notifications or with your voice
+It allows to display URLs in fullscreen for `EXT-Assistant` on `MagicMirror²`
 
 ## Installation / update / configuration
 
-Read the docs in [wiki](https://wiki.bugsounet.fr/EXT-Browser)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90Browser)
