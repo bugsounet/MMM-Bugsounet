@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const GP = require("../components/GooglePhotosLib");
 
-console.log("[GPHOTOS] Check credentials.json...",path.resolve(`${__dirname}/../credentials.json`));
+console.log("[GPHOTOS] Check credentials.json...");
 if (fs.existsSync(path.resolve(`${__dirname}/../credentials.json`))) {
   this.CREDENTIALS = path.resolve(`${__dirname}/../credentials.json`);
 } else if (fs.existsSync(path.resolve(`${__dirname}/../../EXT-Assistant/credentials.json`))) {
