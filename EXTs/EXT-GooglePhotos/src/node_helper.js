@@ -45,10 +45,14 @@ module.exports = NodeHelper.create({
   async initialize (config) {
     this.config = config;
     if (this.config.debug) logGP = (...args) => { console.log("[GPHOTOS]", ...args); };
+
     logGP("Check credentials.json...");
-    if (fs.existsSync(path.resolve(`${__dirname}/../../credentials.json`))) {
-      this.config.CREDENTIALS = path.resolve(`${__dirname}/../../credentials.json`);
+    if (fs.existsSync(path.resolve(`${__dirname}/credentials.json`))) {
+      this.config.CREDENTIALS = path.resolve(`${__dirname}/credentials.json`);
+    } else if (fs.existsSync(path.resolve(`${__dirname}/../EXT-Assistant/credentials.json`))) {
+      this.config.CREDENTIALS = path.resolve(`${__dirname}/../EXT-Assistant/credentials.json`);
     }
+
     if (!this.config.CREDENTIALS) {
       this.sendSocketNotification("GPError", "Error: credentials.json file not found !");
       console.error("[GPHOTOS] credentials.json file not found !");

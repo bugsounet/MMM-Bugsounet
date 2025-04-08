@@ -1,11 +1,9 @@
 # EXT-GooglePhotos
 
--- Extented for `MMM-GoogleAssistant` --
+It allows to display photos from Google Photos album in fullscreen for `MagicMirror²`
 
-It allows to display photos from Google Photos album in fullscreen for `MagicMirror`
-
-This module is an Extented plugin for `MMM-GoogleAssistant`
+This module is a plugin for `MMM-Bugsounet`
 
 ## Installation / update / configuration
 
-Read the docs in [wiki](https://wiki.bugsounet.fr/EXT-GooglePhotos)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90GooglePhotos)

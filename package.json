@@ -37,6 +37,7 @@
     "setup:EXT-Freebox": "node installer/setup --path=EXTs/EXT-Freebox",
     "setup:EXT-Freebox:register": "node EXTs/EXT-Freebox/installer/Freebox_Login.js",
     "setup:EXT-FreeboxTV": "node installer/setup --path=EXTs/EXT-FreeboxTV",
+    "setup:EXT-GooglePhotos": "node installer/setup --path=EXTs/EXT-GooglePhotos",
     "setup:EXT-Glassy": "node installer/setup --path=EXTs/EXT-Glassy",
     "setup:EXT-Keyboard": "node installer/setup --path=EXTs/EXT-Keyboard",
     "setup:EXT-Librespot": "node installer/setup --path=EXTs/EXT-Librespot",
