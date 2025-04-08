@@ -46,3 +46,5 @@
 
 /EXTs/EXT-Detector/build/
 /EXTs/EXT-Detector/components/lib/node/binding/Release/
+/EXTs/EXT-GooglePhotos/tokenGP.json
+/EXTs/EXT-GooglePhotos/tmp/cache/*
