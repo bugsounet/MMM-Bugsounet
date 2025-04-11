@@ -103,6 +103,10 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-Spotify
         continue-on-error: false
 
+      - name: Run ESBuild EXT-StreamDeck
+        run: node installer/minify --path=EXTs/EXT-StreamDeck
+        continue-on-error: false
+
       - name: Run ESBuild EXT-TelegramBot
         run: node installer/minify --path=EXTs/EXT-TelegramBot
         continue-on-error: false
