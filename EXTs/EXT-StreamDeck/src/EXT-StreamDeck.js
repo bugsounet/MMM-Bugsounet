@@ -99,7 +99,7 @@ Module.register("EXT-StreamDeck", {
     switch (noti) {
       case "INITIALIZED":
         this.ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
       case "WARNING":
         this.sendNotification("Bugsounet_ALERT", {
