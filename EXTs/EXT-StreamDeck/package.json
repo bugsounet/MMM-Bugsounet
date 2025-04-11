@@ -30,8 +30,5 @@
       "libudev-dev"
     ]
   },
-  "overrides": {
-    "axios": "^1.8.2"
-  },
   "rev": "250411"
 }
