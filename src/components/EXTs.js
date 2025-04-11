@@ -36,6 +36,7 @@ class EXTs {
       "EXT-Screen",
       "EXT-SmartHome",
       "EXT-Spotify",
+      "EXT-StreamDeck",
       "EXT-TelegramBot",
       "EXT-Touch",
       "EXT-Updates",
@@ -131,6 +132,7 @@ class EXTs {
     if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
       if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
       this.sendNotification("Bugsounet_SCREEN-LOCK");
+      if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-ON");
     }
 
     if (this.byPassIsConnected()) {
@@ -162,6 +164,7 @@ class EXTs {
     setTimeout(() => { // wait 1 sec before scan ...
       if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
         this.sendNotification("Bugsounet_SCREEN-UNLOCK");
+        if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-OFF");
       }
       if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("Bugsounet_PAGES-UNLOCK");
       logBugsounet("[EXTs] Disconnected:", extName);
@@ -425,6 +428,7 @@ class EXTs {
             if (this.EXT["EXT-Touch"].hello) this.sendNotification("Bugsounet_TOUCH-START");
             if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
               this.sendNotification("Bugsounet_SCREEN-UNLOCK", { show: true });
+              if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-OFF");
             }
             if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("Bugsounet_PAGES-RESUME");
             if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-VOLUME_MAX");
@@ -438,6 +442,7 @@ class EXTs {
             if (this.EXT["EXT-Screen"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) {
               if (!this.EXT["EXT-Screen"].power) this.sendNotification("Bugsounet_SCREEN-WAKEUP");
               this.sendNotification("Bugsounet_SCREEN-LOCK", { show: true });
+              if (this.EXT["EXT-StreamDeck"].hello) this.sendNotification("Bugsounet_STREAMDECK-ON");
             }
             if (this.EXT["EXT-Pages"].hello && !this.hasPluginConnected(this.EXT, "connected", true)) this.sendNotification("Bugsounet_PAGES-PAUSE");
             if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-VOLUME_MIN");
