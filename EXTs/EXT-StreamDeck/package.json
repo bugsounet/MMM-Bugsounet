@@ -1,34 +1,37 @@
 {
   "name": "EXT-StreamDeck",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "elgato Streamdeck plugin",
-  "homepage": "https://wiki.bugsounet.fr",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-StreamDeck.js",
   "scripts": {
-    "clean": "rm -rf node_modules package-lock.json",
-    "dev": "cd installer && node dev.js",
-    "dev:src": "cd installer && node src.js",
-    "lint": "cd ../.. && npm run lint",
-    "lint:fix": "cd ../.. && npm run lint:fix",
-    "postinstall": "installer/postinstall.sh -m",
-    "preinstall": "installer/preinstall.sh -d 'libusb-1.0-0-dev libudev-dev'",
-    "reset": "rm *.js && git reset --hard",
-    "setup": "installer/setup.sh",
-    "test": "npm run lint",
-    "test:minify": "cd installer && node minify.js",
-    "update": "installer/update.sh"
+    "clean": "node ../../installer/clean --path=EXTs/EXT-StreamDeck",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-StreamDeck",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-StreamDeck",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-StreamDeck",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-StreamDeck",
+    "rules": "installer/setup.sh",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-StreamDeck"
   },
   "dependencies": {
-    "@elgato-stream-deck/node": "^6.2.2",
+    "@elgato-stream-deck/node": "^7.1.2",
     "jimp": "^0.22.12"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
+  },
+  "installer": {
+    "apt": [
+      "libusb-1.0-0-dev",
+      "libudev-dev"
+    ]
   },
   "overrides": {
     "axios": "^1.8.2"
   },
-  "rev": "241119"
+  "rev": "250411"
 }
