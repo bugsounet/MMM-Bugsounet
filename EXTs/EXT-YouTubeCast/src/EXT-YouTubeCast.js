@@ -73,7 +73,7 @@ Module.register("EXT-YouTubeCast", {
         if (sender.name === "MMM-Bugsounet") {
           this.sendSocketNotification("INIT", this.config);
           if (this.config.fullscreen) this.preparePopup();
-          this.sendNotification("Bugsounet_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
         }
         break;
       case "Bugsounet_STOP":

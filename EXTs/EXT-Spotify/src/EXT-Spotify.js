@@ -193,7 +193,7 @@ Module.register("EXT-Spotify", {
       case "Bugsounet_READY":
         if (sender.name === "MMM-Bugsounet") {
           this.sendSocketNotification("INIT", this.configHelper);
-          this.sendNotification("Bugsounet_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
         }
         break;
       case "Bugsounet_SPOTIFY-VOLUME_MIN":

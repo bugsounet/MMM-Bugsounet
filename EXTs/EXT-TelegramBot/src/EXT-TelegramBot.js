@@ -118,7 +118,7 @@ Module.register("EXT-TelegramBot", {
             }
           }
         });
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         this.sendSocketNotification("SET_COMMANDS", this.commands.map((c) => { return { command: c.command, description: c.description }; }));
         break;
       case "CHAT":

@@ -112,7 +112,7 @@ Module.register("EXT-GooglePhotos", {
         this.sendSocketNotification("INIT", this.config);
         setTimeout(() => { this.showBackgroundGooglePhotoAPI(); }, 5000);
         this.Ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
       }
     }
     if (!this.Ready) return;
