@@ -52,7 +52,7 @@ Module.register("EXT-MusicPlayer", {
   getStyles () {
     return [
       "EXT-MusicPlayer.css",
-      "modules/MMM-GoogleAssistant/node_modules/@mdi/font/css/materialdesignicons.min.css",
+      "modules/MMM-Bugsounet/node_modules/@mdi/font/css/materialdesignicons.min.css",
       "font-awesome.css"
     ];
   },
@@ -62,13 +62,13 @@ Module.register("EXT-MusicPlayer", {
   },
 
   notificationReceived (noti, payload, sender) {
-    if (noti === "GA_READY") {
-      if (sender.name === "MMM-GoogleAssistant") {
+    if (noti === "Bugsounet_READY") {
+      if (sender.name === "MMM-Bugsounet") {
         this.sendSocketNotification("INIT", this.config);
-        this.sendNotification("EXT_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
       }
     }
-    if (noti === "EXT_VLCSERVER-START") {
+    if (noti === "Bugsounet_VLCSERVER-START") {
       this.sendSocketNotification("START");
       this.ready = true;
     }
@@ -76,40 +76,44 @@ Module.register("EXT-MusicPlayer", {
     if (!this.ready) return;
 
     switch (noti) {
-      case "ASSISTANT_LISTEN":
-      case "ASSISTANT_THINK":
-      case "ASSISTANT_REPLY":
-      case "ASSISTANT_CONTINUE":
-      case "ASSISTANT_CONFIRMATION":
-      case "ASSISTANT_ERROR":
-        this.music.assistantSpeak = true;
+      case "Bugsounet_ASSISTANT-STATUS":
+        switch (payload) {
+          case "listen":
+          case "think":
+          case "reply":
+          case "continue":
+          case "confirmation":
+          case "error":
+            this.music.assistantSpeak = true;
+            break;
+          case "hook":
+          case "standby":
+            this.music.assistantSpeak = false;
+            break;
+        }
         break;
-      case "ASSISTANT_HOOK":
-      case "ASSISTANT_STANDBY":
-        this.music.assistantSpeak = false;
-        break;
-      case "EXT_VLCServer-WILL_PLAYING":
+      case "Bugsounet_VLCServer-WILL_PLAYING":
         this.canStop = false;
         break;
-      case "EXT_STOP":
-      case "EXT_MUSIC-STOP":
+      case "Bugsounet_STOP":
+      case "Bugsounet_MUSIC-STOP":
         if (this.canStop) {
           this.MusicCommand("STOP");
         }
         break;
-      case "EXT_MUSIC-VOLUME_MIN":
+      case "Bugsounet_MUSIC-VOLUME_MIN":
         if (!this.music.connected) return;
         if (this.music.currentVolume <= this.music.minVolume) return;
         this.music.targetVolume = this.music.currentVolume;
         this.music.targetValue = this.convertPercentToValue(this.music.targetVolume);
         this.MusicCommand("VOLUME", this.music.minValue);
         break;
-      case "EXT_MUSIC-VOLUME_MAX":
+      case "Bugsounet_MUSIC-VOLUME_MAX":
         if (!this.music.connected) return;
         if (this.music.targetVolume <= this.music.minVolume) return;
         this.MusicCommand("VOLUME", this.music.targetValue);
         break;
-      case "EXT_MUSIC-VOLUME_SET":
+      case "Bugsounet_MUSIC-VOLUME_SET":
         if (isNaN(payload)) return console.log("ERROR MUSIC VOLUME", "Must be a number ! [0-100]", payload);
         var volumeToSet = payload;
         if (payload > 100) volumeToSet = 100;
@@ -118,22 +122,22 @@ Module.register("EXT-MusicPlayer", {
         this.music.targetVolume = volumeToSet;
         if (!this.music.assistantSpeak) this.MusicCommand("VOLUME", this.music.targetValue);
         break;
-      case "EXT_MUSIC-NEXT":
+      case "Bugsounet_MUSIC-NEXT":
         this.MusicCommand("NEXT");
         break;
-      case "EXT_MUSIC-PREVIOUS":
+      case "Bugsounet_MUSIC-PREVIOUS":
         this.MusicCommand("PREVIOUS");
         break;
-      case "EXT_MUSIC-REBUILD":
+      case "Bugsounet_MUSIC-REBUILD":
         this.MusicCommand("REBUILD");
         break;
-      case "EXT_MUSIC-SWITCH":
+      case "Bugsounet_MUSIC-SWITCH":
         this.MusicCommand("SWITCH");
         break;
-      case "EXT_MUSIC-PLAY":
+      case "Bugsounet_MUSIC-PLAY":
         this.MusicCommand("PLAY");
         break;
-      case "EXT_MUSIC-PAUSE":
+      case "Bugsounet_MUSIC-PAUSE":
         this.MusicCommand("PAUSE");
         break;
     }
@@ -149,7 +153,7 @@ Module.register("EXT-MusicPlayer", {
           if (!this.music.connected) {
             this.canStop = true;
             this.music.connected = true;
-            this.sendNotification("EXT_MUSIC-CONNECTED");
+            this.sendNotification("Bugsounet_MUSIC-CONNECTED");
           }
           if (payload.pause) this.Music.setPause();
           else this.Music.setPlay();
@@ -157,13 +161,13 @@ Module.register("EXT-MusicPlayer", {
           if (this.music.connected) {
             this.canStop = true;
             this.music.connected = false;
-            this.sendNotification("EXT_MUSIC-DISCONNECTED");
+            this.sendNotification("Bugsounet_MUSIC-DISCONNECTED");
           }
         }
         this.Music.updateSongInfo(payload);
         break;
       case "WARNING":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: `Error When Loading: ${payload.library}. Try to solve it with \`npm run rebuild\` in EXT-MusicPlayer folder`,
           timer: 10000
@@ -171,21 +175,21 @@ Module.register("EXT-MusicPlayer", {
         this.ready = false;
         break;
       case "ERROR":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "error",
           message: payload,
           timer: 10000
         });
         break;
       case "WARN":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: payload,
           timer: 10000
         });
         break;
       case "WILL_PLAYING":
-        this.sendNotification("EXT_VLCServer-WILL_PLAYING");
+        this.sendNotification("Bugsounet_VLCServer-WILL_PLAYING");
         break;
     }
   },

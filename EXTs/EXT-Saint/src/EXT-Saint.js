@@ -30,7 +30,7 @@ Module.register("EXT-Saint", {
     switch (notification) {
       case "INITIALIZED":
         console.log("[SAINT] Ready");
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
       case "DATA":
         if (this.config.debug) console.log("[SAINT] Data", payload);

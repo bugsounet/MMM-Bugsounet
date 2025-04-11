@@ -27,7 +27,7 @@ Module.register("EXT-VLCServer", {
       case "Bugsounet_READY":
         if (sender.name === "MMM-Bugsounet") {
           this.sendSocketNotification("INIT", this.config);
-          this.sendNotification("Bugsounet_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
         }
         break;
     }

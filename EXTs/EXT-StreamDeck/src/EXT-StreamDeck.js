@@ -15,7 +15,7 @@ Module.register("EXT-StreamDeck", {
       {
         key: 0,
         logo: "tv-on",
-        notification: "EXT_SCREEN-WAKEUP",
+        notification: "Bugsounet_SCREEN-WAKEUP",
         payload: null,
         command: null,
         sound: "opening"
@@ -23,7 +23,7 @@ Module.register("EXT-StreamDeck", {
       {
         key: 1,
         logo: "spotify",
-        notification: "EXT_SPOTIFY-PLAY",
+        notification: "Bugsounet_SPOTIFY-PLAY",
         payload: null,
         command: null,
         sound: "opening"
@@ -31,7 +31,7 @@ Module.register("EXT-StreamDeck", {
       {
         key: 2,
         logo: "volume-up",
-        notification: "EXT_VOLUME-SPEAKER_UP",
+        notification: "Bugsounet_VOLUME-SPEAKER_UP",
         payload: null,
         command: null,
         sound: "up"
@@ -39,7 +39,7 @@ Module.register("EXT-StreamDeck", {
       {
         key: 3,
         logo: "tv-off",
-        notification: "EXT_SCREEN-END",
+        notification: "Bugsounet_SCREEN-END",
         payload: null,
         command: null,
         sound: "closing"
@@ -47,7 +47,7 @@ Module.register("EXT-StreamDeck", {
       {
         key: 4,
         logo: "stop",
-        notification: "EXT_STOP",
+        notification: "Bugsounet_STOP",
         payload: null,
         command: null,
         sound: "closing"
@@ -55,7 +55,7 @@ Module.register("EXT-StreamDeck", {
       {
         key: 5,
         logo: "volume-down",
-        notification: "EXT_VOLUME-SPEAKER_DOWN",
+        notification: "Bugsounet_VOLUME-SPEAKER_DOWN",
         payload: null,
         command: null,
         sound: "down"
@@ -76,8 +76,8 @@ Module.register("EXT-StreamDeck", {
   },
 
   notificationReceived (noti, payload, sender) {
-    if (noti === "GA_READY") {
-      if (sender.name === "MMM-GoogleAssistant") {
+    if (noti === "Bugsounet_READY") {
+      if (sender.name === "MMM-Bugsounet") {
         this.sendSocketNotification("INIT", this.config);
         this.audio = new Audio();
         this.audio.autoplay = true;
@@ -86,10 +86,10 @@ Module.register("EXT-StreamDeck", {
     if (!this.ready) return;
 
     switch (noti) {
-      case "EXT_STREAMDECK-ON":
+      case "Bugsounet_STREAMDECK-ON":
         this.sendSocketNotification("ON");
         break;
-      case "EXT_STREAMDECK-OFF":
+      case "Bugsounet_STREAMDECK-OFF":
         this.sendSocketNotification("OFF");
         break;
     }
@@ -99,10 +99,10 @@ Module.register("EXT-StreamDeck", {
     switch (noti) {
       case "INITIALIZED":
         this.ready = true;
-        this.sendNotification("EXT_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
       case "WARNING":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: payload.message
         });
@@ -114,7 +114,7 @@ Module.register("EXT-StreamDeck", {
         this.audio.src = `${this.resources + payload}.mp3`;
         break;
       case "KEYFINDER":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "information",
           message: `You pressed key number: ${payload.key}`,
           timer: 3000

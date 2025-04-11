@@ -104,7 +104,7 @@ Module.register("EXT-Screen", {
         this.screenTouch.touch();
         if (this.config.Motion.deviceId !== 0) this.motionDetect.start();
         this.ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
       case "SCREEN_SHOWING":
         this.screenDisplay.screenShowing();

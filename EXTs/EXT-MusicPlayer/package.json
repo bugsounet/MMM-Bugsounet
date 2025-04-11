@@ -1,23 +1,22 @@
 {
   "name": "EXT-MusicPlayer",
-  "version": "1.8.0",
-  "description": "An embedded Music Player on MagicMirror.",
-  "homepage": "https://wiki.bugsounet.fr/en/EXT-MusicPlayer",
+  "version": "1.9.0",
+  "description": "An embedded Music Player on MagicMirror².",
+  "homepage": "https://github.com/bugsounet/MMM-Bugsounet",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-MusicPlayer.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "dev": "cd installer && node dev.js",
-    "dev:src": "cd installer && node src.js",
-    "lint": "cd ../.. && npm run lint",
-    "lint:fix": "cd ../.. && npm run lint:fix",
-    "postinstall": "installer/postinstall.sh -r -m",
-    "preinstall": "installer/preinstall.sh -d 'libudev-dev'",
-    "rebuild": "installer/rebuild.sh",
-    "reset": "rm -f *.js components/*.js",
-    "test": "npm run lint",
-    "test:minify": "cd installer && node minify.js"
+    "clean": "node ../../installer/clean --path=EXTs/EXT-MusicPlayer",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-MusicPlayer",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-MusicPlayer",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-MusicPlayer",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "pinctrl": "installer/pinctrl.sh",
+    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-MusicPlayer",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-MusicPlayer",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-MusicPlayer"
   },
   "dependencies": {
     "drivelist": "^12.0.2",
@@ -25,10 +24,17 @@
     "vlc-client": "^1.1.1"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
+  },
+  "installer": {
+    "rebuild": true,
+    "apt": [
+      "libudev-dev"
+    ],
+    "windowsRebuild": false
   },
   "overrides": {
     "tar-fs": "^3.0.8"
   },
-  "rev": "241219"
+  "rev": "250411"
 }

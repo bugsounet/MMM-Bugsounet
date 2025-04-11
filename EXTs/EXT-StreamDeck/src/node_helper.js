@@ -6,7 +6,7 @@
 const exec = require("child_process").exec;
 const path = require("path");
 const { listStreamDecks, openStreamDeck } = require("@elgato-stream-deck/node");
-const Jimp = require("jimp");
+const { Jimp } = require("jimp");
 
 var log = () => { /* do nothing */ };
 
@@ -37,10 +37,13 @@ module.exports = NodeHelper.create({
       return console.error("[STREAMDECK] No Stream Deck Found!");
     }
 
+    if (this.config.dev) log("DEBUG ---> streamDecksList:", streamDecksList);
+
     var promise = streamDecksList.map((device) => this.addDevice(device).catch((e) => console.error("[STREAMDECK] AddDevice failed:", e)));
     Promise.all(promise).then(async () => {
-      if (!this.config.device) this.streamDeck = await this.streamDecks["/dev/hidraw0"]; // maybe default !?
+      if (!this.config.device) this.streamDeck = await this.streamDecks[streamDecksList[0].path]; // maybe default !?
       else this.streamDeck = await this.streamDecks[this.config.device];
+      console.log("[STREAMDECK] used device:", this.config.device ? this.config.device : streamDecksList[0].path);
       if (!this.streamDeck) {
         this.sendSocketNotification("WARNING", { message: "Stream Deck NOT Found!" });
         return console.error("[STREAMDECK] device:", this.config.device, "--> Stream Deck NOT Found!");
@@ -91,13 +94,31 @@ module.exports = NodeHelper.create({
 
     this.deckSetBrightness(true);
 
+    if (this.config.dev) {
+      log("DEBUG ----> StreamDeck:", this.streamDeck);
+      log("DEBUG ----> CONTROLS:", this.streamDeck.CONTROLS);
+    }
+
     /* Animation BuGs logos */
     log("Testing Displayer...");
+
+    const panelDimensions = this.streamDeck.calculateFillPanelDimensions();
+    if (!panelDimensions) console.error("Streamdeck doesn't support fillPanel");
+    else log("Dimensions:", panelDimensions); // { width: 240, height: 160 }
+
+    const lcdSegmentControl = this.streamDeck.CONTROLS.find((control) => control.index === 0);
+    if (!lcdSegmentControl) console.error("Streamdeck doesn't find lcdSegmentControl");
+    else log("LCD Pixel size:", lcdSegmentControl.pixelSize.width, lcdSegmentControl.pixelSize.height);
+
+    const buttonCount = this.streamDeck.CONTROLS.filter((control) => control.type === "button").length;
+    if (!buttonCount) console.error("Streamdeck doesn't find buttonCount");
+    else log("Button Count:", buttonCount);
+
     var bmpImg = await Jimp.read(path.resolve(__dirname, "resources/logo.png")).then((img) => {
-      return img.resize(this.streamDeck.ICON_SIZE, this.streamDeck.ICON_SIZE);
+      return img.resize({ w: lcdSegmentControl.pixelSize.width, h: lcdSegmentControl.pixelSize.height });
     });
     var img = bmpImg.bitmap.data;
-    for (let i = 0; i < this.streamDeck.NUM_KEYS; i++) {
+    for (let i = 0; i < buttonCount; i++) {
       this.streamDeck.clearPanel();
       await this.streamDeck.fillKeyBuffer(i, img, { format: "rgba" }).catch((e) => console.error("[STREAMDECK] Fill failed:", e));
       await this.sleep(250);
@@ -107,7 +128,7 @@ module.exports = NodeHelper.create({
 
     /* Full screen BuGs logo */
     bmpImg = await Jimp.read(path.resolve(__dirname, "resources/logo.png")).then((img) => {
-      return img.resize(this.streamDeck.ICON_SIZE * this.streamDeck.KEY_COLUMNS, this.streamDeck.ICON_SIZE * this.streamDeck.KEY_ROWS);
+      return img.resize({ w: panelDimensions.width, h: panelDimensions.height });
     });
     img = bmpImg.bitmap.data;
     for (let i = 0; i < 2; i++) {
@@ -126,12 +147,13 @@ module.exports = NodeHelper.create({
     }
     this.config.keys.forEach(async (key) => {
       var bmpImg = await Jimp.read(path.resolve(__dirname, `resources/${key.logo}.png`)).then((img) => {
-        return img.resize(this.streamDeck.ICON_SIZE, this.streamDeck.ICON_SIZE);
+        return img.resize({ w: lcdSegmentControl.pixelSize.width, h: lcdSegmentControl.pixelSize.height });
       });
       var img = bmpImg.bitmap.data;
       await this.streamDeck.fillKeyBuffer(key.key, img, { format: "rgba" }).catch((e) => console.error("[STREAMDECK] Fill failed:", e));
     });
-    this.streamDeck.on("down", async (keyIndex) => {
+    this.streamDeck.on("down", async (button) => {
+      let keyIndex = button.index;
       log("Press Button", keyIndex);
       if (this.config.keyFinder) this.sendSocketNotification("KEYFINDER", { key: keyIndex });
       this.deckSetBrightness();

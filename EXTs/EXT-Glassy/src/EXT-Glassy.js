@@ -37,7 +37,7 @@ Module.register("EXT-Glassy", {
         this.sendSocketNotification("INIT", this.config);
         if (this.config.mirrorBackground) this.MMBackground();
         this.initialize();
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
     }
   },

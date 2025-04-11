@@ -1,15 +1,11 @@
-# EXT-MusicPlayer - Extented for `MMM-GoogleAssistant`
+# EXT-MusicPlayer
 
 It allow to play music files from your rpi or USB key
 
-This module is an Extented for `MMM-GoogleAssistant`
+This module is an Extented for `MMM-Bugsounet`
 
-It can be controled with `EXT-TelegramBot`, some notifications or with your voice
-
-## Screenshot
-
-![Screenshot](https://raw.githubusercontent.com/bugsounet/EXT-MusicPlayer/dev/resources/Screenshot.png)
+It can be controled with `EXT-TelegramBot`, some notifications or with your voice from `EXT-Assistant`
 
 ## Installation / update / configuration
 
-Read the docs in [wiki](https://wiki.bugsounet.fr/EXT-MusicPlayer)
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Bugsounet/wiki/EXT%E2%80%90MusicPlayer)

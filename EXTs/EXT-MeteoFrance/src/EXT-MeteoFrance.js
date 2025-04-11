@@ -107,7 +107,7 @@ Module.register("EXT-MeteoFrance", {
   socketNotificationReceived (notification, payload) {
     switch (notification) {
       case "INITIALIZED":
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
       case "DATA_UPDATE":
         if (this.error && payload.length !== this.weathersPlaces.length) return;

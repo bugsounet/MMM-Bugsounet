@@ -21,7 +21,7 @@ Module.register("EXT-SmartHome", {
     switch (notification) {
       case "INITIALIZED":
         this.ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
       case "SendNoti":
         if (payload.payload && payload.noti) this.sendNotification(payload.noti, payload.payload);

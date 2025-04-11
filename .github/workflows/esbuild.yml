@@ -67,6 +67,10 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-MeteoFrance
         continue-on-error: false
 
+      - name: Run ESBuild EXT-MusicPlayer
+        run: node installer/minify --path=EXTs/EXT-MusicPlayer
+        continue-on-error: false
+
       - name: Run ESBuild EXT-NetatmoThermostat
         run: node installer/minify --path=EXTs/EXT-NetatmoThermostat
         continue-on-error: false
@@ -101,6 +105,10 @@ jobs:
 
       - name: Run ESBuild EXT-Spotify
         run: node installer/minify --path=EXTs/EXT-Spotify
+        continue-on-error: false
+
+      - name: Run ESBuild EXT-StreamDeck
+        run: node installer/minify --path=EXTs/EXT-StreamDeck
         continue-on-error: false
 
       - name: Run ESBuild EXT-TelegramBot
