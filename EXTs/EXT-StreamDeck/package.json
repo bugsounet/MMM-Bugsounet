@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@elgato-stream-deck/node": "^7.1.2",
-    "jimp": "^0.22.12"
+    "jimp": "^1.6.0"
   },
   "engines": {
     "node": ">=23"

@@ -6,7 +6,7 @@
 const exec = require("child_process").exec;
 const path = require("path");
 const { listStreamDecks, openStreamDeck } = require("@elgato-stream-deck/node");
-const Jimp = require("jimp");
+const { Jimp } = require("jimp");
 
 var log = () => { /* do nothing */ };
 
@@ -115,7 +115,7 @@ module.exports = NodeHelper.create({
     else log("Button Count:", buttonCount);
 
     var bmpImg = await Jimp.read(path.resolve(__dirname, "resources/logo.png")).then((img) => {
-      return img.resize(lcdSegmentControl.pixelSize.width, lcdSegmentControl.pixelSize.height);
+      return img.resize({ w: lcdSegmentControl.pixelSize.width, h: lcdSegmentControl.pixelSize.height });
     });
     var img = bmpImg.bitmap.data;
     for (let i = 0; i < buttonCount; i++) {
@@ -128,7 +128,7 @@ module.exports = NodeHelper.create({
 
     /* Full screen BuGs logo */
     bmpImg = await Jimp.read(path.resolve(__dirname, "resources/logo.png")).then((img) => {
-      return img.resize(panelDimensions.width, panelDimensions.height);
+      return img.resize({ w: panelDimensions.width, h: panelDimensions.height });
     });
     img = bmpImg.bitmap.data;
     for (let i = 0; i < 2; i++) {
@@ -147,7 +147,7 @@ module.exports = NodeHelper.create({
     }
     this.config.keys.forEach(async (key) => {
       var bmpImg = await Jimp.read(path.resolve(__dirname, `resources/${key.logo}.png`)).then((img) => {
-        return img.resize(lcdSegmentControl.pixelSize.width, lcdSegmentControl.pixelSize.height);
+        return img.resize({ w: lcdSegmentControl.pixelSize.width, h: lcdSegmentControl.pixelSize.height });
       });
       var img = bmpImg.bitmap.data;
       await this.streamDeck.fillKeyBuffer(key.key, img, { format: "rgba" }).catch((e) => console.error("[STREAMDECK] Fill failed:", e));
