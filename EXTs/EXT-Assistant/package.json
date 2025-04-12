@@ -37,7 +37,7 @@
     "tokenCode": "node installer/auth_GoogleAssistant_ReadLine.js"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.13.2",
+    "@grpc/grpc-js": "^1.13.3",
     "google-auth-library": "^9.15.1",
     "google-sr": "^5.0.0",
     "html-entities": "^2.6.0",
