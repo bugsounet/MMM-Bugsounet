@@ -1,9 +1,11 @@
 "use strict";
 
 const EventEmitter = require("events");
-const util = require("util");
+const util = require("node:util");
 const readline = require("readline");
-const fs = require("fs");
+const fs = require("node:fs");
+const url = require("node:url");
+const http = require("node:http");
 const { OAuth2Client } = require("google-auth-library");
 
 function Auth (Config) {
@@ -23,6 +25,10 @@ function Auth (Config) {
   const key = keyData.installed || keyData.web;
 
   // check credentials
+  if (!key) {
+    throw new Error("Bad credentials");
+  }
+
   if (!key.redirect_uris) {
     throw new Error("Bad credentials missing: redirect_uris");
   }
@@ -33,6 +39,10 @@ function Auth (Config) {
 
   if (!key.client_secret) {
     throw new Error("Bad credentials missing: client_secret");
+  }
+
+  if (config.force && !config.inputReader && key.redirect_uris[0] !== "http://localhost:8888") {
+    throw new Error("Bad credentials redirect_uris (1) must be http://localhost:8888");
   }
 
   const oauthClient = new OAuth2Client(key.client_id, key.client_secret, key.redirect_uris[0]);
@@ -52,34 +62,59 @@ function Auth (Config) {
   const getTokens = async () => {
     const open = await loadOpen();
 
-    const url = oauthClient.generateAuthUrl({
+    const authorizeUrl = oauthClient.generateAuthUrl({
       access_type: "offline",
       scope: ["https://www.googleapis.com/auth/assistant-sdk-prototype"],
       prompt: "consent"
     });
 
-    // open the URL
-    console.log("Opening OAuth URL. Return here with your code.\n");
-    open(url).catch(() => {
-      console.log("Failed to automatically open the URL\n");
-    });
-    console.log("If your browser will not open, you can copy/paste this URL:\n", url);
+    if (config.inputReader) {
+      // open the URL
+      console.log("Opening OAuth URL. Return here with your code.\n");
+      open(authorizeUrl).catch(() => {
+        console.log("Failed to automatically open the URL\n");
+      });
+      console.log("If your browser will not open, you can copy/paste this URL:\n", authorizeUrl);
 
-    // if tokenInput is configured
-    // run the tokenInput function to accept the token code
-    if (typeof config.tokenInput === "function") {
-      config.tokenInput(processTokens);
-      return;
+      // create the interface to accept the code
+      const reader = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: false
+      });
+
+      reader.question("Paste your code: ", processTokens);
+
+    } else {
+
+      /*
+       * Read read google code in headless from http://localhost:8888
+       * Based from https://github.com/googleapis/google-auth-library-nodejs#oauth2
+       */
+      http
+        .createServer(async (req, res) => {
+          try {
+            if (req.url.indexOf("/?") > -1) {
+              // acquire the code from the querystring, and close the web server.
+              const qs = new url.URL(req.url, "http://localhost:8888")
+                .searchParams;
+              const code = qs.get("code");
+              console.log(`Code is: ${code}`);
+              res.end("Authentication successful!");
+              if (code) processTokens(code);
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        })
+        .listen(8888, () => {
+          // open the browser to the authorize url to start the workflow
+          open(authorizeUrl, { wait: false }).then((cp) => {
+            console.log("Waiting Google Code...");
+            cp.unref();
+          });
+        });
     }
-
-    // create the interface to accept the code
-    const reader = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-      terminal: false
-    });
-
-    reader.question("Paste your code: ", processTokens);
   };
 
   const processTokens = (oauthCode) => {
@@ -105,6 +140,14 @@ function Auth (Config) {
   // if the tokens are already saved, we can skip having to get the code for now
   process.nextTick(() => {
     if (config.savedTokensPath) {
+      if (config.force) {
+        try {
+          fs.unlinkSync(config.savedTokensPath);
+          console.warn("Old Token deleted.");
+        } catch {
+          // Perfect file don't exist: do nothing!
+        }
+      }
       try {
         const tokensFile = fs.readFileSync(config.savedTokensPath);
         tokens = JSON.parse(tokensFile);

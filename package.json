@@ -31,6 +31,8 @@
     "reset": "node installer/reset",
     "setup": "node installer/setup",
     "setup:EXT-Assistant": "node installer/setup --path=EXTs/EXT-Assistant",
+    "setup:EXT-Assistant:token": "node EXTs/EXT-Assistant/installer/auth_GoogleAssistant_Headless.js",
+    "setup:EXT-Assistant:tokenCode": "node EXTs/EXT-Assistant/installer/auth_GoogleAssistant_ReadLine.js",
     "setup:EXT-Background": "node installer/setup --path=EXTs/EXT-Background",
     "setup:EXT-Browser": "node installer/setup --path=EXTs/EXT-Browser",
     "setup:EXT-Detector": "node installer/setup --path=EXTs/EXT-Detector",

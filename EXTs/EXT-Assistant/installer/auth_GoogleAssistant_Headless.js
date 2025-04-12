@@ -6,7 +6,9 @@ const GoogleAssistant = require("../components/AssistantSDK");
 const config = {
   auth: {
     keyFilePath: path.resolve(__dirname, "../credentials.json"),
-    savedTokensPath: path.resolve(__dirname, "../tokenGA.json")
+    savedTokensPath: path.resolve(__dirname, "../tokenGA.json"),
+    force: true,
+    inputReader: false
   },
   conversation: {
     lang: "en-US"
