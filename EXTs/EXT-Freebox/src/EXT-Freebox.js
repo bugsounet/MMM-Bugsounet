@@ -71,7 +71,7 @@ Module.register("EXT-Freebox", {
       case "INITIALIZED":
         if (!this.Init) {
           this.Init = true;
-          this.sendNotification("Bugsounet_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
         }
         this.cache(payload);
         break;

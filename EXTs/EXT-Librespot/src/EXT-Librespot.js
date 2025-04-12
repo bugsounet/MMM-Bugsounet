@@ -43,7 +43,7 @@ Module.register("EXT-Librespot", {
         if (sender.name === "MMM-Bugsounet") {
           this.sendSocketNotification("INIT", this.config);
           this.ready = true;
-          this.sendNotification("Bugsounet_HELLO", this.name);
+          this.sendNotification("Bugsounet_HELLO");
         }
         break;
       case "Bugsounet_PLAYER-SPOTIFY_RECONNECT":

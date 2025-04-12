@@ -1,24 +1,22 @@
 {
   "name": "EXT-YouTube",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "YouTube Player",
   "license": "MIT",
   "author": "bugsounet",
   "main": "EXT-YouTube.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
-    "dev": "cd installer && node dev.js",
-    "dev:src": "cd installer && node src.js",
-    "lint": "cd ../.. && npm run lint",
-    "lint:fix": "cd ../.. && npm run lint:fix",
-    "postinstall": "installer/postinstall.sh -m",
-    "preinstall": "installer/preinstall.sh",
-    "reset": "rm -f *.js components/*.js",
-    "test": "npm run lint",
-    "test:minify": "cd installer && node minify.js"
+    "clean": "node ../../installer/clean --path=EXTs/EXT-YouTube",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-YouTube",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-YouTube",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-YouTube",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-YouTube",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-YouTube"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=23"
   },
-  "rev": "241219"
+  "rev": "250412"
 }

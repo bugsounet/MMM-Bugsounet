@@ -63,7 +63,7 @@ Module.register("EXT-Volume", {
         this.sendSocketNotification("INIT", this.config);
         this.VolumeDiplayer.prepare();
         this.ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         this.sendSocketNotification("INITIAL_VOLUME");
       }
     }

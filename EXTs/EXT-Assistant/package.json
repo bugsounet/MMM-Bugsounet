@@ -15,7 +15,7 @@
   ],
   "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "bugs": {
-    "url": "https://www.bugsounet.fr"
+    "url": "https://github.com/bugsounet/MMM-Bugsounet/issues"
   },
   "repository": {
     "type": "git",
@@ -32,10 +32,12 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Assistant",
-    "setup": "node installer/setup --path=EXTs/EXT-Assistant"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Assistant",
+    "token": "node installer/auth_GoogleAssistant_Headless.js",
+    "tokenCode": "node installer/auth_GoogleAssistant_ReadLine.js"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.13.2",
+    "@grpc/grpc-js": "^1.13.3",
     "google-auth-library": "^9.15.1",
     "google-sr": "^5.0.0",
     "html-entities": "^2.6.0",
@@ -49,5 +51,5 @@
   "overrides": {
     "axios": "^1.8.2"
   },
-  "rev": "250120"
+  "rev": "250412"
 }

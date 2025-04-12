@@ -127,7 +127,7 @@ Module.register("EXT-Pages", {
       this.animatePageChange(undefined, true);
       this.resetTimerWithDelay();
       this.ready = true;
-      this.sendNotification("Bugsounet_HELLO", this.name);
+      this.sendNotification("Bugsounet_HELLO");
       this.sendNotification("Bugsounet_PAGES-NUMBER_IS", {
         Actual: this.curPage,
         Total: Object.keys(this.config.pages).length

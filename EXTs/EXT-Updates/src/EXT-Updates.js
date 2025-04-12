@@ -48,7 +48,7 @@ Module.register("EXT-Updates", {
         break;
       case "INITIALIZED":
         this.init = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         this.sendNotification("Bugsounet_UPDATES-LIST", this.updateList);
         break;
       case "WELCOME":

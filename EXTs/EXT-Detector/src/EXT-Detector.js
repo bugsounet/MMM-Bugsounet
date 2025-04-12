@@ -59,7 +59,7 @@ Module.register("EXT-Detector", {
     switch (notification) {
       case "INITIALIZED":
         this.ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
         break;
       case "NOT_INITIALIZED":
         this.sendNotification("Bugsounet_ALERT", {

@@ -48,7 +48,7 @@ Module.register("EXT-Photos", {
         this.sendSocketNotification("INIT");
         this.preparePopup();
         this.ready = true;
-        this.sendNotification("Bugsounet_HELLO", this.name);
+        this.sendNotification("Bugsounet_HELLO");
       }
     }
     if (!this.ready) return;
