@@ -1,13 +1,13 @@
 import globals from "globals";
 import eslintPluginStylistic from "@stylistic/eslint-plugin";
-import eslintPluginDepend from "eslint-plugin-depend";
-import eslintPluginImportX from "eslint-plugin-import-x";
+import {configs as eslintPluginDepend_configs} from "eslint-plugin-depend";
+import {flatConfigs as eslintPluginImportX_flatConfigs} from "eslint-plugin-import-x";
 import eslintPluginJs from "@eslint/js";
 import eslintPluginPackageJson from "eslint-plugin-package-json";
 
 const config = [
-  eslintPluginDepend.configs["flat/recommended"],
-  eslintPluginImportX.flatConfigs.recommended,
+  eslintPluginDepend_configs["flat/recommended"],
+  eslintPluginImportX_flatConfigs.recommended,
   eslintPluginJs.configs.recommended,
   eslintPluginPackageJson.configs.recommended,
   {
