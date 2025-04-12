@@ -1,0 +1,180 @@
+name: "Installers Testing with MagicMirror² (master)"
+
+on: [pull_request]
+
+jobs:
+  build:
+    name: Test installers
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [23.x]
+    steps:
+      - name: "Use Node.js ${{ matrix.node-version }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          check-latest: true
+
+      - name: Checkout MagicMirror²
+        uses: actions/checkout@v4
+        with:
+          repository: MagicMirrorOrg/MagicMirror
+
+      - name: Install MagicMirror²
+        run: npm install
+
+      - name: Checkout MMM-Bugsounet
+        uses: actions/checkout@v4
+        with:
+          path: MagicMirror/modules/MMM-Bugsounet
+
+      - name: Install MMM-Bugsounet
+        run: npm run setup
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Assistant
+        run: npm run setup:EXT-Assistant
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Background
+        run: npm run setup:EXT-Background
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Browser
+        run: npm run setup:EXT-Browser
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Detector
+        run: npm run setup:EXT-Detector
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Freebox
+        run: npm run setup:EXT-Freebox
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-FreeboxTV
+        run: npm run setup:EXT-FreeboxTV
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-GooglePhotos
+        run: npm run setup:EXT-GooglePhotos
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Glassy
+        run: npm run setup:EXT-Glassy
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Keyboard
+        run: npm run setup:EXT-Keyboard
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Librespot
+        run: npm run setup:EXT-Librespot
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-MeteoFrance
+        run: npm run setup:EXT-MeteoFrance
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-MusicPlayer
+        run: npm run setup:EXT-MusicPlayer
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-NetatmoThermostat
+        run: npm run setup:EXT-NetatmoThermostat
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Pages
+        run: npm run setup:EXT-Pages
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Photos
+        run: npm run setup:EXT-Photos
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-PrixCarburants
+        run: npm run setup:EXT-PrixCarburants
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-RadioPlayer
+        run: npm run setup:EXT-RadioPlayer
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Saint
+        run: npm run setup:EXT-Saint
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Screen
+        run: npm run setup:EXT-Screen
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-SmartHome
+        run: npm run setup:EXT-SmartHome
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Spotify
+        run: npm run setup:EXT-Spotify
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-StreamDeck
+        run: npm run setup:EXT-StreamDeck
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-TelegramBot
+        run: npm run setup:EXT-TelegramBot
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Touch
+        run: npm run setup:EXT-Touch
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Updates
+        run: npm run setup:EXT-Updates
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-VLCServer
+        run: npm run setup:EXT-VLCServer
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-Volume
+        run: npm run setup:EXT-Volume
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-YouTube
+        run: npm run setup:EXT-YouTube
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
+      - name: Install EXT-YouTubeCast
+        run: npm run setup:EXT-YouTubeCast
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
