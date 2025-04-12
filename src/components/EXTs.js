@@ -43,6 +43,7 @@ class EXTs {
       "EXT-Updates",
       "EXT-VLCServer",
       "EXT-Volume",
+      "EXT-YouTube",
       "EXT-YouTubeCast"
     ];
 
@@ -147,6 +148,7 @@ class EXTs {
     if (this.EXT["EXT-Spotify"].hello && this.EXT["EXT-Spotify"].connected) this.sendNotification("Bugsounet_SPOTIFY-STOP");
     if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("Bugsounet_MUSIC-STOP");
     if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-STOP");
+    if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("Bugsounet_YOUTUBE-STOP");
     if (this.EXT["EXT-YouTubeCast"].hello && this.EXT["EXT-YouTubeCast"].connected) this.sendNotification("Bugsounet_YOUTUBECAST-STOP");
     if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-STOP");
 
@@ -271,7 +273,9 @@ class EXTs {
       "Bugsounet_PHOTOS-CONNECTED",
       "Bugsounet_PHOTOS-DISCONNECTED",
       "Bugsounet_MUSIC-CONNECTED",
-      "Bugsounet_MUSIC-DISCONNECTED"
+      "Bugsounet_MUSIC-DISCONNECTED",
+      "Bugsounet_YOUTUBE-CONNECTED",
+      "Bugsounet_YOUTUBE-DISCONNECTED"
     ];
 
     if (EXTNoti.indexOf(noti) === -1) {
@@ -439,6 +443,7 @@ class EXTs {
             if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-VOLUME_MAX");
             if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("Bugsoune_MUSIC-VOLUME_MAX");
             if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-VOLUME_MAX");
+            if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("Bugsounet_YOUTUBE-VOLUME_MAX");
             break;
           case "listen":
           case "think":
@@ -454,6 +459,7 @@ class EXTs {
             if (this.EXT["EXT-RadioPlayer"].hello && this.EXT["EXT-RadioPlayer"].connected) this.sendNotification("Bugsounet_RADIO-VOLUME_MIN");
             if (this.EXT["EXT-MusicPlayer"].hello && this.EXT["EXT-MusicPlayer"].connected) this.sendNotification("Bugsounet_MUSIC-VOLUME_MIN");
             if (this.EXT["EXT-FreeboxTV"].hello && this.EXT["EXT-FreeboxTV"].connected) this.sendNotification("Bugsounet_FREEBOXTV-VOLUME_MIN");
+            if (this.EXT["EXT-YouTube"].hello && this.EXT["EXT-YouTube"].connected) this.sendNotification("Bugsounet_YOUTUBE-VOLUME_MIN");
             break;
         }
         break;
@@ -486,6 +492,14 @@ class EXTs {
       case "Bugsounet_MUSIC-DISCONNECTED":
         if (!this.EXT["EXT-MusicPlayer"].hello) return this.sendWarn("[DISCONNECT] EXT-MusicPlayer don't say to me HELLO!");
         this.disconnectEXT("EXT-MusicPlayer");
+        break;
+      case "Bugsounet_YOUTUBE-CONNECTED":
+        if (!this.EXT["EXT-YouTube"].hello) return this.sendWarn("[CONNECT] EXT-YouTube don't say to me HELLO!");
+        this.connectEXT("EXT-YouTube");
+        break;
+      case "Bugsounet_YOUTUBE-DISCONNECTED":
+        if (!this.EXT["EXT-YouTube"].hello) return this.sendWarn("[DISCONNECT] EXT-YouTube don't say to me HELLO!");
+        this.disconnectEXT("EXT-YouTube");
         break;
     }
 

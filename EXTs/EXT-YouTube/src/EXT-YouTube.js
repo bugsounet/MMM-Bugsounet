@@ -1,6 +1,6 @@
 //
 // Module : EXT-YouTube v2
-// @bugsounet 04/2023
+// @bugsounet 04/2025
 
 var logYT = () => { /* do nothing */ };
 
@@ -37,33 +37,33 @@ Module.register("EXT-YouTube", {
   },
 
   notificationReceived (notification, payload, sender) {
-    if (notification === "GA_READY" && sender.name === "MMM-GoogleAssistant") {
+    if (notification === "Bugsounet_READY" && sender.name === "MMM-Bugsounet") {
       this.sendSocketNotification("INIT", this.config);
       if (this.config.fullscreen) this.preparePopup();
       this.YouTube = document.getElementById("EXT-YT");
       if (!this.config.password) {
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
           message: this.translate("YouTubePasswordMissing"),
           icon: this.file("resources/YT.png")
         });
       }
-      this.sendNotification("EXT_HELLO", this.name);
+      this.sendNotification("Bugsounet_HELLO", this.name);
       this.ready = true;
     }
     if (!this.ready) return;
     switch (notification) {
-      case "EXT_YOUTUBE-PLAY":
+      case "Bugsounet_YOUTUBE-PLAY":
         this.YT.title = null;
         this.YouTube.src = `https://youtube.bugsounet.fr/?id=${payload}&username=${this.config.username}&password=${this.config.password}&seed=${Date.now()}`;
         break;
-      case "EXT_STOP":
-      case "EXT_YOUTUBE-STOP":
+      case "Bugsounet_STOP":
+      case "Bugsounet_YOUTUBE-STOP":
         if (this.YT.running) this.Ended();
         break;
-      case "EXT_YOUTUBE-SEARCH":
+      case "Bugsounet_YOUTUBE-SEARCH":
         if (!this.searchInit) {
-          this.sendNotification("GA_ALERT", {
+          this.sendNotification("Bugsounet_ALERT", {
             type: "error",
             message: this.translate("YouTubeSearchDisabled"),
             icon: this.file("resources/YT.png")
@@ -72,10 +72,10 @@ Module.register("EXT-YouTube", {
         }
         if (payload) this.sendSocketNotification("YT_SEARCH", payload);
         break;
-      case "EXT_YOUTUBE-VOLUME_MIN":
+      case "Bugsounet_YOUTUBE-VOLUME_MIN":
         this.sendSocketNotification("Volume-Min");
         break;
-      case "EXT_YOUTUBE-VOLUME_MAX":
+      case "Bugsounet_YOUTUBE-VOLUME_MAX":
         this.sendSocketNotification("Volume-Max");
         break;
     }
@@ -87,11 +87,11 @@ Module.register("EXT-YouTube", {
         this.searchInit = true;
         break;
       case "YT_RESULT":
-        this.notificationReceived("EXT_YOUTUBE-PLAY", payload);
+        this.notificationReceived("Bugsounet_YOUTUBE-PLAY", payload);
         break;
       case "YT_FOUND":
         if (this.config.fullscreen && this.config.displayHeader) {
-          this.sendNotification("GA_ALERT", {
+          this.sendNotification("Bugsounet_ALERT", {
             type: "information",
             message: this.translate("YouTubeIsPlaying", { VALUES: payload.title }),
             icon: payload.thumbnail.url,
@@ -101,7 +101,7 @@ Module.register("EXT-YouTube", {
         }
         break;
       case "YT_LIBRARY_ERROR":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "error",
           message: this.translate("YouTubeLibraryError", { VALUES: payload }),
           icon: this.file("resources/YT.png"),
@@ -109,7 +109,7 @@ Module.register("EXT-YouTube", {
         });
         break;
       case "YT_SEARCH_ERROR":
-        this.sendNotification("GA_ALERT", {
+        this.sendNotification("Bugsounet_ALERT", {
           type: "error",
           message: this.translate("YouTubeFoundError"),
           icon: this.file("resources/YT.png"),
@@ -149,7 +149,7 @@ Module.register("EXT-YouTube", {
     });
     YTPlayer.addEventListener("did-fail-load", (message) => {
       console.error("[YT][Error]", message.errorDescription);
-      this.sendNotification("GA_ALERT", { type: "error", message: `Youtube Error: ${message.errorDescription}` });
+      this.sendNotification("Bugsounet_ALERT", { type: "error", message: `Youtube Error: ${message.errorDescription}` });
       this.Ended();
     });
 
@@ -260,8 +260,8 @@ Module.register("EXT-YouTube", {
   },
 
   broadcastStatus (status) {
-    if (status === "START") this.sendNotification("EXT_YOUTUBE-CONNECTED");
-    else if (status === "END") this.sendNotification("EXT_YOUTUBE-DISCONNECTED");
+    if (status === "START") this.sendNotification("Bugsounet_YOUTUBE-CONNECTED");
+    else if (status === "END") this.sendNotification("Bugsounet_YOUTUBE-DISCONNECTED");
   },
 
 
@@ -280,7 +280,7 @@ Module.register("EXT-YouTube", {
     });
     YTPlayer.addEventListener("did-fail-load", (message) => {
       console.error("[YT][Error]", message.errorDescription);
-      this.sendNotification("GA_ALERT", { type: "error", message: `Youtube Error: ${message.errorDescription}` });
+      this.sendNotification("Bugsounet_ALERT", { type: "error", message: `Youtube Error: ${message.errorDescription}` });
       this.Ended();
     });
     document.body.appendChild(YTPlayer);
@@ -311,14 +311,14 @@ Module.register("EXT-YouTube", {
         case "play":
           if (params) {
             params = params.split(" ");
-            this.notificationReceived("EXT_YOUTUBE-PLAY", params[0]);
+            this.notificationReceived("Bugsounet_YOUTUBE-PLAY", params[0]);
             handler.reply("TEXT", this.translate("YouTubePlay", { VALUES: params[0] }));
           } else handler.reply("TEXT", "/youtube play <video ID>");
           break;
         case "search":
           if (!this.searchInit) return handler.reply("TEXT", this.translate("YouTubeSearchDisabled"));
           if (params) {
-            this.notificationReceived("EXT_YOUTUBE-SEARCH", params);
+            this.notificationReceived("Bugsounet_YOUTUBE-SEARCH", params);
             handler.reply("TEXT", this.translate("YouTubeSearch", { VALUES: params }));
           }
           else handler.reply("TEXT", "/youtube search <youtube title/artist>");

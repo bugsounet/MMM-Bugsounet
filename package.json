@@ -66,6 +66,7 @@
     "setup:EXT-Updates": "node installer/setup --path=EXTs/EXT-Updates",
     "setup:EXT-VLCServer": "node installer/setup --path=EXTs/EXT-VLCServer",
     "setup:EXT-Volume": "node installer/setup --path=EXTs/EXT-Volume",
+    "setup:EXT-YouTube": "node installer/setup --path=EXTs/EXT-YouTube",
     "setup:EXT-YouTubeCast": "node installer/setup --path=EXTs/EXT-YouTubeCast",
     "test": "npm run lint",
     "test:all": "npm run lint && npm run test:css && npm run test:markdown && npm run test:translations",
