@@ -1,16 +1,13 @@
-/** Main @eouia code
- ** Needed review for less complexity
- ** and only usable for MMM-GoogleAssistant function
- **/
-
 "use strict";
 
 const EventEmitter = require("events");
-const util = require("util");
-const readline = require("readline");
-const fs = require("fs");
-const path = require("path");
+const util = require("node:util");
+const fs = require("node:fs");
+const path = require("node:path");
 const https = require("node:https");
+const url = require("node:url");
+const http = require("node:http");
+const readline = require("readline");
 const { OAuth2Client } = require("google-auth-library");
 const moment = require("dayjs");
 const Axios = require("axios");
@@ -21,7 +18,7 @@ function sleep (ms = 1000) {
   });
 }
 
-function Auth (Config, debug = false, error = () => {}) {
+function Auth (Config, debug = false, error = () => {}, force, inputReader) {
   const log = (debug) ? (...args) => { console.log("[GPHOTOS:AUTH]", ...args); } : () => {};
   var config = Config;
   if (config === undefined) config = {};
@@ -42,22 +39,41 @@ function Auth (Config, debug = false, error = () => {}) {
     return;
   }
   const key = require(config.keyFilePath).installed || require(config.keyFilePath).web;
+
+  if (!key || !key.client_id || !key.client_secret) {
+    console.log("[GPHOTOS:AUTH] Bad credentials.");
+    error("GPhotos: Bad credentials");
+    return;
+  }
+
+  if (!key.redirect_uris?.length) {
+    console.log("[GPHOTOS:AUTH] Error: Missing redirect_uris");
+    error("GPhotos: Missing redirect_uris");
+    return;
+  }
+
+  if (force && !inputReader && key.redirect_uris[0] !== "http://localhost:8888") {
+    console.log("[GPHOTOS:AUTH] Error: redirect_uris (1) must be http://localhost:8888");
+    error("GPhotos: redirect_uris (1) must be http://localhost:8888");
+    return;
+  }
+
   const oauthClient = new OAuth2Client(key.client_id, key.client_secret, key.redirect_uris[0]);
   let tokens;
-  const saveTokens = (first = false) => {
+  const saveTokens = () => {
     oauthClient.setCredentials(tokens);
     var expired = false;
     if (tokens.expiry_date < Date.now()) {
       expired = true;
       log("Token is expired.");
     }
-    if (expired || first) {
+    if (expired || force) {
       oauthClient.refreshAccessToken()
         .then((tk) => {
           tokens = tk.credentials;
           var tp = path.resolve(__dirname, config.savedTokensPath);
           fs.writeFileSync(tp, JSON.stringify(tokens));
-          log("Token is refreshed.");
+          log(`Token is ${force ? "created." : "refreshed."}`);
           this.emit("ready", oauthClient);
         })
         .catch((err) => {
@@ -72,38 +88,76 @@ function Auth (Config, debug = false, error = () => {}) {
 
   const getTokens = async () => {
     const open = await loadOpen();
-    const url = oauthClient.generateAuthUrl({
+    const authorizeUrl = oauthClient.generateAuthUrl({
       access_type: "offline",
       scope: [config.scope],
       prompt: "consent"
     });
-    log(`Opening OAuth URL.\n\n${url}\n\nReturn here with your code.`);
-    open(url).catch(() => {
-      log("Failed to automatically open the URL. Copy/paste this in your browser:\n", url);
-    });
-    if (typeof config.tokenInput === "function") {
-      config.tokenInput(processTokens);
-      return;
+
+    if (inputReader) {
+      log(`Opening OAuth URL.\n\n${authorizeUrl}\n\nReturn here with your code.`);
+      open(authorizeUrl).catch(() => {
+        log("Failed to automatically open the URL. Copy/paste this in your browser:\n", url);
+      });
+      const reader = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: false
+      });
+      reader.question("> Paste your code: ", processTokens);
+    } else {
+
+      /*
+       * Read read google code in headless from http://localhost:8888
+       * Based from https://github.com/googleapis/google-auth-library-nodejs#oauth2
+       */
+      http
+        .createServer(async (req, res) => {
+          try {
+            if (req.url.indexOf("/?") > -1) {
+              // acquire the code from the querystring, and close the web server.
+              const qs = new url.URL(req.url, "http://localhost:8888")
+                .searchParams;
+              const code = qs.get("code");
+              log(`Code is: ${code}`);
+              res.end("Authentication successful!");
+              if (code) processTokens(code);
+            }
+          } catch (e) {
+            console.error("[GPHOTOS]", e);
+          }
+        })
+        .listen(8888, () => {
+          // open the browser to the authorize url to start the workflow
+          open(authorizeUrl, { wait: false }).then((cp) => {
+            log("Waiting Google Code...");
+            cp.unref();
+          });
+        });
     }
-    const reader = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-      terminal: false
-    });
-    reader.question("> Paste your code: ", processTokens);
   };
+
   const processTokens = (oauthCode) => {
     if (!oauthCode) process.exit(-1);
     oauthClient.getToken(oauthCode, (error, tkns) => {
       if (error) throw new Error("Error getting tokens:", error);
       tokens = tkns;
-      saveTokens(true);
+      saveTokens();
     });
   };
+
   process.nextTick(() => {
     if (config.savedTokensPath) {
+      var file = path.resolve(__dirname, config.savedTokensPath);
+      if (force) {
+        try {
+          fs.unlinkSync(file);
+          log("Old Token deleted.");
+        } catch {
+          // Perfect file don't exist: do nothing!
+        }
+      }
       try {
-        var file = path.resolve(__dirname, config.savedTokensPath);
         const tokensFile = fs.readFileSync(file);
         tokens = JSON.parse(tokensFile);
       } catch {
@@ -113,6 +167,7 @@ function Auth (Config, debug = false, error = () => {}) {
       }
     }
   });
+
   return this;
 }
 util.inherits(Auth, EventEmitter);
@@ -155,10 +210,10 @@ class GPhotos {
     if (this.debug) console.log("[GPHOTOS]", ...args);
   }
 
-  onAuthReady (job = () => {}) {
+  onAuthReady (job = () => {}, force, reader) {
     var auth = null;
     try {
-      auth = new Auth(this.auth, this.debug, (error) => { this.sendSocketNotification("ERROR", error); });
+      auth = new Auth(this.auth, this.debug, (error) => { this.sendSocketNotification("ERROR", error); }, force, reader);
     } catch (e) {
       console.error("[GPHOTOS]", e.toString());
     }
@@ -367,7 +422,7 @@ class GPhotos {
   }
 
   /** internal functions **/
-  generateToken (success = () => {}, fail = () => {}) {
+  generateToken (success = () => {}, fail = () => {}, force = false, reader = false) {
     this.onAuthReady(() => {
       const isTokenFileExist = () => {
         var fp = path.resolve(__dirname, this.auth.savedTokensPath);
@@ -376,7 +431,7 @@ class GPhotos {
       };
       if (isTokenFileExist()) success();
       fail();
-    });
+    }, force, reader);
   }
 
   request (token, endPoint = "", method = "get", params = null, data = null) {

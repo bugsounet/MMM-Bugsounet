@@ -17,7 +17,9 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-GooglePhotos",
-    "setup": "node ../../installer/setup --path=EXTs/EXT-GooglePhotos"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-GooglePhotos",
+    "token": "node installer/auth_GPhotos_Headless.js",
+    "tokenCode": "node installer/auth_GPhotos_ReadLine.js"
   },
   "dependencies": {
     "axios": "^1.8.4",

@@ -30,7 +30,8 @@ GPhotos.generateToken(
     process.exit();
   },
   function fail () {
-    console.log("[GPHOTOS] TokenGP file doesn't exist. Check the permission.");
+    console.error("[GPHOTOS] TokenGP file doesn't exist. Check the permission.");
     process.exit();
-  }
+  },
+  true
 );

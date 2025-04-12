@@ -39,6 +39,8 @@
     "setup:EXT-FreeboxTV": "node installer/setup --path=EXTs/EXT-FreeboxTV",
     "setup:EXT-Glassy": "node installer/setup --path=EXTs/EXT-Glassy",
     "setup:EXT-GooglePhotos": "node installer/setup --path=EXTs/EXT-GooglePhotos",
+    "setup:EXT-GooglePhotos:token": "node EXTs/EXT-GooglePhotos/installer/auth_GPhotos_Headless.js",
+    "setup:EXT-GooglePhotos:tokenCode": "node EXTs/EXT-GooglePhotos/installer/auth_GPhotos_ReadLine.js",
     "setup:EXT-Keyboard": "node installer/setup --path=EXTs/EXT-Keyboard",
     "setup:EXT-Librespot": "node installer/setup --path=EXTs/EXT-Librespot",
     "setup:EXT-Librespot:player": "cd EXTs/EXT-Librespot && npm run setup:source",
