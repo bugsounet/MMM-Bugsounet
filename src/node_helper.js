@@ -3,10 +3,10 @@
 //
 
 "use strict";
-var log = () => { /* do nothing */ };
 var NodeHelper = require("node_helper");
 const checker = require("./components/checker");
 const controler = require("./components/controler");
+const api = require("./components/api");
 
 module.exports = NodeHelper.create({
   requiresVersion: "2.31.0",
@@ -33,21 +33,19 @@ module.exports = NodeHelper.create({
         break;
       case "INIT":
         this.config = payload;
-        if (this.config.debug) log = (...args) => { console.log("[Bugsounet]", ...args); };
         await checker.secure(this);
         this.controler = new controler();
         await this.controler.check_PM2_Process();
-        await this.parseWebsite();
-        this.lib.HyperWatch.enable();
-        await this.website.init(this.config);
+        await this.parserAPI();
+        await this.api.init(this.config);
         this.sendSocketNotification("INITIALIZED");
         console.log("[Bugsounet] MMM-Bugsounet Ready!");
         break;
       case "setEXTStatus":
-        this.website.setEXTStatus(payload);
+        this.api.setEXTStatus(payload);
         break;
       case "setHelloEXT":
-        this.website.setEXTVersions(payload);
+        this.api.setEXTVersions(payload);
         break;
       case "REBOOT":
         this.controler.SystemReboot();
@@ -62,28 +60,25 @@ module.exports = NodeHelper.create({
         this.controler.doClose();
         break;
       case "GET-SYSINFO":
-        this.sendSocketNotification("SYSINFO-RESULT", await this.website.website.systemInformation.lib.Get());
+        this.sendSocketNotification("SYSINFO-RESULT", await this.api.website.systemInformation.lib.Get());
         break;
       case "TB_SYSINFO":
-        var result = await this.website.website.systemInformation.lib.Get();
+        var result = await this.api.website.systemInformation.lib.Get();
         result.sessionId = payload;
         this.sendSocketNotification("TB_SYSINFO-RESULT", result);
         break;
     }
   },
 
-  async parseWebsite () {
-    const bugsounet = await this.libraries();
+  parserAPI () {
     return new Promise((resolve) => {
-      if (bugsounet) return this.bugsounetError(bugsounet);
-      let WebsiteHelperConfig = {
+      let APIHelperConfig = {
         config: {
           username: this.config.username,
           password: this.config.password,
           useLimiter: this.config.useLimiter
         },
-        debug: this.config.debug,
-        lib: this.lib
+        debug: this.config.debug
       };
       let callback = {
         sendSocketNotification: (...args) => this.sendSocketNotification(...args),
@@ -108,52 +103,8 @@ module.exports = NodeHelper.create({
         }
       };
 
-      this.website = new this.lib.website(WebsiteHelperConfig, callback);
+      this.api = new api(APIHelperConfig, callback);
       resolve();
     });
-  },
-
-  libraries () {
-    let Libraries = [
-      { "./components/hyperwatch.js": "HyperWatch" },
-      { "./components/systemInformation.js": "SystemInformation" },
-      { "./components/website.js": "website" }
-    ];
-
-    let errors = 0;
-
-    log("Loading website Libraries...");
-
-    return new Promise((resolve) => {
-      Libraries.forEach((library) => {
-        for (const [name, configValues] of Object.entries(library)) {
-          let libraryToLoad = name;
-          let libraryName = configValues;
-
-          try {
-            if (!this.lib[libraryName]) {
-              this.lib[libraryName] = require(libraryToLoad);
-              log(`[Lib] Loaded: ${libraryToLoad} --> this.lib.${libraryName}`);
-            }
-          } catch (e) {
-            //console.error(`[Bugsounet] [Lib] ${libraryToLoad} Loading error!`, e.message);
-            console.error(`[Bugsounet] [Lib] ${libraryToLoad} Loading error!`, e);
-            this.sendSocketNotification("ERROR", `Loading error! library: ${libraryToLoad}`);
-            errors++;
-            this.lib.error = errors;
-          }
-        }
-      });
-      resolve(errors);
-      if (errors) {
-        console.error("[Bugsounet] [Lib] Some libraries missing!");
-      } else console.log("[Bugsounet] [Lib] All website libraries loaded!");
-    });
-  },
-
-  bugsounetError (bugsounet) {
-    console.error(`[Bugsounet] [Lib] Warning: ${bugsounet} needed library not loaded !`);
-    console.error("[Bugsounet] [Lib] Try to solve it with `npm run rebuild` in MMM-Bugsounet folder");
-    this.sendSocketNotification("WARNING", "Try to solve it with 'npm run rebuild' in MMM-Bugsounet folder");
   }
 });
