@@ -77,7 +77,7 @@
     "update": "node installer/update"
   },
   "dependencies": {
-    "@electron/rebuild": "^3.7.2",
+    "@electron/rebuild": "^4.0.1",
     "@mdi/font": "^7.4.47",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
