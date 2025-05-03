@@ -5,30 +5,34 @@ const util = require("node:util");
 const readline = require("readline");
 const Stream = require("stream");
 const http = require("node:http");
+const pty = require("node-pty");
 const si = require("systeminformation");
 const semver = require("semver");
 const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const Socket = require("socket.io");
+const { createProxyMiddleware, fixRequestBody } = require("http-proxy-middleware");
 
+const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
 const swaggerUi = require("swagger-ui-express");
 
 const { rateLimit } = require("express-rate-limit");
 const { slowDown } = require("express-slow-down");
-const systemInformation = require("./systemInformation");
 
 var log = () => { /* do nothing */ };
 
 class website {
   constructor (config, cb = () => {}) {
+    this.lib = config.lib;
     this.config = config.config;
     this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
     this.sendInternalCallback = (value) => cb.sendInternalCallback(value);
 
-    if (config.debug) log = (...args) => { console.log("[Bugsounet] [API]", ...args); };
+    if (config.debug) log = (...args) => { console.log("[Bugsounet] [Web]", ...args); };
 
     this.website = {
       MMConfig: null, // real config file (config.js)
@@ -46,6 +50,7 @@ class website {
       translations: null,
       loginTranslation: null,
       language: null,
+      HyperWatch: null,
       radio: null,
       freeTV: {},
       systemInformation: {
@@ -108,16 +113,18 @@ class website {
   }
 
   async init (data) {
+    console.log("[Bugsounet] [Web] Loading Website...");
     this.website.MMConfig = await this.readConfig();
     let Translations = data.translations;
 
     if (!this.website.MMConfig) { // should not happen ! ;)
       this.website.errorInit = true;
-      console.error("[Bugsounet] [API] Error: MagicMirror config.js file not found!");
+      console.error("[Bugsounet] [Web] Error: MagicMirror config.js file not found!");
       this.sendSocketNotification("ERROR", "MagicMirror config.js file not found!");
       return;
     }
     await this.MMConfigAddress();
+    if (this.lib.error || this.website.errorInit) return;
 
     this.website.language = this.website.MMConfig.language;
     this.website.EXT = data.EXT_DB.sort();
@@ -133,16 +140,16 @@ class website {
     this.website.freeTV = await this.readFreeTV();
     this.website.radio = await this.readRadio();
 
-    this.website.systemInformation.lib = new systemInformation(this.website.translations, this.website.MMConfig.units);
+    this.website.systemInformation.lib = new this.lib.SystemInformation(this.website.translations, this.website.MMConfig.units);
     this.website.systemInformation.result = await this.website.systemInformation.lib.initData();
 
     if (!this.config.username && !this.config.password) {
-      console.error("[Bugsounet] [API] Your have not defined user/password in config!");
-      console.error("[Bugsounet] [API] Using default credentials");
+      console.error("[Bugsounet] [Web] Your have not defined user/password in config!");
+      console.error("[Bugsounet] [Web] Using default credentials");
     } else {
       if ((this.config.username === this.website.user.username) || (this.config.password === this.website.user.password)) {
-        console.warn("[Bugsounet] [API] WARN: You are using default username or default password");
-        console.warn("[Bugsounet] [API] WARN: Don't forget to change it!");
+        console.warn("[Bugsounet] [Web] WARN: You are using default username or default password");
+        console.warn("[Bugsounet] [Web] WARN: Don't forget to change it!");
       }
       this.website.user.username = this.config.username;
       this.website.user.password = this.config.password;
@@ -160,9 +167,31 @@ class website {
     log("Listening:", this.website.listening);
     log("APIDocs:", this.website.APIDocs);
 
-    console.log("[Bugsounet] [API] Loading API Server...");
+    console.log("[Bugsounet] [Web] [API] Loading API Server...");
     await this.createAPI();
     await this.serverAPI();
+
+    console.log("[Bugsounet] [Web] [Server] Loading Main Server...");
+    await this.createWebsite();
+    await this.server();
+  }
+
+  /** Start Website Server **/
+  server () {
+    return new Promise((resolve) => {
+      this.website.server
+        .listen(8081, "0.0.0.0", () => {
+          console.log("[Bugsounet] [Web] [Server] Start listening on port 8081");
+          console.log(`[Bugsounet] [Web] [Server] Available locally at http://${this.website.listening}:8081`);
+          this.website.initialized = true;
+          resolve();
+        })
+        .on("error", (err) => {
+          console.error("[Bugsounet] [Web] [Server] Can't start web server!");
+          console.error("[Bugsounet] [Web] [Server] Error:", err.message);
+          this.sendSocketNotification("ERROR", "Can't start web server!");
+        });
+    });
   }
 
   /** log any website traffic **/
@@ -179,18 +208,268 @@ class website {
     next();
   }
 
+  /** Website Middleware **/
+  createWebsite () {
+    return new Promise((resolve) => {
+      const ProxyRequestLogger = (proxyServer) => {
+        proxyServer.on("proxyReq", (proxyReq, req) => {
+          let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+          let url = req.url.startsWith("/api") ? req.url : `/smarthome${req.url}`;
+          log(`[${ip}] [PROXY] ${url}`);
+        });
+      };
+      const SmartHomeProxy = createProxyMiddleware({
+        target: "http://127.0.0.1:8083",
+        changeOrigin: false,
+        pathFilter: ["/smarthome"],
+        pathRewrite: { "^/smarthome": "" },
+        plugins: [ProxyRequestLogger],
+        on: {
+          onProxyReq: fixRequestBody,
+          error: (err, req, res) => {
+            console.error("[Bugsounet] [Web] SmartHome Proxy ERROR", err);
+            if (!this.website.EXTStatus["EXT-SmartHome"].hello) {
+              res.redirect("/404");
+            } else {
+              res.writeHead(500, {
+                "Content-Type": "text/plain"
+              });
+              res.end(`${err.message}`);
+            }
+          }
+        }
+      });
+      const APIProxy = createProxyMiddleware({
+        target: "http://127.0.0.1:8085",
+        changeOrigin: false,
+        pathFilter: ["/api"],
+        plugins: [ProxyRequestLogger],
+        on: {
+          onProxyReq: fixRequestBody,
+          error: (err, req, res) => {
+            console.error("[Bugsounet] [Web] API Proxy ERROR", err);
+            res.writeHead(500, {
+              "Content-Type": "text/plain"
+            });
+            res.end(`${err.message}`);
+          }
+        }
+      });
+
+      this.website.app = express();
+      this.website.server = http.createServer(this.website.app);
+      log("Create website needed routes...");
+
+      // reverse proxy for API and EXT-SmartHome
+      this.website.app.use(APIProxy);
+      this.website.app.use(SmartHomeProxy);
+
+      this.website.app.use(this.customHeaders);
+
+      // For parsing post request's data/body
+      this.website.app.use(bodyParser.json());
+      this.website.app.use(bodyParser.urlencoded({ extended: true }));
+
+      this.website.app.use(bodyParserErrorHandler(
+        {
+          onError: (err, req) => {
+            let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+            console.error(`[Bugsounet] [Web] [${ip}] [${req.method}] ${req.url}`);
+            console.error("[Bugsounet] [Web] bodyparser error:", err.type);
+            log("body:", err.body);
+            console.error("[Bugsounet] [Web] detail:", err.message);
+          },
+          errorMessage: (err) => {
+            return `Body Parser failed to parse request (${err.type}) --> ${err.message}`;
+          }
+        }
+      ));
+
+      this.website.app.use(cookieParser());
+
+      var options = {
+        dotfiles: "ignore",
+        etag: false,
+        extensions: ["css", "js"],
+        index: false,
+        maxAge: "1d",
+        redirect: false,
+        setHeaders (res) {
+          res.set("x-timestamp", Date.now());
+        }
+      };
+
+      this.website.healthDownloader = function (req, res) {
+        res.redirect("/");
+      };
+
+      var io = new Socket.Server(this.website.server);
+
+      this.website.app
+        .use(this.logRequest)
+        .use(cors({ origin: "*" }))
+        .use("/Login.js", express.static(`${this.WebsitePath}/tools/Login.js`))
+        .use("/Home.js", express.static(`${this.WebsitePath}/tools/Home.js`))
+        .use("/Terminal.js", express.static(`${this.WebsitePath}/tools/Terminal.js`))
+        .use("/MMConfig.js", express.static(`${this.WebsitePath}/tools/MMConfig.js`))
+        .use("/Tools.js", express.static(`${this.WebsitePath}/tools/Tools.js`))
+        .use("/System.js", express.static(`${this.WebsitePath}/tools/System.js`))
+        .use("/About.js", express.static(`${this.WebsitePath}/tools/About.js`))
+        .use("/Restart.js", express.static(`${this.WebsitePath}/tools/Restart.js`))
+        .use("/Die.js", express.static(`${this.WebsitePath}/tools/Die.js`))
+        .use("/Shutdown.js", express.static(`${this.WebsitePath}/tools/Shutdown.js`))
+        .use("/Reboot.js", express.static(`${this.WebsitePath}/tools/Reboot.js`))
+        .use("/Fetch.js", express.static(`${this.WebsitePath}/tools/Fetch.js`))
+        .use("/3rdParty.js", express.static(`${this.WebsitePath}/tools/3rdParty.js`))
+        .use("/APIDocs.js", express.static(`${this.WebsitePath}/tools/APIDocs.js`))
+        .use("/assets", express.static(`${this.WebsitePath}/assets`, options))
+
+        .use("/jsoneditor", express.static(`${this.BugsounetModulePath}/node_modules/jsoneditor`))
+        .use("/xterm", express.static(`${this.BugsounetModulePath}/node_modules/@xterm/xterm`))
+        .use("/xterm-addon-fit", express.static(`${this.BugsounetModulePath}/node_modules/@xterm/addon-fit`))
+        .use("/alertify", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build`))
+
+        .get("/login", this.speedLimiter, this.rateLimiter, (req, res) => {
+          const logged = this.hasValidCookie(req);
+          if (logged) return res.redirect("/");
+          res.clearCookie("MMM-Bugsounet");
+          res.sendFile(`${this.WebsitePath}/login.html`);
+        })
+
+        .get("/logout", (req, res) => {
+          res.clearCookie("MMM-Bugsounet");
+          res.redirect("/login");
+        })
+
+        .post("/auth", this.speedLimiter, this.rateLimiter, (req, res) => this.login(req, res))
+
+        .get("/", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/index.html`);
+        })
+
+        .get("/Terminal", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+          res.sendFile(`${this.WebsitePath}/terminal.html`);
+
+          io.once("connection", async (socket) => {
+            log(`[${ip}] Connected to Terminal Logs:`, req.user);
+            socket.on("disconnect", (err) => {
+              log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
+            });
+            var pastLogs = await this.readAllMMLogs(this.lib.HyperWatch.logs());
+            io.emit("terminal.logs", pastLogs);
+            this.lib.HyperWatch.stream().on("stdData", (data) => {
+              if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
+            });
+          });
+        })
+
+        .get("/ptyProcess", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+          res.sendFile(`${this.WebsitePath}/pty.html`);
+          io.once("connection", (client) => {
+            log(`[${ip}] Connected to Terminal:`, req.user);
+            client.on("disconnect", (err) => {
+              log(`[${ip}] Disconnected from Terminal:`, req.user, `[${err}]`);
+            });
+            var cols = 80;
+            var rows = 24;
+            var ptyProcess = pty.spawn("bash", [], {
+              name: "xterm-color",
+              cols: cols,
+              rows: rows,
+              cmd: process.env.HOME,
+              env: process.env
+            });
+            ptyProcess.on("data", (data) => {
+              io.to(client.id).emit("terminal.incData", data);
+            });
+            client.on("terminal.toTerm", (data) => {
+              ptyProcess.write(data);
+            });
+            client.on("terminal.size", (size) => {
+              ptyProcess.resize(size.cols, size.rows);
+            });
+          });
+        })
+
+        .get("/MMConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/mmconfig.html`);
+        })
+
+        .get("/Tools", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/tools.html`);
+        })
+
+        .get("/System", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/system.html`);
+        })
+
+        .get("/About", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/about.html`);
+        })
+
+        .get("/3rdpartymodules", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/3rdpartymodules.html`);
+        })
+
+        .get("/APIDocs", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/APIDocs.html`);
+        })
+
+        .get("/Restart", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/restarting.html`);
+        })
+
+        .get("/Die", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/die.html`);
+        })
+
+        .get("/SystemRestart", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/reboot.html`);
+        })
+
+        .get("/SystemDie", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/shutdown.html`);
+        })
+
+        .get("/EditMMConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebsitePath}/EditMMConfig.html`);
+        })
+
+        .get("/download/*", (req, res) => {
+          this.website.healthDownloader(req, res);
+        })
+
+        .get("/robots.txt", (req, res) => {
+          res.sendFile(`${this.WebsitePath}/robots.txt`);
+        })
+
+        .get("/404", (req, res) => {
+          res.status(404).sendFile(`${this.WebsitePath}/404.html`);
+        })
+
+        .get("/*", this.speedLimiter, this.rateLimiter, (req, res) => {
+          console.warn("[Bugsounet] [Web] Don't find:", req.url);
+          res.redirect("/404");
+        });
+
+      resolve();
+    });
+  }
+
   /** Start API Server **/
   serverAPI () {
     return new Promise((resolve) => {
       this.website.serverAPI
         .listen(8085, "127.0.0.1", () => {
-          console.log("[Bugsounet] [API] Start listening on port 8085");
+          console.log("[Bugsounet] [Web] [API] Start listening on port 8085");
           this.sendSocketNotification("SendNoti", "Bugsounet_WEBSITE-API_STARTED");
           resolve();
         })
         .on("error", (err) => {
-          console.error("[Bugsounet] [API] Can't start API server!");
-          console.error("[Bugsounet] [API] Error:", err.message);
+          console.error("[Bugsounet] [Web] [API] Can't start API server!");
+          console.error("[Bugsounet] [Web] [API] Error:", err.message);
           this.sendSocketNotification("ERROR", "Can't start API server!");
         });
     });
@@ -214,11 +493,14 @@ class website {
     return new Promise((resolve) => {
       this.website.api = express();
       this.website.serverAPI = http.createServer(this.website.api);
-      log("Create API needed routes...");
+      log("[API] Create API needed routes...");
 
       // add current server IP to APIDocs
       if (this.website.APIDocs) {
         this.APIDocs = require("../website/api/swagger.json");
+        this.APIDocs.servers[1] = {
+          url: `http://${this.website.listening}:8081`
+        };
       }
 
       this.website.api
@@ -231,10 +513,10 @@ class website {
           {
             onError: (err, req) => {
               let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-              console.error(`[Bugsounet] [API] [${ip}] [${req.method}] ${req.url}`);
-              console.error("[Bugsounet] [API] bodyparser error:", err.type);
-              log("body:", err.body);
-              console.error("[Bugsounet] [API] detail:", err.message);
+              console.error(`[Bugsounet] [Web] [API] [${ip}] [${req.method}] ${req.url}`);
+              console.error("[Bugsounet] [Web] [API] bodyparser error:", err.type);
+              log("[API] body:", err.body);
+              console.error("[Bugsounet] [Web] [API] detail:", err.message);
             },
             errorMessage: (err) => {
               return `Body Parser failed to parse request (${err.type}) --> ${err.message}`;
@@ -246,13 +528,13 @@ class website {
           if (this.website.APIDocs) {
             this.APIDocs.info.version = require("../package.json").api;
             let remoteUrl = `${req.headers["x-forwarded-proto"] === "https" ? "https" : "http"}://${req.get("host")}`;
-            if (this.APIDocs.servers[0].url !== remoteUrl) {
-              this.APIDocs.servers[1] = {
+            if (this.APIDocs.servers[1].url !== remoteUrl) {
+              this.APIDocs.servers[2] = {
                 url: remoteUrl
               };
             } else {
               // delete old value
-              this.APIDocs.servers[1] = {};
+              this.APIDocs.servers[2] = {};
               this.APIDocs.servers.pop();
             }
             swaggerUi.setup(this.APIDocs, {
@@ -278,7 +560,7 @@ class website {
           res.json(this.website.loginTranslation);
         })
 
-        .post("/api/login", this.API_speedLimiter, this.API_rateLimiter, (req, res) => this.login(req, res))
+        .post("/api/login", this.API_speedLimiter, this.API_rateLimiter, (req, res) => this.login(req, res, true))
 
         .get("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
         .post("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
@@ -286,11 +568,11 @@ class website {
         .delete("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
 
         .get("/*", this.API_rateLimiter, this.API_speedLimiter, (req, res) => {
-          console.warn("[Bugsounet] [API] Don't find:", req.url);
+          console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
           res.status(404).json({ error: "You Are Lost in Space" });
         });
 
-      console.log(`[Bugsounet] [API] API v${require("../package.json").api}`);
+      console.log(`[Bugsounet] [Web] [API] API v${require("../package.json").api}`);
       resolve();
     });
   }
@@ -387,7 +669,7 @@ class website {
         break;
 
       default:
-        console.warn("[Bugsounet] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
         break;
     }
@@ -399,20 +681,20 @@ class website {
     switch (req.url) {
       case "/api/config/MM":
         if (!req.body["config"]) return res.status(400).json({ error: "Bad Request" });
-        log("Receiving write MagicMirror config...");
+        log("[API] Receiving write MagicMirror config...");
         try {
           let decoded = JSON.parse(this.decode(req.body["config"]));
           resultSaveConfig = await this.saveConfig(decoded);
         } catch (e) {
-          log("Request error", e.message);
+          log("[API] Request error", e.message);
           res.status(400).send("Bad Request");
           return;
         }
-        log("Write config result:", resultSaveConfig);
+        log("[API] Write config result:", resultSaveConfig);
         if (resultSaveConfig.done) {
           res.json(resultSaveConfig);
           this.website.MMConfig = await this.readConfig();
-          log("Reload config");
+          log("[API] Reload config");
         } else if (resultSaveConfig.error) {
           res.status(500).json({ error: resultSaveConfig.error });
         }
@@ -422,7 +704,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
         var speaker = req.body["volume"];
         if (typeof (speaker) !== "number" || speaker < 0 || speaker > 100 || isNaN(speaker)) return res.status(400).json({ error: "Bad Request" });
-        log("Request speaker volume change to", speaker);
+        log("[API] Request speaker volume change to", speaker);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_VOLUME-SPEAKER_SET", payload: speaker || "0" });
         res.json({ done: "ok" });
         break;
@@ -431,7 +713,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
         var recorder = req.body["volume"];
         if (typeof (recorder) !== "number" || recorder < 0 || recorder > 100) return res.status(400).json({ error: "Bad Request" });
-        log("Request recorder volume change to", recorder);
+        log("[API] Request recorder volume change to", recorder);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_VOLUME-RECORDER_SET", payload: recorder || "0" });
         res.json({ done: "ok" });
         break;
@@ -440,7 +722,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
         var updates = this.filterObject(this.website.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
         if (!updates.length) return res.status(404).json({ error: "Not Found" });
-        log("Request send updates");
+        log("[API] Request send updates");
         this.sendSocketNotification("SendNoti", "Bugsounet_UPDATES-UPDATE");
         res.json({ done: "ok" });
         break;
@@ -448,7 +730,7 @@ class website {
       case "/api/EXT/Spotify/play":
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already playing" });
-        log("Request send Spotify play");
+        log("[API] Request send Spotify play");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY");
         res.json({ done: "ok" });
         break;
@@ -456,14 +738,14 @@ class website {
       case "/api/EXT/Spotify/pause":
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already pausing" });
-        log("Request send Spotify pause");
+        log("[API] Request send Spotify pause");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PAUSE");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/toggle":
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        log("Request send Spotify toogle");
+        log("[API] Request send Spotify toogle");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY-TOGGLE");
         res.json({ done: "ok" });
         break;
@@ -471,7 +753,7 @@ class website {
       case "/api/EXT/Spotify/stop":
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
-        log("Request send Spotify stop");
+        log("[API] Request send Spotify stop");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-STOP");
         res.json({ done: "ok" });
         break;
@@ -479,7 +761,7 @@ class website {
       case "/api/EXT/Spotify/next":
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
-        log("Request send Spotify next");
+        log("[API] Request send Spotify next");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-NEXT");
         res.json({ done: "ok" });
         break;
@@ -487,7 +769,7 @@ class website {
       case "/api/EXT/Spotify/previous":
         if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
-        log("Request send Spotify previous");
+        log("[API] Request send Spotify previous");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PREVIOUS");
         res.json({ done: "ok" });
         break;
@@ -503,7 +785,7 @@ class website {
           query: query,
           random: false
         };
-        log("Request send Spotify search:", pl);
+        log("[API] Request send Spotify search:", pl);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_SPOTIFY-SEARCH", payload: pl });
         res.json({ done: "ok" });
         break;
@@ -512,7 +794,7 @@ class website {
         if (!this.website.EXTStatus["EXT-Screen"].hello) return res.status(404).json({ error: "Not Found" });
         var power = req.body["power"];
         if (!power || typeof (power) !== "string") return res.status(400).json({ error: "Bad Request" });
-        log("Request send screen power:", power);
+        log("[API] Request send screen power:", power);
         if (power === "OFF") {
           if (!this.website.EXTStatus["EXT-Screen"].power) return res.status(409).json({ error: "Already OFF" });
           this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_END");
@@ -533,7 +815,7 @@ class website {
         if (!TV || typeof (TV) !== "string") return res.status(400).json({ error: "Bad Request" });
         var allTV = Object.keys(this.website.freeTV);
         if (allTV.indexOf(TV) === -1) return res.status(404).json({ error: "Not Found" });
-        log("Request send FreeboxTV channel:", TV);
+        log("[API] Request send FreeboxTV channel:", TV);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_FREEBOXTV-PLAY", payload: TV });
         res.json({ done: "ok" });
         break;
@@ -543,7 +825,7 @@ class website {
         if (!req.body["radio"]) return res.status(400).json({ error: "Bad Request" });
         var allRadio = Object.keys(this.website.radio);
         if (allRadio.indexOf(req.body["radio"]) === -1) return res.status(404).json({ error: "Not Found" });
-        log("Request radio change to", req.body["radio"]);
+        log("[API] Request radio change to", req.body["radio"]);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_RADIO-PLAY", payload: req.body["radio"] });
         res.json({ done: "ok" });
         break;
@@ -552,14 +834,14 @@ class website {
         if (!req.headers["backup"]) return res.status(400).json({ error: "Bad Request" });
         var availableBackups = await this.loadBackupNames();
         if (availableBackups.indexOf(req.headers["backup"]) === -1) return res.status(404).json({ error: "Not Found" });
-        log("Request backup:", req.headers["backup"]);
+        log("[API] Request backup:", req.headers["backup"]);
         var file = await this.loadBackupFile(req.headers["backup"]);
         resultSaveConfig = await this.saveConfig(file);
-        log("Write config result:", resultSaveConfig);
+        log("[API] Write config result:", resultSaveConfig);
         if (resultSaveConfig.done) {
           res.json(resultSaveConfig);
           this.website.MMConfig = await this.readConfig();
-          log("Reload config");
+          log("[API] Reload config");
         } else if (resultSaveConfig.error) {
           res.status(500).json({ error: resultSaveConfig.error });
         }
@@ -567,12 +849,12 @@ class website {
 
       case "/api/backups/external":
         try {
-          console.log("Receiving External backup...");
+          console.log("[API] Receiving External backup...");
           let config = req.body["config"];
           let decoded = JSON.parse(this.decode(config));
           var linkExternalBackup = await this.saveExternalConfig(decoded);
           if (linkExternalBackup.data) {
-            log("Generate link:", linkExternalBackup.data);
+            log("[API] Generate link:", linkExternalBackup.data);
             setTimeout(() => {
               this.deleteDownload(linkExternalBackup.data);
             }, 1000 * 60);
@@ -591,7 +873,7 @@ class website {
             res.status(500).json({ error: "Internal Server Error" });
           }
         } catch (e) {
-          console.error("[Bugsounet] [API] Request error", e.message);
+          console.error("[Bugsounet] [Web] [API] Request error", e.message);
           res.status(400).json({ error: "Bad Request" });
         }
         break;
@@ -609,7 +891,7 @@ class website {
         res.status(202).json({ done: "ok" });
         break;
       default:
-        console.warn("[Bugsounet] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
     }
   }
@@ -646,7 +928,7 @@ class website {
         if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).json({ error: "Not Found" });
         var alert = req.body["alert"];
         if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).json({ error: "Bad Request" });
-        log("Request send Alert:", alert);
+        log("[API] Request send Alert:", alert);
         this.sendSocketNotification("SENDALERT", {
           type: "information",
           message: alert,
@@ -661,7 +943,7 @@ class website {
       case "/api/backups/external":
         try {
           let decoded = this.decode(req.body["config"]);
-          log("Receiving External backup...");
+          log("[API] Receiving External backup...");
           var transformExternalBackup = await this.transformExternalBackup(decoded);
           if (transformExternalBackup.error) {
             res.status(500).json({ error: transformExternalBackup.error });
@@ -671,12 +953,12 @@ class website {
             res.json({ config: encode });
           }
         } catch (e) {
-          log("Request error", e.message);
+          log("[API] Request error", e.message);
           res.status(400).json({ error: "Bad Request" });
         }
         break;
       default:
-        console.warn("[Bugsounet] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
     }
   }
@@ -685,14 +967,14 @@ class website {
   async DeleteAPI (req, res) {
     switch (req.url) {
       case "/api/backups":
-        log("Receiving delete backup demand...");
+        log("[API] Receiving delete backup demand...");
         var deleteBackup = await this.deleteBackup();
-        log("Delete backup result:", deleteBackup);
+        log("[API] Delete backup result:", deleteBackup);
         res.json(deleteBackup);
         break;
 
       default:
-        console.warn("[Bugsounet] [API] Don't find:", req.url);
+        console.warn("[Bugsounet] [Web] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
     }
   }
@@ -707,20 +989,20 @@ class website {
       const { cookies } = req;
 
       if (!cookies || !cookies["MMM-Bugsounet"]) {
-        console.warn("[Bugsounet] [API] [AUTH] Missing MMM-Bugsounet cookie");
+        console.warn("[Bugsounet] [Web] [AUTH] Missing MMM-Bugsounet cookie");
         return res.redirect("/login");
       }
 
       const accessToken = cookies["MMM-Bugsounet"];
       jwt.verify(accessToken, this.secret, (err, decoded) => {
         if (err) {
-          console.warn("[Bugsounet] [API] [AUTH] decode Error !", err.message);
+          console.warn("[Bugsounet] [Web] [AUTH] decode Error !", err.message);
           return res.redirect("/login");
         }
         const user = decoded.user;
 
         if (!user || user !== this.website.user.username) {
-          console.warn(`[Bugsounet] [API] [AUTH] User ${user} not exists`);
+          console.warn(`[Bugsounet] [Web] [AUTH] User ${user} not exists`);
           return res.redirect("/login");
         }
 
@@ -728,13 +1010,13 @@ class website {
         next();
       });
     } catch (err) {
-      console.error("[Bugsounet] [API] [AUTH] Error 500!", err.message);
+      console.error("[Bugsounet] [Web] [AUTH] Error 500!", err.message);
       return res.status(500).json({ error: "Internal error" });
     }
   }
 
   // login deals with username // password in Basic
-  login (req, res) {
+  login (req, res, api) {
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     const authorization = req.headers.authorization;
     const params = authorization?.split(" ");
@@ -743,19 +1025,19 @@ class website {
     };
 
     if (!authorization) {
-      console.warn(`[Bugsounet] [API] [${ip}] Bad Login: missing authorization type`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: missing authorization type`);
       APIResult.description = "Missing authorization type";
       return res.status(401).json(APIResult);
     }
 
     if (params[0] !== "Basic") {
-      console.warn(`[Bugsounet] [API] [${ip}] Bad Login: Basic authorization type only`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: Basic authorization type only`);
       APIResult.description = "Authorization type Basic only";
       return res.status(401).json(APIResult);
     }
 
     if (!params[1]) { // must never happen
-      console.warn(`[Bugsounet] [API] [${ip}] Bad Login: missing Basic params`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: missing Basic params`);
       APIResult.description = "Missing Basic params";
       return res.status(401).json(APIResult);
     }
@@ -772,23 +1054,59 @@ class website {
         { expiresIn: "1h" }
       );
 
-      console.log(`[Bugsounet] [API] [${ip}] Welcome ${username}, happy to serve you!`);
+      console.log(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Welcome ${username}, happy to serve you!`);
 
-      this.API_rateLimiter.resetKey(req.ip);
-      this.API_speedLimiter.resetKey(req.ip);
-      APIResult = {
-        access_token: token,
-        token_type: "Bearer",
-        expire_in: 3600
-      };
-      res.json(APIResult);
-
+      if (api) {
+        this.API_rateLimiter.resetKey(req.ip);
+        this.API_speedLimiter.resetKey(req.ip);
+        APIResult = {
+          access_token: token,
+          token_type: "Bearer",
+          expire_in: 3600
+        };
+        res.json(APIResult);
+      } else {
+        this.rateLimiter.resetKey(req.ip);
+        this.speedLimiter.resetKey(req.ip);
+        res.cookie("MMM-Bugsounet", token, {
+          httpOnly: true,
+          //secure: true,
+          maxAge: 3600000
+        });
+        res.json({ session: token });
+      }
     } else {
-      console.warn(`[Bugsounet] [API] [${ip}] Bad Login: Invalid username or password`);
+      console.warn(`[Bugsounet] [Web] ${api ? "[API] " : ""}[${ip}] Bad Login: Invalid username or password`);
       APIResult.description = "Invalid username or password";
-      res.status(401).json(APIResult);
+      if (api) res.status(401).json(APIResult);
+      else res.status(403).json(APIResult);
     }
   }
+
+  // decode cookie for relogin
+  hasValidCookie = (req) => {
+    try {
+      const { cookies } = req;
+
+      if (!cookies || !cookies["MMM-Bugsounet"]) return null;
+
+      const accessToken = cookies["MMM-Bugsounet"];
+      jwt.verify(accessToken, this.secret, (err, decoded) => {
+        if (err) return null;
+
+        const user = decoded.user;
+        if (!user || user !== this.website.user.username) return null;
+
+        this.rateLimiter.resetKey(req.ip);
+        this.speedLimiter.resetKey(req.ip);
+
+        return true;
+      });
+    } catch (err) {
+      console.error("[Bugsounet] [Web] Cookie Error !", err.message);
+      return null;
+    }
+  };
 
   // decode and verify token
   hasValidToken = (req, res, next) => {
@@ -799,25 +1117,25 @@ class website {
       const params = authorization?.split(" ");
 
       if (!authorization) {
-        console.warn(`[Bugsounet] [API] [${ip}] Bad Login: missing authorization type`);
+        console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: missing authorization type`);
         return res.status(401).json({ error: "Unauthorized" });
       }
 
       if (params[0] !== "Bearer") {
-        console.warn(`[Bugsounet] [API] [${ip}] Bad Login: Bearer authorization type only`);
+        console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: Bearer authorization type only`);
         return res.status(401).json({ error: "Unauthorized" });
       }
 
       if (!params[1]) { // must never happen
-        console.warn(`[Bugsounet] [API] [${ip}] Bad Login: missing Basic params`);
+        console.warn(`[Bugsounet] [Web] [API] [${ip}] Bad Login: missing Basic params`);
         return res.status(401).json({ error: "Unauthorized" });
       }
 
       const accessToken = params[1];
       jwt.verify(accessToken, this.secret, (err, decoded) => {
         if (err) {
-          if (err.message === "jwt expired") console.warn("[Bugsounet] [API] Token expired !");
-          else console.error("[Bugsounet] [API] Token decode Error !", err.message);
+          if (err.message === "jwt expired") console.warn("[Bugsounet] [Web] [API] Token expired !");
+          else console.error("[Bugsounet] [Web] [API] Token decode Error !", err.message);
           return res.status(401).json({ error: "Unauthorized" });
         }
         const user = decoded.user;
@@ -828,7 +1146,7 @@ class website {
         next();
       });
     } catch (err) {
-      console.error("[Bugsounet] [API] Token Fatal Error !", err.message);
+      console.error("[Bugsounet] [Web] [API] Token Fatal Error !", err.message);
       return res.status(500).json({ error: "Internal error" });
     }
   };
@@ -867,14 +1185,14 @@ class website {
           fs.unlink(file, (err) => {
             if (err) {
               resolve({ error: "Error when deleting file" });
-              return console.error("[Bugsounet] [API] [DELETE] error", err);
+              return console.error("[Bugsounet] [Web] [DELETE] error", err);
             }
             log("Successfully deleted:", file);
           });
           resolve(TMPConfig);
         }
       } catch (e) {
-        console.error("[Bugsounet] [API] [DELETE] Error on reading file", e.message);
+        console.error("[Bugsounet] [Web] [DELETE] Error on reading file", e.message);
         resolve({ error: "Error on reading file" });
       }
     });
@@ -897,7 +1215,7 @@ class website {
       if (radio?.config?.streams) {
         let file = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-RadioPlayer/${radio.config.streams}`;
         if (fs.existsSync(file)) RadioResult = require(file);
-        else console.error(`[Bugsounet] [API] [Radio] error when loading file: ${file}`);
+        else console.error(`[Bugsounet] [Web] [Radio] error when loading file: ${file}`);
       }
       resolve(RadioResult);
     });
@@ -915,7 +1233,7 @@ class website {
       });
       return Configured.sort();
     } catch (e) {
-      console.error(`[Bugsounet] [API] Error! ${e}`);
+      console.error(`[Bugsounet] [Web] Error! ${e}`);
       return Configured.sort();
     }
   }
@@ -928,7 +1246,7 @@ class website {
       if (fs.existsSync(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/node_helper.js`)) {
         let name = require(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/package.json`).name;
         if (name === m) Installed.push(m);
-        else console.warn(`[Bugsounet] [API] Found: ${m} but in package.json name is not the same: ${name}`);
+        else console.warn(`[Bugsounet] [Web] Found: ${m} but in package.json name is not the same: ${name}`);
       }
     });
     return Installed.sort();
@@ -973,7 +1291,7 @@ class website {
         }) + footer, (error) => {
           if (error) {
             resolve({ error: "Error when writing file" });
-            return console.error("[Bugsounet] [API] [WRITE] error", error);
+            return console.error("[Bugsounet] [Web] [WRITE] error", error);
           }
           log("Saved TMP configuration!");
           log("Backup saved in", backupPath);
@@ -984,7 +1302,7 @@ class website {
             fs.unlink(outputFile, (err) => {
               if (err) {
                 resolve({ error: "Error when deleting file" });
-                return console.error("[Bugsounet] [API] [DELETE] error", err);
+                return console.error("[Bugsounet] [Web] [DELETE] error", err);
               }
             });
             var instream = fs.createReadStream(inputFile);
@@ -1010,7 +1328,7 @@ class website {
               fs.unlink(inputFile, (err) => {
                 if (err) {
                   resolve({ error: "Error when deleting file" });
-                  return console.error("[Bugsounet] [API] [DELETE] error", err);
+                  return console.error("[Bugsounet] [Web] [DELETE] error", err);
                 }
                 // !! ALL is ok !!
                 resolve({
@@ -1026,7 +1344,7 @@ class website {
       });
       destination.on("error", (error) => {
         resolve({ error: "Error when writing file" });
-        console.error("[Bugsounet] [API] [WRITE]", error);
+        console.error("[Bugsounet] [Web] [WRITE]", error);
       });
     });
   }
@@ -1048,7 +1366,7 @@ class website {
       }) + footer, (error) => {
         if (error) {
           resolve({ error: "Error when writing file" });
-          return console.error("[Bugsounet] [API] [WRITE] error", error);
+          return console.error("[Bugsounet] [Web] [WRITE] error", error);
         }
 
         const readFileLineByLine = (inputFile, outputFile) => {
@@ -1073,11 +1391,11 @@ class website {
             fs.appendFileSync(outputFile, `${line}\n`);
           });
           instream.on("end", () => {
-            console.log("[Bugsounet] [API] Saved new backup configuration for downloading !");
+            console.log("[Bugsounet] [Web] Saved new backup configuration for downloading !");
             fs.unlink(inputFile, (err) => {
               if (err) {
                 resolve({ error: "Error when deleting file" });
-                return console.error("[Bugsounet] [API] [DELETE] error", err);
+                return console.error("[Bugsounet] [Web] [DELETE] error", err);
               }
               resolve({ data: `${time}.js` });
             });
@@ -1092,7 +1410,7 @@ class website {
     var inputFile = `${this.BugsounetModulePath}/download/${file}`;
     fs.unlink(inputFile, (err) => {
       if (err) {
-        return console.error("[Bugsounet] [API] error", err);
+        return console.error("[Bugsounet] [Web] error", err);
       }
       log("Successfully deleted:", inputFile);
     });
@@ -1104,7 +1422,7 @@ class website {
         var tmpFile = `${this.BugsounetModulePath}/tmp/config.${this.timeStamp()}.tmp`;
         fs.writeFile(tmpFile, backup, async (err) => {
           if (err) {
-            console.error("[Bugsounet] [API] [externalBackup]", err);
+            console.error("[Bugsounet] [Web] [externalBackup]", err);
             resolve({ error: "Error when writing external tmp backup file" });
           } else {
             const result = await this.readTMPBackupConfig(tmpFile);
@@ -1153,7 +1471,7 @@ class website {
             fs.unlinkSync(pathFile);
             log("Removed:", file);
           } catch {
-            console.error("[Bugsounet] [API] Error occurred while trying to remove this file:", file);
+            console.error("[Bugsounet] [Web] Error occurred while trying to remove this file:", file);
           }
         }
       });
@@ -1347,7 +1665,7 @@ class website {
           resolve(result);
         })
         .catch((e) => {
-          console.error(`[Bugsounet] [API] Error on fetch last version of ${module}:`, e.message);
+          console.error(`[Bugsounet] [Web] Error on fetch last version of ${module}:`, e.message);
           resolve(result);
         });
     });
@@ -1379,10 +1697,10 @@ class website {
     let langHome = `${this.WebsitePath}/home/${lang}.home`;
     let defaultHome = `${this.WebsitePath}/home/default.home`;
     if (fs.existsSync(langHome)) {
-      console.log(`[Bugsounet] [API] [Translation] [Home] Use: ${lang}.home`);
+      console.log(`[Bugsounet] [Web] [Translation] [Home] Use: ${lang}.home`);
       Home = await this.readThisFile(langHome);
     } else {
-      console.log("[Bugsounet] [API] [Translation] [Home] Use: default.home");
+      console.log("[Bugsounet] [Web] [Translation] [Home] Use: default.home");
       Home = await this.readThisFile(defaultHome);
     }
     return Home;
@@ -1392,7 +1710,7 @@ class website {
     return new Promise((resolve) => {
       fs.readFile(file, (err, input) => {
         if (err) {
-          console.log("[Bugsounet] [API] [Translation] [Home] Error", err);
+          console.log("[Bugsounet] [Web] [Translation] [Home] Error", err);
           resolve();
         }
         resolve(input.toString());
@@ -1404,7 +1722,7 @@ class website {
     return new Promise((resolve) => {
       if (this.website.MMConfig.address === "0.0.0.0") {
         this.website.errorInit = true;
-        console.error("[Bugsounet] [API] Error: You can't use '0.0.0.0' in MagicMirror address config");
+        console.error("[Bugsounet] [Web] Error: You can't use '0.0.0.0' in MagicMirror address config");
         this.sendSocketNotification("ERROR", "You can't use '0.0.0.0' in MagicMirror address config");
         setTimeout(() => process.exit(), 5000);
         resolve(true);
@@ -1469,7 +1787,7 @@ class website {
           resolve(APIResult);
         })
         .catch(() => {
-          console.error("[Bugsounet] [API] Error on fetch last version number");
+          console.error("[Bugsounet] [Web] [API] Error on fetch last version number");
           APIResult.error = "Error on fetch last version number";
           resolve(APIResult);
         });
