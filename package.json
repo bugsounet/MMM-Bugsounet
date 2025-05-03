@@ -108,7 +108,7 @@
     "eslint-plugin-import-x": "^4.10.6",
     "eslint-plugin-package-json": "^0.29.1",
     "markdownlint-cli2": "^0.17.2",
-    "stylelint": "^16.19.1",
+    "stylelint": "^16.18.0",
     "stylelint-config-standard": "^38.0.0",
     "stylelint-prettier": "^5.0.3"
   },
