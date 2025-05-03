@@ -103,7 +103,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^4.2.0",
-    "eslint": "^9.25.1",
+    "eslint": "^9.25.0",
     "eslint-plugin-depend": "^1.0.0",
     "eslint-plugin-import-x": "^4.10.6",
     "eslint-plugin-package-json": "^0.31.0",
