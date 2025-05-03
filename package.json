@@ -84,7 +84,7 @@
     "alertifyjs": "^1.14.0",
     "body-parser": "^2.2.0",
     "dayjs": "^1.11.13",
-    "esbuild": "^0.25.3",
+    "esbuild": "^0.25.2",
     "express-body-parser-error-handler": "^1.0.9",
     "express-rate-limit": "^7.5.0",
     "express-slow-down": "^2.0.3",
