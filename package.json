@@ -98,7 +98,7 @@
     "semver": "^7.7.1",
     "stream": "^0.0.3",
     "swagger-ui-express": "^5.0.1",
-    "sweetalert2": "^11.19.1",
+    "sweetalert2": "^11.21.0",
     "systeminformation": "^5.25.11"
   },
   "devDependencies": {
