@@ -79,8 +79,6 @@
   "dependencies": {
     "@electron/rebuild": "^4.0.1",
     "@mdi/font": "^7.4.47",
-    "@xterm/addon-fit": "^0.10.0",
-    "@xterm/xterm": "^5.5.0",
     "alertifyjs": "^1.14.0",
     "body-parser": "^2.2.0",
     "dayjs": "^1.11.13",
@@ -89,7 +87,6 @@
     "express-rate-limit": "^7.5.0",
     "express-slow-down": "^2.0.3",
     "fdir": "^6.4.4",
-    "jsoneditor": "^10.2.0",
     "jsonwebtoken": "^9.0.2",
     "nan": "^2.22.2",
     "open": "^10.1.2",
