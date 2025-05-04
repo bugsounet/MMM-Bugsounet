@@ -23,7 +23,7 @@
     "express-body-parser-error-handler": "^1.0.7",
     "express-rate-limit": "^7.4.1",
     "express-slow-down": "^2.0.3",
-    "http-proxy-middleware": "^3.0.3",
+    "http-proxy-middleware": "^3.0.5",
     "jsoneditor": "^10.1.2",
     "jsonwebtoken": "^9.0.2",
     "node-pty": "^1.0.0",
