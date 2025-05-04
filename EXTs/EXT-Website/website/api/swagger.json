@@ -1,0 +1,3791 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Control MMM-Bugsounet from API",
+    "version": "0.0.0",
+    "title": "MMM-Bugsounet API"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8085"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Tools",
+      "description": "Helper Tools"
+    },
+    {
+      "name": "Authentification",
+      "description": "Authentification to API Server"
+    },
+    {
+      "name": "Translations",
+      "description": "Translations Tools"
+    },
+    {
+      "name": "EXT",
+      "description": "EXTs Tools"
+    },
+    {
+      "name": "System",
+      "description": "System Tools"
+    },
+    {
+      "name": "Configuration",
+      "description": "MagicMirror² and EXTs configuration Tools"
+    },
+    {
+      "name": "Backups",
+      "description": "Manage backups"
+    },
+    {
+      "name": "MagicMirror²",
+      "description": "Let's Manage MagicMirror² with notification"
+    }
+  ],
+  "paths": {
+    "/api": {
+      "get": {
+        "tags": [
+          "Tools"
+        ],
+        "summary": "Test API path",
+        "description": "Test if API is online.<li>No param is needed.",
+        "responses": {
+          "200": {
+            "description": "Return api state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Test"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Authentification"
+        ],
+        "summary": "Basic Authentification with MMM-Bugsounet credentials",
+        "security": [
+          {
+            "Basic": []
+          }
+        ],
+        "description": "Get `Bearer` token.<li>Credentials must be sended in header with `Authorization: Basic` (base64 login:password).",
+        "responses": {
+          "200": {
+            "description": "Returns `access_token`, `token_type` and `expire_in` values",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/login"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returns `error` and `description`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/translations/login": {
+      "get": {
+        "tags": [
+          "Translations"
+        ],
+        "summary": "Returns current login translations",
+        "description": "Get translation for login.<li>No params is needed.<li>No Authentification required.",
+        "responses": {
+          "200": {
+            "description": "Send login translations part",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/translationsLogin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/translations/common": {
+      "get": {
+        "tags": [
+          "Translations"
+        ],
+        "summary": "Returns current translations collection",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get translation all translations.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Send collection of translations part",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/translationsCommon"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/translations/homeText": {
+      "get": {
+        "tags": [
+          "Translations"
+        ],
+        "summary": "Returns home text translated content in HTML",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get translation home text translation.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Send translated home text HTML",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/translationsHomeText"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/version": {
+      "get": {
+        "tags": [
+          "Tools"
+        ],
+        "summary": "Returns MMM-Bugsounet current version, revision, language, ...",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get MMM-Bugsounet Version informations.<li>Required: `Bearer` token in header.",
+        "responses": {
+          "200": {
+            "description": "Send MMM-Bugsounet version tools",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/version"
+                }
+              }
+            }
+          },
+          "206": {
+            "description": "Send Partial MMM-Bugsounet version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/version206"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/stop": {
+      "post": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Stop all EXTs running",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send stop command for turn off all active EXTs.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "All EXTs are stopped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/sysInfo": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Returns system informations of current device",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get system information of the system.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Send System informations result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sysInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/restart": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Restart MagicMirror²",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send a request for restart MagicMirror².<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Restart in progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/die": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Close MagicMirror²",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send a request for close MagicMirror².<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Close in progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/reboot": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Reboot OS",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send a request for reboot OS.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Reboot in progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/shutdown": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Shutdown OS",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send a request for shutdown OS.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Shutdown in progress",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/versions": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns the version of the connected EXTs",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get version of all EXTs connected.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Sends the version of the EXTs currently used",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXTVersions"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns available EXTs collection",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get available EXTs collection.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Sends all available EXTs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayPlugins"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/installed": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns all installed EXTs in MagicMirror² modules folder",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get installed EXTs collection (in MagicMirror² module Folder).<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Sends all installed EXTs in MagicMirror² modules folder",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayPlugins"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/configured": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns all configured EXTs in MagicMirror² config. file",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get configured EXTs (in MagicMirror² configuration file).<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Sends all configured EXTs in MagicMirror² config. file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayPlugins"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/status": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns status of all EXTs",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get status database of all EXTs.<li>Required: `Bearer` token in header.<li>No params is needed.<br><br>Response object in deep:<br>`hello`: plugin is detected (installed and configured).<br>`connected`: plugin is currently active in MagicMirror² (display or play something).",
+        "responses": {
+          "200": {
+            "description": "Sends status of all EXTs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXTStatus"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Volume/speaker": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Send new speaker volume",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send new speaker volume configuration.<li>Required: `EXT-Volume` plugin<li>Required: `Bearer` token in header.<li>Required: `volume` param with percent value [0-100] in body (JSON Format).",
+        "requestBody": {
+          "description": "Send new percent speaker volume in volume key",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendVolume"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing volume param or volume out of range (0-100)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Volume not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Volume/recorder": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Send new recorder volume",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send new recorder volume configuration.<li>Required: `EXT-Volume` plugin<li>Required: `Bearer` token in header.<li>Required: `volume` param with percent value [0-100] in body (JSON Format).",
+        "requestBody": {
+          "description": "Send new percent recorder volume in volume key",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendVolume"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing volume param or volume out of range (0-100)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Volume not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/RadioPlayer": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns Radio List from stream configuration file",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get Radio List collection.<liRequired: `EXT-RadioPlayer` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Returns Radio List",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendRadioList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-RadioPlayer not installed or no radio found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Send request radio to play",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request For listening a Radio.<li>Required: `EXT-RadioPlayer` plugin.<li>Required: `Bearer` token in header.<li>Required: `radio` param with radio name value in body (JSON Format).",
+        "requestBody": {
+          "description": "Send request radio in radio key",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRadio"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing radio param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-RadioPlayer not installed or radio not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Updates": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns available EXT Update list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get Available updates.<li>Required: `EXT-Updates` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Sends available updates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayPlugins"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Updates not installed or no plugins need any updates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Sends needed available Update to the first EXT",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Update first plugins of update list.<li>Required: `EXT-Updates` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Update command started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Updates not installed or no plugins need any updates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Spotify": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Send music that you want to listen",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send reqest for listening music on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>Required: `query` with query to send and `type` with query type (artist, album, playlist or track) in body (JSON Format).",
+        "requestBody": {
+          "description": "Send query and type for search and listening",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendSpotify"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing volume param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Spotify not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Spotify/play": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Play command of EXT-Spotify",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request for play command on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Spotify not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Spotify/pause": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Pause command of EXT-Spotify",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request for pause command on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Spotify not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Spotify/stop": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Stop command of EXT-Spotify",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request for stop command on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Spotify not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Spotify/toggle": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Play/Pause command toggle of EXT-Spotify",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request for play or pause (toggle) command on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Spotify not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Spotify/next": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Next command of EXT-Spotify",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request for next title command on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Spotify not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Spotify/previous": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Previous command of EXT-Spotify",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request for previous title command on Spotify.<li>Required: `EXT-Spotify` plugin.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Spotify not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/Screen": {
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Send your wanted power of your Screen",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request for turn ON/OFF MagicMirror² screen.<li>Required: `EXT-Screen` plugin.<li>Required: `Bearer` token in header.<li>`power` param with wanted screen state (ON/OFF) is needed in body (JSON Format).",
+        "requestBody": {
+          "description": "Send wanted power state",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendScreen"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing power param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-Screen not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/EXT/FreeboxTV": {
+      "get": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Returns TV channel list from stream configuration file",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get available TV channel list.<li>Required: `EXT-FreeboxTV` plugin.<li>Required: `Bearer` token in header.<li>Reserved to French users.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Returns TV channel list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendFreeboxTVList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-FreeboxTV not installed or no TV channel found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "EXT"
+        ],
+        "summary": "Send your TV channel to display",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send request For watching TV channel.<li>Required: `EXT-FreeboxTV` plugin.<li>Required: `Bearer` token in header.<li>Reserved for French users.<li>Required: `TV` param with TV channel name value in body (JSON Format).",
+        "requestBody": {
+          "description": "Send wanted TV channel",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendFreeboxTV"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing power param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "EXT-FreeboxTV or channel not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/409Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/config/MM": {
+      "get": {
+        "description": "Get MagicMirror² configuration.<li>Required: `Bearer` token in header.<li>No params is needed.<br><br><b>For securtity, response will be encoded in base64.",
+        "tags": [
+          "Configuration"
+        ],
+        "summary": "Returns current MagicMirror² configuration",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return current MagicMirror² configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendConfig"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Configuration"
+        ],
+        "summary": "Update new MagicMirror² configuration",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Update new configuration of MagicMirror².<li>Required: `Bearer` token in header.<li>Required: `config` param with MagicMirror² configuration value in body (JSON Format).<li>Required: `config` must be encoded in base64.<li>Last configuration will be saved into a file.",
+        "requestBody": {
+          "description": "Send new base64 encoded config in config key",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Configuration Updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing config in header or config is not in JSON string format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error on writing new configuration file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config500Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backups": {
+      "get": {
+        "tags": [
+          "Backups"
+        ],
+        "summary": "Returns available backup collection",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get available backups filename collection.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Sends all available backup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackupList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Backups"
+        ],
+        "summary": "Delete all available backup collection",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Delete all backups.<li>Required: `Bearer` token in header.<li>No params is needed.",
+        "responses": {
+          "200": {
+            "description": "Backup Delete confirmation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backups/file": {
+      "get": {
+        "tags": [
+          "Backups"
+        ],
+        "summary": "Returns backup configuration from file content",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Return backup configuration content.<li>Required: `Bearer` token in header.<li>Required: `backup` param with backup name in header.<br><br><b>For securtity, response will be encoded in base64",
+        "parameters": [
+          {
+            "name": "backup",
+            "in": "header",
+            "description": "Backup Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns backup config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendConfig"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Backup not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Backups"
+        ],
+        "summary": "Apply backup configuration from backup filename",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Apply backup configuration.<li>Required: `Bearer` token in header.<li>Required: `backup` param with backup name in header.<li>Last configuration will be saved into a file.",
+        "parameters": [
+          {
+            "name": "backup",
+            "in": "header",
+            "description": "Backup Name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Configuration Updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config200"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Backup not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error on writing new configuration file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config500Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/backups/external": {
+      "post": {
+        "tags": [
+          "Backups"
+        ],
+        "summary": "Analyse configuration content from a configuration",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Analyse text base backup.<li>Required: `Bearer` token in header.<li>Required: `config` param with MagicMirror² configuration in body (JSON Format).<li>Required: `config` must be in text format and encoded in base64.<br><br><b>For securtity, response will be encoded in base64<br>Return an MMM-Bugsounet config compliant",
+        "requestBody": {
+          "description": "Send base64 encoded config in config key",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New Configuration Updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendConfig"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing config in params or config is not in JSON string format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config500Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Backups"
+        ],
+        "summary": "Analyse and Send link for download configuration",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Analyse MagicMirror² configuration an offer an download link.<li>Required: `Bearer` token in header.<li>Required: `config` param with MagicMirror² configuration in body (JSON Format).<li>Required: `config` encoded in base64.",
+        "requestBody": {
+          "description": "Send base64 encoded config in config key",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendConfig"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Download link is ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendExternal"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing config in params or config is not in JSON string format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config500Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/MM": {
+      "put": {
+        "tags": [
+          "MagicMirror²"
+        ],
+        "summary": "Send notification and payload for MagicMirror² control",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send MagicMirror² notification and payload.<li>Required: `Bearer` token in header.<li>Required: `notification` param with notification name in body (JSON Format).<li>Optional: `payload` param with additional parameter in body (JSON Format).",
+        "requestBody": {
+          "description": "Send notification request with payload (optional)",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMM"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Notification sended",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing notification in params",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/system/alert": {
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Send Alert on the screen",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Send Alert on MagicMirror² screen.<li>Required: `Bearer` token in header.<li>Required: `alert` param with message content in body (JSON Format).",
+        "requestBody": {
+          "description": "Send Alert on MagicMirror²",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendAlert"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command sended successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EXT200"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing query param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config400Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing valid authentication token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/401Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Bugsounet-Alert not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config404Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Basic": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "`MMM-Bugsounet` credentials for Authentication."
+      },
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "`access_token` sended on login."
+      }
+    },
+    "schemas": {
+      "Test": {
+        "type": "object",
+        "properties": {
+          "api": {
+            "type": "string",
+            "description": "API state"
+          },
+          "docs": {
+            "type": "string",
+            "description": "APi documentation enabled"
+          }
+        },
+        "example": {
+          "api": "OK",
+          "docs": false
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "Access Token for this API"
+          },
+          "token_type": {
+            "type": "string",
+            "description": "Token type"
+          },
+          "expire_in": {
+            "type": "number",
+            "description": "Expiration time in sec"
+          }
+        },
+        "example": {
+          "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYnVnc291bmV0IiwiaWF0IjoxNzE3MTU3NDg1LCJleHAiOjE3MTcxNjEwODV9.ZFoliD-dZXFI5w9TPBt7nnjEy1vP6YGP9jdUf_i-660",
+          "token_type": "Bearer",
+          "expire_in": 3600
+        }
+      },
+      "loginError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of this error"
+          }
+        },
+        "example": {
+          "error": "Invalid credentials",
+          "description": "Invalid username or password"
+        }
+      },
+      "translationsLogin": {
+        "type": "object",
+        "description": "login Translated message",
+        "properties": {
+          "welcome": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "login": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "welcome": "Bienvenue",
+          "username": "Entrez votre nom d'utilisateur...",
+          "password": "Mot de passe",
+          "error": "Erreur: L'identification a échouée.",
+          "login": "Se Connecter"
+        }
+      },
+      "translationsCommon": {
+        "type": "object",
+        "description": "Translated message",
+        "properties": {
+          "Rotate_Msg": {
+            "type": "string"
+          },
+          "Rotate_Continue": {
+            "type": "string"
+          },
+          "Login_Welcome": {
+            "type": "string"
+          },
+          "Login_Username": {
+            "type": "string"
+          },
+          "Login_Password": {
+            "type": "string"
+          },
+          "Login_Error": {
+            "type": "string"
+          },
+          "Login_Login": {
+            "type": "string"
+          },
+          "Home": {
+            "type": "string"
+          },
+          "Home_Welcome": {
+            "type": "string"
+          },
+          "Terminal": {
+            "type": "string"
+          },
+          "TerminalOpen": {
+            "type": "string"
+          },
+          "TerminalGW": {
+            "type": "string"
+          },
+          "Configuration": {
+            "type": "string"
+          },
+          "Configuration_Welcome": {
+            "type": "string"
+          },
+          "Configuration_EditLoad": {
+            "type": "string"
+          },
+          "Configuration_Edit_Title": {
+            "type": "string"
+          },
+          "Configuration_Edit_AcualConfig": {
+            "type": "string"
+          },
+          "Tools": {
+            "type": "string"
+          },
+          "Tools_Welcome": {
+            "type": "string"
+          },
+          "Tools_subTitle": {
+            "type": "string"
+          },
+          "Tools_Restart": {
+            "type": "string"
+          },
+          "Tools_Restart_Text1": {
+            "type": "string"
+          },
+          "Tools_Restart_Text2": {
+            "type": "string"
+          },
+          "Tools_Die": {
+            "type": "string"
+          },
+          "Tools_Die_Text1": {
+            "type": "string"
+          },
+          "Tools_Die_Text2": {
+            "type": "string"
+          },
+          "Tools_Die_Text3": {
+            "type": "string"
+          },
+          "Tools_Webview_Header": {
+            "type": "string"
+          },
+          "Tools_Webview_Needed": {
+            "type": "string"
+          },
+          "Tools_Backup_Found": {
+            "type": "string"
+          },
+          "Tools_Backup_Text": {
+            "type": "string"
+          },
+          "Tools_Backup_Deleted": {
+            "type": "string"
+          },
+          "Tools_Screen_Text": {
+            "type": "string"
+          },
+          "Tools_Alert_Text": {
+            "type": "string"
+          },
+          "Tools_Alert_Query": {
+            "type": "string"
+          },
+          "Tools_Volume_Text_Record": {
+            "type": "string"
+          },
+          "Tools_Volume_Text": {
+            "type": "string"
+          },
+          "Tools_Volume_Text2": {
+            "type": "string"
+          },
+          "Tools_Volume_Text3": {
+            "type": "string"
+          },
+          "Tools_Spotify_Text": {
+            "type": "string"
+          },
+          "Tools_Spotify_Text2": {
+            "type": "string"
+          },
+          "Tools_Spotify_Query": {
+            "type": "string"
+          },
+          "Tools_Spotify_Artist": {
+            "type": "string"
+          },
+          "Tools_Spotify_Track": {
+            "type": "string"
+          },
+          "Tools_Spotify_Album": {
+            "type": "string"
+          },
+          "Tools_Spotify_Playlist": {
+            "type": "string"
+          },
+          "Tools_Update_Header": {
+            "type": "string"
+          },
+          "Tools_Update_Text": {
+            "type": "string"
+          },
+          "Tools_Update_Text2": {
+            "type": "string"
+          },
+          "Tools_Stop_Text": {
+            "type": "string"
+          },
+          "Tools_Radio_Text": {
+            "type": "string"
+          },
+          "Tools_Radio_Text2": {
+            "type": "string"
+          },
+          "About": {
+            "type": "string"
+          },
+          "About_Title": {
+            "type": "string"
+          },
+          "About_Info_by": {
+            "type": "string"
+          },
+          "About_Info_Support": {
+            "type": "string"
+          },
+          "About_Info_Donate": {
+            "type": "string"
+          },
+          "About_Info_Donate_Text": {
+            "type": "string"
+          },
+          "About_Info_About": {
+            "type": "string"
+          },
+          "About_Info_Translator": {
+            "type": "string"
+          },
+          "About_Info_Translator1": {
+            "type": "string"
+          },
+          "About_Info_Translator2": {
+            "type": "string"
+          },
+          "About_Info_Translator3": {
+            "type": "string"
+          },
+          "About_Info_Translator4": {
+            "type": "string"
+          },
+          "About_Info_Translator5": {
+            "type": "string"
+          },
+          "About_Info_Translator6": {
+            "type": "string"
+          },
+          "About_Info_Translator7": {
+            "type": "string"
+          },
+          "About_Info_Translator8": {
+            "type": "string"
+          },
+          "About_Info_Translator9": {
+            "type": "string"
+          },
+          "About_Info_Translator10": {
+            "type": "string"
+          },
+          "System": {
+            "type": "string"
+          },
+          "System_Box_Shutdown": {
+            "type": "string"
+          },
+          "System_Shutdown": {
+            "type": "string"
+          },
+          "System_Box_Restart": {
+            "type": "string"
+          },
+          "System_Restart": {
+            "type": "string"
+          },
+          "System_Box_Version": {
+            "type": "string"
+          },
+          "System_GPUAcceleration_Disabled": {
+            "type": "string"
+          },
+          "System_GPUAcceleration_Enabled": {
+            "type": "string"
+          },
+          "System_NodeVersion": {
+            "type": "string"
+          },
+          "System_NPMVersion": {
+            "type": "string"
+          },
+          "System_OSVersion": {
+            "type": "string"
+          },
+          "System_KernelVersion": {
+            "type": "string"
+          },
+          "System_CPUSystem": {
+            "type": "string"
+          },
+          "System_TypeCPU": {
+            "type": "string"
+          },
+          "System_SpeedCPU": {
+            "type": "string"
+          },
+          "System_CurrentLoadCPU": {
+            "type": "string"
+          },
+          "System_GovernorCPU": {
+            "type": "string"
+          },
+          "System_TempCPU": {
+            "type": "string"
+          },
+          "System_MemorySystem": {
+            "type": "string"
+          },
+          "System_TypeMemory": {
+            "type": "string"
+          },
+          "System_SwapMemory": {
+            "type": "string"
+          },
+          "System_NetworkSystem": {
+            "type": "string"
+          },
+          "System_IPNetwork": {
+            "type": "string"
+          },
+          "System_InterfaceNetwork": {
+            "type": "string"
+          },
+          "System_SpeedNetwork": {
+            "type": "string"
+          },
+          "System_DuplexNetwork": {
+            "type": "string"
+          },
+          "System_WirelessInfo": {
+            "type": "string"
+          },
+          "System_SSIDNetwork": {
+            "type": "string"
+          },
+          "System_RateNetwork": {
+            "type": "string"
+          },
+          "System_FrequencyNetwork": {
+            "type": "string"
+          },
+          "System_SignalNetwork": {
+            "type": "string"
+          },
+          "System_QualityNetwork": {
+            "type": "string"
+          },
+          "System_StorageSystem": {
+            "type": "string"
+          },
+          "System_MountStorage": {
+            "type": "string"
+          },
+          "System_UsedStorage": {
+            "type": "string"
+          },
+          "System_PercentStorage": {
+            "type": "string"
+          },
+          "System_TotalStorage": {
+            "type": "string"
+          },
+          "System_UptimeSystem": {
+            "type": "string"
+          },
+          "System_CurrentUptime": {
+            "type": "string"
+          },
+          "System_System": {
+            "type": "string"
+          },
+          "System_RecordUptime": {
+            "type": "string"
+          },
+          "System_DAY": {
+            "type": "string"
+          },
+          "System_DAYS": {
+            "type": "string"
+          },
+          "System_HOUR": {
+            "type": "string"
+          },
+          "System_HOURS": {
+            "type": "string"
+          },
+          "System_MINUTE": {
+            "type": "string"
+          },
+          "System_MINUTES": {
+            "type": "string"
+          },
+          "System_ProcessSystem": {
+            "type": "string"
+          },
+          "System_CPU": {
+            "type": "string"
+          },
+          "System_Memory": {
+            "type": "string"
+          },
+          "System_CurrentlyRunning": {
+            "type": "string"
+          },
+          "System_NoPlugins": {
+            "type": "string"
+          },
+          "System_NamePlugin": {
+            "type": "string"
+          },
+          "System_VersionPlugin": {
+            "type": "string"
+          },
+          "System_RevPlugin": {
+            "type": "string"
+          },
+          "Logout": {
+            "type": "string"
+          },
+          "Delete": {
+            "type": "string"
+          },
+          "Install": {
+            "type": "string"
+          },
+          "Configure": {
+            "type": "string"
+          },
+          "Modify": {
+            "type": "string"
+          },
+          "Save": {
+            "type": "string"
+          },
+          "Wait": {
+            "type": "string"
+          },
+          "Done": {
+            "type": "string"
+          },
+          "Error": {
+            "type": "string"
+          },
+          "Cancel": {
+            "type": "string"
+          },
+          "Confirm": {
+            "type": "string"
+          },
+          "Load": {
+            "type": "string"
+          },
+          "Restart": {
+            "type": "string"
+          },
+          "ErrModule": {
+            "type": "string"
+          },
+          "Warn_Error": {
+            "type": "string"
+          },
+          "LoadDefault": {
+            "type": "string"
+          },
+          "MergeDefault": {
+            "type": "string"
+          },
+          "Send": {
+            "type": "string"
+          },
+          "TurnOn": {
+            "type": "string"
+          },
+          "TurnOff": {
+            "type": "string"
+          },
+          "RequestDone": {
+            "type": "string"
+          },
+          "Listen": {
+            "type": "string"
+          },
+          "Update": {
+            "type": "string"
+          },
+          "Start": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "Rotate_Msg": "Veuillez faire pivoter votre appareil",
+          "Rotate_Continue": "Pour continuer...",
+          "Login_Welcome": "Bienvenue",
+          "Login_Username": "Entrez votre nom d'utilisateur...",
+          "Login_Password": "Mot de passe",
+          "Login_Error": "Erreur: L'identification a échouée.",
+          "Login_Login": "Se Connecter",
+          "Home": "Accueil",
+          "Home_Welcome": "Bienvenue sur MMM-Bugsounet",
+          "Terminal": "Visionner le Terminal",
+          "TerminalOpen": "Ouvrir un Terminal",
+          "TerminalGW": "MMM-Bugsounet Terminal",
+          "Configuration": "Config. de MagicMirror²",
+          "Configuration_Welcome": "Configuration actuelle de MagicMirror²",
+          "Configuration_EditLoad": "Editer ou Charger une sauvegarde",
+          "Configuration_Edit_Title": "Editeur de la configuration de MagicMirror²",
+          "Configuration_Edit_AcualConfig": "Configuration Actuelle",
+          "Tools": "Outils",
+          "Tools_Welcome": "Boite à outils",
+          "Tools_subTitle": "MMM-Bugsounet peut vous offrir plus de contrôle ! (Les fonctions disponibles sont uniquement affichées)",
+          "Tools_Restart": "Redémarrer MagicMirror²",
+          "Tools_Restart_Text1": "Veuillez patienter...",
+          "Tools_Restart_Text2": "Redémarrage",
+          "Tools_Die": "Arrêter MagicMirror²",
+          "Tools_Die_Text1": "À bientôt !",
+          "Tools_Die_Text2": "Pour une meilleure utilisation...",
+          "Tools_Die_Text3": "de MMM-Bugsounet et de MagicMirror²!",
+          "Tools_Webview_Header": "Modifier les options d'électron pour une utilisation correcte avec les plugins EXT",
+          "Tools_Webview_Needed": "Nécessaire pour:",
+          "Tools_Backup_Found": "sauvegardes trouvées",
+          "Tools_Backup_Text": "Supprimer toutes les sauvegardes",
+          "Tools_Backup_Deleted": "Toutes les sauvegardes ont bien été supprimées!",
+          "Tools_Screen_Text": "Allumer ou éteindre votre écran",
+          "Tools_Alert_Text": "Affiche un message sur votre mirroir",
+          "Tools_Alert_Query": "Entrez votre message",
+          "Tools_Volume_Text_Record": "Defini le volume d'enregistrement du microphone",
+          "Tools_Volume_Text": "Defini le volume sonore de votre mirroir",
+          "Tools_Volume_Text2": "Niveau actuel:",
+          "Tools_Volume_Text3": "Définir sur",
+          "Tools_Spotify_Text": "Contrôleur du lecteur Spotify",
+          "Tools_Spotify_Text2": "Type de recherche:",
+          "Tools_Spotify_Query": "Entrez votre recherche",
+          "Tools_Spotify_Artist": "Artiste",
+          "Tools_Spotify_Track": "Piste",
+          "Tools_Spotify_Album": "Album",
+          "Tools_Spotify_Playlist": "Play Liste",
+          "Tools_Update_Header": "Mises à jour disponibles",
+          "Tools_Update_Text": "Modules et EXT Plugins:",
+          "Tools_Update_Text2": "Dépendences NPM:",
+          "Tools_Stop_Text": "Arrête tous les plugins en fonctionnement",
+          "Tools_Radio_Text": "Ecouter la Radio",
+          "Tools_Radio_Text2": "No radio found!",
+          "About": "À Propos",
+          "About_Title": "À Propos de MMM-Bugsounet",
+          "About_Info_by": "par @bugsounet",
+          "About_Info_Support": "Support",
+          "About_Info_Donate": "Faire un don",
+          "About_Info_Donate_Text": "Juste petit café... et je code mieux!",
+          "About_Info_About": "À propos de la version",
+          "About_Info_Translator": "Traducteur(s):",
+          "About_Info_Translator1": "@bugsounet",
+          "About_Info_Translator2": "@pitchx",
+          "About_Info_Translator3": "",
+          "About_Info_Translator4": "",
+          "About_Info_Translator5": "",
+          "About_Info_Translator6": "",
+          "About_Info_Translator7": "",
+          "About_Info_Translator8": "",
+          "About_Info_Translator9": "",
+          "About_Info_Translator10": "",
+          "System": "Système",
+          "System_Box_Shutdown": "Eteindre votre système",
+          "System_Shutdown": "Eteindre",
+          "System_Box_Restart": "Redémarrer votre système",
+          "System_Restart": "Redémarrer",
+          "System_Box_Version": "Versions",
+          "System_GPUAcceleration_Disabled": "Rendu accéléré par GPU désactivé",
+          "System_GPUAcceleration_Enabled": "Rendu accéléré par GPU activé",
+          "System_NodeVersion": "Node:",
+          "System_NPMVersion": "NPM:",
+          "System_OSVersion": "OS:",
+          "System_KernelVersion": "Kernel:",
+          "System_CPUSystem": "Processeur",
+          "System_TypeCPU": "Type:",
+          "System_SpeedCPU": "Vitesse:",
+          "System_CurrentLoadCPU": "Charge:",
+          "System_GovernorCPU": "Gouverneur:",
+          "System_TempCPU": "Température:",
+          "System_MemorySystem": "Mémoire",
+          "System_TypeMemory": "Active:",
+          "System_SwapMemory": "Swap:",
+          "System_NetworkSystem": "Réseau",
+          "System_IPNetwork": "IP:",
+          "System_InterfaceNetwork": "Interface:",
+          "System_SpeedNetwork": "Vitesse:",
+          "System_DuplexNetwork": "Duplex:",
+          "System_WirelessInfo": "Informations",
+          "System_SSIDNetwork": "Nom:",
+          "System_RateNetwork": "Vitesse:",
+          "System_FrequencyNetwork": "Fréquence:",
+          "System_SignalNetwork": "Signal:",
+          "System_QualityNetwork": "Qualité:",
+          "System_StorageSystem": "Stockage",
+          "System_MountStorage": "Montage",
+          "System_UsedStorage": "Utilisation",
+          "System_PercentStorage": "Pourcentage",
+          "System_TotalStorage": "Total",
+          "System_UptimeSystem": "Disponibilité",
+          "System_CurrentUptime": "Actuelle",
+          "System_System": "Système:",
+          "System_RecordUptime": "Record",
+          "System_DAY": "jour",
+          "System_DAYS": "jours",
+          "System_HOUR": "heure",
+          "System_HOURS": "heures",
+          "System_MINUTE": "minute",
+          "System_MINUTES": "minutes",
+          "System_ProcessSystem": "Processus",
+          "System_CPU": "processeur:",
+          "System_Memory": "mémoire:",
+          "System_CurrentlyRunning": "En cours d'exécution",
+          "System_NoPlugins": "Aucun plugin installé",
+          "System_NamePlugin": "Nom",
+          "System_VersionPlugin": "Version",
+          "System_RevPlugin": "Révision",
+          "Logout": "Déconnexion",
+          "Delete": "Supprimer",
+          "Install": "Installer",
+          "Configure": "Configurer",
+          "Modify": "Modifier",
+          "Save": "Appliquer",
+          "Wait": "Patientez...",
+          "Done": "Terminer",
+          "Error": "Erreur",
+          "Cancel": "Annuler",
+          "Confirm": "Confirmer",
+          "Load": "Charger",
+          "Restart": "Veuillez redémarrer MagicMirror² pour appliquer la nouvelle configuration !",
+          "ErrModule": "Nom du module: doit être",
+          "Warn_Error": "Attention: Des erreurs ont été détectées",
+          "LoadDefault": "Recharger la Config. par défaut",
+          "MergeDefault": "Fusionner avec les valeurs par défaut",
+          "Send": "Envoyer",
+          "TurnOn": "Allumer",
+          "TurnOff": "Eteindre",
+          "RequestDone": "La commande a été envoyée avec succès",
+          "Listen": "Ecouter",
+          "Update": "Une mise à jour est disponible",
+          "Start": "Démarrer"
+        }
+      },
+      "translationsHomeText": {
+        "type": "object",
+        "properties": {
+          "homeText": {
+            "type": "string",
+            "description": "HTML code of the home text"
+          }
+        },
+        "example": {
+          "homeText": "<p>Bonjour, bienvenue sur MMM-Bugsounet</p>\n<p>Cet outil va aider à configurer ou à gérer votre miroir</p>\n<p>Que peut vraiment faire cet outil ?</p>\n<ul>\n  <li>Permet d'avoir un contrôle à distance (localement ou internet)</li>\n  <li>Permet de configurer MagicMirror²</li>\n  <li>Permet de créer une sauvegarde de votre fichier de configuration à chaque modification</li>\n  <li>Permet d'afficher des journaux MagicMirror² en temps réel</li>\n  <li>Permet de vous connecter à votre système grace au terminal intégré</li>\n  <li>Permet de redémarrer ou d'arrêter manuellement MagicMirror²</li>\n  <li>Permet d'éteindre ou d'allumer votre écran</li>\n  <li>Permet d'afficher divers informations système</li>\n  <li>...</li>\n</ul>\n<br>\n<p>Merci aux traducteurs:</p>\n<ul>\n  <li>@CalcU (Espagnol)</li>\n  <li>@lxne (Allemand)</li>\n  <li>@bitass (Néerlandais)</li>\n  <li>@pitchx (Français revu)</li>\n  <li>@maxmax (Espagnol)</li>\n  <li>@dvbit (Italien)</li>\n  <li>@toramanderler (Turc)</li>\n</ul>\n<p>Je vous souhaite une agréable découverte!</p>\n<p>Bonne utilisation,<br>@bugsounet</p>\n"
+        }
+      },
+      "version": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "string",
+            "description": "MMM-Bugsounet version"
+          },
+          "api": {
+            "type": "string",
+            "description": "MMM-Bugsounet API version"
+          },
+          "rev": {
+            "type": "string",
+            "description": "MMM-Bugsounet revision"
+          },
+          "lang": {
+            "type": "string",
+            "description": "MMM-Bugsounet language"
+          },
+          "last": {
+            "type": "string",
+            "description": "MMM-Bugsounet last know version"
+          },
+          "needUpdate": {
+            "type": "boolean",
+            "description": "MMM-Bugsounet needs an update"
+          }
+        },
+        "example": {
+          "version": "1.1.0",
+          "api": "1.0.0",
+          "rev": "240603",
+          "lang": "fr",
+          "last": "1.0.0",
+          "needUpdate": true
+        }
+      },
+      "version206": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error found"
+          },
+          "version": {
+            "type": "string",
+            "description": "MMM-Bugsounet version"
+          },
+          "rev": {
+            "type": "string",
+            "description": "MMM-Bugsounet revision"
+          },
+          "lang": {
+            "type": "string",
+            "description": "MMM-Bugsounet language"
+          },
+          "last": {
+            "type": "string",
+            "description": "MMM-Bugsounet last know version"
+          },
+          "needUpdate": {
+            "type": "boolean",
+            "description": "MMM-Bugsounet needs an update"
+          }
+        },
+        "example": {
+          "error": "Error on fetch last version number",
+          "version": "1.1.0",
+          "rev": "240106",
+          "lang": "fr",
+          "last": "0.0.0",
+          "needUpdate": false
+        }
+      },
+      "401Error": {
+        "type": "object",
+        "description": "No valid authentication",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Unauthorized"
+          }
+        },
+        "example": {
+          "error": "Unauthorized"
+        }
+      },
+      "409Error": {
+        "type": "object",
+        "description": "Conflit on command",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Already in this state"
+          }
+        },
+        "example": {
+          "error": "Already in this state"
+        }
+      },
+      "Config400Error": {
+        "type": "object",
+        "description": "Missing params in Header",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Bad Request"
+          }
+        },
+        "example": {
+          "error": "Bad Request"
+        }
+      },
+      "Config404Error": {
+        "type": "object",
+        "description": "EXT not found in configuration",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Not Foundt"
+          }
+        },
+        "example": {
+          "error": "Not Found"
+        }
+      },
+      "Config500Error": {
+        "type": "object",
+        "description": "Internal Error, Operation not completed",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error description"
+          }
+        },
+        "example": {
+          "error": "Error when writing file"
+        }
+      },
+      "Config200": {
+        "type": "object",
+        "description": "Configuration updated",
+        "properties": {
+          "done": {
+            "type": "string",
+            "description": "send state"
+          },
+          "backup": {
+            "type": "string",
+            "description": "backup file name"
+          }
+        },
+        "example": {
+          "done": "ok",
+          "backup": "config.js.20240608-09:58:25"
+        }
+      },
+      "SendConfig": {
+        "type": "object",
+        "required": [
+          "config"
+        ],
+        "properties": {
+          "config": {
+            "type": "string",
+            "description": "Encoded configuration in base64"
+          }
+        },
+        "example": {
+          "config": "ezTrGTH....base64encoded...."
+        }
+      },
+      "SendExternal": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "uri of download file"
+          },
+          "expire_in": {
+            "type": "number",
+            "description": "Expire time in sec"
+          }
+        },
+        "example": {
+          "file": "/download/1718454458797.js",
+          "expire_in": 60
+        }
+      },
+      "SendMM": {
+        "type": "object",
+        "required": [
+          "notification"
+        ],
+        "properties": {
+          "notification": {
+            "type": "string",
+            "description": "Notification to send"
+          },
+          "payload": {
+            "type": "string",
+            "description": "Payload content to send"
+          }
+        },
+        "example": {
+          "notification": "ARTICLE_MORE_DETAILS",
+          "payload": null
+        }
+      },
+      "SendScreen": {
+        "type": "object",
+        "required": [
+          "power"
+        ],
+        "properties": {
+          "power": {
+            "type": "string",
+            "description": "Wanted power state (ON or OFF)"
+          }
+        },
+        "example": {
+          "power": "OFF"
+        }
+      },
+      "SendFreeboxTVList": {
+        "description": "Array of all available TV channel",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "France2",
+          "France3",
+          "France4",
+          "France5",
+          "ARTE",
+          "C8",
+          "NRJ12",
+          "LCP",
+          "BFMTV",
+          "CNews",
+          "CStar",
+          "Gulli",
+          "Equipe",
+          "RMCStory",
+          "RMCDecouverte",
+          "Cherie25",
+          "FranceInfo",
+          "ParisPremiere",
+          "RTL9",
+          "GameOne",
+          "AB1",
+          "TEVA",
+          "M6Music",
+          "MCM",
+          "Mangas",
+          "Equidia",
+          "Automoto",
+          "RFMTV"
+        ]
+      },
+      "SendFreeboxTV": {
+        "type": "object",
+        "required": [
+          "TV"
+        ],
+        "properties": {
+          "TV": {
+            "type": "string",
+            "description": "Wanted TV channel"
+          }
+        },
+        "example": {
+          "TV": "France 2"
+        }
+      },
+      "SendAlert": {
+        "type": "object",
+        "required": [
+          "alert"
+        ],
+        "properties": {
+          "alert": {
+            "type": "string",
+            "description": "Alert to send"
+          }
+        },
+        "example": {
+          "alert": "Hello world!"
+        }
+      },
+      "EXT200": {
+        "type": "object",
+        "description": "Configuration updated sucessfully",
+        "properties": {
+          "done": {
+            "type": "string",
+            "description": "send state"
+          }
+        },
+        "example": {
+          "done": "ok"
+        }
+      },
+      "Result200": {
+        "type": "object",
+        "description": "Command executed sucessfully",
+        "properties": {
+          "done": {
+            "type": "string",
+            "description": "send state"
+          }
+        },
+        "example": {
+          "done": "ok"
+        }
+      },
+      "sysInfo": {
+        "type": "object",
+        "properties": {
+          "VERSION": {
+            "type": "object",
+            "properties": {
+              "Bugsounet": {
+                "type": "string",
+                "description": "MMM-Bugsounet version and revision"
+              },
+              "MagicMirror": {
+                "type": "string",
+                "description": "MagicMirror² version"
+              },
+              "ELECTRON": {
+                "type": "string",
+                "description": "Electron version"
+              },
+              "NODEMM": {
+                "type": "string",
+                "description": "Node version used on MagicMirror²"
+              },
+              "NODECORE": {
+                "type": "string",
+                "description": "Node version used on this system"
+              },
+              "NPM": {
+                "type": "string",
+                "description": "NPM version used"
+              },
+              "KERNEL": {
+                "type": "string",
+                "description": "Kernel version"
+              },
+              "OS": {
+                "type": "string",
+                "description": "Operating System version"
+              }
+            }
+          },
+          "HOSTNAME": {
+            "type": "string",
+            "description": "Hostname of your system"
+          },
+          "NETWORK": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "wired": {
+                "type": "string"
+              },
+              "ip": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "speed": {
+                "type": "number"
+              },
+              "duplex": {
+                "type": "string"
+              },
+              "ssid": {
+                "type": "string"
+              },
+              "signalLevel": {
+                "type": "number"
+              },
+              "barLevel": {
+                "type": "number"
+              },
+              "interface": {
+                "type": "string"
+              },
+              "rate": {
+                "type": "string"
+              }
+            }
+          },
+          "MEMORY": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "string"
+              },
+              "used": {
+                "type": "string"
+              },
+              "percent": {
+                "type": "string"
+              },
+              "swapTotal": {
+                "type": "string"
+              },
+              "swapUsed": {
+                "type": "string"
+              },
+              "swapPercent": {
+                "type": "string"
+              }
+            }
+          },
+          "STORAGE": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "/": {
+                  "type": "object",
+                  "properties": {
+                    "size": {
+                      "type": "string"
+                    },
+                    "used": {
+                      "type": "string"
+                    },
+                    "use": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "CPU": {
+            "type": "object",
+            "properties": {
+              "usage": {
+                "type": "string",
+                "description": "CPU use in %"
+              },
+              "type": {
+                "type": "string",
+                "description": "Type of CPU"
+              },
+              "temp": {
+                "type": "object",
+                "properties": {
+                  "imperial": {
+                    "type": "boolean",
+                    "description": "Imperial units used"
+                  },
+                  "C": {
+                    "type": "string",
+                    "description": "Current temperature in °C"
+                  },
+                  "F": {
+                    "type": "string",
+                    "description": "Current temperature in °F"
+                  }
+                }
+              },
+              "speed": {
+                "type": "string",
+                "description": "CPU Speed"
+              },
+              "governor": {
+                "type": "string",
+                "description": "Used governor name"
+              }
+            }
+          },
+          "GPU": {
+            "type": "boolean",
+            "description": "GPU renederer enabled"
+          },
+          "UPTIME": {
+            "type": "object",
+            "properties": {
+              "current": {
+                "type": "number"
+              },
+              "currentDHM": {
+                "type": "string"
+              },
+              "recordCurrent": {
+                "type": "number"
+              },
+              "recordCurrentDHM": {
+                "type": "string"
+              },
+              "MM": {
+                "type": "number"
+              },
+              "MMDHM": {
+                "type": "string"
+              },
+              "recordMM": {
+                "type": "number"
+              },
+              "recordMMDHM": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "example": {
+          "VERSION": {
+            "Bugsounet": "1.0.0 (240528)",
+            "MagicMirror": "2.27.0",
+            "ELECTRON": "29.1.6",
+            "NODECORE": "20.18.1",
+            "NPM": "10.5.0",
+            "KERNEL": "6.1.0-rpi8-rpi-v8",
+            "OS": "Raspbian 12 (bookworm arm)"
+          },
+          "HOSTNAME": "raspberrypi",
+          "NETWORK": {
+            "type": "wired",
+            "ip": "192.168.0.200",
+            "name": "eth0",
+            "speed": 100,
+            "duplex": "full",
+            "ssid": "unknow",
+            "signalLevel": -99,
+            "barLevel": 0,
+            "interface": "unknow",
+            "rate": "unknow"
+          },
+          "MEMORY": {
+            "total": "4Gb",
+            "used": "891.45Mb",
+            "percent": "22.35",
+            "swapTotal": "100Mb",
+            "swapUsed": "37.29Mb",
+            "swapPercent": "37.29"
+          },
+          "STORAGE": [
+            {
+              "/": {
+                "size": "109Gb",
+                "used": "11.93Gb",
+                "use": 11.48
+              }
+            },
+            {
+              "/boot/firmware": {
+                "size": "510Mb",
+                "used": "112.92Mb",
+                "use": 22.14
+              }
+            }
+          ],
+          "CPU": {
+            "usage": "7",
+            "type": "Sony UK BCM2712",
+            "temp": {
+              "imperial": false,
+              "C": "55.1",
+              "F": "131.2"
+            },
+            "speed": "1.5 Ghz",
+            "governor": "powersave"
+          },
+          "GPU": true,
+          "UPTIME": {
+            "current": 2067253.71,
+            "currentDHM": "23 jours 22 heures 14 minutes",
+            "recordCurrent": 3454136.3,
+            "recordCurrentDHM": "39 jours 23 heures 28 minutes",
+            "MM": 7382.692919652,
+            "MMDHM": "2 heures 3 minutes",
+            "recordMM": 337782.520799713,
+            "recordMMDHM": "3 jours 21 heures 49 minutes"
+          }
+        }
+      },
+      "EXTVersions": {
+        "description": "On each connected plugin",
+        "type": "object",
+        "properties": {
+          "EXT-Name": {
+            "type": "object",
+            "properties": {
+              "version": {
+                "type": "string",
+                "description": "Version of the plugin"
+              },
+              "rev": {
+                "type": "string",
+                "description": "Revision date of the plugin"
+              },
+              "last": {
+                "type": "string",
+                "description": "Last version of the plugin"
+              },
+              "update": {
+                "type": "boolean",
+                "description": "Plugin need to be updated"
+              },
+              "beta": {
+                "type": "boolean",
+                "description": "plugin is an beta version"
+              }
+            }
+          }
+        },
+        "example": {
+          "EXT-Volume": {
+            "version": "2.7.0",
+            "rev": "240501",
+            "last": "2.7.0",
+            "update": false,
+            "beta": false
+          },
+          "EXT-TelegramBot": {
+            "version": "2.5.5",
+            "rev": "240529",
+            "last": "2.5.5",
+            "update": false,
+            "beta": false
+          },
+          "MMM-Bugsounet": {
+            "version": "1.1.0",
+            "rev": "240527",
+            "last": "1.1.0",
+            "update": false,
+            "beta": false
+          }
+        }
+      },
+      "ArrayPlugins": {
+        "description": "Array of plugins",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "EXT-Detector",
+          "EXT-Screen",
+          "MMM-Bugsounet"
+        ]
+      },
+      "EXTStatus": {
+        "type": "object",
+        "properties": {
+          "EXT-FreeboxTV": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              }
+            }
+          },
+          "EXT-Librespot": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              }
+            }
+          },
+          "EXT-Pages": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              },
+              "actual": {
+                "type": "number",
+                "description": "Actual page number"
+              },
+              "total": {
+                "type": "number",
+                "description": "Total number of pages"
+              }
+            }
+          },
+          "EXT-RadioPlayer": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              }
+            }
+          },
+          "EXT-Screen": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              },
+              "power": {
+                "type": "boolean",
+                "description": "True when screen power ON"
+              }
+            }
+          },
+          "EXT-SmartHome": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              }
+            }
+          },
+          "EXT-Spotify": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              },
+              "remote": {
+                "type": "boolean",
+                "description": "Remote player is connected (not from MagicMirror²)"
+              },
+              "play": {
+                "type": "boolean",
+                "description": "Spotify play music from your account"
+              }
+            }
+          },
+          "EXT-TelegramBot": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              }
+            }
+          },
+          "EXT-Updates": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              },
+              "update": {
+                "type": "object",
+                "description": "List of modules that can be updated"
+              }
+            }
+          },
+          "EXT-VLCServer": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              }
+            }
+          },
+          "EXT-Volume": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              },
+              "speaker": {
+                "type": "number",
+                "description": "Actual speaker volume in %"
+              },
+              "isMuted": {
+                "type": "boolean",
+                "description": "True when speaker is muted"
+              },
+              "recorder": {
+                "type": "number",
+                "description": "Actual microphone volume in %"
+              }
+            }
+          },
+          "MMM-Bugsounet": {
+            "type": "object",
+            "properties": {
+              "hello": {
+                "type": "boolean",
+                "description": "True when this plugin starts"
+              },
+              "connected": {
+                "type": "boolean",
+                "description": "True when this plugin is running and need some rules"
+              }
+            }
+          }
+        }
+      },
+      "BackupList": {
+        "description": "Array of all available backups",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "config.js.20240610-00:15:37",
+          "config.js.20240610-00:13:35",
+          "config.js.20240610-00:13:06",
+          "config.js.20240610-00:01:55",
+          "config.js.20240609-15:50:15",
+          "config.js.20240609-14:45:16",
+          "config.js.20240609-14:22:22",
+          "config.js.20240609-14:21:50",
+          "config.js.20240609-14:14:42"
+        ]
+      },
+      "SendVolume": {
+        "type": "object",
+        "required": [
+          "volume"
+        ],
+        "properties": {
+          "volume": {
+            "type": "number",
+            "description": "Volume in %"
+          }
+        },
+        "example": {
+          "volume": 50
+        }
+      },
+      "SendRadioList": {
+        "description": "Array of all available Radio",
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "Chérie FM",
+          "RTL",
+          "Rire et chansons",
+          "RTL2",
+          "FunRadio",
+          "Europe1",
+          "Europe2",
+          "RFM",
+          "RMC",
+          "NRJ",
+          "Nostalgie",
+          "Contact FM",
+          "Voltage",
+          "Skyrock",
+          "Radio FG",
+          "France Inter",
+          "France Info",
+          "Sud Radio",
+          "Atomic Radio",
+          "Hit West",
+          "Fugi FM"
+        ]
+      },
+      "SendRadio": {
+        "type": "object",
+        "required": [
+          "radio"
+        ],
+        "properties": {
+          "radio": {
+            "type": "string",
+            "description": "Name of the Radio"
+          }
+        },
+        "example": {
+          "radio": "NRJ"
+        }
+      },
+      "SendSpotify": {
+        "type": "object",
+        "required": [
+          "query",
+          "type"
+        ],
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query to send"
+          },
+          "type": {
+            "type": "string",
+            "description": "Query type (artist, album, playlist or track)"
+          }
+        },
+        "example": {
+          "query": "Michael jackson",
+          "type": "artist"
+        }
+      }
+    }
+  }
+}

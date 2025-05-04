@@ -48,3 +48,12 @@
 /EXTs/EXT-Detector/components/lib/node/binding/Release/
 /EXTs/EXT-GooglePhotos/tokenGP.json
 /EXTs/EXT-GooglePhotos/tmp/cache/*
+
+/EXTs/EXT-Website/website/tools/.uptimed
+!/EXTs/EXT-Website/website/src/Website.bsdesign
+/EXTs/EXT-Website/website/tools/*.js
+/EXTs/EXT-Website/download/*
+!/EXTs/EXT-Website/download/.keep
+/EXTs/EXT-Website/backup/config.*
+/EXTs/EXT-Website/tmp/*
+!/EXTs/EXT-Website/tmp/.keep
