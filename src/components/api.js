@@ -61,33 +61,13 @@ class website {
     this.MMVersion = global.version;
     this.root_path = global.root_path;
     this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
-    this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/website`;
+    this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
     this.APIDOCS = {};
     this.secret = this.encode(`MMM-Bugsounet v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
-    this.rateLimiter = rateLimit({
-      windowMs: 15 * 60 * 1000,
-      max: 5,
-      skip: () => !this.config.useLimiter,
-      validate: {
-        xForwardedForHeader: false,
-        trustProxy: false
-      }
-    });
 
     this.API_rateLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
       max: 5,
-      skip: () => !this.config.useLimiter,
-      validate: {
-        xForwardedForHeader: false,
-        trustProxy: false
-      }
-    });
-
-    this.speedLimiter = slowDown({
-      windowMs: 15 * 60 * 1000,
-      delayAfter: 2,
-      maxDelayMs: 5000,
       skip: () => !this.config.useLimiter,
       validate: {
         xForwardedForHeader: false,
@@ -198,7 +178,7 @@ class website {
 
   /** log any API traffic **/
   logAPIRequest (req, res, next) {
-    log(`[API] [${req.method}] ${req.url}`);
+    log(`[${req.method}] ${req.url}`);
     next();
   }
 
