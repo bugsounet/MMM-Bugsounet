@@ -18,8 +18,6 @@ const { createProxyMiddleware, fixRequestBody } = require("http-proxy-middleware
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
-const swaggerUi = require("swagger-ui-express");
-
 const { rateLimit } = require("express-rate-limit");
 const { slowDown } = require("express-slow-down");
 
@@ -69,7 +67,7 @@ class website {
     this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
     this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
     this.APIDOCS = {};
-    let pwd = `MMM-Bugsounet v:${require(this.BugsounetModulePath+"/package.json").version} rev:${require(this.BugsounetModulePath+"/package.json").rev} API:v${require(this.BugsounetModulePath+"/package.json").api}`
+    let pwd = `MMM-Bugsounet v:${require(`${this.BugsounetModulePath}/package.json`).version} rev:${require(`${this.BugsounetModulePath}/package.json`).rev} API:v${require(`${this.BugsounetModulePath}/package.json`).api}`;
     this.secret = this.encode(pwd);
     this.rateLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
@@ -404,7 +402,7 @@ class website {
 
     try {
       const { cookies } = req;
-      console.log("cookies", cookies)
+      console.log("cookies", cookies);
 
       if (!cookies || !cookies["MMM-Bugsounet"]) {
         console.warn("[WEBSITE] [Web] [AUTH] Missing MMM-Bugsounet cookie");
@@ -456,13 +454,13 @@ class website {
     }
 
     const base64Credentials = this.decode(params[1]);
-    const [username, password] = base64Credentials.split(":");
+    const [username] = base64Credentials.split(":");
 
     var headers = {
       "Content-Type": "application/json"
     };
 
-    headers = Object.assign(headers, { Authorization : req.headers.authorization });
+    headers = Object.assign(headers, { Authorization: req.headers.authorization });
 
     var response;
     var result = {};
@@ -480,7 +478,7 @@ class website {
       return;
     }
 
-    console.log("ok", response.ok)
+    console.log("ok", response.ok);
 
     try {
       result = await response.json();
@@ -495,8 +493,8 @@ class website {
 
     if (response.ok) {
       console.log(`[WEBSITE] [Web] [${ip}] Login ${username}`);
-      console.log("status", response.status)
-      let token = result.access_token
+      console.log("status", response.status);
+      let token = result.access_token;
       if (!token) {
         APIResult = {
           error: "Server return no token"
@@ -513,8 +511,8 @@ class website {
       res.json({ session: token });
 
     } else {
-      console.log("failed --->", result)
-      APIResult = result
+      console.log("failed --->", result);
+      APIResult = result;
       res.status(403).json(APIResult);
     }
 
