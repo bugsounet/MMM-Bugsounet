@@ -3,8 +3,6 @@
 * bugsounet ©05/24
 ******************/
 
-/* global WebsiteTranslations, sysInfoPage */
-
 Module.register("EXT-Website", {
   defaults: {
     debug: false,
@@ -59,5 +57,5 @@ Module.register("EXT-Website", {
 
   async websiteInit () {
     this.sendSocketNotification("INIT", this.config);
-  },
+  }
 });
