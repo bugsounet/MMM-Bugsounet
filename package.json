@@ -116,7 +116,6 @@
     "node": ">=23"
   },
   "installer": {
-    "rebuild": true,
     "apt": [
       "pulseaudio",
       "python3",
@@ -127,6 +126,6 @@
     ],
     "EXT": true
   },
-  "rev": "250412",
+  "rev": "250504",
   "api": "1.1.0"
 }

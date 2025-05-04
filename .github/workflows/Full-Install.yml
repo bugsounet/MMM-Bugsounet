@@ -169,6 +169,11 @@ jobs:
         working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
+      - name: Install EXT-Website
+        run: npm run setup:EXT-Website
+        working-directory: MagicMirror/modules/MMM-Bugsounet
+        continue-on-error: false
+
       - name: Install EXT-YouTube
         run: npm run setup:EXT-YouTube
         working-directory: MagicMirror/modules/MMM-Bugsounet
