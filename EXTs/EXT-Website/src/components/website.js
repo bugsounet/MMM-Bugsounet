@@ -1,22 +1,15 @@
 "use strict";
 
-const fs = require("node:fs");
-const util = require("node:util");
-const readline = require("readline");
-const Stream = require("stream");
 const http = require("node:http");
 const pty = require("node-pty");
 const si = require("systeminformation");
-const semver = require("semver");
 const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const Socket = require("socket.io");
 const { createProxyMiddleware, fixRequestBody } = require("http-proxy-middleware");
 
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
 
 var log = () => { /* do nothing */ };
 
@@ -174,7 +167,7 @@ class website {
 
       this.website.app.use(this.customHeaders);
 
-      this.website.app.use(express.json())
+      this.website.app.use(express.json());
 
       this.website.app.use(bodyParserErrorHandler(
         {
@@ -468,11 +461,11 @@ class website {
         res.status(500).json(APIResult);
         return;
       }
-      let expire = result.expire_in
+      let expire = result.expire_in;
       console.log(`[WEBSITE] [Web] [${ip}] Login ${user}`);
       res.cookie("MMM-Bugsounet", { token: token, user: user }, {
         httpOnly: true,
-        maxAge: expire*1000
+        maxAge: expire * 1000
       });
       res.json({ session: token });
 
