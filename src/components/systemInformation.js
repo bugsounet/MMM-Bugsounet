@@ -309,7 +309,7 @@ class systemInfo {
 
   getUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../website/tools/.uptimed");
+      var uptimeFilePath = path.resolve(__dirname, "../.uptimed");
       if (fs.existsSync(uptimeFilePath)) {
         fs.readFile(uptimeFilePath, "utf8", (error, data) => {
           if (error) {
@@ -345,7 +345,7 @@ class systemInfo {
 
   writeUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../website/tools/.uptimed");
+      var uptimeFilePath = path.resolve(__dirname, "../.uptimed");
       if (this.System["UPTIME"].current > this.System["UPTIME"].recordCurrent) {
         this.System["UPTIME"].recordCurrent = this.System["UPTIME"].current;
         this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);

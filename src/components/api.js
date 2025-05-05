@@ -198,7 +198,7 @@ class website {
 
       // add current server IP to APIDocs
       if (this.website.APIDocs) {
-        this.APIDocs = require("../website/api/swagger.json");
+        this.APIDocs = require("../EXTs/EXT-Website/website/api/swagger.json");
       }
 
       this.website.api
@@ -260,12 +260,12 @@ class website {
 
         .post("/api/login", this.API_speedLimiter, this.API_rateLimiter, (req, res) => this.login(req, res))
 
-        .get("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
-        .post("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
-        .put("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
-        .delete("/api/*", this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
+        .get(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
+        .post(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
+        .put(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
+        .delete(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
 
-        .get("/*", this.API_rateLimiter, this.API_speedLimiter, (req, res) => {
+        .get("/:other", this.API_rateLimiter, this.API_speedLimiter, (req, res) => {
           console.warn("[Bugsounet] [API] Don't find:", req.url);
           res.status(404).json({ error: "You Are Lost in Space" });
         });
@@ -681,38 +681,6 @@ class website {
   /*** Tools ***/
   /*************/
 
-  // verify authenticate, if failed redirect to login page
-  auth (req, res, next) {
-    try {
-      const { cookies } = req;
-
-      if (!cookies || !cookies["MMM-Bugsounet"]) {
-        console.warn("[Bugsounet] [API] [AUTH] Missing MMM-Bugsounet cookie");
-        return res.redirect("/login");
-      }
-
-      const accessToken = cookies["MMM-Bugsounet"];
-      jwt.verify(accessToken, this.secret, (err, decoded) => {
-        if (err) {
-          console.warn("[Bugsounet] [API] [AUTH] decode Error !", err.message);
-          return res.redirect("/login");
-        }
-        const user = decoded.user;
-
-        if (!user || user !== this.website.user.username) {
-          console.warn(`[Bugsounet] [API] [AUTH] User ${user} not exists`);
-          return res.redirect("/login");
-        }
-
-        req.user = user;
-        next();
-      });
-    } catch (err) {
-      console.error("[Bugsounet] [API] [AUTH] Error 500!", err.message);
-      return res.status(500).json({ error: "Internal error" });
-    }
-  }
-
   // login deals with username // password in Basic
   login (req, res) {
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
@@ -759,7 +727,8 @@ class website {
       APIResult = {
         access_token: token,
         token_type: "Bearer",
-        expire_in: 3600
+        expire_in: 3600,
+        user: this.website.user.username
       };
       res.json(APIResult);
 

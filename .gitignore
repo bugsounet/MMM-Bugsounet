@@ -57,3 +57,4 @@
 /EXTs/EXT-Website/backup/config.*
 /EXTs/EXT-Website/tmp/*
 !/EXTs/EXT-Website/tmp/.keep
+/.uptimed
