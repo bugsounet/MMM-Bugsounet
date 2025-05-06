@@ -65,10 +65,8 @@ class website {
     if (this.lib.error || this.website.errorInit) return;
 
     this.website.listening = await this.purposeIP();
-    this.website.APIDocs = data.useAPIDocs;
 
     log("Listening:", this.website.listening);
-    log("APIDocs:", this.website.APIDocs);
 
     console.log("[WEBSITE] [Web] [Server] Loading Main Server...");
     await this.createWebsite();
