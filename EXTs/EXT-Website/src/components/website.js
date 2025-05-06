@@ -16,9 +16,7 @@ var log = () => { /* do nothing */ };
 class website {
   constructor (config, cb = () => {}) {
     this.lib = config.lib;
-    this.config = config.config;
     this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
-    this.sendInternalCallback = (value) => cb.sendInternalCallback(value);
 
     if (config.debug) log = (...args) => { console.log("[WEBSITE] [Web]", ...args); };
 
@@ -59,7 +57,7 @@ class website {
     this.APIDOCS = {};
   }
 
-  async init (data) {
+  async init () {
     console.log("[WEBSITE] [Web] Loading Website...");
 
     if (this.lib.error || this.website.errorInit) return;

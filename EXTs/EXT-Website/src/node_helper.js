@@ -18,29 +18,6 @@ module.exports = NodeHelper.create({
         this.config = payload;
         this.initialize();
         break;
-      case "EXT_DB-UPDATE":
-        if (this.website) this.website.setEXTVersions(payload);
-        else {
-          // library is not loaded
-          setTimeout(() => { this.socketNotificationReceived("EXT_DB-UPDATE", payload); }, 1000);
-        }
-        break;
-      case "EXT_STATUS":
-        if (this.website) {
-          this.website.setEXTStatus(payload);
-        } else {
-          // library is not loaded ... retry (not needed but...)
-          setTimeout(() => { this.socketNotificationReceived("EXT_STATUS", payload); }, 1000);
-        }
-        break;
-      case "GET-SYSINFO":
-        this.sendSocketNotification("SYSINFO-RESULT", await this.website.website.systemInformation.lib.Get());
-        break;
-      case "TB_SYSINFO":
-        var result = await this.website.website.systemInformation.lib.Get();
-        result.sessionId = payload;
-        this.sendSocketNotification("TB_SYSINFO-RESULT", result);
-        break;
     }
   },
 
@@ -57,11 +34,6 @@ module.exports = NodeHelper.create({
     return new Promise((resolve) => {
       if (bugsounet) return this.bugsounetError(bugsounet, "Website");
       let WebsiteHelperConfig = {
-        config: {
-          username: this.config.username,
-          password: this.config.password,
-          useLimiter: this.config.useLimiter
-        },
         debug: this.config.debug,
         lib: this.lib
       };

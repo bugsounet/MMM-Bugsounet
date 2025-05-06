@@ -30,17 +30,7 @@ Module.register("EXT-Website", {
   notificationReceived (notification, payload, sender) {
     switch (notification) {
       case "Bugsounet_READY":
-        if (sender.name === "MMM-Bugsounet") this.websiteInit();
-        break;
-      case "EXT_DB":
-        this.EXT_DB = payload;
-        console.log("[WEBSITE] Received Database", this.EXT_DB);
-        break;
-      case "EXT_DB-UPDATE":
-        this.sendSocketNotification("EXT_DB-UPDATE", payload);
-        break;
-      case "EXT_STATUS":
-        this.sendSocketNotification("EXT_STATUS", payload);
+        if (sender.name === "MMM-Bugsounet") this.sendSocketNotification("INIT", this.config);
         break;
     }
   },
@@ -49,9 +39,5 @@ Module.register("EXT-Website", {
     var dom = document.createElement("div");
     dom.style.display = "none";
     return dom;
-  },
-
-  async websiteInit () {
-    this.sendSocketNotification("INIT", this.config);
   }
 });
