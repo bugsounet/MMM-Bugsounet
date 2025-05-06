@@ -17,7 +17,7 @@ const jwt = require("jsonwebtoken");
 const swaggerUi = require("swagger-ui-express");
 
 const { rateLimit } = require("express-rate-limit");
-const { slowDown } = require("express-slow-down");
+
 const systemInformation = require("./systemInformation");
 
 var log = () => { /* do nothing */ };
@@ -68,17 +68,6 @@ class website {
     this.API_rateLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
       max: 5,
-      skip: () => !this.config.useLimiter,
-      validate: {
-        xForwardedForHeader: false,
-        trustProxy: false
-      }
-    });
-
-    this.API_speedLimiter = slowDown({
-      windowMs: 15 * 60 * 1000,
-      delayAfter: 2,
-      maxDelayMs: 5000,
       skip: () => !this.config.useLimiter,
       validate: {
         xForwardedForHeader: false,
@@ -250,22 +239,22 @@ class website {
           else res.redirect("/404");
         })
 
-        .get("/api", this.API_speedLimiter, this.API_rateLimiter, (req, res) => {
+        .get("/api", this.API_rateLimiter, (req, res) => {
           res.json({ api: "OK", docs: this.website.APIDocs });
         })
 
-        .get("/api/translations/login", this.API_speedLimiter, this.API_rateLimiter, (req, res) => {
+        .get("/api/translations/login", this.API_rateLimiter, (req, res) => {
           res.json(this.website.loginTranslation);
         })
 
-        .post("/api/login", this.API_speedLimiter, this.API_rateLimiter, (req, res) => this.login(req, res))
+        .post("/api/login", this.API_rateLimiter, (req, res) => this.login(req, res))
 
-        .get(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
-        .post(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
-        .put(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
-        .delete(["/api/:fn", "/api/:path/:fn"], this.API_speedLimiter, this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
+        .get(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
+        .post(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
+        .put(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
+        .delete(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
 
-        .get("/:other", this.API_rateLimiter, this.API_speedLimiter, (req, res) => {
+        .get("/:other", this.API_rateLimiter, (req, res) => {
           console.warn("[Bugsounet] [API] Don't find:", req.url);
           res.status(404).json({ error: "You Are Lost in Space" });
         });
@@ -723,7 +712,6 @@ class website {
       console.log(`[Bugsounet] [API] [${ip}] Welcome ${username}, happy to serve you!`);
 
       this.API_rateLimiter.resetKey(req.ip);
-      this.API_speedLimiter.resetKey(req.ip);
       APIResult = {
         access_token: token,
         token_type: "Bearer",
@@ -773,7 +761,6 @@ class website {
         if (!user || user !== this.website.user.username) return res.status(401).json({ error: "Unauthorized" });
         req.user = user;
         this.API_rateLimiter.resetKey(req.ip);
-        this.API_speedLimiter.resetKey(req.ip);
         next();
       });
     } catch (err) {
