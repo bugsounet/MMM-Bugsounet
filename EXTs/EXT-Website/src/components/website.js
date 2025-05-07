@@ -21,31 +21,13 @@ class website {
     if (config.debug) log = (...args) => { console.log("[WEBSITE] [Web]", ...args); };
 
     this.website = {
-      MMConfig: null, // real config file (config.js)
-      EXT: null, // EXT plugins list
-      EXTConfigured: [], // configured EXT in config
-      EXTInstalled: [], // installed EXT in MM
       EXTStatus: {}, // status of EXT
-      EXTVersions: {},
-      user: { _id: 1, username: "admin", password: "admin" },
       initialized: false,
       app: null,
       server: null,
-      api: null,
-      translations: null,
-      loginTranslation: null,
-      language: null,
       HyperWatch: null,
-      radio: null,
-      freeTV: {},
-      systemInformation: {
-        lib: null,
-        result: {}
-      },
-      homeText: null,
       errorInit: false,
       listening: "127.0.0.1",
-      APIDocs: false,
       healthDownloader: null
     };
 
@@ -54,7 +36,6 @@ class website {
     this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
     this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
     this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
-    this.APIDOCS = {};
   }
 
   async init () {
