@@ -1,0 +1,14 @@
+var database = [
+  {
+     "username": "admin",
+     "password": "admin",
+     "disabled": false
+  },
+  {
+     "username": "anotherUser",
+     "password": "UserPassword",
+     "disabled": true
+  }
+]
+
+exports.database = database
