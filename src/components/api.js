@@ -37,7 +37,7 @@ class api {
       EXTInstalled: [], // installed EXT in MM
       EXTStatus: {}, // status of EXT
       EXTVersions: {},
-      user: { username: "admin", password: "admin" },
+      users: [],
       initialized: false,
       app: null,
       server: null,
@@ -97,17 +97,34 @@ class api {
     this.Api.systemInformation.lib = new systemInformation(this.Api.translations, this.Api.MMConfig.units);
     this.Api.systemInformation.result = await this.Api.systemInformation.lib.initData();
 
-    if (!this.config.username && !this.config.password) {
-      console.error("[Bugsounet] [API] Your have not defined user/password in config!");
-      console.error("[Bugsounet] [API] Using default credentials");
-    } else {
-      if ((this.config.username === this.Api.user.username) || (this.config.password === this.Api.user.password)) {
-        console.warn("[Bugsounet] [API] WARN: You are using default username or default password");
-        console.warn("[Bugsounet] [API] WARN: Don't forget to change it!");
-      }
-      this.Api.user.username = this.config.username;
-      this.Api.user.password = this.config.password;
+    try {
+      console.log("[Bugsounet] [API] Reading users Database...");
+      this.Api.users = require("./database.js").database;
+    } catch (e) {
+      console.error("[Bugsounet] [API] Error by reading Users database file!", e.message);
+      this.Api.users = [
+        {
+          username: "admin",
+          password: "admin",
+          disabled: false
+        }
+      ];
+      console.error("[Bugsounet] [API] Using default Users database");
     }
+
+    const verify = this.Api.users.find((x) => !x.username || !x.password);
+    if (verify) {
+      console.error("[Bugsounet] [API] Invalid Users database detected!");
+      console.error("[Bugsounet] [API] Array Format must be", {
+        username: "admin",
+        password: "admin",
+        disabled: false
+      });
+      console.error("Detected:", verify);
+      process.exit(255);
+    }
+
+    console.log("[Bugsounet] [API] There is", this.Api.users.length, "username in database");
 
     this.Api.EXTConfigured = this.searchConfigured();
     this.Api.EXTInstalled = this.searchInstalled();
@@ -695,10 +712,11 @@ class api {
     const base64Credentials = this.decode(params[1]);
     const [username, password] = base64Credentials.split(":");
 
-    if (username === this.Api.user.username && password === this.Api.user.password) {
+    const Find = this.Api.users.find((x) => x.username === username && x.password === password && !x.disabled);
+    if (Find) {
       const token = jwt.sign(
         {
-          user: this.Api.user.username
+          user: username
         },
         this.secret,
         { expiresIn: "1h" }
@@ -711,7 +729,7 @@ class api {
         access_token: token,
         token_type: "Bearer",
         expire_in: 3600,
-        user: this.Api.user.username
+        user: username
       };
       res.json(APIResult);
 
@@ -753,7 +771,9 @@ class api {
           return res.status(401).json({ error: "Unauthorized" });
         }
         const user = decoded.user;
-        if (!user || user !== this.Api.user.username) return res.status(401).json({ error: "Unauthorized" });
+        if (!user) return res.status(401).json({ error: "Unauthorized" });
+        const DB_User = this.Api.users.find((x) => x.username === user && !x.disabled);
+        if (!DB_User) return res.status(401).json({ error: "Unauthorized" });
         req.user = user;
         this.Api_rateLimiter.resetKey(req.ip);
         next();
