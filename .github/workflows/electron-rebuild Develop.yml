@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [23.x,24.x]
+        node-version: [23.x]
     steps:
       - name: "Use Node.js ${{ matrix.node-version }}"
         uses: actions/setup-node@v4
