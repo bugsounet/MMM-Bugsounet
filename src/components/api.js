@@ -22,7 +22,7 @@ const systemInformation = require("./systemInformation");
 
 var log = () => { /* do nothing */ };
 
-class website {
+class api {
   constructor (config, cb = () => {}) {
     this.config = config.config;
     this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
@@ -30,21 +30,20 @@ class website {
 
     if (config.debug) log = (...args) => { console.log("[Bugsounet] [API]", ...args); };
 
-    this.website = {
+    this.Api = {
       MMConfig: null, // real config file (config.js)
       EXT: null, // EXT plugins list
       EXTConfigured: [], // configured EXT in config
       EXTInstalled: [], // installed EXT in MM
       EXTStatus: {}, // status of EXT
       EXTVersions: {},
-      user: { _id: 1, username: "admin", password: "admin" },
+      user: { username: "admin", password: "admin" },
       initialized: false,
       app: null,
       server: null,
       api: null,
       serverAPI: null,
       translations: null,
-      loginTranslation: null,
       language: null,
       radio: null,
       freeTV: {},
@@ -61,11 +60,11 @@ class website {
     this.MMVersion = global.version;
     this.root_path = global.root_path;
     this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
-    this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
-    this.APIDOCS = {};
+    this.ApiPath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
+    this.ApiDOCS = {};
     this.secret = this.encode(`MMM-Bugsounet v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
 
-    this.API_rateLimiter = rateLimit({
+    this.Api_rateLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
       max: 5,
       skip: () => !this.config.useLimiter,
@@ -77,57 +76,50 @@ class website {
   }
 
   async init (data) {
-    this.website.MMConfig = await this.readConfig();
+    this.Api.MMConfig = await this.readConfig();
     let Translations = data.translations;
 
-    if (!this.website.MMConfig) { // should not happen ! ;)
-      this.website.errorInit = true;
+    if (!this.Api.MMConfig) { // should not happen ! ;)
+      this.Api.errorInit = true;
       console.error("[Bugsounet] [API] Error: MagicMirror config.js file not found!");
       this.sendSocketNotification("ERROR", "MagicMirror config.js file not found!");
       return;
     }
     await this.MMConfigAddress();
 
-    this.website.language = this.website.MMConfig.language;
-    this.website.EXT = data.EXT_DB.sort();
-    this.website.translations = Translations;
-    this.website.loginTranslation = {
-      welcome: this.website.translations["Login_Welcome"],
-      username: this.website.translations["Login_Username"],
-      password: this.website.translations["Login_Password"],
-      error: this.website.translations["Login_Error"],
-      login: this.website.translations["Login_Login"]
-    };
-    this.website.homeText = await this.getHomeText();
-    this.website.freeTV = await this.readFreeTV();
-    this.website.radio = await this.readRadio();
+    this.Api.language = this.Api.MMConfig.language;
+    this.Api.EXT = data.EXT_DB.sort();
+    this.Api.translations = Translations;
+    this.Api.homeText = await this.getHomeText();
+    this.Api.freeTV = await this.readFreeTV();
+    this.Api.radio = await this.readRadio();
 
-    this.website.systemInformation.lib = new systemInformation(this.website.translations, this.website.MMConfig.units);
-    this.website.systemInformation.result = await this.website.systemInformation.lib.initData();
+    this.Api.systemInformation.lib = new systemInformation(this.Api.translations, this.Api.MMConfig.units);
+    this.Api.systemInformation.result = await this.Api.systemInformation.lib.initData();
 
     if (!this.config.username && !this.config.password) {
       console.error("[Bugsounet] [API] Your have not defined user/password in config!");
       console.error("[Bugsounet] [API] Using default credentials");
     } else {
-      if ((this.config.username === this.website.user.username) || (this.config.password === this.website.user.password)) {
+      if ((this.config.username === this.Api.user.username) || (this.config.password === this.Api.user.password)) {
         console.warn("[Bugsounet] [API] WARN: You are using default username or default password");
         console.warn("[Bugsounet] [API] WARN: Don't forget to change it!");
       }
-      this.website.user.username = this.config.username;
-      this.website.user.password = this.config.password;
+      this.Api.user.username = this.config.username;
+      this.Api.user.password = this.config.password;
     }
 
-    this.website.EXTConfigured = this.searchConfigured();
-    this.website.EXTInstalled = this.searchInstalled();
-    this.website.listening = await this.purposeIP();
-    this.website.APIDocs = data.useAPIDocs;
+    this.Api.EXTConfigured = this.searchConfigured();
+    this.Api.EXTInstalled = this.searchInstalled();
+    this.Api.listening = await this.purposeIP();
+    this.Api.APIDocs = data.useAPIDocs;
 
-    log("EXT plugins in database:", this.website.EXT.length);
-    log("Find", this.website.EXTInstalled.length, "installed plugins in MagicMirror");
-    log("Find", this.website.EXTConfigured.length, "configured plugins in config file");
-    log("Language set:", this.website.language);
-    log("Listening:", this.website.listening);
-    log("APIDocs:", this.website.APIDocs);
+    log("EXT plugins in database:", this.Api.EXT.length);
+    log("Find", this.Api.EXTInstalled.length, "installed plugins in MagicMirror");
+    log("Find", this.Api.EXTConfigured.length, "configured plugins in config file");
+    log("Language set:", this.Api.language);
+    log("Listening:", this.Api.listening);
+    log("APIDocs:", this.Api.APIDocs);
 
     console.log("[Bugsounet] [API] Loading API Server...");
     await this.createAPI();
@@ -141,17 +133,10 @@ class website {
     next();
   }
 
-  /** add custom Headers **/
-  customHeaders (req, res, next) {
-    let version = require("../package.json").version;
-    res.setHeader("X-Powered-By", `MMM-Bugsounet v${version}`);
-    next();
-  }
-
   /** Start API Server **/
   serverAPI () {
     return new Promise((resolve) => {
-      this.website.serverAPI
+      this.Api.serverAPI
         .listen(8085, "127.0.0.1", () => {
           console.log("[Bugsounet] [API] Start listening on port 8085");
           this.sendSocketNotification("SendNoti", "Bugsounet_WEBSITE-API_STARTED");
@@ -167,7 +152,8 @@ class website {
 
   /** log any API traffic **/
   logAPIRequest (req, res, next) {
-    log(`[${req.method}] ${req.url}`);
+    var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    log(`[${ip}] [${req.method}] ${req.url}`);
     next();
   }
 
@@ -181,16 +167,16 @@ class website {
   /** API Middleware **/
   createAPI () {
     return new Promise((resolve) => {
-      this.website.api = express();
-      this.website.serverAPI = http.createServer(this.website.api);
+      this.Api.api = express();
+      this.Api.serverAPI = http.createServer(this.Api.api);
       log("Create API needed routes...");
 
       // add current server IP to APIDocs
-      if (this.website.APIDocs) {
-        this.APIDocs = require("../EXTs/EXT-Website/website/api/swagger.json");
+      if (this.Api.APIDocs) {
+        this.ApiDocs = require("../EXTs/EXT-Website/website/api/swagger.json");
       }
 
-      this.website.api
+      this.Api.api
         .use(this.logAPIRequest)
         .use(this.customAPIHeaders)
         .use(bodyParser.json())
@@ -212,19 +198,19 @@ class website {
         ))
 
         .use("/api/docs", swaggerUi.serve, (req, res, next) => {
-          if (this.website.APIDocs) {
-            this.APIDocs.info.version = require("../package.json").api;
+          if (this.Api.APIDocs) {
+            this.ApiDocs.info.version = require("../package.json").api;
             let remoteUrl = `${req.headers["x-forwarded-proto"] === "https" ? "https" : "http"}://${req.get("host")}`;
-            if (this.APIDocs.servers[0].url !== remoteUrl) {
-              this.APIDocs.servers[1] = {
+            if (this.ApiDocs.servers[0].url !== remoteUrl) {
+              this.ApiDocs.servers[1] = {
                 url: remoteUrl
               };
             } else {
               // delete old value
-              this.APIDocs.servers[1] = {};
-              this.APIDocs.servers.pop();
+              this.ApiDocs.servers[1] = {};
+              this.ApiDocs.servers.pop();
             }
-            swaggerUi.setup(this.APIDocs, {
+            swaggerUi.setup(this.ApiDocs, {
               swaggerOptions: {
                 defaultModelsExpandDepth: -1,
                 docExpansion: "none",
@@ -239,22 +225,31 @@ class website {
           else res.redirect("/404");
         })
 
-        .get("/api", this.API_rateLimiter, (req, res) => {
-          res.json({ api: "OK", docs: this.website.APIDocs });
+        .use(this.Api_rateLimiter)
+
+        .get("/api", (req, res) => {
+          res.json({ api: "OK", docs: this.Api.APIDocs });
         })
 
-        .get("/api/translations/login", this.API_rateLimiter, (req, res) => {
-          res.json(this.website.loginTranslation);
+        .get("/api/translations/login", (req, res) => {
+          let loginTranslation = {
+            welcome: this.Api.translations["Login_Welcome"],
+            username: this.Api.translations["Login_Username"],
+            password: this.Api.translations["Login_Password"],
+            error: this.Api.translations["Login_Error"],
+            login: this.Api.translations["Login_Login"]
+          };
+          res.json(loginTranslation);
         })
 
-        .post("/api/login", this.API_rateLimiter, (req, res) => this.login(req, res))
+        .post("/api/login", (req, res) => this.login(req, res))
 
-        .get(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
-        .post(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
-        .put(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
-        .delete(["/api/:fn", "/api/:path/:fn"], this.API_rateLimiter, (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
+        .get(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
+        .post(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
+        .put(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
+        .delete(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
 
-        .get("/:other", this.API_rateLimiter, (req, res) => {
+        .get("/:other", (req, res) => {
           console.warn("[Bugsounet] [API] Don't find:", req.url);
           res.status(404).json({ error: "You Are Lost in Space" });
         });
@@ -277,41 +272,41 @@ class website {
         break;
 
       case "/api/translations/common":
-        res.json(this.website.translations);
+        res.json(this.Api.translations);
         break;
 
       case "/api/translations/homeText":
-        res.json({ homeText: this.website.homeText });
+        res.json({ homeText: this.Api.homeText });
         break;
 
       case "/api/system/sysInfo":
-        this.website.systemInformation.result = await this.website.systemInformation.lib.Get();
-        res.json(this.website.systemInformation.result);
+        this.Api.systemInformation.result = await this.Api.systemInformation.lib.Get();
+        res.json(this.Api.systemInformation.result);
         break;
 
       case "/api/EXT/versions":
-        res.json(this.website.EXTVersions);
+        res.json(this.Api.EXTVersions);
         break;
 
       case "/api/EXT":
-        res.json(this.website.EXT);
+        res.json(this.Api.EXT);
         break;
 
       case "/api/EXT/installed":
-        res.json(this.website.EXTInstalled);
+        res.json(this.Api.EXTInstalled);
         break;
 
       case "/api/EXT/configured":
-        res.json(this.website.EXTConfigured);
+        res.json(this.Api.EXTConfigured);
         break;
 
       case "/api/EXT/status":
-        res.json(this.website.EXTStatus);
+        res.json(this.Api.EXTStatus);
         break;
 
       case "/api/config/MM":
         try {
-          let stringify = JSON.stringify(this.website.MMConfig);
+          let stringify = JSON.stringify(this.Api.MMConfig);
           let encoded = this.encode(stringify);
           res.json({ config: encoded });
         } catch (e) {
@@ -336,22 +331,22 @@ class website {
         break;
 
       case "/api/EXT/RadioPlayer":
-        if (!this.website.EXTStatus["EXT-RadioPlayer"].hello || !this.website.radio) return res.status(404).json({ error: "Not Found" });
-        var allRadio = Object.keys(this.website.radio);
+        if (!this.Api.EXTStatus["EXT-RadioPlayer"].hello || !this.Api.radio) return res.status(404).json({ error: "Not Found" });
+        var allRadio = Object.keys(this.Api.radio);
         res.json(allRadio);
         break;
 
       case "/api/EXT/Updates":
-        if (!this.website.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
-        var updates = this.filterObject(this.website.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
+        if (!this.Api.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
+        var updates = this.filterObject(this.Api.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
         if (!updates.length) return res.status(404).send("Not Found");
         res.json(updates);
         break;
 
       case "/api/EXT/FreeboxTV":
-        if (!this.website.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).json({ error: "Not Found" });
-        if (this.website.language !== "fr") return res.status(409).json({ error: "Reserved for French language" });
-        var allTV = Object.keys(this.website.freeTV);
+        if (!this.Api.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).json({ error: "Not Found" });
+        if (this.Api.language !== "fr") return res.status(409).json({ error: "Reserved for French language" });
+        var allTV = Object.keys(this.Api.freeTV);
         res.json(allTV);
         break;
 
@@ -380,7 +375,7 @@ class website {
         log("Write config result:", resultSaveConfig);
         if (resultSaveConfig.done) {
           res.json(resultSaveConfig);
-          this.website.MMConfig = await this.readConfig();
+          this.Api.MMConfig = await this.readConfig();
           log("Reload config");
         } else if (resultSaveConfig.error) {
           res.status(500).json({ error: resultSaveConfig.error });
@@ -388,7 +383,7 @@ class website {
         break;
 
       case "/api/EXT/Volume/speaker":
-        if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
         var speaker = req.body["volume"];
         if (typeof (speaker) !== "number" || speaker < 0 || speaker > 100 || isNaN(speaker)) return res.status(400).json({ error: "Bad Request" });
         log("Request speaker volume change to", speaker);
@@ -397,7 +392,7 @@ class website {
         break;
 
       case "/api/EXT/Volume/recorder":
-        if (!this.website.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Volume"].hello) return res.status(404).json({ error: "Not Found" });
         var recorder = req.body["volume"];
         if (typeof (recorder) !== "number" || recorder < 0 || recorder > 100) return res.status(400).json({ error: "Bad Request" });
         log("Request recorder volume change to", recorder);
@@ -406,8 +401,8 @@ class website {
         break;
 
       case "/api/EXT/Updates":
-        if (!this.website.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
-        var updates = this.filterObject(this.website.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
+        if (!this.Api.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
+        var updates = this.filterObject(this.Api.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
         if (!updates.length) return res.status(404).json({ error: "Not Found" });
         log("Request send updates");
         this.sendSocketNotification("SendNoti", "Bugsounet_UPDATES-UPDATE");
@@ -415,54 +410,54 @@ class website {
         break;
 
       case "/api/EXT/Spotify/play":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already playing" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already playing" });
         log("Request send Spotify play");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/pause":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already pausing" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already pausing" });
         log("Request send Spotify pause");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PAUSE");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/toggle":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         log("Request send Spotify toogle");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY-TOGGLE");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/stop":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
         log("Request send Spotify stop");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-STOP");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/next":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
         log("Request send Spotify next");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-NEXT");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify/previous":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (!this.website.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
         log("Request send Spotify previous");
         this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PREVIOUS");
         res.json({ done: "ok" });
         break;
 
       case "/api/EXT/Spotify":
-        if (!this.website.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
         var query = req.body["query"];
         var type = req.body["type"];
         var ArrayType = ["artist", "album", "playlist", "track"];
@@ -478,17 +473,17 @@ class website {
         break;
 
       case "/api/EXT/Screen":
-        if (!this.website.EXTStatus["EXT-Screen"].hello) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-Screen"].hello) return res.status(404).json({ error: "Not Found" });
         var power = req.body["power"];
         if (!power || typeof (power) !== "string") return res.status(400).json({ error: "Bad Request" });
         log("Request send screen power:", power);
         if (power === "OFF") {
-          if (!this.website.EXTStatus["EXT-Screen"].power) return res.status(409).json({ error: "Already OFF" });
+          if (!this.Api.EXTStatus["EXT-Screen"].power) return res.status(409).json({ error: "Already OFF" });
           this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_END");
           return res.json({ done: "ok" });
         }
         if (power === "ON") {
-          if (this.website.EXTStatus["EXT-Screen"].power) return res.status(409).json({ error: "Already ON" });
+          if (this.Api.EXTStatus["EXT-Screen"].power) return res.status(409).json({ error: "Already ON" });
           this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_WAKEUP");
           return res.json({ done: "ok" });
         }
@@ -496,11 +491,11 @@ class website {
         break;
 
       case "/api/EXT/FreeboxTV":
-        if (!this.website.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).json({ error: "Not Found" });
-        if (this.website.language !== "fr") return res.status(409).send("Reserved for French language");
+        if (!this.Api.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).json({ error: "Not Found" });
+        if (this.Api.language !== "fr") return res.status(409).send("Reserved for French language");
         var TV = req.body["TV"];
         if (!TV || typeof (TV) !== "string") return res.status(400).json({ error: "Bad Request" });
-        var allTV = Object.keys(this.website.freeTV);
+        var allTV = Object.keys(this.Api.freeTV);
         if (allTV.indexOf(TV) === -1) return res.status(404).json({ error: "Not Found" });
         log("Request send FreeboxTV channel:", TV);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_FREEBOXTV-PLAY", payload: TV });
@@ -508,9 +503,9 @@ class website {
         break;
 
       case "/api/EXT/RadioPlayer":
-        if (!this.website.EXTStatus["EXT-RadioPlayer"].hello || !this.website.radio) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["EXT-RadioPlayer"].hello || !this.Api.radio) return res.status(404).json({ error: "Not Found" });
         if (!req.body["radio"]) return res.status(400).json({ error: "Bad Request" });
-        var allRadio = Object.keys(this.website.radio);
+        var allRadio = Object.keys(this.Api.radio);
         if (allRadio.indexOf(req.body["radio"]) === -1) return res.status(404).json({ error: "Not Found" });
         log("Request radio change to", req.body["radio"]);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_RADIO-PLAY", payload: req.body["radio"] });
@@ -527,7 +522,7 @@ class website {
         log("Write config result:", resultSaveConfig);
         if (resultSaveConfig.done) {
           res.json(resultSaveConfig);
-          this.website.MMConfig = await this.readConfig();
+          this.Api.MMConfig = await this.readConfig();
           log("Reload config");
         } else if (resultSaveConfig.error) {
           res.status(500).json({ error: resultSaveConfig.error });
@@ -545,10 +540,10 @@ class website {
             setTimeout(() => {
               this.deleteDownload(linkExternalBackup.data);
             }, 1000 * 60);
-            this.website.healthDownloader = (req_, res_) => {
+            this.Api.healthDownloader = (req_, res_) => {
               if (req_.params[0] === linkExternalBackup.data) {
                 res_.sendFile(`${this.BugsounetModulePath}/download/${linkExternalBackup.data}`);
-                this.website.healthDownloader = function (req_, res_) {
+                this.Api.healthDownloader = function (req_, res_) {
                   res_.redirect("/");
                 };
               } else {
@@ -612,7 +607,7 @@ class website {
         break;
 
       case "/api/system/alert":
-        if (!this.website.EXTStatus["Bugsounet_Ready"]) return res.status(404).json({ error: "Not Found" });
+        if (!this.Api.EXTStatus["Bugsounet_Ready"]) return res.status(404).json({ error: "Not Found" });
         var alert = req.body["alert"];
         if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).json({ error: "Bad Request" });
         log("Request send Alert:", alert);
@@ -700,10 +695,10 @@ class website {
     const base64Credentials = this.decode(params[1]);
     const [username, password] = base64Credentials.split(":");
 
-    if (username === this.website.user.username && password === this.website.user.password) {
+    if (username === this.Api.user.username && password === this.Api.user.password) {
       const token = jwt.sign(
         {
-          user: this.website.user.username
+          user: this.Api.user.username
         },
         this.secret,
         { expiresIn: "1h" }
@@ -711,12 +706,12 @@ class website {
 
       console.log(`[Bugsounet] [API] [${ip}] Welcome ${username}, happy to serve you!`);
 
-      this.API_rateLimiter.resetKey(req.ip);
+      this.Api_rateLimiter.resetKey(req.ip);
       APIResult = {
         access_token: token,
         token_type: "Bearer",
         expire_in: 3600,
-        user: this.website.user.username
+        user: this.Api.user.username
       };
       res.json(APIResult);
 
@@ -758,9 +753,9 @@ class website {
           return res.status(401).json({ error: "Unauthorized" });
         }
         const user = decoded.user;
-        if (!user || user !== this.website.user.username) return res.status(401).json({ error: "Unauthorized" });
+        if (!user || user !== this.Api.user.username) return res.status(401).json({ error: "Unauthorized" });
         req.user = user;
-        this.API_rateLimiter.resetKey(req.ip);
+        this.Api_rateLimiter.resetKey(req.ip);
         next();
       });
     } catch (err) {
@@ -829,7 +824,7 @@ class website {
   readRadio () {
     return new Promise((resolve) => {
       var RadioResult = undefined;
-      const radio = this.website.MMConfig.modules.find((m) => m.module === "MMM-Bugsounet/EXTs/EXT-RadioPlayer" && !m.disabled);
+      const radio = this.Api.MMConfig.modules.find((m) => m.module === "MMM-Bugsounet/EXTs/EXT-RadioPlayer" && !m.disabled);
       if (radio?.config?.streams) {
         let file = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-RadioPlayer/${radio.config.streams}`;
         if (fs.existsSync(file)) RadioResult = require(file);
@@ -843,10 +838,10 @@ class website {
   searchConfigured () {
     try {
       var Configured = [];
-      this.website.MMConfig.modules.find((m) => {
+      this.Api.MMConfig.modules.find((m) => {
         if (m.module.startsWith("MMM-Bugsounet/EXTs/")) {
           let plugin = m.module.split("MMM-Bugsounet/EXTs/")[1];
-          if (this.website.EXT.includes(plugin)) Configured.push(plugin);
+          if (this.Api.EXT.includes(plugin)) Configured.push(plugin);
         }
       });
       return Configured.sort();
@@ -859,7 +854,7 @@ class website {
   /** search installed EXT **/
   searchInstalled () {
     var Installed = [];
-    var ext = this.website.EXT;
+    var ext = this.Api.EXT;
     ext.find((m) => {
       if (fs.existsSync(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/node_helper.js`)) {
         let name = require(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/package.json`).name;
@@ -1055,7 +1050,7 @@ class website {
 
   /** check plugin in config **/
   checkPluginInConfig (plugin) {
-    let index = this.website.EXTConfigured.indexOf(plugin);
+    let index = this.Api.EXTConfigured.indexOf(plugin);
     if (index > -1) return true;
     else return false;
   }
@@ -1235,35 +1230,35 @@ class website {
 
   /** set plugin as used and search version/rev **/
   async setEXTVersions (module) {
-    if (this.website.EXTVersions[module] !== undefined) {
+    if (this.Api.EXTVersions[module] !== undefined) {
       this.sendSocketNotification("ERROR", `Already Activated: ${module}`);
       console.error(`Already Activated: ${module}`);
       return;
     }
     else log("Detected:", module);
-    this.website.EXTVersions[module] = {
+    this.Api.EXTVersions[module] = {
       version: require(`../EXTs/${module}/package.json`).version,
       rev: require(`../EXTs/${module}/package.json`).rev
     };
 
-    let scanUpdate = await this.checkUpdate(module, this.website.EXTVersions[module].version);
-    this.website.EXTVersions[module].last = scanUpdate.last;
-    this.website.EXTVersions[module].update = scanUpdate.update;
-    this.website.EXTVersions[module].beta = scanUpdate.beta;
+    let scanUpdate = await this.checkUpdate(module, this.Api.EXTVersions[module].version);
+    this.Api.EXTVersions[module].last = scanUpdate.last;
+    this.Api.EXTVersions[module].update = scanUpdate.update;
+    this.Api.EXTVersions[module].beta = scanUpdate.beta;
 
     // scan every 60secs or every 15secs with GA app
     // I'm afraid about lag time...
     // maybe 60 secs is better
     setInterval(() => {
-      this.checkUpdateInterval(module, this.website.EXTVersions[module].version);
+      this.checkUpdateInterval(module, this.Api.EXTVersions[module].version);
     }, 1000 * 60);
   }
 
   async checkUpdateInterval (module, version) {
     let scanUpdate = await this.checkUpdate(module, version);
-    this.website.EXTVersions[module].last = scanUpdate.last;
-    this.website.EXTVersions[module].update = scanUpdate.update;
-    this.website.EXTVersions[module].beta = scanUpdate.beta;
+    this.Api.EXTVersions[module].last = scanUpdate.last;
+    this.Api.EXTVersions[module].update = scanUpdate.update;
+    this.Api.EXTVersions[module].beta = scanUpdate.beta;
   }
 
   checkUpdate (module, version) {
@@ -1311,9 +1306,9 @@ class website {
 
   async getHomeText () {
     var Home = null;
-    let lang = this.website.language;
-    let langHome = `${this.WebsitePath}/home/${lang}.home`;
-    let defaultHome = `${this.WebsitePath}/home/default.home`;
+    let lang = this.Api.language;
+    let langHome = `${this.ApiPath}/home/${lang}.home`;
+    let defaultHome = `${this.ApiPath}/home/default.home`;
     if (fs.existsSync(langHome)) {
       console.log(`[Bugsounet] [API] [Translation] [Home] Use: ${lang}.home`);
       Home = await this.readThisFile(langHome);
@@ -1338,8 +1333,8 @@ class website {
 
   MMConfigAddress () {
     return new Promise((resolve) => {
-      if (this.website.MMConfig.address === "0.0.0.0") {
-        this.website.errorInit = true;
+      if (this.Api.MMConfig.address === "0.0.0.0") {
+        this.Api.errorInit = true;
         console.error("[Bugsounet] [API] Error: You can't use '0.0.0.0' in MagicMirror address config");
         this.sendSocketNotification("ERROR", "You can't use '0.0.0.0' in MagicMirror address config");
         setTimeout(() => process.exit(), 5000);
@@ -1349,11 +1344,11 @@ class website {
   }
 
   setEXTStatus (EXTs) {
-    this.website.EXTStatus = EXTs;
+    this.Api.EXTStatus = EXTs;
   }
 
   getEXTStatus () {
-    return this.website.EXTStatus;
+    return this.Api.EXTStatus;
   }
 
   /** search a in object a filtred value
@@ -1391,7 +1386,7 @@ class website {
       version: require(`${this.BugsounetModulePath}/package.json`).version,
       rev: require(`${this.BugsounetModulePath}/package.json`).rev,
       api: require(`${this.BugsounetModulePath}/package.json`).api,
-      lang: this.website.language,
+      lang: this.Api.language,
       last: "0.0.0",
       needUpdate: false
     };
@@ -1412,4 +1407,4 @@ class website {
     });
   }
 }
-module.exports = website;
+module.exports = api;
