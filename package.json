@@ -27,6 +27,7 @@
     "lint": "eslint . --config .eslint.config.mjs",
     "lint:fix": "eslint . --config .eslint.config.mjs --fix",
     "minify": "node installer/minify",
+    "password": "node installer/mkpasswd",
     "rebuild": "node installer/rebuild",
     "reset": "node installer/reset",
     "setup": "node installer/setup",
@@ -124,6 +125,6 @@
     ],
     "EXT": true
   },
-  "rev": "250504",
+  "rev": "250508",
   "api": "1.1.0"
 }

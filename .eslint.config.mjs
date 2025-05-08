@@ -113,6 +113,9 @@ const config = [
     "ignores": ["*.js", "components/**/*.js"]
   },
   {
+    "ignores": ["databases/*.js"]
+  },
+  {
     "ignores": ["EXTs/EXT-*/*.js", "EXTs/EXT-*/components/**/*.js"]
   },
   {

@@ -99,17 +99,17 @@ class api {
 
     try {
       console.log("[Bugsounet] [API] Reading users Database...");
-      this.Api.users = require("../database.js").database;
+      this.Api.users = require("../databases/users.js").database;
     } catch (e) {
       console.error("[Bugsounet] [API] Error by reading Users database file!", e.message);
       this.Api.users = [
         {
           username: "admin",
-          password: "admin",
+          password: "$2b$10$dR5LNvXKGVAIPXpdm4QAe.r0Enc7eiqH4gqnK4k7u0867.4azUnIS",
           disabled: false
         }
       ];
-      console.error("[Bugsounet] [API] Using default Users database");
+      console.warn("[Bugsounet] [API] Using default Users database");
     }
 
     const verify = this.Api.users.find((x) => !x.username || !x.password);
@@ -117,7 +117,7 @@ class api {
       console.error("[Bugsounet] [API] Invalid Users database detected!");
       console.error("[Bugsounet] [API] Array Format must be", {
         username: "admin",
-        password: "admin",
+        password: "cryptedPassword",
         disabled: false
       });
       console.error("Detected:", verify);
