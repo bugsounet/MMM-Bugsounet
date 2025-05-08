@@ -82,7 +82,6 @@
     "@mdi/font": "^7.4.47",
     "alertifyjs": "^1.14.0",
     "bcryptjs": "^3.0.2",
-    "body-parser": "^2.2.0",
     "dayjs": "^1.11.13",
     "esbuild": "^0.25.4",
     "express": "^5.1.0",

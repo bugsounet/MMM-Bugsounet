@@ -9,7 +9,6 @@ const si = require("systeminformation");
 const semver = require("semver");
 const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -196,8 +195,7 @@ class api {
       this.Api.api
         .use(this.logAPIRequest)
         .use(this.customAPIHeaders)
-        .use(bodyParser.json())
-        .use(bodyParser.urlencoded({ extended: true }))
+        .use(express.json())
         .use(cors({ origin: "*" }))
         .use(bodyParserErrorHandler(
           {
