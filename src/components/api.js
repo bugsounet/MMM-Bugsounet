@@ -11,7 +11,7 @@ const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const swaggerUi = require("swagger-ui-express");
@@ -19,7 +19,6 @@ const swaggerUi = require("swagger-ui-express");
 const { rateLimit } = require("express-rate-limit");
 
 const systemInformation = require("./systemInformation");
-const bcrypt = require("bcryptjs");
 
 var log = () => { /* do nothing */ };
 
