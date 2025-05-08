@@ -19,6 +19,7 @@ const swaggerUi = require("swagger-ui-express");
 const { rateLimit } = require("express-rate-limit");
 
 const systemInformation = require("./systemInformation");
+const bcrypt = require("bcryptjs");
 
 var log = () => { /* do nothing */ };
 
@@ -99,7 +100,7 @@ class api {
 
     try {
       console.log("[Bugsounet] [API] Reading users Database...");
-      this.Api.users = require("./database.js").database;
+      this.Api.users = require("../database.js").database;
     } catch (e) {
       console.error("[Bugsounet] [API] Error by reading Users database file!", e.message);
       this.Api.users = [
@@ -712,7 +713,7 @@ class api {
     const base64Credentials = this.decode(params[1]);
     const [username, password] = base64Credentials.split(":");
 
-    const Find = this.Api.users.find((x) => x.username === username && x.password === password && !x.disabled);
+    const Find = this.Api.users.find((x) => x.username === username && bcrypt.compareSync(password, x.password) && !x.disabled);
     if (Find) {
       const token = jwt.sign(
         {
@@ -768,7 +769,7 @@ class api {
         if (err) {
           if (err.message === "jwt expired") console.warn("[Bugsounet] [API] Token expired !");
           else console.error("[Bugsounet] [API] Token decode Error !", err.message);
-          return res.status(401).json({ error: "Unauthorized" });
+          return res.status(403).json({ error: "Unauthorized" });
         }
         const user = decoded.user;
         if (!user) return res.status(401).json({ error: "Unauthorized" });
