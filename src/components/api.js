@@ -189,7 +189,7 @@ class api {
 
       // add current server IP to APIDocs
       if (this.Api.APIDocs) {
-        this.ApiDocs = require("../EXTs/EXT-Website/website/api/swagger.json");
+        this.ApiDocs = require("../swagger/swagger.json");
       }
 
       this.Api.api
@@ -212,6 +212,7 @@ class api {
           }
         ))
 
+        .use("/api/swagger", express.static(`${this.BugsounetModulePath}/swagger`))
         .use("/api/docs", swaggerUi.serve, (req, res, next) => {
           if (this.Api.APIDocs) {
             this.ApiDocs.info.version = require("../package.json").api;
@@ -232,12 +233,11 @@ class api {
                 displayRequestDuration: true
               },
               customCss: ".swagger-ui .topbar { display: none }",
-              customCssUrl: "/assets/css/SwaggerDark.css",
-              customSiteTitle: "MMM-Bugsounet API",
-              customfavIcon: "/assets/img/FavIcon.png"
+              customCssUrl: "/api/swagger/SwaggerDark.css",
+              customSiteTitle: "MMM-Bugsounet API"
             })(req, res, next);
           }
-          else res.redirect("/404");
+          else res.status(404).json({ error: "Disabled" });
         })
 
         .use(this.Api_rateLimiter)
