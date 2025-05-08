@@ -33,6 +33,7 @@ function getAPIDocs () {
 function checkSystem () {
   return new Promise((resolve) => {
     Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
+      if (err.status === 401 || err.status === 403) location.href = "/logout";
       if (Alert === 1) {
         if (!err.status || err.status === 502) {
           alertify.error("Connexion Lost!");
@@ -50,6 +51,7 @@ function checkSystem () {
 function checkEXTStatus () {
   return new Promise((resolve) => {
     Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "status", (Status) => resolve(Status), (err) => {
+      if (err.status === 401 || err.status === 403) location.href = "/logout";
       if (Alert === 1) {
         if (!err.status || err.status === 502) {
           alertify.error("Connexion Lost!");
@@ -204,13 +206,11 @@ async function Request (url, type, header, data, from, success, fail) {
       result.error = response.statusText;
     }
 
-    // force logout when token err or expired
-    if (response.status === 403 || response.status === 401) location.href = "/logout";
-
     result.status = response.status;
 
     if (fail) fail(result);
     else {
+      if (result.status === 401 || response.status === 403) location.href = "/logout";
       if (result.status === 502) {
         showAlert("No response from MMM-Bugsounet");
       } else {
