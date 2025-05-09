@@ -108,22 +108,34 @@ class api {
           disabled: false
         }
       ];
-      console.warn("[Bugsounet] [API] Using default Users database");
+      console.warn("[Bugsounet] [API] Using default Users database (username: admin / password: admin)");
     }
 
     const verify = this.Api.users.find((x) => !x.username || !x.password);
     if (verify) {
       console.error("[Bugsounet] [API] Invalid Users database detected!");
-      console.error("[Bugsounet] [API] Array Format must be", {
+      console.warn("[Bugsounet] [API] Array Format must be", {
         username: "admin",
         password: "cryptedPassword",
         disabled: false
       });
-      console.error("Detected:", verify);
-      process.exit(255);
+      console.warn("[Bugsounet] [API] Detected:", verify);
+      console.error("[Bugsounet] [API] Please Fix users database before.");
+      process.exit();
+      return;
     }
 
-    console.log("[Bugsounet] [API] There is", this.Api.users.length, "username in database");
+    let lookup = Object.groupBy(this.Api.users, (user) => user.username);
+    const duplicate = this.Api.users.filter((user) => lookup[user.username].length > 1);
+    if (duplicate.length) {
+      console.error("[Bugsounet] [API] Error: There are duplicates in the Users database!");
+      console.warn("[Bugsounet] [API] Duplicates:", duplicate);
+      console.error("[Bugsounet] [API] Please Fix users database before.");
+      process.exit();
+      return;
+    } else {
+      console.log("[Bugsounet] [API] There is", this.Api.users.length, "username in database");
+    }
 
     this.Api.EXTConfigured = this.searchConfigured();
     this.Api.EXTInstalled = this.searchInstalled();
