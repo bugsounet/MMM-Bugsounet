@@ -1,0 +1,14 @@
+var database = [
+  {
+     "username": "admin",
+     "password": "$2b$10$dR5LNvXKGVAIPXpdm4QAe.r0Enc7eiqH4gqnK4k7u0867.4azUnIS", // encrypted (admin)
+     "disabled": false
+  },
+  {
+     "username": "anotherUser",
+     "password": "UserCryptedPassword",
+     "disabled": true
+  }
+]
+
+exports.database = database

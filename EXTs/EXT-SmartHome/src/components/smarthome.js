@@ -4,7 +4,6 @@ const fs = require("node:fs");
 const http = require("node:http");
 const GoogleAuthLibrary = require("google-auth-library");
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const googleapis = require("googleapis");
 const GoogleActions = require("actions-on-google");
@@ -109,8 +108,7 @@ class smarthome {
     this.smarthome.app = express();
     this.smarthome.server = http.createServer(this.smarthome.app);
 
-    this.smarthome.app.use(bodyParser.json());
-    this.smarthome.app.use(bodyParser.urlencoded({ extended: true }));
+    this.smarthome.app.use(express.json());
     this.actions();
 
     var options = {

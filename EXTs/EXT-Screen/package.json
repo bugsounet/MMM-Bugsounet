@@ -37,7 +37,7 @@
     "dayjs": "^1.11.13",
     "long-press-event": "^2.5.0",
     "node-cron": "^3.0.3",
-    "node-libgpiod": "^0.4.6",
+    "node-libgpiod": "^0.4.7",
     "progressbar.js": "^1.1.1",
     "python-shell": "^5.0.0"
   },
