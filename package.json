@@ -105,7 +105,7 @@
     "eslint-plugin-depend": "^1.2.0",
     "eslint-plugin-import-x": "^4.11.0",
     "eslint-plugin-package-json": "^0.31.0",
-    "markdownlint-cli2": "^0.17.2",
+    "markdownlint-cli2": "^0.18.0",
     "stylelint": "^16.19.1",
     "stylelint-config-standard": "^38.0.0",
     "stylelint-prettier": "^5.0.3"
