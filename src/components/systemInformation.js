@@ -309,7 +309,7 @@ class systemInfo {
 
   getUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../.uptimed");
+      var uptimeFilePath = path.resolve(__dirname, "../databases/uptimed");
       if (fs.existsSync(uptimeFilePath)) {
         fs.readFile(uptimeFilePath, "utf8", (error, data) => {
           if (error) {
@@ -335,8 +335,8 @@ class systemInfo {
           MM: 1
         };
         fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-          if (error) console.error("[Bugsounet] [SysInfo] recordFile creation error!", error);
-          else console.log("[Bugsounet] [SysInfo] Create Uptimed");
+          if (error) console.error("[Bugsounet] [SysInfo] Uptimed database file creation error!", error);
+          else console.log("[Bugsounet] [SysInfo] Create Uptimed database");
           resolve();
         });
       }
@@ -345,7 +345,7 @@ class systemInfo {
 
   writeUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../.uptimed");
+      var uptimeFilePath = path.resolve(__dirname, "../databases/uptimed");
       if (this.System["UPTIME"].current > this.System["UPTIME"].recordCurrent) {
         this.System["UPTIME"].recordCurrent = this.System["UPTIME"].current;
         this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);
@@ -361,7 +361,7 @@ class systemInfo {
         MM: this.System["UPTIME"].recordMM
       };
       fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-        if (error) console.error("[Bugsounet] [SysInfo] recordFile writing error!", error);
+        if (error) console.error("[Bugsounet] [SysInfo] Uptimed database file writing error", error);
         resolve();
       });
     });
