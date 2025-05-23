@@ -19,6 +19,8 @@ const { rateLimit } = require("express-rate-limit");
 
 const systemInformation = require("./systemInformation");
 
+const Translator = require("./translator");
+
 var log = () => { /* do nothing */ };
 
 class api {
@@ -42,7 +44,7 @@ class api {
       server: null,
       api: null,
       serverAPI: null,
-      translations: null,
+      translations: null, // V1 compatibility
       language: null,
       radio: null,
       freeTV: {},
@@ -50,7 +52,6 @@ class api {
         lib: null,
         result: {}
       },
-      homeText: null,
       errorInit: false,
       listening: "127.0.0.1",
       APIDocs: false,
@@ -63,10 +64,16 @@ class api {
     this.ApiDOCS = {};
     this.secret = this.encode(`MMM-Bugsounet v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
 
+    const allowlist = ["127.0.0.1", "192.168.0.10"]; // testing
+
     this.Api_rateLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
       max: 5,
-      skip: () => !this.config.useLimiter,
+      skip: (req) => {
+        const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+        const allowed = allowlist.includes(ip) || !this.config.useLimiter;
+        return allowed;
+      },
       validate: {
         xForwardedForHeader: false,
         trustProxy: false
@@ -75,8 +82,10 @@ class api {
   }
 
   async init (data) {
+    await Translator.loadCoreTranslations();
+    await Translator.loadTranslations();
+
     this.Api.MMConfig = await this.readConfig();
-    let Translations = data.translations;
 
     if (!this.Api.MMConfig) { // should not happen ! ;)
       this.Api.errorInit = true;
@@ -88,37 +97,22 @@ class api {
 
     this.Api.language = this.Api.MMConfig.language;
     this.Api.EXT = data.EXT_DB.sort();
-    this.Api.translations = Translations;
-    this.Api.homeText = await this.getHomeText();
+
     this.Api.freeTV = await this.readFreeTV();
     this.Api.radio = await this.readRadio();
+
+    this.Api.translations = await Translator.translations[this.Api.language]; // V1 "compatibility"
 
     this.Api.systemInformation.lib = new systemInformation(this.Api.translations, this.Api.MMConfig.units);
     this.Api.systemInformation.result = await this.Api.systemInformation.lib.initData();
 
-    try {
-      console.log("[Bugsounet] [API] Reading users Database...");
-      this.Api.users = require("../databases/users.js").database;
-    } catch (e) {
-      console.error("[Bugsounet] [API] Error by reading Users database file!", e.message);
-      this.Api.users = [
-        {
-          username: "admin",
-          password: "$2b$10$dR5LNvXKGVAIPXpdm4QAe.r0Enc7eiqH4gqnK4k7u0867.4azUnIS",
-          disabled: false
-        }
-      ];
-      console.warn("[Bugsounet] [API] Using default Users database (username: admin / password: admin)");
-    }
+    console.log("[Bugsounet] [API] Reading users Database...");
+
+    await this.getUsers();
 
     const verify = this.Api.users.find((x) => !x.username || !x.password);
     if (verify) {
       console.error("[Bugsounet] [API] Invalid Users database detected!");
-      console.warn("[Bugsounet] [API] Array Format must be", {
-        username: "admin",
-        password: "cryptedPassword",
-        disabled: false
-      });
       console.warn("[Bugsounet] [API] Detected:", verify);
       console.error("[Bugsounet] [API] Please Fix users database before.");
       process.exit();
@@ -260,11 +254,11 @@ class api {
 
         .get("/api/translations/login", (req, res) => {
           let loginTranslation = {
-            welcome: this.Api.translations["Login_Welcome"],
-            username: this.Api.translations["Login_Username"],
-            password: this.Api.translations["Login_Password"],
-            error: this.Api.translations["Login_Error"],
-            login: this.Api.translations["Login_Login"]
+            welcome: this.translate(this.Api.language, "Login_Welcome"),
+            username: this.translate(this.Api.language, "Login_Username"),
+            password: this.translate(this.Api.language, "Login_Password"),
+            error: this.translate(this.Api.language, "Login_Error"),
+            login: this.translate(this.Api.language, "Login_Login")
           };
           res.json(loginTranslation);
         })
@@ -302,8 +296,23 @@ class api {
         res.json(this.Api.translations);
         break;
 
+      case "/api/translations/translate":
+        var language = this.Api.language;
+        var values = null;
+        if (!req.headers["translate"] || req.headers["translate"] === "undefined") return res.status(400).send("Bad Request");
+        if (req.headers["language"]) language = req.headers["language"];
+        if (req.headers["values"]) values = JSON.parse(req.headers["values"]);
+        var translated = await this.translate(language, req.headers["translate"], values);
+        res.json({
+          language: language,
+          from: req.headers["translate"],
+          translate: translated
+        });
+        break;
+
       case "/api/translations/homeText":
-        res.json({ homeText: this.Api.homeText });
+        var homeTextLang = req.headers["language"] || null;
+        res.json({ homeText: await this.getHomeText(homeTextLang) });
         break;
 
       case "/api/system/sysInfo":
@@ -377,6 +386,15 @@ class api {
         res.json(allTV);
         break;
 
+      case "/api/me":
+        var Result = this.findUser(req.user);
+        if (Result) {
+          Result.id = this.findUserIndex(req.user);
+          res.json(Result);
+        }
+        else res.status(404).send("Not Found");
+        break;
+
       default:
         console.warn("[Bugsounet] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
@@ -388,11 +406,34 @@ class api {
   async PutAPI (req, res) {
     var resultSaveConfig = {};
     switch (req.url) {
+      case "/api/me":
+        if (!req.body["me"]) return res.status(400).json({ error: "Bad Request" });
+        log("Receiving new user info...");
+        var decoder;
+        try {
+          decoder = JSON.parse(this.decode(req.body["me"]));
+        } catch (e) {
+          log("Request error", e.message);
+          res.status(400).send("Bad Request");
+          return;
+        }
+        if (isNaN(decoder.id) || decoder.id !== this.findUserIndex(req.user)) {
+          res.status(400).send("Bad Request");
+          return;
+        }
+        if (decoder.username) this.Api.users[decoder.id].username = decoder.username;
+        if (decoder.language) this.Api.users[decoder.id].language = decoder.language;
+        if (decoder.avatar) this.Api.users[decoder.id].avatar = decoder.avatar;
+        if (decoder.password) this.Api.users[decoder.id].password = this.cryptPassword(this.decode(decoder.password));
+        await this.writeUsers();
+        res.json({ done: "ok" });
+        break;
       case "/api/config/MM":
         if (!req.body["config"]) return res.status(400).json({ error: "Bad Request" });
         log("Receiving write MagicMirror config...");
+        var decoded;
         try {
-          let decoded = JSON.parse(this.decode(req.body["config"]));
+          decoded = JSON.parse(this.decode(req.body["config"]));
           resultSaveConfig = await this.saveConfig(decoded);
         } catch (e) {
           log("Request error", e.message);
@@ -1334,16 +1375,17 @@ class api {
     return result;
   }
 
-  async getHomeText () {
+  async getHomeText (language) {
+    var lang = language;
     var Home = null;
-    let lang = this.Api.language;
+    if (!lang || lang === "undefined") lang = this.Api.language;
     let langHome = `${this.ApiPath}/home/${lang}.home`;
-    let defaultHome = `${this.ApiPath}/home/default.home`;
+    let defaultHome = `${this.ApiPath}/home/en.home`;
     if (fs.existsSync(langHome)) {
       console.log(`[Bugsounet] [API] [Translation] [Home] Use: ${lang}.home`);
       Home = await this.readThisFile(langHome);
     } else {
-      console.log("[Bugsounet] [API] [Translation] [Home] Use: default.home");
+      console.log("[Bugsounet] [API] [Translation] [Home] Use default: en.home");
       Home = await this.readThisFile(defaultHome);
     }
     return Home;
@@ -1435,6 +1477,84 @@ class api {
           resolve(APIResult);
         });
     });
+  }
+
+  /* user database */
+  findUser (user) {
+    const TempUsers = JSON.stringify(this.Api.users);
+    const Users = JSON.parse(TempUsers);
+    const User = Users.find(({ username }) => username === user);
+    if (User) delete User.password;
+    return User;
+  }
+
+  findUserIndex (user) {
+    const index = this.Api.users.findIndex(({ username }) => username === user);
+    return index;
+  }
+
+  getUsers () {
+    return new Promise((resolve) => {
+      const usersFile = `${this.BugsounetModulePath}/databases/users`;
+      if (fs.existsSync(usersFile)) {
+        fs.readFile(usersFile, "utf8", (error, data) => {
+          if (error) {
+            console.error("[Bugsounet] [API] readFile Users error!", error.message);
+            return resolve();
+          }
+          try {
+            this.Api.users = JSON.parse(data);
+            console.log("[Bugsounet] [API] Users Database:", this.Api.users);
+          } catch (e) {
+            console.error("[Bugsounet] [API] - readFile Users error!", e.message);
+            return resolve();
+          }
+          resolve();
+        });
+      } else {
+        this.Api.users = [
+          {
+            username: "admin",
+            password: this.cryptPassword("admin"),
+            level: 10,
+            avatar: 1,
+            language: "en",
+            disabled: false
+          }
+        ];
+        console.warn("[Bugsounet] [API] Create default users database (login: admin // password: admin)");
+        this.writeUsers().then(() => resolve());
+      }
+    });
+  }
+
+  writeUsers () {
+    return new Promise((resolve) => {
+      const usersFile = `${this.BugsounetModulePath}/databases/users`;
+      fs.writeFile(usersFile, JSON.stringify(this.Api.users), (error) => {
+        if (error) console.error("[Bugsounet] [API] Users database file writing error", error);
+        resolve();
+      });
+    });
+  }
+
+  cryptPassword (password) {
+    return bcrypt.hashSync(password, 10);
+  }
+
+  /**
+   * Request the translation for a given key with optional variables and default value.
+   * @param {string} lang to translate
+   * @param {string} key The key of the string to translate
+   * @param {string|object} [defaultValueOrVariables] The default value or variables for translating.
+   * @param {string} [defaultValue] The default value with variables.
+   * @returns {string} the translated key
+   */
+  translate (lang, key, defaultValueOrVariables, defaultValue) {
+    if (typeof defaultValueOrVariables === "object") {
+      return Translator.translate(lang, key, defaultValueOrVariables) || defaultValue || "";
+    }
+    return Translator.translate(lang, key) || defaultValueOrVariables || "";
   }
 }
 module.exports = api;

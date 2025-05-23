@@ -18,6 +18,7 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-Website"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "cookie-parser": "^1.4.7",
     "http-proxy-middleware": "^3.0.5",
     "jsoneditor": "^10.2.0",

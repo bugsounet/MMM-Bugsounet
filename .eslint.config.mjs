@@ -132,6 +132,9 @@ const config = [
   },
   {
     "ignores": ["EXTs/EXT-Website/website/tools/*.js"]
+  },
+  {
+    "ignores": ["EXTs/EXT-Website/website_V2/**/*"]
   }
 ];
 

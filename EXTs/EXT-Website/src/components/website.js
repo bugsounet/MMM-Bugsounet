@@ -97,7 +97,8 @@ class website {
 
       const APIProxy = createProxyMiddleware({
         target: "http://127.0.0.1:8085",
-        changeOrigin: false,
+        changeOrigin: true,
+        xfwd: true,
         pathFilter: ["/api"],
         plugins: [ProxyRequestLogger],
         on: {
@@ -114,7 +115,8 @@ class website {
 
       const SmartHomeProxy = createProxyMiddleware({
         target: "http://127.0.0.1:8083",
-        changeOrigin: false,
+        changeOrigin: true,
+        xfwd: true,
         pathFilter: ["/smarthome"],
         pathRewrite: { "^/smarthome": "" },
         plugins: [ProxyRequestLogger],
@@ -184,6 +186,7 @@ class website {
       this.website.app
         .use(this.logRequest)
         .use(cors({ origin: "*" }))
+        .use("/V2", express.static(`${this.WebsiteModulePath}/website_V2`))
         .use("/Login.js", express.static(`${this.WebsitePath}/tools/Login.js`))
         .use("/Home.js", express.static(`${this.WebsitePath}/tools/Home.js`))
         .use("/Terminal.js", express.static(`${this.WebsitePath}/tools/Terminal.js`))
@@ -198,6 +201,7 @@ class website {
         .use("/Fetch.js", express.static(`${this.WebsitePath}/tools/Fetch.js`))
         .use("/3rdParty.js", express.static(`${this.WebsitePath}/tools/3rdParty.js`))
         .use("/APIDocs.js", express.static(`${this.WebsitePath}/tools/APIDocs.js`))
+        .use("/assets/css/fontawesome", express.static(`${this.WebsiteModulePath}/node_modules/@fortawesome/fontawesome-free`))
         .use("/assets", express.static(`${this.WebsitePath}/assets`, options))
 
         .use("/jsoneditor", express.static(`${this.WebsiteModulePath}/node_modules/jsoneditor`))

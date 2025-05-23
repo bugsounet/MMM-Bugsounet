@@ -59,3 +59,6 @@
 !/EXTs/EXT-Website/tmp/.keep
 /.uptimed
 /databases/users.js
+/EXTs/EXT-Website/website_V2/
+/databases/users
+/databases/uptimed
