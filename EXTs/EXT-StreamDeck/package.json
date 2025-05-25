@@ -18,7 +18,7 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-StreamDeck"
   },
   "dependencies": {
-    "@elgato-stream-deck/node": "^7.1.2",
+    "@elgato-stream-deck/node": "^7.2.0",
     "jimp": "^1.6.0"
   },
   "engines": {
