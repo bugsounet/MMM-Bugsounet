@@ -35,7 +35,8 @@ class website {
     this.root_path = global.root_path;
     this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
     this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
-    this.WebsitePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
+    this.WebsitePath = `${this.WebsiteModulePath}/website`;
+    this.WebsiteV2Path = `${this.WebsiteModulePath}/website_V2`;
   }
 
   async init () {
@@ -97,7 +98,7 @@ class website {
 
       const APIProxy = createProxyMiddleware({
         target: "http://127.0.0.1:8085",
-        changeOrigin: true,
+        changeOrigin: false,
         xfwd: true,
         pathFilter: ["/api"],
         plugins: [ProxyRequestLogger],
@@ -186,7 +187,6 @@ class website {
       this.website.app
         .use(this.logRequest)
         .use(cors({ origin: "*" }))
-        .use("/V2", express.static(`${this.WebsiteModulePath}/website_V2`))
         .use("/Login.js", express.static(`${this.WebsitePath}/tools/Login.js`))
         .use("/Home.js", express.static(`${this.WebsitePath}/tools/Home.js`))
         .use("/Terminal.js", express.static(`${this.WebsitePath}/tools/Terminal.js`))
@@ -226,6 +226,25 @@ class website {
         .get("/", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/index.html`);
         })
+
+        .get("/V2/terminal.html", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+          res.sendFile(`${this.WebsiteV2Path}/terminal.html`);
+
+          io.once("connection", async (socket) => {
+            log(`[${ip}] Connected to Terminal Logs:`, req.user);
+            socket.on("disconnect", (err) => {
+              log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
+            });
+            var pastLogs = await this.readAllMMLogs(this.lib.HyperWatch.logs());
+            io.emit("terminal.logs", pastLogs);
+            this.lib.HyperWatch.stream().on("stdData", (data) => {
+              if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
+            });
+          });
+        })
+
+        .use("/V2", express.static(`${this.WebsiteModulePath}/website_V2`))
 
         .get("/Terminal", (req, res, next) => this.auth(req, res, next), (req, res) => {
           var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
@@ -346,7 +365,6 @@ class website {
   auth (req, res, next) {
     try {
       const { cookies } = req;
-      console.log("cookies", cookies);
 
       if (!cookies || !cookies["MMM-Bugsounet"]) {
         console.warn("[WEBSITE] [Web] [AUTH] Missing MMM-Bugsounet cookie");
