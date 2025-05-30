@@ -12,7 +12,6 @@
   "Rotate_Msg": "Please Rotate Your Device",
   "Rotate_Continue": "For continue...",
 
-  "Terminal": "Terminal Output",
   "TerminalOpen": "Open Terminal",
   "TerminalGW": "MMM-Bugsounet Terminal",
 
@@ -182,5 +181,7 @@
 
   "Home": "Home",
   "Home_Welcome": "Welcome to MMM-Bugsounet",
-  "Dashboard": "Dashboard"
+  "Dashboard": "Dashboard",
+
+  "Terminal": "Terminal Output"
 }

@@ -222,7 +222,7 @@ class api {
         .use("/api/docs", swaggerUi.serve, (req, res, next) => {
           if (this.Api.APIDocs) {
             this.ApiDocs.info.version = require("../package.json").api;
-            let remoteUrl = `${req.headers["x-forwarded-proto"] === "https" ? "https" : "http"}://${req.get("host")}`;
+            let remoteUrl = `${req.headers["x-forwarded-proto"].includes("https") ? "https" : "http"}://${req.get("host")}`;
             if (this.ApiDocs.servers[0].url !== remoteUrl) {
               this.ApiDocs.servers[1] = {
                 url: remoteUrl
@@ -425,6 +425,8 @@ class api {
         if (decoder.language) this.Api.users[decoder.id].language = decoder.language;
         if (decoder.avatar) this.Api.users[decoder.id].avatar = decoder.avatar;
         if (decoder.password) this.Api.users[decoder.id].password = this.cryptPassword(this.decode(decoder.password));
+        if (decoder.background) this.Api.users[decoder.id].background = decoder.background;
+        if (decoder.topbar) this.Api.users[decoder.id].topbar = decoder.topbar;
         await this.writeUsers();
         res.json({ done: "ok" });
         break;
