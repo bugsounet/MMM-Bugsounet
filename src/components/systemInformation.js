@@ -102,9 +102,11 @@ class systemInfo {
       });
     });
     await this.getStaticData();
+    await this.getData();
     await this.getUptimeRecord();
     setInterval(async () => { await this.uptimed(); }, 5000);
     console.log("[Bugsounet] [SysInfo] Initialized");
+    return this.System;
   }
 
   async Get () {
