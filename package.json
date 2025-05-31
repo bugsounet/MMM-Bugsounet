@@ -88,7 +88,7 @@
     "express": "^5.1.0",
     "express-body-parser-error-handler": "^1.0.9",
     "express-rate-limit": "^7.5.0",
-    "fdir": "^6.4.4",
+    "fdir": "^6.4.5",
     "jsonwebtoken": "^9.0.2",
     "nan": "^2.22.2",
     "open": "^10.1.2",
