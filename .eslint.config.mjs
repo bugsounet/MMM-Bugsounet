@@ -106,7 +106,8 @@ const config = [
   {
     "files": ["**/package.json"],
     "rules": {
-      "package-json/valid-name": "off"
+      "package-json/valid-name": "off",
+      "package-json/require-type": "off"
     }
   },
   {
