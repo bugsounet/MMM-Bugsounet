@@ -35,7 +35,6 @@ class website {
     this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
     this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
     this.WebPath = `${this.WebsiteModulePath}/web`;
-    //this.WebsiteV2Path = `${this.WebsiteModulePath}/website_V2`;
   }
 
   async init () {
@@ -60,6 +59,7 @@ class website {
           console.log("[WEBSITE] [Web] [Server] Start listening on port 8081");
           console.log(`[WEBSITE] [Web] [Server] Available locally at http://${this.website.listening}:8081`);
           this.website.initialized = true;
+          this.sendSocketNotification("INITIALIZED");
           resolve();
         })
         .on("error", (err) => {
@@ -287,7 +287,7 @@ class website {
           res.sendFile(`${this.WebPath}/account.html`);
         })
 
-/*
+        /*
         .get("/Restart", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/restarting.html`);
         })
@@ -303,7 +303,7 @@ class website {
         .get("/SystemDie", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/shutdown.html`);
         })
-*/
+        */
 
         .get("/robots.txt", (req, res) => {
           res.sendFile(`${this.WebPath}/robots.txt`);
