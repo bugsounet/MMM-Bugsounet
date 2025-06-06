@@ -60,7 +60,7 @@ class api {
     this.MMVersion = global.version;
     this.root_path = global.root_path;
     this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
-    this.ApiPath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website/website`;
+    this.HomePath = `${this.BugsounetModulePath}/home`;
     this.ApiDOCS = {};
     this.secret = this.encode(`MMM-Bugsounet v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
 
@@ -104,6 +104,8 @@ class api {
     this.Api.translations = await Translator.translations[this.Api.language]; // V1 "compatibility"
 
     this.Api.systemInformation.lib = new systemInformation(this.Api.translations, this.Api.MMConfig.units);
+
+    console.log("[Bugsounet] [API] Init System informations...");
     this.Api.systemInformation.result = await this.Api.systemInformation.lib.initData();
 
     console.log("[Bugsounet] [API] Reading users Database...");
@@ -198,6 +200,10 @@ class api {
         this.ApiDocs = require("../swagger/swagger.json");
       }
 
+      this.Api.healthDownloader = function (req, res) {
+        res.redirect("/");
+      };
+
       this.Api.api
         .use(this.logAPIRequest)
         .use(this.customAPIHeaders)
@@ -264,6 +270,10 @@ class api {
         })
 
         .post("/api/login", (req, res) => this.login(req, res))
+
+        .get("/api/download/:file", (req, res) => {
+          this.Api.healthDownloader(req, res);
+        })
 
         .get(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
         .post(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
@@ -615,7 +625,7 @@ class api {
               this.deleteDownload(linkExternalBackup.data);
             }, 1000 * 60);
             this.Api.healthDownloader = (req_, res_) => {
-              if (req_.params[0] === linkExternalBackup.data) {
+              if (req_.params.file === linkExternalBackup.data) {
                 res_.sendFile(`${this.BugsounetModulePath}/download/${linkExternalBackup.data}`);
                 this.Api.healthDownloader = function (req_, res_) {
                   res_.redirect("/");
@@ -624,7 +634,7 @@ class api {
                 res_.redirect("/");
               }
             };
-            res.json({ file: `/download/${linkExternalBackup.data}`, expire_in: 60 });
+            res.json({ file: `/api/download/${linkExternalBackup.data}`, expire_in: 60 });
           } else {
             res.status(500).json({ error: "Internal Server Error" });
           }
@@ -1385,13 +1395,13 @@ class api {
     var lang = language;
     var Home = null;
     if (!lang || lang === "undefined") lang = this.Api.language;
-    let langHome = `${this.ApiPath}/home/${lang}.home`;
-    let defaultHome = `${this.ApiPath}/home/en.home`;
+    let langHome = `${this.HomePath}/${lang}.home`;
+    let defaultHome = `${this.HomePath}/en.home`;
     if (fs.existsSync(langHome)) {
-      console.log(`[Bugsounet] [API] [Translation] [Home] Use: ${lang}.home`);
+      console.log(`[Bugsounet] [API] [Home] Use: ${lang}.home`);
       Home = await this.readThisFile(langHome);
     } else {
-      console.log("[Bugsounet] [API] [Translation] [Home] Use default: en.home");
+      console.log("[Bugsounet] [API] [Home] Use default: en.home");
       Home = await this.readThisFile(defaultHome);
     }
     return Home;

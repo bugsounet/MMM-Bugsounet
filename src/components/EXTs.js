@@ -43,6 +43,7 @@ class EXTs {
       "EXT-Updates",
       "EXT-VLCServer",
       "EXT-Volume",
+      "EXT-Website",
       "EXT-YouTube",
       "EXT-YouTubeCast"
     ];
