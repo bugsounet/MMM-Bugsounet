@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="MMM-Bugsounet MagicMirror control"/>
+    <meta name="author" content="@bugsounet"/>
+    <title>MMM-Bugsounet</title>
+    <!--include-->
+    <script src="/assets/js/include.js"></script>
+    <!--favicon-->
+    <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+    <!-- Bootstrap core CSS-->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- animate CSS-->
+    <link href="/assets/css/animate.css" rel="stylesheet" type="text/css"/>
+    <!-- Icons CSS-->
+    <link href="/assets/css/icons.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/css/fontawesome/css/all.css" rel="stylesheet"/>
+    <!-- Sidebar CSS-->
+    <link href="/assets/css/sidebar-menu.css" rel="stylesheet"/>
+    <!-- Alertify CSS-->
+    <link href="/alertify/css/alertify.min.css" rel="stylesheet" />
+    <link href="/alertify/css/themes/bootstrap.min.css" rel="stylesheet" />
+    <-- jsoneditor CSS -->
+    <link rel="stylesheet" href="/jsoneditor/dist/jsoneditor.min.css">
+    <!-- Custom Style-->
+    <link href="/assets/css/app-style.css" rel="stylesheet"/>
+  </head>
+
+  <body class="bg-theme bg-theme2">
+ 
+    <!-- Start wrapper-->
+    <div id="wrapper">
+      <!-- Spinner Start -->
+      <div id="spinner" class="show bg-black position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-white" style="width: 3rem; height: 3rem;" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <!-- Spinner End -->
+
+      <!--Start sidebar-wrapper-->
+      <div w3-include-html="/html/sidebar.html"></div>
+      <!--End sidebar-wrapper-->
+
+      <!--Start topbar header-->
+      <div w3-include-html="/html/topbar.html"></div>
+      <!--End topbar header-->
+  
+      <div class="clearfix"></div>
+    
+      <div class="content-wrapper">
+        <div class="container-fluid">
+
+          <!--Start Home Content-->
+          <div w3-include-html="/html/viewConfig.html"></div>
+          <!--End Dashboard Content-->
+      
+          <!--start overlay-->
+          <div class="overlay toggle-menu"></div>
+          <!--end overlay-->
+      
+        </div>
+        <!-- End container-fluid-->
+      
+      </div><!--End content-wrapper-->
+
+      <!--Start Back To Top Button-->
+      <div w3-include-html="/html/backtop.html"></div>
+      <!--End Back To Top Button-->
+
+    </div>
+    <!--End wrapper-->
+
+    <!--Start footer-->
+    <div w3-include-html="/html/footer.html"></div>
+    <!--End footer-->
+
+    <!-- Apply includes -->
+    <script async >do_includes();</script>
+    <!-- Bootstrap core JavaScript-->   
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/alertify/alertify.min.js"></script>
+    <!-- Load bugsounet request API -->
+    <script src="/assets/js/request.js"></script>
+    <!-- sidebar-menu js -->
+    <script src="/assets/js/sidebar-menu.js"></script>
+    <!-- Custom scripts -->
+    <script src="/assets/js/app-script.js"></script>
+    <!-- jsoneditor -->
+    <script src="/jsoneditor/dist/jsoneditor.min.js"></script>
+    <!-- Index js -->
+    <script src="/assets/js/index.js"></script>
+  </body>
+</html>

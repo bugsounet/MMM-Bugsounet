@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+  <div class="col">
+
+    <div class="card mt-0 mb-0">
+      <div class="card-header">
+        <div id ="ConfigTitle" class="card-header text-center fs-4">MagicMirror² Configuration</div>
+        <div class="text-truncate mt-3">
+
+          <select id="backup" class="p-2 rounded" onchange="location = `/editConfig?config=${this.value}`">
+            <option class="bg-white" value="default" selected="">Current Config</option>
+          </select>
+
+          <label class="form-label m-0 ps-3 pe-3" for="fileToLoad">
+            <input type="file" id="fileToLoad" style="display: none;" accept=".js" onchange="processSelectedFiles(this)">
+            <a class="btn fs-3 p-0" role="button" id="externalLoad">
+              <i class="fa-solid fa-file-import text-google-yellow"></i>
+            </a>
+          </label>
+
+          <label class="m-0">
+            <a class="btn fs-3 p-0" role="button" id="externalSave">
+              <i class="fa-solid fa-file-export text-google-green"></i>
+            </a>
+          </label>
+
+        </div>
+      </div>
+
+      <div class="card-body text-white">
+        <div id="jsoneditor" class="editConfig"></div>
+      </div>
+
+      <div class="card-footer">
+        <div class="btn-group invisible" role="group" id="buttonGrp">
+          <button class="btn btn-success btn-round btn-round bg-google-green" id="save" type="button">Save</button>
+          <button class="btn btn-warning btn-round rubberBand animated bg-google-yellow" id="wait" type="button">Please wait...</button>
+          <a class="btn btn-success btn-round tada animated bg-google-green" role="button" id="done" href="/Tools">Done</a>
+          <a class="btn btn-danger btn-round flash animated bg-google-red" role="button" id="error" href="/Terminal">Error</a>
+          <a class="btn btn-danger btn-round flash animated infinite bg-google-red" role="button" id="errorConfig">Error</a>
+          <button class="btn btn-success btn-round bg-google-green" id="load" type="button">Load</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
