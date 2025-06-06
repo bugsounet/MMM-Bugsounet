@@ -180,7 +180,7 @@
   "Menu_Home": "Home",
   "Menu_Dashboard": "Dashboard",
   "Menu_Config": "MagicMirror² Config.",
-  "Menu_Config_View":"View",
+  "Menu_Config_View": "View",
   "Menu_Config_Edit": "Edit",
   "Menu_Terminal": "Terminal",
   "Menu_Terminal_Logs": "See logs",

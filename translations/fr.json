@@ -178,7 +178,7 @@
   "Menu_Home": "Accueil",
   "Menu_Dashboard": "Tableau de bord",
   "Menu_Config": "MagicMirror² Config.",
-  "Menu_Config_View":"Visionner",
+  "Menu_Config_View": "Visionner",
   "Menu_Config_Edit": "Editer",
   "Menu_Terminal": "Terminal",
   "Menu_Terminal_Logs": "Voir le journal",
