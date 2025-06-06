@@ -38,7 +38,7 @@ module.exports = NodeHelper.create({
         lib: this.lib
       };
 
-      this.website = new this.lib.website(WebsiteHelperConfig, { sendSocketNotification: (...args) => this.sendSocketNotification(...args) })
+      this.website = new this.lib.website(WebsiteHelperConfig, { sendSocketNotification: (...args) => this.sendSocketNotification(...args) });
       resolve();
     });
   },

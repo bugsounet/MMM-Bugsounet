@@ -287,7 +287,7 @@ class website {
           res.sendFile(`${this.WebPath}/account.html`);
         })
 
-        /*
+      /*
         .get("/Restart", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/restarting.html`);
         })
@@ -303,7 +303,7 @@ class website {
         .get("/SystemDie", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/shutdown.html`);
         })
-        */
+      */
 
         .get("/robots.txt", (req, res) => {
           res.sendFile(`${this.WebPath}/robots.txt`);
