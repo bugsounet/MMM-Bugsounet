@@ -27,16 +27,15 @@ class website {
       server: null,
       HyperWatch: null,
       errorInit: false,
-      listening: "127.0.0.1",
-      healthDownloader: null
+      listening: "127.0.0.1"
     };
 
     this.MMVersion = global.version;
     this.root_path = global.root_path;
     this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
     this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
-    this.WebsitePath = `${this.WebsiteModulePath}/website`;
-    this.WebsiteV2Path = `${this.WebsiteModulePath}/website_V2`;
+    this.WebPath = `${this.WebsiteModulePath}/web`;
+    //this.WebsiteV2Path = `${this.WebsiteModulePath}/website_V2`;
   }
 
   async init () {
@@ -169,7 +168,7 @@ class website {
       var options = {
         dotfiles: "ignore",
         etag: false,
-        extensions: ["css", "js"],
+        extensions: ["css", "js", "html", "map", "woff2"],
         index: false,
         maxAge: "1d",
         redirect: false,
@@ -178,42 +177,25 @@ class website {
         }
       };
 
-      this.website.healthDownloader = function (req, res) {
-        res.redirect("/");
-      };
-
       var io = new Socket.Server(this.website.server);
 
       this.website.app
         .use(this.logRequest)
         .use(cors({ origin: "*" }))
-        .use("/Login.js", express.static(`${this.WebsitePath}/tools/Login.js`))
-        .use("/Home.js", express.static(`${this.WebsitePath}/tools/Home.js`))
-        .use("/Terminal.js", express.static(`${this.WebsitePath}/tools/Terminal.js`))
-        .use("/MMConfig.js", express.static(`${this.WebsitePath}/tools/MMConfig.js`))
-        .use("/Tools.js", express.static(`${this.WebsitePath}/tools/Tools.js`))
-        .use("/System.js", express.static(`${this.WebsitePath}/tools/System.js`))
-        .use("/About.js", express.static(`${this.WebsitePath}/tools/About.js`))
-        .use("/Restart.js", express.static(`${this.WebsitePath}/tools/Restart.js`))
-        .use("/Die.js", express.static(`${this.WebsitePath}/tools/Die.js`))
-        .use("/Shutdown.js", express.static(`${this.WebsitePath}/tools/Shutdown.js`))
-        .use("/Reboot.js", express.static(`${this.WebsitePath}/tools/Reboot.js`))
-        .use("/Fetch.js", express.static(`${this.WebsitePath}/tools/Fetch.js`))
-        .use("/3rdParty.js", express.static(`${this.WebsitePath}/tools/3rdParty.js`))
-        .use("/APIDocs.js", express.static(`${this.WebsitePath}/tools/APIDocs.js`))
-        .use("/assets/css/fontawesome", express.static(`${this.WebsiteModulePath}/node_modules/@fortawesome/fontawesome-free`))
-        .use("/assets", express.static(`${this.WebsitePath}/assets`, options))
+        .use("/assets/css/fontawesome", express.static(`${this.WebsiteModulePath}/node_modules/@fortawesome/fontawesome-free`, options))
+        .use("/assets", express.static(`${this.WebPath}/assets`, options))
+        .use("/html", express.static(`${this.WebPath}/html`, options))
 
-        .use("/jsoneditor", express.static(`${this.WebsiteModulePath}/node_modules/jsoneditor`))
-        .use("/xterm", express.static(`${this.WebsiteModulePath}/node_modules/xterm`))
-        .use("/xterm-addon-fit", express.static(`${this.WebsiteModulePath}/node_modules/xterm-addon-fit`))
-        .use("/alertify", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build`))
+        .use("/jsoneditor", express.static(`${this.WebsiteModulePath}/node_modules/jsoneditor`, options))
+        .use("/xterm", express.static(`${this.WebsiteModulePath}/node_modules/xterm`, options))
+        .use("/xterm-addon-fit", express.static(`${this.WebsiteModulePath}/node_modules/xterm-addon-fit`, options))
+        .use("/alertify", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build`, options))
 
         .get("/login", (req, res) => {
           const logged = this.hasValidCookie(req);
           if (logged) return res.redirect("/");
           res.clearCookie("MMM-Bugsounet");
-          res.sendFile(`${this.WebsitePath}/login.html`);
+          res.sendFile(`${this.WebPath}/login.html`);
         })
 
         .get("/logout", (req, res) => {
@@ -224,12 +206,20 @@ class website {
         .post("/auth", (req, res) => this.login(req, res))
 
         .get("/", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/index.html`);
+          res.sendFile(`${this.WebPath}/index.html`);
         })
 
-        .get("/V2/terminal.html", (req, res, next) => this.auth(req, res, next), (req, res) => {
+        .get("/viewConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebPath}/viewConfig.html`);
+        })
+
+        .get("/editConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebPath}/editConfig.html`);
+        })
+
+        .get("/logs", (req, res, next) => this.auth(req, res, next), (req, res) => {
           var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-          res.sendFile(`${this.WebsiteV2Path}/terminal.html`);
+          res.sendFile(`${this.WebPath}/logs.html`);
 
           io.once("connection", async (socket) => {
             log(`[${ip}] Connected to Terminal Logs:`, req.user);
@@ -244,28 +234,9 @@ class website {
           });
         })
 
-        .use("/V2", express.static(`${this.WebsiteModulePath}/website_V2`))
-
-        .get("/Terminal", (req, res, next) => this.auth(req, res, next), (req, res) => {
+        .get("/SSH", (req, res, next) => this.auth(req, res, next), (req, res) => {
           var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-          res.sendFile(`${this.WebsitePath}/terminal.html`);
-
-          io.once("connection", async (socket) => {
-            log(`[${ip}] Connected to Terminal Logs:`, req.user);
-            socket.on("disconnect", (err) => {
-              log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
-            });
-            var pastLogs = await this.readAllMMLogs(this.lib.HyperWatch.logs());
-            io.emit("terminal.logs", pastLogs);
-            this.lib.HyperWatch.stream().on("stdData", (data) => {
-              if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
-            });
-          });
-        })
-
-        .get("/ptyProcess", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-          res.sendFile(`${this.WebsitePath}/pty.html`);
+          res.sendFile(`${this.WebPath}/SSH.html`);
           io.once("connection", (client) => {
             log(`[${ip}] Connected to Terminal:`, req.user);
             client.on("disconnect", (err) => {
@@ -292,30 +263,31 @@ class website {
           });
         })
 
-        .get("/MMConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/mmconfig.html`);
-        })
-
         .get("/Tools", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/tools.html`);
+          res.sendFile(`${this.WebPath}/tools.html`);
         })
 
         .get("/System", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/system.html`);
+          res.sendFile(`${this.WebPath}/system.html`);
         })
 
-        .get("/About", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/about.html`);
-        })
-
-        .get("/3rdpartymodules", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/3rdpartymodules.html`);
+        .get("/3rdParty", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebPath}/3rdparty.html`);
         })
 
         .get("/APIDocs", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/APIDocs.html`);
+          res.sendFile(`${this.WebPath}/API.html`);
         })
 
+        .get("/About", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebPath}/about.html`);
+        })
+
+        .get("/Account", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebPath}/account.html`);
+        })
+
+/*
         .get("/Restart", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/restarting.html`);
         })
@@ -331,21 +303,18 @@ class website {
         .get("/SystemDie", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebsitePath}/shutdown.html`);
         })
-
-        .get("/EditMMConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/EditMMConfig.html`);
-        })
-
-        .get("/download/:file", (req, res) => {
-          this.website.healthDownloader(req, res);
-        })
+*/
 
         .get("/robots.txt", (req, res) => {
-          res.sendFile(`${this.WebsitePath}/robots.txt`);
+          res.sendFile(`${this.WebPath}/robots.txt`);
+        })
+
+        .get("/favicon.ico", (req, res) => {
+          res.sendFile(`${this.WebPath}/assets/images/favicon.ico`);
         })
 
         .get("/404", (req, res) => {
-          res.status(404).sendFile(`${this.WebsitePath}/404.html`);
+          res.status(404).sendFile(`${this.WebPath}/404.html`);
         })
 
         .get("/:other", (req, res) => {
