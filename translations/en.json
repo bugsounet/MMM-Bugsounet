@@ -9,16 +9,6 @@
   "TB_SYSINFO_ETHERNET": "Ethernet",
   "TB_SYSINFO_WLAN": "WLAN",
 
-  "Terminal": "Terminal Output",
-  "TerminalOpen": "Open Terminal",
-  "TerminalGW": "MMM-Bugsounet Terminal",
-
-  "Configuration": "MagicMirror² Configuration",
-  "Configuration_Welcome": "MagicMirror² configuration (Read Only)",
-  "Configuration_EditLoad": "Edit or Load backup",
-  "Configuration_Edit_Title": "MagicMirror² configuration editor",
-  "Configuration_Edit_AcualConfig": "Actual Configuration",
-
   "Tools": "Tools",
   "Tools_Welcome": "Tools Box",
   "Tools_subTitle": "MMM-Bugsounet can offer you more control ! (only available displayed)",
@@ -203,5 +193,14 @@
   "Menu_API": "API Docs",
   "Menu_About": "About",
 
-  "Home_Welcome": "Welcome to MMM-Bugsounet"
+  "Home_Welcome": "Welcome to MMM-Bugsounet",
+  
+  "Terminal_Logs": "Terminal Output",
+  "Terminal_SSH": "MMM-Bugsounet Terminal",
+
+  "Configuration_View": "MagicMirror² configuration (Read Only)",
+  "Configuration_Editor": "MagicMirror² configuration editor",
+  "Configuration_AcualConfig": "Actual Configuration",
+  "Configuration_LoadTip": "Import personal backup",
+  "Configuration_SaveTip": "Export this backup"
 }
