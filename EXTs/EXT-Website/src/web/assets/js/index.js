@@ -1,6 +1,7 @@
 /* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
   checkSystem io Terminal FitAddon getVersion getCurrentToken getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
+  bootstrap
  */
 
 /* eslint-disable max-lines-per-function */
@@ -323,7 +324,7 @@ document.addEventListener("Includes_Complete", async () => {
     version = await getVersion();
     var timerLogsResize = null;
     let terminalTitle = document.getElementById("terminalTitle");
-    terminalTitle.textContent = await getTranslate(user.language, "Terminal");
+    terminalTitle.textContent = await getTranslate(user.language, "Terminal_Logs");
     var socketLogs = io();
     const termLogs = new Terminal({ cursorBlink: true });
     const fitAddonLogs = new FitAddon.FitAddon();
@@ -364,7 +365,8 @@ document.addEventListener("Includes_Complete", async () => {
     version = await getVersion();
     var timerTermSSHResize = null;
     let terminalTitle = document.getElementById("terminalTitle");
-    terminalTitle.textContent = await getTranslate(user.language, "Terminal");
+    terminalTitle.textContent = await getTranslate(user.language, "Terminal_SSH");
+
     var socketPTY = io();
     const termPTY = new Terminal({ cursorBlink: true });
     const fitAddonPTY = new FitAddon.FitAddon();
@@ -959,7 +961,7 @@ document.addEventListener("Includes_Complete", async () => {
   let viewConfigPage = document.getElementById("viewConfig-html");
   if (viewConfigPage) {
     console.log("detected view Config page");
-    setTranslation("ConfigTitle", await getTranslate(user.language, "Configuration_Welcome"));
+    setTranslation("ConfigTitle", await getTranslate(user.language, "Configuration_View"));
     //setTranslation("EditLoadButton", translation.Configuration_EditLoad);
     var modules = await loadMMConfig();
     const container = document.getElementById("jsoneditor");
@@ -982,7 +984,12 @@ document.addEventListener("Includes_Complete", async () => {
   // edit Config page
   let editConfigPage = document.getElementById("editConfig-html");
   if (editConfigPage) {
-    setTranslation("ConfigTitle", await getTranslate(user.language, "Configuration_Edit_Title"));
+    let LoadFile = document.getElementById("externalLoad");
+    LoadFile.setAttribute("data-bs-title", await getTranslate(user.language, "Configuration_LoadTip"));
+    let SaveFile = document.getElementById("externalSave");
+    SaveFile.setAttribute("data-bs-title", await getTranslate(user.language, "Configuration_SaveTip"));
+
+    setTranslation("ConfigTitle", await getTranslate(user.language, "Configuration_Editor"));
     setTranslation("wait", await getTranslate(user.language, "Wait"));
     setTranslation("done", await getTranslate(user.language, "Done"));
     setTranslation("error", await getTranslate(user.language, "Error"));
@@ -997,7 +1004,7 @@ document.addEventListener("Includes_Complete", async () => {
     document.getElementById("save").style.display = "none";
     document.getElementById("buttonGrp").classList.remove("invisible");
     let ActualConfig = document.querySelectorAll("option")[0];
-    ActualConfig.textContent = await getTranslate(user.language, "Configuration_Edit_AcualConfig");
+    ActualConfig.textContent = await getTranslate(user.language, "Configuration_AcualConfig");
     var allBackup = await loadBackupNames();
     var config = {};
     var conf = null;
@@ -1151,5 +1158,11 @@ document.addEventListener("Includes_Complete", async () => {
     };
     spinnerHide();
   }
+
+  // enable tooltip
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll("[data-bs-toggle='tooltip']"));
+  tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl, { container: tooltipTriggerEl });
+  });
 
 });
