@@ -42,16 +42,15 @@ document.addEventListener("Includes_Complete", () => {
     document.getElementById("theme4").onclick = () => applyBackgroundTheme("bg-theme4");
     document.getElementById("theme5").onclick = () => applyBackgroundTheme("bg-theme5");
     document.getElementById("theme6").onclick = () => applyBackgroundTheme("bg-theme6");
-
+    document.getElementById("theme7").onclick = () => applyBackgroundTheme("bg-theme7");
+    document.getElementById("theme8").onclick = () => applyBackgroundTheme("bg-theme8");
+    document.getElementById("theme9").onclick = () => applyBackgroundTheme("bg-theme9");
     document.getElementById("theme10").onclick = () => applyBackgroundTheme("bg-theme10");
     document.getElementById("theme11").onclick = () => applyBackgroundTheme("bg-theme11");
     document.getElementById("theme12").onclick = () => applyBackgroundTheme("bg-theme12");
     document.getElementById("theme13").onclick = () => applyBackgroundTheme("bg-theme13");
     document.getElementById("theme14").onclick = () => applyBackgroundTheme("bg-theme14");
     document.getElementById("theme15").onclick = () => applyBackgroundTheme("bg-theme15");
-    document.getElementById("theme16").onclick = () => applyBackgroundTheme("bg-theme16");
-    document.getElementById("theme17").onclick = () => applyBackgroundTheme("bg-theme17");
-    document.getElementById("theme18").onclick = () => applyBackgroundTheme("bg-theme18");
 
     document.getElementById("theme20").onclick = () => applyNavbarTheme("bg-theme20");
     document.getElementById("theme21").onclick = () => applyNavbarTheme("bg-theme21");

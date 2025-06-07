@@ -1,61 +1,64 @@
 <div class="row mt-3 justify-content-center">
   <div class="col-lg">
     <div class="card">
-      <div class="card-body">
-        <ul class="nav nav-tabs nav-tabs-primary top-icon nav-justified">
-          <li class="nav-item">
-            <a class="nav-link active"
-               data-bs-toggle="tab"
-               href="#profil"
-               role="tab"
-               aria-controls="profil"
-               aria-selected="true">
-               <i class="icon-user"></i>
-               <span class="hidden-xs">Profile</span>
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link"
-               data-bs-toggle="tab"
-               href="#theme"
-               role="tab"
-               aria-controls="theme"
-               aria-selected="false">
-               <i class="icon-screen-desktop"></i>
-               <span class="hidden-xs">Background</span>
-            </a>
-          </li>
-          <li class="nav-item" role="presentation">
-            <a class="nav-link"
-               data-bs-toggle="tab"
-               href="#navbar"
-               role="tab"
-               aria-controls="navbar"
-               aria-selected="false">
-               <i class="icon-menu"></i>
-               <span class="hidden-xs">Navbar</span>
-            </a>
-          </li>
-        </ul>
-
-        <div class="tab-content p-3">
-
-          <div class="tab-pane fade active show" id="profil">
-            <h5 id="UserProfile" class="mb-3">User Profile</h5>
-            <form>
+      <form>
+        <div class="card-body">
+          <ul class="nav nav-tabs nav-tabs-primary top-icon nav-justified">
+            <li class="nav-item">
+              <a class="nav-link active"
+                 data-bs-toggle="tab"
+                 href="#profil"
+                 role="tab"
+                 aria-controls="profil"
+                 aria-selected="true">
+                 <i class="icon-user"></i>
+                 <span id="Profile" class="hidden-xs">Profile</span>
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link"
+                 data-bs-toggle="tab"
+                 href="#theme"
+                 role="tab"
+                 aria-controls="theme"
+                 aria-selected="false">
+                 <i class="icon-screen-desktop"></i>
+                 <span id="Background" class="hidden-xs">Background</span>
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link"
+                 data-bs-toggle="tab"
+                 href="#navbar"
+                 role="tab"
+                 aria-controls="navbar"
+                 aria-selected="false">
+                 <i class="icon-menu"></i>
+                 <span id="Navbar" class="hidden-xs">Navbar</span>
+              </a>
+            </li>
+          </ul>
+  
+          <div class="tab-content p-3">
+  
+            <div class="tab-pane fade active show" id="profil">
+              <h5 id="UserProfile" class="mb-3">User Profile</h5>
               <div class="mb-3 row">
                 <label id="UsernameProfile" class="col-lg-3 col-form-label form-control-label">Username</label>
-                <div class="col-lg-4">
+                <div class="col-lg-5 col-sm-auto col-xl-auto">
                   <div class="input-group">
-                    <div class="input-group-text">@</div>
-                    <input id="username" type="text" class="form-control" placeholder="Username" autocomplete="username">
+                    <div class="input-group-text"><i class="fa-solid fa-at"></i></div>
+                    <input id="username" type="text" class="form-control" placeholder="Username" autocomplete="username" required>
                   </div>
                 </div>
               </div>
               <div class="mb-3 row">
                 <label id="LevelProfile"class="col-lg-3 col-form-label form-control-label">Level</label>
-                <div class="col-lg-4">
-                  <input id="LevelUser" class="form-control" type="text" value="Admin" disabled autocomplete="off">
+                <div class="col-lg-5 col-sm-auto col-xl-auto">
+                  <div class="input-group">
+                    <div class="input-group-text"><i class="fa-solid fa-circle-check"></i></div>
+                    <input id="LevelUser" class="form-control" type="text" value="Admin" disabled autocomplete="off">
+                  </div>
                 </div>
               </div>
               <div class="mb-3 row">
@@ -69,43 +72,43 @@
                       <li>
                         <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="en">
                           <i class="flag-icon flag-icon-gb me-2"></i>
-                          <div>English</div>
+                          <div id="English">English</div>
                         </a>
                       </li>
                       <li>
                         <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="fr">
                           <i class="flag-icon flag-icon-fr me-2"></i>
-                          <div>French</div>
+                          <div id="French">French</div>
                         </a>
                       </li>
                       <li>
                         <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="de">
                           <i class="flag-icon flag-icon-de me-2"></i>
-                          <div>German</div>
+                          <div id="German">German</div>
                         </a>
                       </li>
                       <li>
                         <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="it">
                           <i class="flag-icon flag-icon-it me-2"></i>
-                          <div>Italian</div>
+                          <div id="Italian">Italian</div>
                         </a>
                       </li>
                       <li>
                         <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="es">
                           <i class="flag-icon flag-icon-es me-2"></i>
-                          <div>Spanish</div>
+                          <div id="Spanish">Spanish</div>
                         </a>
                       </li>
                       <li>
                         <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="nl">
                           <i class="flag-icon flag-icon-nl me-2"></i>
-                          <div>Dutch</div>
+                          <div id="Dutch">Dutch</div>
                         </a>
                       </li>
                       <li>
                         <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="tr">
                           <i class="flag-icon flag-icon-tr me-2"></i>
-                          <div>Turkish</div>
+                          <div id="Turkish">Turkish</div>
                         </a>
                       </li>
                     </ul>
@@ -151,151 +154,135 @@
               <h5 id="ChangePassword" class="mb-3">Change password</h5>
               <div class="mb-3 row">
                 <label id="PasswordProfile"class="col-lg-3 col-form-label form-control-label">Password</label>
-                <div class="col-lg-5">
+                <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
                   <div class="input-group">
                     <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
                     <input id="password" class="form-control" type="password" autocomplete="new-password" placeholder="Enter New Password">
-                    <div class="form-control-position">
-                      <i toggle="#password" class="icon-eye toggle-password text-white"></i>
+                    <div class="input-group-text"><i toggle="#password" class="icon-eye toggle-password text-white me-0"></i>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <label id="NewPasswordProfile"class="col-lg-3 col-form-label form-control-label">Confirm password</label>
-                <div class="col-lg-5">
+                <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
                   
                   <div class="input-group">
                     <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
                     <input id="newpassword" class="form-control" type="password" autocomplete="new-password" placeholder="Confirm New Password">
-                    <div class="form-control-position">
-                      <i toggle="#newpassword" class="icon-eye toggle-password text-white"></i>
-                    </div>
+                    <div class="input-group-text"><i toggle="#newpassword" class="icon-eye toggle-password text-white me-0"></i></div>
                   </div>
-                  <!--
-                  <div class="position-relative has-icon-right">
-                    <input id="newpassword" class="form-control" type="password" autocomplete="new-password" placeholder="Confirm New Password">
-                    <div class="form-control-position">
-                      <i toggle="#newpassword" class="icon-eye toggle-password text-white"></i>
-                    </div>
-                  </div>
-                  -->
                 </div>
               </div>
-            </form>
-          </div>
-
-          <div class="tab-pane fade" id="theme" role="tabpanel" aria-labelledby="theme-tab">
-  
-            <h5 class="mb-3">Background Theme</h5>
-            <p class="mb-2 text-white">Gaussion Texture</p>
-            <div class="col-lg-12 d-flex flex-wrap gap-3">
-              <label class="background-choice">
-                <input type="radio" name="background" value="1">
-                <div class="background-size-choice" id="theme1"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="2">
-                <div class="background-size-choice" id="theme2"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="3">
-                <div class="background-size-choice" id="theme3"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="4">
-                <div class="background-size-choice" id="theme4"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="5">
-                <div class="background-size-choice" id="theme5"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="6">
-                <div class="background-size-choice" id="theme6"></div>
-              </label>
             </div>
   
-            <p class="mb-2 text-white" >Gradient Background</p>
-            <div class="col-lg-12 d-flex flex-wrap gap-3">
-              <label class="background-choice">
-                <input type="radio" name="background" value="10">
-                <div class="background-size-choice" id="theme10"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="11">
-                <div class="background-size-choice" id="theme11"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="12">
-                <div class="background-size-choice" id="theme12"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="13">
-                <div class="background-size-choice" id="theme13"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="14">
-                <div class="background-size-choice" id="theme14"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="15">
-                <div class="background-size-choice" id="theme15"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="16">
-                <div class="background-size-choice" id="theme16"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="17">
-                <div class="background-size-choice" id="theme17"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="background" value="18">
-                <div class="background-size-choice" id="theme18"></div>
-              </label>
+            <div class="tab-pane fade" id="theme" role="tabpanel" aria-labelledby="theme-tab">
+    
+              <h5 id="BackgroundProfile" class="mb-3">Background Theme</h5>
+              <div class="col-lg-12 d-flex flex-wrap gap-3">
+                <label class="background-choice">
+                  <input type="radio" name="background" value="1">
+                  <div class="background-size-choice" id="theme1"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="2">
+                  <div class="background-size-choice" id="theme2"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="3">
+                  <div class="background-size-choice" id="theme3"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="4">
+                  <div class="background-size-choice" id="theme4"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="5">
+                  <div class="background-size-choice" id="theme5"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="6">
+                  <div class="background-size-choice" id="theme6"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="7">
+                  <div class="background-size-choice" id="theme7"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="8">
+                  <div class="background-size-choice" id="theme8"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="9">
+                  <div class="background-size-choice" id="theme9"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="10">
+                  <div class="background-size-choice" id="theme10"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="11">
+                  <div class="background-size-choice" id="theme11"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="12">
+                  <div class="background-size-choice" id="theme12"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="13">
+                  <div class="background-size-choice" id="theme13"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="14">
+                  <div class="background-size-choice" id="theme14"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="background" value="15">
+                  <div class="background-size-choice" id="theme15"></div>
+                </label>
+              </div>
             </div>
-          </div>
-
-          <div class="tab-pane fade" id="navbar">
-            <h5 class="mb-3">NavBar Background</h5>
-            <div class="col-lg-12 d-flex flex-wrap gap-3">
-              <label class="background-choice">
-                <input type="radio" name="navbar" value="20">
-                <div class="background-size-choice" id="theme20"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="navbar" value="21">
-                <div class="background-size-choice" id="theme21"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="navbar" value="22">
-                <div class="background-size-choice" id="theme22"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="navbar" value="23">
-                <div class="background-size-choice" id="theme23"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="navbar" value="24">
-                <div class="background-size-choice" id="theme24"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="navbar" value="25">
-                <div class="background-size-choice" id="theme25"></div>
-              </label>
-              <label class="background-choice">
-                <input type="radio" name="navbar" value="26">
-                <div class="background-size-choice" id="theme26"></div>
-              </label>
+  
+            <div class="tab-pane fade" id="navbar">
+              <h5 id="NavbarProfile" class="mb-3">NavBar Background</h5>
+              <div class="col-lg-12 d-flex flex-wrap gap-3">
+                <label class="background-choice">
+                  <input type="radio" name="navbar" value="20">
+                  <div class="background-size-choice" id="theme20"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="navbar" value="21">
+                  <div class="background-size-choice" id="theme21"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="navbar" value="22">
+                  <div class="background-size-choice" id="theme22"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="navbar" value="23">
+                  <div class="background-size-choice" id="theme23"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="navbar" value="24">
+                  <div class="background-size-choice" id="theme24"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="navbar" value="25">
+                  <div class="background-size-choice" id="theme25"></div>
+                </label>
+                <label class="background-choice">
+                  <input type="radio" name="navbar" value="26">
+                  <div class="background-size-choice" id="theme26"></div>
+                </label>
+              </div>
             </div>
+  
           </div>
-
         </div>
-      </div>
-      <div class="card-footer text-center mb-1">
-        <input id="SaveChange" type="button" class="mt-1 btn btn-primary btn-round" value="Save Change">
-      </div>
+        <div class="card-footer text-center mb-1">
+          <input id="SaveChange" type="button" class="mt-1 btn btn-primary btn-round" value="Save Change">
+        </div>
+      </form>
     </div>
   </div>
 </div>

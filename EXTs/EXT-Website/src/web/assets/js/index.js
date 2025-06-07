@@ -93,7 +93,7 @@ document.addEventListener("Includes_Complete", async () => {
     console.warn("User:", user);
 
     // background theme
-    if ((user.background >= 1 && user.background <= 6) || (user.background >= 10 && user.background <= 18)) {
+    if ((user.background >= 1 && user.background <= 15)) {
       document.querySelector("body").className = `bg-theme bg-theme${user.background}`;
     }
     // topbar theme
@@ -142,19 +142,35 @@ document.addEventListener("Includes_Complete", async () => {
     console.log("detected Account page");
 
     // translation
-    setTranslation("UserProfile", await getTranslate(user.language, "UserProfile"));
-    setTranslation("UsernameProfile", await getTranslate(user.language, "UsernameProfile"));
-    setTranslation("LevelProfile", await getTranslate(user.language, "LevelProfile"));
-    setTranslation("AvatarProfile", await getTranslate(user.language, "AvatarProfile"));
-    setTranslation("ChangePassword", await getTranslate(user.language, "ChangePassword"));
-    setTranslation("PasswordProfile", await getTranslate(user.language, "PasswordProfile"));
-    setTranslation("NewPasswordProfile", await getTranslate(user.language, "NewPasswordProfile"));
-    document.getElementById("password").setAttribute("placeholder", await getTranslate(user.language, "NewPassword"));
-    document.getElementById("newpassword").setAttribute("placeholder", await getTranslate(user.language, "NewPasswordConfim"));
+    setTranslation("Profile", await getTranslate(user.language, "Account_Profile"));
+    setTranslation("Background", await getTranslate(user.language, "Account_Background"));
+    setTranslation("Navbar", await getTranslate(user.language, "Account_Navbar"));
 
-    document.getElementById("SaveChange").value = await getTranslate(user.language, "SaveChange");
+    setTranslation("UserProfile", await getTranslate(user.language, "Account_UserProfile"));
+    setTranslation("UsernameProfile", await getTranslate(user.language, "Account_UsernameProfile"));
+    setTranslation("LevelProfile", await getTranslate(user.language, "Account_LevelProfile"));
+    setTranslation("AvatarProfile", await getTranslate(user.language, "Account_AvatarProfile"));
+    setTranslation("ChangePassword", await getTranslate(user.language, "Account_ChangePassword"));
+    setTranslation("PasswordProfile", await getTranslate(user.language, "Account_PasswordProfile"));
+    setTranslation("NewPasswordProfile", await getTranslate(user.language, "Account_NewPasswordProfile"));
+
+    setTranslation("English", await getTranslate(user.language, "Language_English"));
+    setTranslation("French", await getTranslate(user.language, "Language_French"));
+    setTranslation("German", await getTranslate(user.language, "Language_German"));
+    setTranslation("Italian", await getTranslate(user.language, "Language_Italian"));
+    setTranslation("Spanish", await getTranslate(user.language, "Language_Spanish"));
+    setTranslation("Dutch", await getTranslate(user.language, "Language_Dutch"));
+    setTranslation("Turkish", await getTranslate(user.language, "Language_Turkish"));
+
+    setTranslation("BackgroundProfile", await getTranslate(user.language, "Account_BackgroundTheme"));
+    setTranslation("NavbarProfile", await getTranslate(user.language, "Account_NavbarTheme"));
+
+    document.getElementById("password").setAttribute("placeholder", await getTranslate(user.language, "Account_NewPassword"));
+    document.getElementById("newpassword").setAttribute("placeholder", await getTranslate(user.language, "Account_NewPasswordConfim"));
+
+    document.getElementById("SaveChange").value = await getTranslate(user.language, "Account_SaveChange");
     document.getElementById("username").value = user.username;
-    if (user.level === 10) document.getElementById("LevelUser").value = await getTranslate(user.language, "Administrator");
+    if (user.level === 10) document.getElementById("LevelUser").value = await getTranslate(user.language, "Account_Administrator");
     else document.getElementById("LevelUser").value = user.level;
 
     const avatarInput = document.querySelector(`input[name="avatar"][value="${user.avatar}"]`);
@@ -790,13 +806,6 @@ document.addEventListener("Includes_Complete", async () => {
       const SwapText2 = document.getElementById("SwapText2");
       const TempText = document.getElementById("TempText");
 
-      const VersionBox = document.getElementById("Version-Box");
-      const UptimeBox = document.getElementById("Uptime-Box");
-      const CPUBox = document.getElementById("CPU-Box");
-      const NetworkBox = document.getElementById("Network-Box");
-      const MemoryBox = document.getElementById("Memory-Box");
-      const GPUBox = document.getElementById("GPU-Box");
-
       if (vw < 768) {
         // hide progress
         Load.classList.add("visually-hidden");
@@ -816,24 +825,6 @@ document.addEventListener("Includes_Complete", async () => {
           if (storageID) storageID.classList.add("visually-hidden");
           if (storageText) storageText.classList.remove("visually-hidden");
         });
-
-        VersionBox.classList.add("col-12");
-        VersionBox.classList.remove("col-6");
-
-        UptimeBox.classList.add("col-12");
-        UptimeBox.classList.remove("col-6");
-
-        CPUBox.classList.add("col-12");
-        CPUBox.classList.remove("col-6");
-
-        NetworkBox.classList.add("col-12");
-        NetworkBox.classList.remove("col-6");
-
-        MemoryBox.classList.add("col-12");
-        MemoryBox.classList.remove("col-6");
-
-        GPUBox.classList.add("col-12");
-        GPUBox.classList.remove("col-6");
       } else {
         // display Progress
         Load.classList.remove("visually-hidden");
@@ -853,24 +844,6 @@ document.addEventListener("Includes_Complete", async () => {
           if (storageID) storageID.classList.remove("visually-hidden");
           if (storageText) storageText.classList.add("visually-hidden");
         });
-
-        VersionBox.classList.remove("col-12");
-        VersionBox.classList.add("col-6");
-
-        UptimeBox.classList.remove("col-12");
-        UptimeBox.classList.add("col-6");
-
-        CPUBox.classList.remove("col-12");
-        CPUBox.classList.add("col-6");
-
-        NetworkBox.classList.remove("col-12");
-        NetworkBox.classList.add("col-6");
-
-        MemoryBox.classList.remove("col-12");
-        MemoryBox.classList.add("col-6");
-
-        GPUBox.classList.remove("col-12");
-        GPUBox.classList.add("col-6");
       }
     }
 
@@ -949,7 +922,6 @@ document.addEventListener("Includes_Complete", async () => {
 
     setTranslation("byHeader", await getTranslate(user.language, "About_by"));
     setTranslation("DonateHeader", await getTranslate(user.language, "About_Donate"));
-    setTranslation("DonateText", await getTranslate(user.language, "About_Donate_Text"));
     setTranslation("VersionHeader", await getTranslate(user.language, "About_About"));
     setTranslation("Translators", await getTranslate(user.language, "About_Translator"));
 
