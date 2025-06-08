@@ -104,14 +104,14 @@ document.addEventListener("Includes_Complete", async () => {
 
     // translations
     setTranslation("myusername", user.username);
-    if (user.level === 10) setTranslation("mylevel", await getTranslate(user.language, "Administrator"));
-    else setTranslation("mylevel", await getTranslate(user.language, "Level", { level: user.level }));
+    if (user.level === 10) setTranslation("mylevel", await getTranslate(user.language, "Account_Administrator"));
+    else setTranslation("mylevel", await getTranslate(user.language, "Account_Level", { level: user.level }));
     if (user.avatar) {
       let Avatar = document.getElementById("Avatar");
       if (user.avatar) Avatar.src = `/assets/images/avatars/avatar${user.avatar}.png`;
     }
-    setTranslation("Account", await getTranslate(user.language, "Account"));
-    setTranslation("Logout", await getTranslate(user.language, "Logout"));
+    setTranslation("Account", await getTranslate(user.language, "Account_Account"));
+    setTranslation("Logout", await getTranslate(user.language, "Generic_Logout"));
 
     setTranslation("Home", await getTranslate(user.language, "Menu_Home"));
     setTranslation("Dashboard", await getTranslate(user.language, "Menu_Dashboard"));
@@ -956,6 +956,20 @@ document.addEventListener("Includes_Complete", async () => {
     console.log("detected tools page");
     setTranslation("ToolsTitle", await getTranslate(user.language, "Tools_Title"));
     setTranslation("ToolsDescription", await getTranslate(user.language, "Tools_Description"));
+    setTranslation("MMDie", await getTranslate(user.language, "Generic_Stop"));
+    setTranslation("MMRestart", await getTranslate(user.language, "Generic_Restart"));
+    setTranslation("SysDie", await getTranslate(user.language, "Generic_Stop"));
+    setTranslation("SysRestart", await getTranslate(user.language, "Generic_Restart"));
+    setTranslation("ApplyUpdate", await getTranslate(user.language, "Generic_Update"));
+    setTranslation("BackupDelete", await getTranslate(user.language, "Generic_Delete"));
+    setTranslation("ApplyStop", await getTranslate(user.language, "Generic_Stop"));
+    setTranslation("AlertSend", await getTranslate(user.language, "Generic_Send"));
+    setTranslation("AssistantSend", await getTranslate(user.language, "Generic_Send"));
+    setTranslation("ScreenPower", await getTranslate(user.language, "Generic_TurnOn"));
+    setTranslation("SpeakerVolumeSend", await getTranslate(user.language, "Generic_Send"));
+    setTranslation("MicVolumeSend", await getTranslate(user.language, "Generic_Send"));
+    setTranslation("RadioSend", await getTranslate(user.language, "Generic_Listen"));
+    setTranslation("SpotifySend", await getTranslate(user.language, "Generic_Listen"));
     spinnerHide();
   }
 

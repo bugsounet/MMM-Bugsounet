@@ -12,8 +12,8 @@
             <div class="card-header text-center fs-4">MagicMirror²</div>
             <div class="card-content text-center p-2">Control</div>
             <div class="card-body list-group-item d-flex">
-              <a id="Die" class="btn btn-danger btn-sm btn-round mx-auto" href="/Die">Die</a>
-              <a id="Restart" class="btn btn-warning btn-sm btn-round mx-auto" href="/Restart">Restart</a>
+              <a id="MMDie" class="btn btn-danger btn-sm btn-round mx-auto" href="/Die">Die</a>
+              <a id="MMRestart" class="btn btn-warning btn-sm btn-round mx-auto" href="/Restart">Restart</a>
             </div>
           </div>
         </div>
@@ -23,8 +23,8 @@
             <div class="card-header text-center fs-4">System</div>
             <div class="card-content text-center">Control</div>
             <div class="card-body list-group-item d-flex">
-              <a class="btn btn-danger btn-sm btn-round mx-auto" href="/Die">Die</a>
-              <a class="btn btn-warning btn-sm btn-round mx-auto" href="/Restart">Restart</a>
+              <a id="SysDie" class="btn btn-danger btn-sm btn-round mx-auto" href="/Die">Die</a>
+              <a id="SysRestart" class="btn btn-warning btn-sm btn-round mx-auto" href="/Restart">Restart</a>
             </div>
           </div>
         </div>
@@ -35,7 +35,7 @@
             <div class="card-content text-center">Control</div>
             <div class="card-body list-group-item">
               <div class="mb-2">2 modules to update</div>
-              <a class="btn btn-info btn-sm btn-round mx-5">Update</a>
+              <a id="ApplyUpdate" class="btn btn-info btn-sm btn-round mx-5">Update</a>
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
                 <span id="backupFound">2</span>
                 <span id="backupFoundText">Backup found</span>
               </div>
-              <a class="btn btn-danger btn-sm btn-round mx-5">Delete</a>
+              <a id="BackupDelete" class="btn btn-danger btn-sm btn-round mx-5">Delete</a>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@
             <div class="card-content text-center">Control</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Stop all working plugins</div>
-              <a class="btn btn-danger btn-sm btn-round mx-5">Stop</a>
+              <a id="ApplyStop" class="btn btn-danger btn-sm btn-round mx-5">Stop</a>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@
             <div class="card-body list-group-item">
               <div class="mb-2">Affiche un message sur votre mirroir</div>
               <input class="w-100 mb-2" type="text" id="Alert-Query" placeholder="">
-              <a class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
+              <a id="AlertSend" class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@
             <div class="card-body list-group-item">
               <div class="mb-2">Active l'assistant avec votre demande</div>
               <input class="w-100 mb-2" type="text" id="Assistant-Query" placeholder="">
-              <a class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
+              <a id="AssistantSend" class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@
             <div class="card-content text-center">Control</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Allumer ou éteindre votre écran</div>
-              <a class="btn btn-secondary btn-sm btn-round mx-5">Allumer</a>
+              <a id="ScreenPower" class="btn btn-secondary btn-sm btn-round mx-5">Allumer</a>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@
                   <option class="bg-light" value="100">100%</option>
                 </select>
               </div>
-              <a class="btn btn-secondary btn-sm btn-round mx-5">Send</a>
+              <a id="SpeakerVolumeSend" class="btn btn-secondary btn-sm btn-round mx-5">Send</a>
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@
                   <option class="bg-light" value="100">100%</option>
                 </select>
               </div>
-              <a class="btn btn-secondary btn-sm btn-round mx-5">Send</a>
+              <a id="MicVolumeSend" class="btn btn-secondary btn-sm btn-round mx-5">Send</a>
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@
               <div class="mb-2">
                 <select></select>
               </div>
-              <a class="btn btn-secondary btn-sm btn-round mx-5">Ecouter</a>
+              <a id="RadioSend" class="btn btn-secondary btn-sm btn-round mx-5">Ecouter</a>
             </div>
           </div>
         </div>
@@ -213,15 +213,15 @@
             <div class="card-body list-group-item">
               <div class="mb-2">Contrôleur du lecteur Spotify</div>
               <div class="btn-group btn-group-lg d-flex mb-2" role="group">
-                <button class="btn btn-success border rounded border-2 border-dark flex-wrap m-1 fs-6" id="Spotify-Previous" type="button">
+                <button class="btn btn-success border rounded flex-wrap m-1 fs-6" id="Spotify-Previous" type="button">
                   <i class="fa fa-step-backward text-dark"></i>
                 </button>
-                <button class="btn btn-success border rounded border-2 border-dark m-1 fs-6" id="Spotify-Play" type="button">
+                <button class="btn btn-success border rounded m-1 fs-6" id="Spotify-Play" type="button">
                   <i class="fa fa-play text-dark"></i>
                 </button>
-                <button class="btn btn-success border rounded border-2 border-dark m-1 fs-6 visually-hidden" id="Spotify-Stop" type="button">
+                <button class="btn btn-success border rounded m-1 fs-6 visually-hidden" id="Spotify-Stop" type="button">
                   <i class="fa fa-stop text-dark"></i>
-                </button><button class="btn btn-success border rounded border-2 border-dark m-1 fs-6" id="Spotify-Next" type="button">
+                </button><button class="btn btn-success border rounded m-1 fs-6" id="Spotify-Next" type="button">
                   <i class="fa fa-step-forward text-dark"></i>
                 </button>
               </div>
@@ -245,7 +245,7 @@
                   </div>
               </div>
               <input class="mb-2 w-100" type="text" id="Spotify-Query" placeholder="">
-              <a class="btn btn-secondary btn-sm btn-round mx-5 disabled">Envoyer</a>
+              <a id="SpotifySend" class="btn btn-secondary btn-sm btn-round mx-5 disabled">Envoyer</a>
             </div>
           </div>
         </div>
