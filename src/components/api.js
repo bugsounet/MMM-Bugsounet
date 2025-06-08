@@ -260,7 +260,6 @@ class api {
 
         .get("/api/translations/login", (req, res) => {
           let loginTranslation = {
-            welcome: this.translate(this.Api.language, "Login_Welcome"),
             username: this.translate(this.Api.language, "Login_Username"),
             password: this.translate(this.Api.language, "Login_Password"),
             error: this.translate(this.Api.language, "Login_Error"),
