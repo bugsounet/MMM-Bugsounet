@@ -954,6 +954,8 @@ document.addEventListener("Includes_Complete", async () => {
   let toolsPage = document.getElementById("tools-html");
   if (toolsPage) {
     console.log("detected tools page");
+    setTranslation("ToolsTitle", await getTranslate(user.language, "Tools_Title"));
+    setTranslation("ToolsDescription", await getTranslate(user.language, "Tools_Description"));
     spinnerHide();
   }
 
