@@ -259,13 +259,7 @@ class api {
         })
 
         .get("/api/translations/login", (req, res) => {
-          let loginTranslation = {
-            username: this.translate(this.Api.language, "Login_Username"),
-            password: this.translate(this.Api.language, "Login_Password"),
-            error: this.translate(this.Api.language, "Login_Error"),
-            login: this.translate(this.Api.language, "Login_Login")
-          };
-          res.json(loginTranslation);
+          res.json(Translator.findTranslatedGroup("Login_", this.Api.language));
         })
 
         .post("/api/login", (req, res) => this.login(req, res))
@@ -303,6 +297,15 @@ class api {
 
       case "/api/translations/common":
         res.json(this.Api.translations);
+        break;
+
+      case "/api/translations/group":
+        if (!req.headers["group"] || req.headers["group"] === "undefined") return res.status(400).send("Bad Request");
+        var translatedGroup = Translator.findTranslatedGroup(req.headers["group"], req.headers["language"]);
+        res.json({
+          group: req.headers["group"],
+          translate: translatedGroup
+        });
         break;
 
       case "/api/translations/translate":
