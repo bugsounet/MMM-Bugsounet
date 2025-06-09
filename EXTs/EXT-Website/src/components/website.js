@@ -2,7 +2,7 @@
 
 const http = require("node:http");
 const path = require("node:path");
-//const pty = require("node-pty");
+const pty = require("node-pty");
 const si = require("systeminformation");
 const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
@@ -19,6 +19,7 @@ class website {
   constructor (config, cb = () => {}) {
     this.lib = config.lib;
     this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
+    this.config = config;
 
     if (config.debug) log = (...args) => { console.log("[WEBSITE] [Web]", ...args); };
 
@@ -58,7 +59,7 @@ class website {
   server () {
     return new Promise((resolve) => {
       this.website.server
-        .listen(8081, "0.0.0.0", () => {
+        .listen(this.config.server_Port, "0.0.0.0", () => {
           console.log("[WEBSITE] [Web] [Server] Start listening on port 8081");
           console.log(`[WEBSITE] [Web] [Server] Available locally at http://${this.website.listening}:8081`);
           this.website.initialized = true;
@@ -99,7 +100,7 @@ class website {
       };
 
       const APIProxy = createProxyMiddleware({
-        target: "http://127.0.0.1:8085",
+        target: this.config.API,
         changeOrigin: false,
         xfwd: true,
         pathFilter: ["/api"],
