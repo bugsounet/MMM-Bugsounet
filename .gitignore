@@ -63,3 +63,4 @@
 /databases/users
 /databases/uptimed
 /EXTs/EXT-Website/web/assets/js/*.js
+/EXTs/EXT-Website/server/server.js

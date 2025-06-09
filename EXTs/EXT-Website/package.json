@@ -15,6 +15,7 @@
     "install": "exit 1",
     "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-Website",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Website",
+    "server": "node server/server.js",
     "setup": "node ../../installer/setup --path=EXTs/EXT-Website"
   },
   "dependencies": {
