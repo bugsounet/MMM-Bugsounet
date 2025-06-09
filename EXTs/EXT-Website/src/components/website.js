@@ -3,13 +3,6 @@
 const http = require("node:http");
 const path = require("node:path");
 
-var pty = null;
-try {
-  pty = require("node-pty");
-} catch {
-  console.warn("[WEBSITE] node-pty loading error: MMM-Bugsounet Terminal will be disabled");
-}
-
 const si = require("systeminformation");
 const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
@@ -20,6 +13,7 @@ const cookieParser = require("cookie-parser");
 
 const HyperWatch = require("./hyperwatch");
 
+var pty = null;
 var log = () => { /* do nothing */ };
 
 class website {
@@ -29,7 +23,11 @@ class website {
     this.config = config;
 
     if (config.debug) log = (...args) => { console.log("[WEBSITE] [Web]", ...args); };
-
+    if (config.pty) {
+      pty = require("node-pty");
+    } else {
+      console.log(`[WEBSITE] EXT-Website Server Version: ${require("../package.json").version} rev: ${require("../package.json").rev}`);
+    }
     this.website = {
       EXTStatus: {}, // status of EXT
       initialized: false,
@@ -257,8 +255,8 @@ class website {
             var cols = 80;
             var rows = 24;
             if (!pty) {
-              console.warn("[WEBSITE] node-pty is disabled!");
-              io.to(client.id).emit("terminal.incData", "This Terminal is disabled.");
+              console.warn("[WEBSITE] Server mode: Terminal is disabled!");
+              io.to(client.id).emit("terminal.incData", "This Terminal is disabled in server mode.");
               return;
             }
             var ptyProcess = pty.spawn("bash", [], {

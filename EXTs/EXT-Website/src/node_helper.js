@@ -35,7 +35,8 @@ module.exports = NodeHelper.create({
       let WebsiteHelperConfig = {
         debug: this.config.debug,
         API: "http://127.0.0.1:8085",
-        server_Port: 8081
+        server_Port: 8081,
+        pty: true
       };
 
       this.website = new this.lib.website(WebsiteHelperConfig, { sendSocketNotification: (...args) => this.sendSocketNotification(...args) });
