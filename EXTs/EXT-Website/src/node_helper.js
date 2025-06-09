@@ -25,7 +25,7 @@ module.exports = NodeHelper.create({
     console.log(`[WEBSITE] EXT-Website Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
     if (this.config.debug) log = (...args) => { console.log("[WEBSITE]", ...args); };
     await this.parseWebsite();
-    this.website.init(this.config);
+    this.website.init();
   },
 
   async parseWebsite () {

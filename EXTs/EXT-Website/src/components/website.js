@@ -60,8 +60,8 @@ class website {
     return new Promise((resolve) => {
       this.website.server
         .listen(this.config.server_Port, "0.0.0.0", () => {
-          console.log("[WEBSITE] [Web] [Server] Start listening on port 8081");
-          console.log(`[WEBSITE] [Web] [Server] Available locally at http://${this.website.listening}:8081`);
+          console.log(`[WEBSITE] [Web] [Server] Start listening on port ${this.config.server_Port}`);
+          console.log(`[WEBSITE] [Web] [Server] Available locally at http://${this.website.listening}:${this.config.server_Port}`);
           this.website.initialized = true;
           this.sendSocketNotification("INITIALIZED");
           resolve();
