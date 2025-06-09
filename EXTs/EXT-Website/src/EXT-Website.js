@@ -8,12 +8,6 @@ Module.register("EXT-Website", {
     debug: false
   },
 
-  start () {
-    this.ready = false;
-    this.config.translations = {};
-    this.EXT_DB = [];
-  },
-
   socketNotificationReceived (notification, payload) {
     switch (notification) {
       case "INITIALIZED":
