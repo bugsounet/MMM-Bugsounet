@@ -2,7 +2,14 @@
 
 const http = require("node:http");
 const path = require("node:path");
-const pty = require("node-pty");
+
+var pty = null;
+try {
+  pty = require("node-pty");
+} catch {
+  console.warn("[WEBSITE] node-pty loading error: MMM-Bugsounet Terminal will be disabled");
+}
+
 const si = require("systeminformation");
 const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
@@ -241,6 +248,7 @@ class website {
         .get("/SSH", (req, res, next) => this.auth(req, res, next), (req, res) => {
           var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
           res.sendFile(`${this.WebPath}/SSH.html`);
+
           io.once("connection", (client) => {
             log(`[${ip}] Connected to Terminal:`, req.user);
             client.on("disconnect", (err) => {
@@ -248,6 +256,11 @@ class website {
             });
             var cols = 80;
             var rows = 24;
+            if (!pty) {
+              console.warn("[WEBSITE] node-pty is disabled!");
+              io.to(client.id).emit("terminal.incData", "This Terminal is disabled.");
+              return;
+            }
             var ptyProcess = pty.spawn("bash", [], {
               name: "xterm-color",
               cols: cols,
@@ -542,6 +555,5 @@ class website {
       resolve(result);
     });
   }
-
 }
 module.exports = website;
