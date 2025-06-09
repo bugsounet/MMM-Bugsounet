@@ -119,6 +119,26 @@ const Translator = (function () {
         const translationFile = translations[language];
         if (language !== "en") await this.load(language, translationFile);
       }
+    },
+
+    /**
+     * search translation by group and translate it if neeed
+     */
+    findTranslatedGroup (group, lang) {
+      var TranslatedGroupResult = {};
+      if (!group || !group.endsWith("_")) {
+        console.warn(`[Bugsounet] [Translator] Translations Group: ${group} not found`);
+        return TranslatedGroupResult;
+      }
+      for (const [key, value] of Object.entries(this.coreTranslations)) {
+        if (key.startsWith(group)) {
+          const newKey = key.split(group)[1];
+          if (this.translations[lang]?.[key]) TranslatedGroupResult[newKey] = this.translations[lang][key];
+          else TranslatedGroupResult[newKey] = value;
+        }
+      }
+      console.log(`[Bugsounet] [Translator] Translations Group: ${group} - Lang: ${lang} - Match: ${Object.keys(TranslatedGroupResult).length}`);
+      return TranslatedGroupResult;
     }
   };
 }());
