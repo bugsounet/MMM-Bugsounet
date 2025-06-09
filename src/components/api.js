@@ -161,7 +161,7 @@ class api {
   serverAPI () {
     return new Promise((resolve) => {
       this.Api.serverAPI
-        .listen(8085, "127.0.0.1", () => {
+        .listen(8085, "0.0.0.0", () => {
           console.log("[Bugsounet] [API] Start listening on port 8085");
           this.sendSocketNotification("SendNoti", "Bugsounet_WEBSITE-API_STARTED");
           resolve();
