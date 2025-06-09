@@ -25,7 +25,6 @@ module.exports = NodeHelper.create({
     console.log(`[WEBSITE] EXT-Website Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
     if (this.config.debug) log = (...args) => { console.log("[WEBSITE]", ...args); };
     await this.parseWebsite();
-    this.lib.HyperWatch.enable();
     this.website.init(this.config);
   },
 
@@ -35,7 +34,8 @@ module.exports = NodeHelper.create({
       if (bugsounet) return this.bugsounetError(bugsounet, "Website");
       let WebsiteHelperConfig = {
         debug: this.config.debug,
-        lib: this.lib
+        API: "http://127.0.0.1:8085",
+        server_Port: 8081
       };
 
       this.website = new this.lib.website(WebsiteHelperConfig, { sendSocketNotification: (...args) => this.sendSocketNotification(...args) });
@@ -46,10 +46,7 @@ module.exports = NodeHelper.create({
   libraries (type) {
     let Libraries = [];
 
-    let website = [
-      { "./components/hyperwatch.js": "HyperWatch" },
-      { "./components/website.js": "website" }
-    ];
+    let website = [{ "./components/website.js": "website" }];
 
     let errors = 0;
 
@@ -75,7 +72,6 @@ module.exports = NodeHelper.create({
               log(`[LIB] Loaded: ${libraryToLoad} --> this.lib.${libraryName}`);
             }
           } catch (e) {
-            //console.error(`[WEBSITE] [LIB] ${libraryToLoad} Loading error!`, e.message);
             console.error(`[WEBSITE] [LIB] ${libraryToLoad} Loading error!`, e);
             this.sendSocketNotification("ERROR", `Loading error! library: ${libraryToLoad}`);
             errors++;

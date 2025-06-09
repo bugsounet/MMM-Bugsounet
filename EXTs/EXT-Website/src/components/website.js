@@ -1,15 +1,17 @@
 "use strict";
 
 const http = require("node:http");
-const pty = require("node-pty");
+const path = require("node:path");
+//const pty = require("node-pty");
 const si = require("systeminformation");
 const express = require("express");
 const bodyParserErrorHandler = require("express-body-parser-error-handler");
 const cors = require("cors");
 const Socket = require("socket.io");
 const { createProxyMiddleware, fixRequestBody } = require("http-proxy-middleware");
-
 const cookieParser = require("cookie-parser");
+
+const HyperWatch = require("./hyperwatch");
 
 var log = () => { /* do nothing */ };
 
@@ -31,16 +33,17 @@ class website {
     };
 
     this.MMVersion = global.version;
-    this.root_path = global.root_path;
-    this.BugsounetModulePath = `${this.root_path}/modules/MMM-Bugsounet`;
-    this.WebsiteModulePath = `${this.root_path}/modules/MMM-Bugsounet/EXTs/EXT-Website`;
+    this.root_path = __dirname;
+    this.BugsounetModulePath = path.resolve(this.root_path, "../../../");
+    this.WebsiteModulePath = `${this.BugsounetModulePath}/EXTs/EXT-Website`;
     this.WebPath = `${this.WebsiteModulePath}/web`;
   }
 
   async init () {
+    HyperWatch.enable();
     console.log("[WEBSITE] [Web] Loading Website...");
 
-    if (this.lib.error || this.website.errorInit) return;
+    if (this.website.errorInit) return;
 
     this.website.listening = await this.purposeIP();
 
@@ -104,7 +107,7 @@ class website {
         on: {
           onProxyReq: fixRequestBody,
           error: (err, req, res) => {
-            console.error("[Bugsounet] [Web] API Proxy ERROR", err);
+            console.error("[WEBSITE] [Web] API Proxy ERROR", err);
             res.writeHead(500, {
               "Content-Type": "text/plain"
             });
@@ -226,9 +229,9 @@ class website {
             socket.on("disconnect", (err) => {
               log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
             });
-            var pastLogs = await this.readAllMMLogs(this.lib.HyperWatch.logs());
+            var pastLogs = await this.readAllMMLogs(HyperWatch.logs());
             io.emit("terminal.logs", pastLogs);
-            this.lib.HyperWatch.stream().on("stdData", (data) => {
+            HyperWatch.stream().on("stdData", (data) => {
               if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
             });
           });
