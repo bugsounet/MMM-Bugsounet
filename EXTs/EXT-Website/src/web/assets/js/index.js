@@ -1,7 +1,7 @@
 /* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
   checkSystem io Terminal FitAddon getVersion getCurrentToken getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
-  bootstrap
+  bootstrap getTranslateGroup
  */
 
 /* eslint-disable max-lines-per-function */
@@ -9,9 +9,9 @@ document.addEventListener("Includes_Complete", async () => {
   console.log("Execute index.js");
 
   // define all vars
-  var translation = {};
   var version = {};
   var user = {};
+  var GenericTranslations = {};
 
   const spinner = document.getElementById("spinner");
   function spinnerHide () {
@@ -50,11 +50,11 @@ document.addEventListener("Includes_Complete", async () => {
   let loginPage = document.getElementById("login-html");
   if (loginPage) {
     console.log("detected login page");
-    translation = await loadLoginTranslation();
+    const loginTranslations = await loadLoginTranslation();
 
-    document.getElementById("username").setAttribute("placeholder", translation.username);
-    document.getElementById("password").setAttribute("placeholder", translation.password);
-    setTranslation("login-submit", translation.login);
+    document.getElementById("username").setAttribute("placeholder", loginTranslations["Username"]);
+    document.getElementById("password").setAttribute("placeholder", loginTranslations["Password"]);
+    setTranslation("login-submit", loginTranslations["Login"]);
 
     const button = document.getElementById("login");
     button.addEventListener("change", function () {
@@ -91,6 +91,7 @@ document.addEventListener("Includes_Complete", async () => {
   if (SideNavBar) {
     console.log("detected SideNavBar");
     user = await getMyUser();
+    const MenuTranslations = await getTranslateGroup(user.language, "Menu_");
     console.warn("User:", user);
 
     // background theme
@@ -104,28 +105,28 @@ document.addEventListener("Includes_Complete", async () => {
 
     // translations
     setTranslation("myusername", user.username);
-    if (user.level === 10) setTranslation("mylevel", await getTranslate(user.language, "Account_Administrator"));
+    if (user.level === 10) setTranslation("mylevel", MenuTranslations["Administrator"]);
     else setTranslation("mylevel", await getTranslate(user.language, "Account_Level", { level: user.level }));
     if (user.avatar) {
       let Avatar = document.getElementById("Avatar");
       if (user.avatar) Avatar.src = `/assets/images/avatars/avatar${user.avatar}.png`;
     }
-    setTranslation("Account", await getTranslate(user.language, "Account_Account"));
-    setTranslation("Logout", await getTranslate(user.language, "Generic_Logout"));
+    setTranslation("Account", MenuTranslations["Account"]);
+    setTranslation("Logout", MenuTranslations["Logout"]);
 
-    setTranslation("Home", await getTranslate(user.language, "Menu_Home"));
-    setTranslation("Dashboard", await getTranslate(user.language, "Menu_Dashboard"));
-    setTranslation("MMConfig", await getTranslate(user.language, "Menu_Config"));
-    setTranslation("MMView", await getTranslate(user.language, "Menu_Config_View"));
-    setTranslation("MMEdit", await getTranslate(user.language, "Menu_Config_Edit"));
-    setTranslation("Terminal", await getTranslate(user.language, "Menu_Terminal"));
-    setTranslation("TerminalLogs", await getTranslate(user.language, "Menu_Terminal_Logs"));
-    setTranslation("TerminalSSH", await getTranslate(user.language, "Menu_Terminal_SSH"));
-    setTranslation("Tools", await getTranslate(user.language, "Menu_Tools"));
-    setTranslation("System", await getTranslate(user.language, "Menu_System"));
-    setTranslation("3rdPartyModules", await getTranslate(user.language, "Menu_3rdPartyModules"));
-    setTranslation("API", await getTranslate(user.language, "Menu_API"));
-    setTranslation("About", await getTranslate(user.language, "Menu_About"));
+    setTranslation("Home", MenuTranslations["Home"]);
+    setTranslation("Dashboard", MenuTranslations["Dashboard"]);
+    setTranslation("MMConfig", MenuTranslations["Config"]);
+    setTranslation("MMView", MenuTranslations["ConfigView"]);
+    setTranslation("MMEdit", MenuTranslations["ConfigEdit"]);
+    setTranslation("Terminal", MenuTranslations["Terminal"]);
+    setTranslation("TerminalLogs", MenuTranslations["TerminalLogs"]);
+    setTranslation("TerminalSSH", MenuTranslations["TerminalSSH"]);
+    setTranslation("Tools", MenuTranslations["Tools"]);
+    setTranslation("System", MenuTranslations["System"]);
+    setTranslation("3rdPartyModules", MenuTranslations["3rdPartyModules"]);
+    setTranslation("API", MenuTranslations["API"]);
+    setTranslation("About", MenuTranslations["About"]);
   }
 
   // Home page
@@ -141,37 +142,38 @@ document.addEventListener("Includes_Complete", async () => {
   let accountPage = document.getElementById("account-html");
   if (accountPage) {
     console.log("detected Account page");
-
+    const AccountTranslations = await getTranslateGroup(user.language, "Account_");
+    const LanguageTranslations = await getTranslateGroup(user.language, "Language_");
     // translation
-    setTranslation("Profile", await getTranslate(user.language, "Account_Profile"));
-    setTranslation("Background", await getTranslate(user.language, "Account_Background"));
-    setTranslation("Navbar", await getTranslate(user.language, "Account_Navbar"));
+    setTranslation("Profile", AccountTranslations["Profile"]);
+    setTranslation("Background", AccountTranslations["Background"]);
+    setTranslation("Navbar", AccountTranslations["Navbar"]);
 
-    setTranslation("UserProfile", await getTranslate(user.language, "Account_UserProfile"));
-    setTranslation("UsernameProfile", await getTranslate(user.language, "Account_UsernameProfile"));
-    setTranslation("LevelProfile", await getTranslate(user.language, "Account_LevelProfile"));
-    setTranslation("AvatarProfile", await getTranslate(user.language, "Account_AvatarProfile"));
-    setTranslation("ChangePassword", await getTranslate(user.language, "Account_ChangePassword"));
-    setTranslation("PasswordProfile", await getTranslate(user.language, "Account_PasswordProfile"));
-    setTranslation("NewPasswordProfile", await getTranslate(user.language, "Account_NewPasswordProfile"));
+    setTranslation("UserProfile", AccountTranslations["UserProfile"]);
+    setTranslation("UsernameProfile", AccountTranslations["UsernameProfile"]);
+    setTranslation("LevelProfile", AccountTranslations["LevelProfile"]);
+    setTranslation("AvatarProfile", AccountTranslations["AvatarProfile"]);
+    setTranslation("ChangePassword", AccountTranslations["ChangePassword"]);
+    setTranslation("PasswordProfile", AccountTranslations["PasswordProfile"]);
+    setTranslation("NewPasswordProfile", AccountTranslations["NewPasswordProfile"]);
 
-    setTranslation("English", await getTranslate(user.language, "Language_English"));
-    setTranslation("French", await getTranslate(user.language, "Language_French"));
-    setTranslation("German", await getTranslate(user.language, "Language_German"));
-    setTranslation("Italian", await getTranslate(user.language, "Language_Italian"));
-    setTranslation("Spanish", await getTranslate(user.language, "Language_Spanish"));
-    setTranslation("Dutch", await getTranslate(user.language, "Language_Dutch"));
-    setTranslation("Turkish", await getTranslate(user.language, "Language_Turkish"));
+    setTranslation("English", LanguageTranslations["English"]);
+    setTranslation("French", LanguageTranslations["French"]);
+    setTranslation("German", LanguageTranslations["German"]);
+    setTranslation("Italian", LanguageTranslations["Italian"]);
+    setTranslation("Spanish", LanguageTranslations["Spanish"]);
+    setTranslation("Dutch", LanguageTranslations["Dutch"]);
+    setTranslation("Turkish", LanguageTranslations["Turkish"]);
 
-    setTranslation("BackgroundProfile", await getTranslate(user.language, "Account_BackgroundTheme"));
-    setTranslation("NavbarProfile", await getTranslate(user.language, "Account_NavbarTheme"));
+    setTranslation("BackgroundProfile", AccountTranslations["BackgroundTheme"]);
+    setTranslation("NavbarProfile", AccountTranslations["NavbarTheme"]);
 
-    document.getElementById("password").setAttribute("placeholder", await getTranslate(user.language, "Account_NewPassword"));
-    document.getElementById("newpassword").setAttribute("placeholder", await getTranslate(user.language, "Account_NewPasswordConfim"));
+    document.getElementById("password").setAttribute("placeholder", AccountTranslations["NewPassword"]);
+    document.getElementById("newpassword").setAttribute("placeholder", AccountTranslations["NewPasswordConfim"]);
 
-    document.getElementById("SaveChange").value = await getTranslate(user.language, "Account_SaveChange");
+    document.getElementById("SaveChange").value = AccountTranslations["SaveChange"];
     document.getElementById("username").value = user.username;
-    if (user.level === 10) document.getElementById("LevelUser").value = await getTranslate(user.language, "Account_Administrator");
+    if (user.level === 10) document.getElementById("LevelUser").value = AccountTranslations["Administrator"];
     else document.getElementById("LevelUser").value = user.level;
 
     const avatarInput = document.querySelector(`input[name="avatar"][value="${user.avatar}"]`);
@@ -420,6 +422,8 @@ document.addEventListener("Includes_Complete", async () => {
     var EXTVersions = {};
     var system = {};
 
+    const SystemTranslations = await getTranslateGroup(user.language, "System_");
+
     system = await getCurrentSystem();
     do_System(() => { do_SystemStatic(); });
     alertify.set("notifier", "position", "top-center");
@@ -433,11 +437,11 @@ document.addEventListener("Includes_Complete", async () => {
       // Display static values
       setTranslation("HOSTNAME", system.HOSTNAME);
 
-      setTranslation("VersionSystem", await getTranslate(user.language, "System_Box_Version"));
-      setTranslation("NodeVersion", await getTranslate(user.language, "System_NodeVersion"));
-      setTranslation("NPMVersion", await getTranslate(user.language, "System_NPMVersion"));
-      setTranslation("OSVersion", await getTranslate(user.language, "System_OSVersion"));
-      setTranslation("KernelVersion", await getTranslate(user.language, "System_KernelVersion"));
+      setTranslation("VersionSystem", SystemTranslations["Box_Version"]);
+      setTranslation("NodeVersion", SystemTranslations["NodeVersion"]);
+      setTranslation("NPMVersion", SystemTranslations["NPMVersion"]);
+      setTranslation("OSVersion", SystemTranslations["OSVersion"]);
+      setTranslation("KernelVersion", SystemTranslations["KernelVersion"]);
 
       setTranslation("MMVersion", system.VERSION.MagicMirror);
       setTranslation("ElectronVersion", system.VERSION.ELECTRON);
@@ -446,59 +450,59 @@ document.addEventListener("Includes_Complete", async () => {
       setTranslation("OS", system.VERSION.OS);
       setTranslation("KERNEL", system.VERSION.KERNEL);
 
-      setTranslation("NamePlugin", await getTranslate(user.language, "System_NamePlugin"));
-      setTranslation("VersionPlugin", await getTranslate(user.language, "System_VersionPlugin"));
-      setTranslation("RevPlugin", await getTranslate(user.language, "System_RevPlugin"));
-      if (Object.entries(EXTVersions).length) setTranslation("CurrentlyRunning", await getTranslate(user.language, "System_CurrentlyRunning"));
-      else setTranslation("CurrentlyRunning", await getTranslate(user.language, "System_NoPlugins"));
+      setTranslation("NamePlugin", SystemTranslations["NamePlugin"]);
+      setTranslation("VersionPlugin", SystemTranslations["VersionPlugin"]);
+      setTranslation("RevPlugin", SystemTranslations["RevPlugin"]);
+      if (Object.entries(EXTVersions).length) setTranslation("CurrentlyRunning", SystemTranslations["CurrentlyRunning"]);
+      else setTranslation("CurrentlyRunning", SystemTranslations["NoPlugins"]);
 
-      setTranslation("CPUSystem", await getTranslate(user.language, "System_CPUSystem"));
-      setTranslation("TypeCPU", await getTranslate(user.language, "System_TypeCPU"));
-      setTranslation("SpeedCPU", await getTranslate(user.language, "System_SpeedCPU"));
-      setTranslation("CurrentLoadCPU", await getTranslate(user.language, "System_CurrentLoadCPU"));
-      setTranslation("GovernorCPU", await getTranslate(user.language, "System_GovernorCPU"));
-      setTranslation("TempCPU", await getTranslate(user.language, "System_TempCPU"));
+      setTranslation("CPUSystem", SystemTranslations["CPUSystem"]);
+      setTranslation("TypeCPU", SystemTranslations["TypeCPU"]);
+      setTranslation("SpeedCPU", SystemTranslations["SpeedCPU"]);
+      setTranslation("CurrentLoadCPU", SystemTranslations["CurrentLoadCPU"]);
+      setTranslation("GovernorCPU", SystemTranslations["GovernorCPU"]);
+      setTranslation("TempCPU", SystemTranslations["TempCPU"]);
 
       setTranslation("CPU", system.CPU.type);
 
       if (system.GPU) {
-        setTranslation("GPU", await getTranslate(user.language, "System_GPUAcceleration_Enabled"));
+        setTranslation("GPU", SystemTranslations["GPUAcceleration_Enabled"]);
         const GPUAlert = document.getElementById("GPUAlert");
         const GPUWarn = document.getElementById("GPUWarn");
         GPUWarn.classList.add("visually-hidden");
         GPUAlert.classList.add("bg-google-green");
         GPUAlert.classList.remove("bg-google-red");
       } else {
-        setTranslation("GPU", await getTranslate(user.language, "System_GPUAcceleration_Disabled"));
+        setTranslation("GPU", SystemTranslations["GPUAcceleration_Disabled"]);
       }
 
-      setTranslation("MemorySystem", await getTranslate(user.language, "System_MemorySystem"));
-      setTranslation("TypeMemory", await getTranslate(user.language, "System_TypeMemory"));
-      setTranslation("SwapMemory", await getTranslate(user.language, "System_SwapMemory"));
+      setTranslation("MemorySystem", SystemTranslations["MemorySystem"]);
+      setTranslation("TypeMemory", SystemTranslations["TypeMemory"]);
+      setTranslation("SwapMemory", SystemTranslations["SwapMemory"]);
 
-      setTranslation("NetworkSystem", await getTranslate(user.language, "System_NetworkSystem"));
-      setTranslation("IPNetwork", await getTranslate(user.language, "System_IPNetwork"));
-      setTranslation("InterfaceNetwork", await getTranslate(user.language, "System_InterfaceNetwork"));
-      setTranslation("SpeedNetwork", await getTranslate(user.language, "System_SpeedNetwork"));
-      setTranslation("DuplexNetwork", await getTranslate(user.language, "System_DuplexNetwork"));
-      setTranslation("WirelessInfo", await getTranslate(user.language, "System_WirelessInfo"));
-      setTranslation("SSIDNetwork", await getTranslate(user.language, "System_SSIDNetwork"));
-      setTranslation("FrequencyNetwork", await getTranslate(user.language, "System_FrequencyNetwork"));
-      setTranslation("SignalNetwork", await getTranslate(user.language, "System_SignalNetwork"));
-      setTranslation("RateNetwork", await getTranslate(user.language, "System_RateNetwork"));
-      setTranslation("QualityNetwork", await getTranslate(user.language, "System_QualityNetwork"));
+      setTranslation("NetworkSystem", SystemTranslations["NetworkSystem"]);
+      setTranslation("IPNetwork", SystemTranslations["IPNetwork"]);
+      setTranslation("InterfaceNetwork", SystemTranslations["InterfaceNetwork"]);
+      setTranslation("SpeedNetwork", SystemTranslations["SpeedNetwork"]);
+      setTranslation("DuplexNetwork", SystemTranslations["DuplexNetwork"]);
+      setTranslation("WirelessInfo", SystemTranslations["WirelessInfo"]);
+      setTranslation("SSIDNetwork", SystemTranslations["SSIDNetwork"]);
+      setTranslation("FrequencyNetwork", SystemTranslations["FrequencyNetwork"]);
+      setTranslation("SignalNetwork", SystemTranslations["SignalNetwork"]);
+      setTranslation("RateNetwork", SystemTranslations["RateNetwork"]);
+      setTranslation("QualityNetwork", SystemTranslations["QualityNetwork"]);
 
-      setTranslation("StorageSystem", await getTranslate(user.language, "System_StorageSystem"));
-      setTranslation("MountStorage", await getTranslate(user.language, "System_MountStorage"));
-      setTranslation("UsedStorage", await getTranslate(user.language, "System_UsedStorage"));
-      setTranslation("PercentStorage", await getTranslate(user.language, "System_PercentStorage"));
-      setTranslation("TotalStorage", await getTranslate(user.language, "System_TotalStorage"));
+      setTranslation("StorageSystem", SystemTranslations["StorageSystem"]);
+      setTranslation("MountStorage", SystemTranslations["MountStorage"]);
+      setTranslation("UsedStorage", SystemTranslations["UsedStorage"]);
+      setTranslation("PercentStorage", SystemTranslations["PercentStorage"]);
+      setTranslation("TotalStorage", SystemTranslations["TotalStorage"]);
 
-      setTranslation("UptimeSystem", await getTranslate(user.language, "System_UptimeSystem"));
-      setTranslation("CurrentUptime", await getTranslate(user.language, "System_CurrentUptime"));
-      setTranslation("SysCurrent", await getTranslate(user.language, "System_System"));
-      setTranslation("RecordUptime", await getTranslate(user.language, "System_RecordUptime"));
-      setTranslation("SysRecord", await getTranslate(user.language, "System_System"));
+      setTranslation("UptimeSystem", SystemTranslations["UptimeSystem"]);
+      setTranslation("CurrentUptime", SystemTranslations["CurrentUptime"]);
+      setTranslation("SysCurrent", SystemTranslations["System"]);
+      setTranslation("RecordUptime", SystemTranslations["RecordUptime"]);
+      setTranslation("SysRecord", SystemTranslations["System"]);
 
       document.getElementById("SystemDisplayer").classList.remove("visually-hidden");
       spinnerHide();
@@ -640,7 +644,7 @@ document.addEventListener("Includes_Complete", async () => {
       }
 
       if (Object.entries(EXTVersions).length) {
-        setTranslation("CurrentlyRunning", await getTranslate(user.language, "System_CurrentlyRunning"));
+        setTranslation("CurrentlyRunning", SystemTranslations["CurrentlyRunning"]);
         document.getElementById("Plugins-Table").classList.remove("visually-hidden");
         Object.entries(EXTVersions).forEach(([key, value]) => {
           if (!document.getElementById(`Plugins-${key}`)?.innerHTML) {
@@ -917,18 +921,19 @@ document.addEventListener("Includes_Complete", async () => {
   let aboutPage = document.getElementById("about-html");
   if (aboutPage) {
     console.log("detected about page");
+    const AboutTranslations = await getTranslateGroup(user.language, "About_");
     version = await getVersion();
     setTranslation("version", version.version);
     setTranslation("api", version.api);
     setTranslation("rev", version.rev);
 
-    setTranslation("byHeader", await getTranslate(user.language, "About_by"));
-    setTranslation("DonateHeader", await getTranslate(user.language, "About_Donate"));
-    setTranslation("VersionHeader", await getTranslate(user.language, "About_About"));
-    setTranslation("Translators", await getTranslate(user.language, "About_Translator"));
+    setTranslation("byHeader", AboutTranslations["by"]);
+    setTranslation("DonateHeader", AboutTranslations["Donate"]);
+    setTranslation("VersionHeader", AboutTranslations["About"]);
+    setTranslation("Translators", AboutTranslations["Translator"]);
 
     for (let tr = 1; tr <= 10; tr++) {
-      let trans = await getTranslate(user.language, `About_Translator${tr}`);
+      let trans = AboutTranslations[`Translator${tr}`];
       if (tr === 1 && trans) document.getElementById("translatorsBox").classList.remove("visually-hidden");
       if (trans) setTranslation(`translator-${tr}`, trans);
       else break;
@@ -954,22 +959,25 @@ document.addEventListener("Includes_Complete", async () => {
   let toolsPage = document.getElementById("tools-html");
   if (toolsPage) {
     console.log("detected tools page");
-    setTranslation("ToolsTitle", await getTranslate(user.language, "Tools_Title"));
-    setTranslation("ToolsDescription", await getTranslate(user.language, "Tools_Description"));
-    setTranslation("MMDie", await getTranslate(user.language, "Generic_Stop"));
-    setTranslation("MMRestart", await getTranslate(user.language, "Generic_Restart"));
-    setTranslation("SysDie", await getTranslate(user.language, "Generic_Stop"));
-    setTranslation("SysRestart", await getTranslate(user.language, "Generic_Restart"));
-    setTranslation("ApplyUpdate", await getTranslate(user.language, "Generic_Update"));
-    setTranslation("BackupDelete", await getTranslate(user.language, "Generic_Delete"));
-    setTranslation("ApplyStop", await getTranslate(user.language, "Generic_Stop"));
-    setTranslation("AlertSend", await getTranslate(user.language, "Generic_Send"));
-    setTranslation("AssistantSend", await getTranslate(user.language, "Generic_Send"));
-    setTranslation("ScreenPower", await getTranslate(user.language, "Generic_TurnOn"));
-    setTranslation("SpeakerVolumeSend", await getTranslate(user.language, "Generic_Send"));
-    setTranslation("MicVolumeSend", await getTranslate(user.language, "Generic_Send"));
-    setTranslation("RadioSend", await getTranslate(user.language, "Generic_Listen"));
-    setTranslation("SpotifySend", await getTranslate(user.language, "Generic_Listen"));
+    GenericTranslations = await getTranslateGroup(user.language, "Generic_");
+    const ToolsTranslations = await getTranslateGroup(user.language, "Tools_");
+
+    setTranslation("ToolsTitle", ToolsTranslations["Title"]);
+    setTranslation("ToolsDescription", ToolsTranslations["Description"]);
+    setTranslation("MMDie", GenericTranslations["Stop"]);
+    setTranslation("MMRestart", GenericTranslations["Restart"]);
+    setTranslation("SysDie", GenericTranslations["Stop"]);
+    setTranslation("SysRestart", GenericTranslations["Restart"]);
+    setTranslation("ApplyUpdate", GenericTranslations["Update"]);
+    setTranslation("BackupDelete", GenericTranslations["Delete"]);
+    setTranslation("ApplyStop", GenericTranslations["Stop"]);
+    setTranslation("AlertSend", GenericTranslations["Send"]);
+    setTranslation("AssistantSend", GenericTranslations["Send"]);
+    setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
+    setTranslation("SpeakerVolumeSend", GenericTranslations["Send"]);
+    setTranslation("MicVolumeSend", GenericTranslations["Send"]);
+    setTranslation("RadioSend", GenericTranslations["Listen"]);
+    setTranslation("SpotifySend", GenericTranslations["Listen"]);
     spinnerHide();
   }
 
@@ -1000,18 +1008,22 @@ document.addEventListener("Includes_Complete", async () => {
   // edit Config page
   let editConfigPage = document.getElementById("editConfig-html");
   if (editConfigPage) {
-    let LoadFile = document.getElementById("externalLoad");
-    LoadFile.setAttribute("data-bs-title", await getTranslate(user.language, "Configuration_LoadTip"));
-    let SaveFile = document.getElementById("externalSave");
-    SaveFile.setAttribute("data-bs-title", await getTranslate(user.language, "Configuration_SaveTip"));
+    console.log("detected edit Config page");
+    GenericTranslations = await getTranslateGroup(user.language, "Generic_");
+    const ConfigurationTranslations = await getTranslateGroup(user.language, "Configuration_");
 
-    setTranslation("ConfigTitle", await getTranslate(user.language, "Configuration_Editor"));
-    setTranslation("wait", await getTranslate(user.language, "Wait"));
-    setTranslation("done", await getTranslate(user.language, "Done"));
-    setTranslation("error", await getTranslate(user.language, "Error"));
-    setTranslation("errorConfig", await getTranslate(user.language, "Error"));
-    setTranslation("save", await getTranslate(user.language, "Save"));
-    setTranslation("load", await getTranslate(user.language, "Load"));
+    let LoadFile = document.getElementById("externalLoad");
+    LoadFile.setAttribute("data-bs-title", ConfigurationTranslations["LoadTip"]);
+    let SaveFile = document.getElementById("externalSave");
+    SaveFile.setAttribute("data-bs-title", ConfigurationTranslations["SaveTip"]);
+
+    setTranslation("ConfigTitle", ConfigurationTranslations["Editor"]);
+    setTranslation("wait", GenericTranslations["Wait"]);
+    setTranslation("done", GenericTranslations["Done"]);
+    setTranslation("error", GenericTranslations["Error"]);
+    setTranslation("errorConfig", GenericTranslations["Error"]);
+    setTranslation("save", GenericTranslations["Save"]);
+    setTranslation("load", GenericTranslations["Load"]);
     document.getElementById("wait").style.display = "none";
     document.getElementById("done").style.display = "none";
     document.getElementById("error").style.display = "none";
@@ -1020,7 +1032,7 @@ document.addEventListener("Includes_Complete", async () => {
     document.getElementById("save").style.display = "none";
     document.getElementById("buttonGrp").classList.remove("invisible");
     let ActualConfig = document.querySelectorAll("option")[0];
-    ActualConfig.textContent = await getTranslate(user.language, "Configuration_AcualConfig");
+    ActualConfig.textContent = ConfigurationTranslations["AcualConfig"];
     var allBackup = await loadBackupNames();
     var config = {};
     var conf = null;

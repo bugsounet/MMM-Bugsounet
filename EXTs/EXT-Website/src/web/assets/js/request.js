@@ -16,6 +16,13 @@ function getTranslate(lang,query,values=null) {
 }
 
 /* eslint-disable-next-line */
+function getTranslateGroup(lang,group) {
+  return new Promise((resolve) => {
+    Request("/api/translations/group", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, group: group }, null, "Grouptranslate", (translate) => resolve(translate.translate), null);
+  });
+}
+
+/* eslint-disable-next-line */
 function getMyUser () {
   return new Promise((resolve) => {
     Request("/api/me", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "MyUser", (user) => resolve(user), null);
