@@ -10,7 +10,7 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">MagicMirror²</div>
-            <div class="card-content text-center p-2">Control</div>
+            <div id="Control" class="card-content text-center">Control</div>
             <div class="card-body list-group-item d-flex">
               <a id="MMDie" class="btn btn-danger btn-sm btn-round mx-auto" href="/Die">Die</a>
               <a id="MMRestart" class="btn btn-warning btn-sm btn-round mx-auto" href="/Restart">Restart</a>
@@ -20,8 +20,8 @@
 
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
-            <div class="card-header text-center fs-4">System</div>
-            <div class="card-content text-center">Control</div>
+            <div id="SystemHeader" class="card-header text-center fs-4">System</div>
+            <div id="Control" class="card-content text-center">Control</div>
             <div class="card-body list-group-item d-flex">
               <a id="SysDie" class="btn btn-danger btn-sm btn-round mx-auto" href="/Die">Die</a>
               <a id="SysRestart" class="btn btn-warning btn-sm btn-round mx-auto" href="/Restart">Restart</a>
@@ -31,11 +31,14 @@
 
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
-            <div class="card-header text-center fs-4">Update</div>
-            <div class="card-content text-center">Control</div>
+            <div id="UpdateHeader" class="card-header text-center fs-4">Update</div>
+            <div id="Control" class="card-content text-center">Control</div>
             <div class="card-body list-group-item">
-              <div class="mb-2">2 modules to update</div>
-              <a id="ApplyUpdate" class="btn btn-info btn-sm btn-round mx-5">Update</a>
+              <div id="UpdateFiled" class="mb-2">
+                <div id="UpdateText">MMM-Bugsounet</div>
+                <div id="UpdateText">MMM-XXX</div>
+              </div>
+              <a id="UpdateApply" class="btn btn-info btn-sm btn-round mx-5">Update</a>
             </div>
           </div>
         </div>
@@ -43,12 +46,13 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">MagicMirror²</div>
-            <div class="card-content text-center">Backup</div>
+            <div id="Backup" class="card-content text-center">Backup</div>
             <div class="card-body list-group-item">
-              <div class="mb-2">
-                <span id="backupFound">2</span>
+              <div>
+                <span id="backupFoundNumber">2</span>
                 <span id="backupFoundText">Backup found</span>
               </div>
+              <div id="backupDeleteAll" class="mb-2">delete it ?</div>
               <a id="BackupDelete" class="btn btn-danger btn-sm btn-round mx-5">Delete</a>
             </div>
           </div>
@@ -57,10 +61,10 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">Plugins</div>
-            <div class="card-content text-center">Control</div>
+            <div id="Control" class="card-content text-center">Control</div>
             <div class="card-body list-group-item">
-              <div class="mb-2">Stop all working plugins</div>
-              <a id="ApplyStop" class="btn btn-danger btn-sm btn-round mx-5">Stop</a>
+              <div id="StopText" class="mb-2">Stop all working plugins</div>
+              <a id="StopApply" class="btn btn-danger btn-sm btn-round mx-5">Stop</a>
             </div>
           </div>
         </div>
@@ -68,9 +72,9 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">Bugsounet-Alert</div>
-            <div class="card-content text-center">Request</div>
+            <div id="Request" class="card-content text-center">Request</div>
             <div class="card-body list-group-item">
-              <div class="mb-2">Affiche un message sur votre mirroir</div>
+              <div id="AlertText" class="mb-2">Affiche un message sur votre mirroir</div>
               <input class="w-100 mb-2" type="text" id="Alert-Query" placeholder="">
               <a id="AlertSend" class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
             </div>
@@ -80,7 +84,7 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">EXT-Assistant</div>
-            <div class="card-content text-center">Request</div>
+            <div id="Request" class="card-content text-center">Request</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Active l'assistant avec votre demande</div>
               <input class="w-100 mb-2" type="text" id="Assistant-Query" placeholder="">
@@ -92,7 +96,7 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">EXT-Screen</div>
-            <div class="card-content text-center">Control</div>
+            <div id="Control" class="card-content text-center">Control</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Allumer ou éteindre votre écran</div>
               <a id="ScreenPower" class="btn btn-secondary btn-sm btn-round mx-5">Allumer</a>
@@ -103,7 +107,7 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">EXT-Volume</div>
-            <div class="card-content text-center">Speaker Control</div>
+            <div id="Speaker" class="card-content text-center">Speaker Control</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Defini le volume sonore de votre mirroir</div>
               <div class="mb-2">
@@ -140,7 +144,7 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">EXT-Volume</div>
-            <div class="card-content text-center">Mic Control</div>
+            <div id="Mic" class="card-content text-center">Mic Control</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Defini le volume de votre microphone</div>
               <div class="mb-2">
@@ -177,7 +181,7 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">EXT-FreeboxTV</div>
-            <div class="card-content text-center">Request</div>
+            <div id="Request" class="card-content text-center">Request</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Regarder la TV</div>
               <div class="mb-2">
@@ -191,7 +195,7 @@
         <div class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">EXT-RadioPlayer</div>
-            <div class="card-content text-center">Request</div>
+            <div id="Request" class="card-content text-center">Request</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Ecouter la Radio</div>
               <div class="mb-2">
@@ -209,7 +213,7 @@
               <span>Spotify</span>
               <sup>®</sup>
             </div>
-            <div class="card-content text-center">Control</div>
+            <div id="Control" class="card-content text-center">Control</div>
             <div class="card-body list-group-item">
               <div class="mb-2">Contrôleur du lecteur Spotify</div>
               <div class="btn-group btn-group-lg d-flex mb-2" role="group">

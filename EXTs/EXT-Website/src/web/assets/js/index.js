@@ -968,9 +968,9 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("MMRestart", GenericTranslations["Restart"]);
     setTranslation("SysDie", GenericTranslations["Stop"]);
     setTranslation("SysRestart", GenericTranslations["Restart"]);
-    setTranslation("ApplyUpdate", GenericTranslations["Update"]);
+    setTranslation("UpdateApply", GenericTranslations["Update"]);
     setTranslation("BackupDelete", GenericTranslations["Delete"]);
-    setTranslation("ApplyStop", GenericTranslations["Stop"]);
+    setTranslation("StopApply", GenericTranslations["Stop"]);
     setTranslation("AlertSend", GenericTranslations["Send"]);
     setTranslation("AssistantSend", GenericTranslations["Send"]);
     setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
@@ -978,6 +978,26 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("MicVolumeSend", GenericTranslations["Send"]);
     setTranslation("RadioSend", GenericTranslations["Listen"]);
     setTranslation("SpotifySend", GenericTranslations["Listen"]);
+
+    let ControlIDs = document.querySelectorAll("[id='Control']");
+    let RequestIDs = document.querySelectorAll("[id='Request']");
+    ControlIDs.forEach((id) => {
+      id.textContent = GenericTranslations["Control"];
+    });
+    RequestIDs.forEach((id) => {
+      id.textContent = GenericTranslations["Request"];
+    });
+
+    setTranslation("Backup", GenericTranslations["Backup"]);
+    setTranslation("Mic", GenericTranslations["Mic"]);
+    setTranslation("Speaker", GenericTranslations["Speaker"]);
+    setTranslation("SystemHeader", ToolsTranslations["System_Header"]);
+    setTranslation("UpdateHeader", ToolsTranslations["Update_Header"]);
+
+    setTranslation("backupFoundText", ToolsTranslations["Backup_Found"]);
+    setTranslation("backupDeleteAll", ToolsTranslations["Backup_DeleteAll"]);
+    setTranslation("StopText", ToolsTranslations["Stop_Text"]);
+    setTranslation("AlertText", ToolsTranslations["Alert_Text"]);
     spinnerHide();
   }
 
@@ -986,7 +1006,6 @@ document.addEventListener("Includes_Complete", async () => {
   if (viewConfigPage) {
     console.log("detected view Config page");
     setTranslation("ConfigTitle", await getTranslate(user.language, "Configuration_View"));
-    //setTranslation("EditLoadButton", translation.Configuration_EditLoad);
     var modules = await loadMMConfig();
     const container = document.getElementById("jsoneditor");
 

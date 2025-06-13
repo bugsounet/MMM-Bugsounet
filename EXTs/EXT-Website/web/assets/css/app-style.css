@@ -23,7 +23,7 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   color: rgba(255,255,255,.85);
-  letter-spacing: 0.5px;
+  /*letter-spacing: 0.5px;*/
 }
 [tabindex="-1"]:focus {
   outline: 0!important
@@ -516,7 +516,8 @@ body.bg-theme15 {
   height: 60px;
   line-height: 60px;
   text-align: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+  /*border-bottom: 1px solid rgba(255, 255, 255, 0.2)*/
+  letter-spacing: 0.5px;
 }
 
 .logo-text{
@@ -2191,4 +2192,28 @@ iframe {
 
 .alertify-notifier {
   z-index: 99999;
+}
+
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+letter-spacing: 0em;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.tracking-widest {
+  letter-spacing: 0.1em;
 }
