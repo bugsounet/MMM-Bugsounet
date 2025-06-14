@@ -57,6 +57,54 @@ function getAPIDocs () {
 }
 
 /* eslint-disable-next-line */
+function doDie () {
+  return new Promise((resolve) => {
+    Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Die", () => resolve(), null);
+  });
+}
+
+/* eslint-disable-next-line */
+function doRestart () {
+  return new Promise((resolve) => {
+    Request("/api/system/restart", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Restart", () => resolve(), null);
+  });
+}
+
+/* eslint-disable-next-line */
+function doReboot () {
+  return new Promise((resolve) => {
+    Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Reboot", () => resolve(), null);
+  });
+}
+
+/* eslint-disable-next-line */
+function doShutdown () {
+  return new Promise((resolve) => {
+    Request("/api/system/shutdown", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Shutdown", () => resolve(), null);
+  });
+}
+
+/* eslint-disable-next-line */
+function doUpdates (success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
+/* eslint-disable-next-line */
+function doStop(success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/stop", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "STOP", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
+/* eslint-disable-next-line */
 function getCurrentSystem () {
   return new Promise((resolve) => {
     Request("/api/system/currentSysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
@@ -179,6 +227,19 @@ function getEXTVersions () {
 function loadBackupNames () {
   return new Promise((resolve) => {
     Request("/api/backups", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadBackupNames", (backups) => resolve(backups), null);
+  });
+}
+
+/* eslint-disable-next-line */
+function deleteBackups (success, error) {
+  return new Promise((resolve) => {
+    Request("/api/backups", "DELETE", { Authorization: `Bearer ${getCurrentToken()}` }, null, "backup-Delete", () => {
+      if (success) success();
+      resolve();
+    }, (err) => {
+      if (error) error(err);
+      resolve();
+    });
   });
 }
 
@@ -385,5 +446,21 @@ function hideAlert () {
     document.getElementById("alert").classList.add("invisible");
     document.getElementById("alert").classList.add("alert-success");
     document.getElementById("alert").classList.remove("alert-danger");
+  }
+}
+
+/* eslint-disable-next-line */
+function HideBlock (id) {
+  const Block = document.getElementById(id);
+  if (Block) {
+    Block.classList.add("d-none");
+  }
+}
+
+/* eslint-disable-next-line */
+function ShowBlock (id) {
+  const Block = document.getElementById(id);
+  if (Block) {
+    Block.classList.remove("d-none");
   }
 }

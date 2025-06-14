@@ -1,7 +1,8 @@
 /* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
   checkSystem io Terminal FitAddon getVersion getCurrentToken getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
-  bootstrap getTranslateGroup
+  bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
+  deleteBackups hasPluginConnected doStop
  */
 
 /* eslint-disable max-lines-per-function */
@@ -12,6 +13,8 @@ document.addEventListener("Includes_Complete", async () => {
   var version = {};
   var user = {};
   var GenericTranslations = {};
+  var EXTStatus = {};
+  var allBackup = [];
 
   const spinner = document.getElementById("spinner");
   function spinnerHide () {
@@ -959,18 +962,14 @@ document.addEventListener("Includes_Complete", async () => {
   let toolsPage = document.getElementById("tools-html");
   if (toolsPage) {
     console.log("detected tools page");
+    EXTStatus = await checkEXTStatus();
+
     GenericTranslations = await getTranslateGroup(user.language, "Generic_");
     const ToolsTranslations = await getTranslateGroup(user.language, "Tools_");
 
     setTranslation("ToolsTitle", ToolsTranslations["Title"]);
     setTranslation("ToolsDescription", ToolsTranslations["Description"]);
-    setTranslation("MMDie", GenericTranslations["Stop"]);
-    setTranslation("MMRestart", GenericTranslations["Restart"]);
-    setTranslation("SysDie", GenericTranslations["Stop"]);
-    setTranslation("SysRestart", GenericTranslations["Restart"]);
-    setTranslation("UpdateApply", GenericTranslations["Update"]);
-    setTranslation("BackupDelete", GenericTranslations["Delete"]);
-    setTranslation("StopApply", GenericTranslations["Stop"]);
+
     setTranslation("AlertSend", GenericTranslations["Send"]);
     setTranslation("AssistantSend", GenericTranslations["Send"]);
     setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
@@ -988,15 +987,85 @@ document.addEventListener("Includes_Complete", async () => {
       id.textContent = GenericTranslations["Request"];
     });
 
-    setTranslation("Backup", GenericTranslations["Backup"]);
     setTranslation("Mic", GenericTranslations["Mic"]);
     setTranslation("Speaker", GenericTranslations["Speaker"]);
     setTranslation("SystemHeader", ToolsTranslations["System_Header"]);
-    setTranslation("UpdateHeader", ToolsTranslations["Update_Header"]);
 
-    setTranslation("backupFoundText", ToolsTranslations["Backup_Found"]);
-    setTranslation("backupDeleteAll", ToolsTranslations["Backup_DeleteAll"]);
+    if (EXTStatus["EXT-Updates"].hello) {
+      setTranslation("UpdateHeader", ToolsTranslations["Update_Header"]);
+      setTranslation("UpdateApply", GenericTranslations["Update"]);
+      document.getElementById("UpdateApply").onclick = function () {
+        document.getElementById("UpdateApply").classList.add("disabled");
+        doUpdates(() => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+    } else {
+      HideBlock("UpdateBlock");
+    }
+
+    // restart / stop MM²
+    setTranslation("MMDie", GenericTranslations["Stop"]);
+    setTranslation("MMRestart", GenericTranslations["Restart"]);
+
+    document.getElementById("MMDie").onclick = function () {
+      alertify.success(ToolsTranslations["MM_Die"]);
+      doDie();
+    };
+
+    document.getElementById("MMRestart").onclick = function () {
+      alertify.success(ToolsTranslations["MM_Restart"]);
+      doRestart();
+    };
+
+    // reboot shutdown system
+    setTranslation("SysDie", GenericTranslations["Stop"]);
+    setTranslation("SysRestart", GenericTranslations["Restart"]);
+
+    document.getElementById("SysDie").onclick = function () {
+      alertify.success(ToolsTranslations["System_Die"]);
+      doShutdown();
+    };
+
+    document.getElementById("SysRestart").onclick = function () {
+      alertify.success(ToolsTranslations["System_Restart"]);
+      doReboot();
+    };
+
+    // backups
+    allBackup = await loadBackupNames();
+    if (allBackup.length > 5) {
+      setTranslation("Backup", GenericTranslations["Backup"]);
+      setTranslation("BackupDelete", GenericTranslations["Delete"]);
+      setTranslation("backupFoundNumber", allBackup.length);
+      setTranslation("backupFoundText", ToolsTranslations["Backup_Found"]);
+      setTranslation("backupDeleteAll", ToolsTranslations["Backup_DeleteAll"]);
+
+      document.getElementById("BackupDelete").onclick = function () {
+        deleteBackups(() => {
+          alertify.success(ToolsTranslations["Backup_Deleted"]);
+          HideBlock("BackupBlock");
+        }, (err) => {
+          let error = err.error;
+          if (!err.status) alertify.error("Connexion Lost!");
+          else alertify.error(`[backup-Delete] Server return Error ${err.status} (${error})`);
+        });
+      };
+    } else {
+      HideBlock("BackupBlock");
+    }
+
     setTranslation("StopText", ToolsTranslations["Stop_Text"]);
+    setTranslation("StopApply", GenericTranslations["Stop"]);
+    if (hasPluginConnected(EXTStatus, "connected", true)) ShowBlock("StopBlock");
+    else HideBlock("StopBlock");
+    document.getElementById("StopApply").onclick = function () {
+      doStop(() => {
+        alertify.success(GenericTranslations["RequestDone"]);
+        HideBlock("StopBlock");
+      });
+    };
+
     setTranslation("AlertText", ToolsTranslations["Alert_Text"]);
     spinnerHide();
   }
@@ -1052,7 +1121,7 @@ document.addEventListener("Includes_Complete", async () => {
     document.getElementById("buttonGrp").classList.remove("invisible");
     let ActualConfig = document.querySelectorAll("option")[0];
     ActualConfig.textContent = ConfigurationTranslations["AcualConfig"];
-    var allBackup = await loadBackupNames();
+    allBackup = await loadBackupNames();
     var config = {};
     var conf = null;
     var options = {

@@ -176,8 +176,8 @@
 
   "Tools_Title": "Boite à outils",
   "Tools_Description": "MMM-Bugsounet peut vous offrir plus de contrôle ! (Les fonctions disponibles sont uniquement affichées)",
-  "Tools_Restart": "Veuillez patienter... Redémarrage de MagicMirror²",
-  "Tools_Die": "Arrêt de MagicMirror², À bientôt.",
+  "Tools_MM_Restart": "Veuillez patienter... Redémarrage de MagicMirror²",
+  "Tools_MM_Die": "Arrêt de MagicMirror², À bientôt.",
   "Tools_System_Header": "Système",
   "Tools_System_Restart": "Veuillez patienter... Redémarrage de votre système.",
   "Tools_System_Die": "Arrêt de votre système.",
