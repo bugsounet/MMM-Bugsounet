@@ -2203,7 +2203,7 @@ iframe {
 }
 
 .tracking-normal {
-letter-spacing: 0em;
+  letter-spacing: 0em;
 }
 
 .tracking-wide {
@@ -2216,4 +2216,12 @@ letter-spacing: 0em;
 
 .tracking-widest {
   letter-spacing: 0.1em;
+}
+
+#sidebar-wrapper .collapse.show.active a.active {
+  color: #ffffff;
+}
+
+#sidebar-wrapper .collapse.show.active > div:has(a.active) {
+  background: rgba(255, 255, 255, 0.15);
 }
