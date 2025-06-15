@@ -1154,7 +1154,7 @@ document.addEventListener("Includes_Complete", async () => {
 
     // Bugsounet-Alert query
     setTranslation("AlertSend", GenericTranslations["Send"]);
-    document.getElementById("AlertQuery").setAttribute("placeholder", ToolsTranslations["Alert_Query"]); //<---
+    document.getElementById("AlertQuery").setAttribute("placeholder", ToolsTranslations["Alert_Query"]);
     setTranslation("AlertText", ToolsTranslations["Alert_Text"]);
     document.getElementById("AlertQuery").addEventListener("keyup", function () {
       if (this.value.length > 5) {
@@ -1168,6 +1168,7 @@ document.addEventListener("Includes_Complete", async () => {
       document.getElementById("AlertSend").classList.add("disabled");
       doAlert(document.getElementById("AlertQuery").value, () => {
         alertify.success(GenericTranslations["RequestDone"]);
+        document.getElementById("AlertQuery").value = "";
       });
     };
 

@@ -79,85 +79,52 @@ document.addEventListener("Includes_Complete", () => {
   }
 
   // scrollTo functionality
-  const scrollTo = function (scrollTo, scrollDuration) {
-    var To = scrollTo;
-    var Duration = scrollDuration;
-    //
-    // Set a default for where we're scrolling to
-    //
-
-    if (typeof To === "string") {
-
-      // Assuming this is a selector we can use to find an element
-      var scrollToObj = document.querySelector(To);
-
-      if (scrollToObj && typeof scrollToObj.getBoundingClientRect === "function") {
-        To = window.pageYOffset + scrollToObj.getBoundingClientRect().top;
+  const scrollTo = function (scrollTo) {
+    let targetPosition = 0;
+    if (typeof scrollTo === "string") {
+      const element = document.querySelector(scrollTo);
+      if (element) {
+        targetPosition = window.pageYOffset + element.getBoundingClientRect().top;
       } else {
-        console.error(`error: No element found with the selector ${To}`);
-      }
-    } else if (typeof To !== "number") {
-
-      // If it's nothing above and not an integer, we assume top of the window
-      To = 0;
-    }
-
-    // Set this a bit higher
-
-    var anchorHeightAdjust = 30;
-    if (To > anchorHeightAdjust) {
-      To = To - anchorHeightAdjust;
-    }
-
-    if (typeof Duration !== "number" || Duration < 0) {
-      Duration = 1000;
-    }
-
-    // Declarations
-    var cosParameter = (window.pageYOffset - To) / 2,
-      scrollCount = 0,
-      oldTimestamp = window.performance.now();
-
-    function step (newTimestamp) {
-      var tsDiff = newTimestamp - oldTimestamp;
-
-      // Performance.now() polyfill loads late so passed-in timestamp is a larger offset
-      // on the first go-through than we want so I'm adjusting the difference down here.
-      // Regardless, we would rather have a slightly slower animation than a big jump so a good
-      // safeguard, even if we're not using the polyfill.
-
-      if (tsDiff > 100) {
-        tsDiff = 30;
-      }
-
-      scrollCount += Math.PI / (Duration / tsDiff);
-
-      // As soon as we cross over Pi, we're about where we need to be
-
-      if (scrollCount >= Math.PI) {
+        console.error(`error: No element found with the selector ${scrollTo}`);
         return;
       }
-
-      var moveStep = Math.round(To + cosParameter + cosParameter * Math.cos(scrollCount));
-      window.scrollTo(0, moveStep);
-      oldTimestamp = newTimestamp;
-      window.requestAnimationFrame(step);
+    } else if (typeof scrollTo === "number") {
+      targetPosition = scrollTo;
+    } else {
+      console.error("error: Invalid scrollTo value");
+      return;
     }
 
-    window.requestAnimationFrame(step);
+    window.scrollTo({
+      top: targetPosition,
+      behavior: "smooth"
+    });
   };
 
   // scroll icon
   const backTop = document.querySelector(".back-to-top");
   if (backTop) {
-    window.addEventListener("scroll", () => {
-      if (document.scrollingElement.scrollTop > 300) {
-        backTop.style.opacity = 1;
+    // Function to check and set backTop visibility
+    const checkBackTopVisibility = () => {
+      if (document.scrollingElement.scrollTop > 150) {
+        backTop.classList.add("show");
       } else {
-        backTop.style.opacity = 0;
+        backTop.classList.remove("show");
       }
-    });
-    backTop.onclick = () => scrollTo(0, 600);
+    };
+
+    // Initial check on load
+    checkBackTopVisibility();
+
+    // Check visibility on scroll
+    window.addEventListener("scroll", checkBackTopVisibility);
+
+    // Check visibility on resize
+    window.addEventListener("resize", checkBackTopVisibility);
+
+    // Smooth scroll to top on click
+    backTop.onclick = () => scrollTo(0);
   }
 
   /**
@@ -222,19 +189,4 @@ document.addEventListener("Includes_Complete", () => {
       }
     });
   });
-
-  /* not used actually */
-  /*
-  $(function() {
-    "use strict";
-    $.sidebarMenu($('.sidebar-menu'));
-    $(function () {
-      $('[data-toggle="popover"]').popover()
-    })
-
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
-  });
-  */
 });

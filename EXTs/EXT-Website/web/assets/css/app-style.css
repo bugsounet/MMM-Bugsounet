@@ -1880,7 +1880,6 @@ table.grid td {
 
 .back-to-top {
   opacity: 0;
-  transition: opacity 1s;
   width: 40px;
   height: 40px;
   text-align: center;
@@ -1889,17 +1888,26 @@ table.grid td {
   border-radius: 10%;
   bottom: 20px;
   right: 12px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(100px);
+  transition: all 0.5s ease;
   z-index: 10000;
 }
+
 .back-to-top .fa-angle-double-up {
-  margin-top: 20%;
+  margin-top: 25%;
   font-size: 20px;
 }
+
 .back-to-top:hover {
   color: white;
-  background-color: rgba(255, 255, 255, 0.54);
+  background-color: rgba(255, 255, 255, 0.4);
   transition: all .5s;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Extra css */
