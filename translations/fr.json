@@ -191,8 +191,8 @@
   "Tools_Screen_Text": "Allumer ou éteindre votre écran",
   "Tools_Volume_Text_Record": "Defini le volume d'enregistrement du microphone",
   "Tools_Volume_Text": "Defini le volume sonore de votre mirroir",
-  "Tools_Volume_Text2": "Niveau actuel:",
-  "Tools_Volume_Text3": "Définir sur",
+  "Tools_Volume_Actual": "Niveau actuel:",
+  "Tools_Volume_Define": "Définir sur",
   "Tools_Spotify_Text": "Contrôleur du lecteur Spotify",
   "Tools_Spotify_Query": "Entrez votre recherche",
   "Tools_Spotify_Text2": "Type de recherche:",
@@ -201,5 +201,5 @@
   "Tools_Spotify_Album": "Album",
   "Tools_Spotify_Playlist": "Play Liste",
   "Tools_Radio_Text": "Ecouter la Radio",
-  "Tools_Radio_Text2": "Aucune radio trouvé!"
+  "Tools_Radio_NoFound": "Aucune radio trouvé!"
 }

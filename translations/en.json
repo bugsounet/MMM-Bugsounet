@@ -190,8 +190,8 @@
   "Tools_Screen_Text": "Turn on/off your Screen",
   "Tools_Volume_Text_Record": "Define the microphone level of your mirror",
   "Tools_Volume_Text": "Define the volume of your mirror",
-  "Tools_Volume_Text2": "Actual level:",
-  "Tools_Volume_Text3": "Set to",
+  "Tools_Volume_Actual": "Actual level:",
+  "Tools_Volume_Define": "Set to",
   "Tools_Spotify_Text": "Spotify player controller",
   "Tools_Spotify_Text2": "Type of research:",
   "Tools_Spotify_Query": "Enter your research",
@@ -201,5 +201,5 @@
   "Tools_Spotify_Playlist": "Playlist",
   "Tools_Stop_Text": "Stop all running plugins",
   "Tools_Radio_Text": "Listen Radio",
-  "Tools_Radio_Text2": "No radio found!"
+  "Tools_Radio_NoFound": "No radio found!"
 }
