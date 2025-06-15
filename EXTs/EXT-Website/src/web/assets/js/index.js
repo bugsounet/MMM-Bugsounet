@@ -2,7 +2,7 @@
   checkSystem io Terminal FitAddon getVersion getCurrentToken getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
-  deleteBackups hasPluginConnected doStop
+  deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
  */
 
 /* eslint-disable max-lines-per-function */
@@ -963,6 +963,7 @@ document.addEventListener("Includes_Complete", async () => {
   if (toolsPage) {
     console.log("detected tools page");
     EXTStatus = await checkEXTStatus();
+    console.warn("EXTs Status", EXTStatus);
 
     GenericTranslations = await getTranslateGroup(user.language, "Generic_");
     const ToolsTranslations = await getTranslateGroup(user.language, "Tools_");
@@ -970,12 +971,9 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("ToolsTitle", ToolsTranslations["Title"]);
     setTranslation("ToolsDescription", ToolsTranslations["Description"]);
 
-    setTranslation("AlertSend", GenericTranslations["Send"]);
     setTranslation("AssistantSend", GenericTranslations["Send"]);
     setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
-    setTranslation("SpeakerVolumeSend", GenericTranslations["Send"]);
-    setTranslation("MicVolumeSend", GenericTranslations["Send"]);
-    setTranslation("RadioSend", GenericTranslations["Listen"]);
+
     setTranslation("SpotifySend", GenericTranslations["Listen"]);
 
     let ControlIDs = document.querySelectorAll("[id='Control']");
@@ -1067,6 +1065,112 @@ document.addEventListener("Includes_Complete", async () => {
     };
 
     setTranslation("AlertText", ToolsTranslations["Alert_Text"]);
+
+    // RadioPlayer query
+    if (EXTStatus["EXT-RadioPlayer"].hello) {
+      setTranslation("RadioSend", GenericTranslations["Listen"]);
+      setTranslation("RadioText", ToolsTranslations["Radio_Text"]);
+
+      var radio = await loadRadio();
+      if (radio.length) {
+        radio.forEach((station) => {
+          let option = document.createElement("option");
+          option.classList.add("bg-light");
+          option.value = station;
+          option.text = station;
+          document.getElementById("RadioQuery").appendChild(option);
+        });
+      }
+      else {
+        HideBlock("RadioQuery");
+        setTranslation("RadioText", ToolsTranslations["Radio_NoFound"]);
+        document.getElementById("RadioSend").classList.add("disabled");
+      }
+      document.getElementById("RadioSend").onclick = function () {
+        putRadio(document.getElementById("RadioQuery").value, () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+    } else {
+      HideBlock("RadioBlock");
+    }
+
+    // Volume control
+    if (EXTStatus["EXT-Volume"].hello) {
+      setTranslation("SpeakerVolumeSend", GenericTranslations["Send"]);
+      setTranslation("SpeakerText", ToolsTranslations["Volume_Text"]);
+      setTranslation("SpeakerDefine", ToolsTranslations["Volume_Define"]);
+      setTranslation("SpeakerActual", ToolsTranslations["Volume_Actual"]);
+      setTranslation("SpeakerValue", `${EXTStatus["EXT-Volume"].speaker}%`);
+
+      document.getElementById("SpeakerVolumeSend").onclick = function () {
+        putSpeaker(Number(document.getElementById("SpeakerQuery").value), () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+
+      // mic control
+      setTranslation("MicVolumeSend", GenericTranslations["Send"]);
+      setTranslation("MicText", ToolsTranslations["Volume_Text_Record"]);
+      setTranslation("MicDefine", ToolsTranslations["Volume_Define"]);
+      setTranslation("MicActual", ToolsTranslations["Volume_Actual"]);
+      setTranslation("MicValue", `${EXTStatus["EXT-Volume"].recorder}%`);
+
+      document.getElementById("MicVolumeSend").onclick = function () {
+        putMic(Number(document.getElementById("MicQuery").value), () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+    } else {
+      HideBlock("SpeakerBlock");
+      HideBlock("MicBlock");
+    }
+
+    if (EXTStatus["EXT-FreeboxTV"].hello) {
+      var freeboxTV = await loadFreeboxTV();
+      console.log("FBTV:", freeboxTV);
+      if (freeboxTV.length) {
+        freeboxTV.forEach((TV) => {
+          let option = document.createElement("option");
+          option.classList.add("bg-light");
+          option.value = TV;
+          option.text = TV;
+          document.getElementById("FreeboxTVQuery").appendChild(option);
+        });
+      } else {
+        document.getElementById("FreeboxTVQuery").style.display = "none";
+        document.getElementById("FreeboxTVText").textContent = "Aucune source disponible";
+        document.getElementById("FreeboxTVSend").classList.add("disabled");
+      }
+
+      document.getElementById("FreeboxTVSend").onclick = function () {
+        putTV(document.getElementById("FreeboxTVQuery").value, () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+    } else {
+      HideBlock("FreeboxTVBlock");
+    }
+
+    // Bugsounet-Alert query
+    setTranslation("AlertSend", GenericTranslations["Send"]);
+    document.getElementById("AlertQuery").setAttribute("placeholder", ToolsTranslations["Alert_Query"]); //<---
+    setTranslation("AlertText", ToolsTranslations["Alert_Text"]);
+    document.getElementById("AlertQuery").addEventListener("keyup", function () {
+      if (this.value.length > 5) {
+        document.getElementById("AlertSend").classList.remove("disabled");
+      } else {
+        document.getElementById("AlertSend").classList.add("disabled");
+      }
+    });
+
+    document.getElementById("AlertSend").onclick = function () {
+      document.getElementById("AlertSend").classList.add("disabled");
+      doAlert(document.getElementById("AlertQuery").value, () => {
+        alertify.success(GenericTranslations["RequestDone"]);
+      });
+    };
+
     spinnerHide();
   }
 

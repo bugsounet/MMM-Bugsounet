@@ -74,7 +74,7 @@
             <div id="Request" class="card-content text-center">Request</div>
             <div class="card-body list-group-item">
               <div id="AlertText" class="mb-2">Affiche un message sur votre mirroir</div>
-              <input class="w-100 mb-2" type="text" id="Alert-Query" placeholder="">
+              <input id="AlertQuery" class="w-100 mb-2" type="text" placeholder="">
               <a id="AlertSend" class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
             </div>
           </div>
@@ -149,10 +149,14 @@
             <div class="card-header text-center fs-4">EXT-Volume</div>
             <div id="Mic" class="card-content text-center">Mic Control</div>
             <div class="card-body list-group-item">
-              <div class="mb-2">Defini le volume de votre microphone</div>
+              <div id="MicText" class="mb-2">Defini le volume de votre microphone</div>
               <div class="mb-2">
-                <span id="Volume-Text3">Definir sur:</span>
-                <select id="Volume-Query">
+                <span id="MicActual">Actual:</span>
+                <span id="MicValue">0%</span>
+              </div>
+              <div class="mb-2">
+                <span id="MicDefine">Definir sur:</span>
+                <select id="MicQuery">
                   <option class="bg-light" value="0">0%</option>
                   <option class="bg-light" value="5">5%</option>
                   <option class="bg-light" value="10">10%</option>
@@ -181,16 +185,16 @@
           </div>
         </div>
 
-        <div class="col-sm-4 col-sm-6">
+        <div id="FreeboxTVBlock" class="col-sm-4 col-sm-6">
           <div class="card text-white">
             <div class="card-header text-center fs-4">EXT-FreeboxTV</div>
             <div id="Request" class="card-content text-center">Request</div>
             <div class="card-body list-group-item">
-              <div class="mb-2">Regarder la TV</div>
+              <div id="FreeboxTVText" class="mb-2">Regarder la TV</div>
               <div class="mb-2">
-                <select id="FreeboxTV-Query"></select>
+                <select id="FreeboxTVQuery"></select>
               </div>
-              <a class="btn btn-secondary btn-sm btn-round mx-5">Zapper</a>
+              <a id="FreeboxTVSend" class="btn btn-secondary btn-sm btn-round mx-5">Zapper</a>
             </div>
           </div>
         </div>

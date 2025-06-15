@@ -2,48 +2,44 @@
 
 /* global alertify, translation, PleaseRotate */
 
+/* eslint-disable no-unused-vars */
+
 var Alert = 0;
 
 function getCurrentToken () {
   return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
 }
 
-/* eslint-disable-next-line */
-function getTranslate(lang,query,values=null) {
+function getTranslate (lang, query, values = null) {
   return new Promise((resolve) => {
     Request("/api/translations/translate", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, translate: query, values: JSON.stringify(values) }, null, "translate", (translate) => resolve(translate.translate), null);
   });
 }
 
-/* eslint-disable-next-line */
-function getTranslateGroup(lang,group) {
+function getTranslateGroup (lang, group) {
   return new Promise((resolve) => {
     Request("/api/translations/group", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, group: group }, null, "Grouptranslate", (translate) => resolve(translate.translate), null);
   });
 }
 
-/* eslint-disable-next-line */
 function getMyUser () {
   return new Promise((resolve) => {
     Request("/api/me", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "MyUser", (user) => resolve(user), null);
   });
 }
 
-/* eslint-disable-next-line */
 function putMyUser (body) {
   return new Promise((resolve) => {
     Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ me: btoa(JSON.stringify(body)) }), "MyUser", (result) => resolve(result), null);
   });
 }
 
-/* eslint-disable-next-line */
 function getHomeText (lang) {
   return new Promise((resolve) => {
     Request("/api/translations/homeText", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang }, null, "homeText", (text) => resolve(text.homeText), null);
   });
 }
 
-/* eslint-disable-next-line */
 function getVersion () {
   return new Promise((resolve) => {
     Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "version", (version) => resolve(version), null);
@@ -56,35 +52,30 @@ function getAPIDocs () {
   });
 }
 
-/* eslint-disable-next-line */
 function doDie () {
   return new Promise((resolve) => {
     Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Die", () => resolve(), null);
   });
 }
 
-/* eslint-disable-next-line */
 function doRestart () {
   return new Promise((resolve) => {
     Request("/api/system/restart", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Restart", () => resolve(), null);
   });
 }
 
-/* eslint-disable-next-line */
 function doReboot () {
   return new Promise((resolve) => {
     Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Reboot", () => resolve(), null);
   });
 }
 
-/* eslint-disable-next-line */
 function doShutdown () {
   return new Promise((resolve) => {
     Request("/api/system/shutdown", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Shutdown", () => resolve(), null);
   });
 }
 
-/* eslint-disable-next-line */
 function doUpdates (success) {
   return new Promise((resolve) => {
     Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
@@ -94,8 +85,7 @@ function doUpdates (success) {
   });
 }
 
-/* eslint-disable-next-line */
-function doStop(success) {
+function doStop (success) {
   return new Promise((resolve) => {
     Request("/api/EXT/stop", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "STOP", () => {
       if (success) success();
@@ -104,7 +94,51 @@ function doStop(success) {
   });
 }
 
-/* eslint-disable-next-line */
+function putRadio (radio, success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/RadioPlayer", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ radio: radio }), "RadioPlayer", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
+function putSpeaker (volume, success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: volume }), "Volume", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
+function putMic (volume, success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: volume }), "Volume", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
+function putTV (channel, success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ TV: channel }), "FreeboxTV", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
+function doAlert (alert, success) {
+  return new Promise((resolve) => {
+    Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ alert: alert }), "Alert", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
 function getCurrentSystem () {
   return new Promise((resolve) => {
     Request("/api/system/currentSysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
@@ -122,7 +156,6 @@ function getCurrentSystem () {
   });
 }
 
-/* eslint-disable-next-line */
 function checkSystem () {
   return new Promise((resolve) => {
     Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
@@ -140,7 +173,6 @@ function checkSystem () {
   });
 }
 
-/* eslint-disable-next-line */
 function checkEXTStatus () {
   return new Promise((resolve) => {
     Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "status", (Status) => resolve(Status), (err) => {
@@ -158,49 +190,42 @@ function checkEXTStatus () {
   });
 }
 
-/* eslint-disable-next-line */
 function loadLoginTranslation () {
   return new Promise((resolve) => {
     Request("/api/translations/login", "GET", null, null, "loginTranslation", (tr) => resolve(tr), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadTranslation () {
   return new Promise((resolve) => {
     Request("/api/translations/common", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadTranslation", (tr) => resolve(tr), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadDataAllEXT () {
   return new Promise((resolve) => {
     Request("/api/EXT", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataAllEXT", (all) => resolve(all), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadDataConfiguredEXT () {
   return new Promise((resolve) => {
     Request("/api/EXT/configured", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataConfiguredEXT", (confEXT) => resolve(confEXT), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadDataInstalledEXT () {
   return new Promise((resolve) => {
     Request("/api/EXT/installed", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataInstalledEXT", (instEXT) => resolve(instEXT), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadDataDescriptionEXT () {
   return new Promise((resolve) => {
     Request("/api/EXT/descriptions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataDescriptionEXT", (desEXT) => resolve(desEXT), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadMMConfig () {
   return new Promise((resolve) => {
     Request("/api/config/MM", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadMMConfig", (response) => {
@@ -216,21 +241,18 @@ function loadMMConfig () {
   });
 }
 
-/* eslint-disable-next-line */
 function getEXTVersions () {
   return new Promise((resolve) => {
     Request("/api/EXT/versions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getEXTVersions", (EXTs) => resolve(EXTs), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadBackupNames () {
   return new Promise((resolve) => {
     Request("/api/backups", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadBackupNames", (backups) => resolve(backups), null);
   });
 }
 
-/* eslint-disable-next-line */
 function deleteBackups (success, error) {
   return new Promise((resolve) => {
     Request("/api/backups", "DELETE", { Authorization: `Bearer ${getCurrentToken()}` }, null, "backup-Delete", () => {
@@ -243,21 +265,18 @@ function deleteBackups (success, error) {
   });
 }
 
-/* eslint-disable-next-line */
 function loadRadio () {
   return new Promise((resolve) => {
     Request("/api/EXT/RadioPlayer", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadRadio", (radio) => resolve(radio), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadFreeboxTV () {
   return new Promise((resolve) => {
     Request("/api/EXT/FreeboxTV", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadFreeboxTV", (radio) => resolve(radio), null);
   });
 }
 
-/* eslint-disable-next-line */
 function loadBackupConfig (file) {
   return new Promise((resolve) => {
     Request("/api/backups/file", "GET", { Authorization: `Bearer ${getCurrentToken()}`, backup: file }, null, "loadBackupConfig", (response) => {
@@ -327,7 +346,6 @@ async function Request (url, type, header, data, from, success, fail) {
   }
 }
 
-/* eslint-disable-next-line */
 function hasPluginConnected (obj, key, value) {
   if (typeof obj === "object" && obj !== null) {
     if (obj.hasOwnProperty(key)) return true;
@@ -344,7 +362,6 @@ function hasPluginConnected (obj, key, value) {
   return false;
 }
 
-/* eslint-disable-next-line */
 function processSelectedFiles (fileInput) {
   let files = fileInput.files;
   let file = files[0].name;
@@ -357,7 +374,6 @@ function processSelectedFiles (fileInput) {
 }
 
 /** config merge **/
-/* eslint-disable-next-line */
 function configMerge (result) {
   var stack = Array.prototype.slice.call(arguments, 1);
   var item;
@@ -381,7 +397,6 @@ function configMerge (result) {
   return result;
 }
 
-/* eslint-disable-next-line */
 function forceMobileRotate () {
   var Options = {
     forcePortrait: false,
@@ -391,34 +406,6 @@ function forceMobileRotate () {
     onlyMobile: true
   };
   PleaseRotate.start(Options);
-}
-
-/* eslint-disable-next-line */
-async function doTranslateNavBar () {
-  let Docs = await getAPIDocs();
-  setTranslation("Home", translation.Home);
-  setTranslation("Terminal", translation.Terminal);
-  setTranslation("Configuration", translation.Configuration);
-  setTranslation("Tools", translation.Tools);
-  setTranslation("About", translation.About);
-  setTranslation("System", translation.System);
-  setTranslation("Logout", translation.Logout);
-  if (!Docs) document.getElementById("APIDocsItem").style.display = "none";
-
-  document.getElementById("accordionSidebar").classList.remove("invisible");
-
-  var path = location.pathname;
-
-  if (path === "/EditMMConfig") path = "/MMConfig";
-  if (path === "/Die" || path === "/Restart") path = "/Tools";
-  if (path === "/SystemDie" || path === "/SystemRestart") path = "/System";
-  if (path === "/ptyProcess") path = "/Terminal";
-
-  const ref = document.querySelectorAll(`[href="${path}"]`);
-  if (ref[0]) {
-    ref[0].removeAttribute("href");
-    ref[0].classList.add("active");
-  }
 }
 
 function setTranslation (id, content) {
@@ -449,7 +436,6 @@ function hideAlert () {
   }
 }
 
-/* eslint-disable-next-line */
 function HideBlock (id) {
   const Block = document.getElementById(id);
   if (Block) {
@@ -457,7 +443,6 @@ function HideBlock (id) {
   }
 }
 
-/* eslint-disable-next-line */
 function ShowBlock (id) {
   const Block = document.getElementById(id);
   if (Block) {
