@@ -228,7 +228,7 @@ class api {
         .use("/api/docs", swaggerUi.serve, (req, res, next) => {
           if (this.Api.APIDocs) {
             this.ApiDocs.info.version = require("../package.json").api;
-            let remoteUrl = `${req.headers["x-forwarded-proto"].includes("https") ? "https" : "http"}://${req.get("host")}`;
+            let remoteUrl = `${req.headers["x-forwarded-proto"]?.includes("https") ? "https" : "http"}://${req.get("host")}`;
             if (this.ApiDocs.servers[0].url !== remoteUrl) {
               this.ApiDocs.servers[1] = {
                 url: remoteUrl
@@ -268,12 +268,12 @@ class api {
           this.Api.healthDownloader(req, res);
         })
 
-        .get(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
-        .post(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
-        .put(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
-        .delete(["/api/:fn", "/api/:path/:fn"], (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
+        .get("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
+        .post("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
+        .put("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
+        .delete("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
 
-        .get("/:other", (req, res) => {
+        .get("/{*other}", (req, res) => {
           console.warn("[Bugsounet] [API] Don't find:", req.url);
           res.status(404).json({ error: "You Are Lost in Space" });
         });
