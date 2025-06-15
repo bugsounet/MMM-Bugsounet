@@ -7,7 +7,8 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
-  -webkit-tap-highlight-color: transparent
+  -webkit-tap-highlight-color: transparent;
+  scrollbar-width: none;
 }
 
 html{
@@ -198,6 +199,7 @@ a:hover{
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease; 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  scrollbar-width: none;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -2224,12 +2226,4 @@ iframe {
 
 .tracking-widest {
   letter-spacing: 0.1em;
-}
-
-#sidebar-wrapper .collapse.show.active a.active {
-  color: #ffffff;
-}
-
-#sidebar-wrapper .collapse.show.active > div:has(a.active) {
-  background: rgba(255, 255, 255, 0.15);
 }
