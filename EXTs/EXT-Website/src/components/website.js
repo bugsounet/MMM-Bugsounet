@@ -191,7 +191,6 @@ class website {
       this.website.app
         .use(this.logRequest)
         .use(cors({ origin: "*" }))
-        .use("/assets/css/fontawesome", express.static(`${this.WebsiteModulePath}/node_modules/@fortawesome/fontawesome-free`, options))
         .use("/assets", express.static(`${this.WebPath}/assets`, options))
         .use("/html", express.static(`${this.WebPath}/html`, options))
 
@@ -199,6 +198,9 @@ class website {
         .use("/xterm", express.static(`${this.WebsiteModulePath}/node_modules/xterm`, options))
         .use("/xterm-addon-fit", express.static(`${this.WebsiteModulePath}/node_modules/xterm-addon-fit`, options))
         .use("/alertify", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build`, options))
+        .use("/animate.css", express.static(`${this.WebsiteModulePath}/node_modules/animate.css`, options))
+        .use("/fontawesome", express.static(`${this.WebsiteModulePath}/node_modules/@fortawesome/fontawesome-free`, options))
+        .use("/bootstrap", express.static(`${this.WebsiteModulePath}/node_modules/bootstrap/dist`, options))
 
         .get("/login", (req, res) => {
           const logged = this.hasValidCookie(req);
