@@ -35,10 +35,6 @@
   "Generic_Error-Long": "Warn: Some errors detected",
   "Generic_Update-Long": "Update available",
   "Generic_Control": "Control",
-  "Generic_Request": "Request",
-  "Generic_Mic": "Microphone",
-  "Generic_Speaker": "Speaker",
-  "Generic_Backup": "Backup",
 
   "About": "About",
   "About_Title": "About MMM-Bugsounet",
