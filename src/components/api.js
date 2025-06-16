@@ -696,14 +696,14 @@ class api {
         if (!this.Api.EXTStatus["Bugsounet_Ready"]) return res.status(404).json({ error: "Not Found" });
         var alert = req.body["alert"];
         if (typeof (alert) !== "string" || alert.length < 5) return res.status(400).json({ error: "Bad Request" });
-        log("Request send Alert:", alert);
+        log(`User: ${req.user} -- Request send Alert: ${alert}`);
         this.sendSocketNotification("SENDALERT", {
           type: "information",
           message: alert,
-          sender: req.user?.id ? req.user.id : "MMM-Bugsounet", // <-- to check
+          sender: req.user || "MMM-Bugsounet",
           timer: 30 * 1000,
-          sound: "modules/MMM-Bugsounet/website/tools/message.mp3",
-          icon: "modules/MMM-Bugsounet/website/assets/img/bugsounet.png"
+          sound: "modules/MMM-Bugsounet/resources/message.mp3",
+          icon: "modules/MMM-Bugsounet/resources/bugsounet.png"
         });
         res.json({ done: "ok" });
         break;
