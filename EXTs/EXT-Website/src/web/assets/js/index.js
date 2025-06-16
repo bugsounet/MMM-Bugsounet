@@ -977,16 +977,10 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("SpotifySend", GenericTranslations["Listen"]);
 
     let ControlIDs = document.querySelectorAll("[id='Control']");
-    let RequestIDs = document.querySelectorAll("[id='Request']");
     ControlIDs.forEach((id) => {
       id.textContent = GenericTranslations["Control"];
     });
-    RequestIDs.forEach((id) => {
-      id.textContent = GenericTranslations["Request"];
-    });
 
-    setTranslation("Mic", GenericTranslations["Mic"]);
-    setTranslation("Speaker", GenericTranslations["Speaker"]);
     setTranslation("SystemHeader", ToolsTranslations["System_Header"]);
 
     if (EXTStatus["EXT-Updates"].hello) {
@@ -1033,7 +1027,6 @@ document.addEventListener("Includes_Complete", async () => {
     // backups
     allBackup = await loadBackupNames();
     if (allBackup.length > 5) {
-      setTranslation("Backup", GenericTranslations["Backup"]);
       setTranslation("BackupDelete", GenericTranslations["Delete"]);
       setTranslation("backupFoundNumber", allBackup.length);
       setTranslation("backupFoundText", ToolsTranslations["Backup_Found"]);
@@ -1128,7 +1121,6 @@ document.addEventListener("Includes_Complete", async () => {
 
     if (EXTStatus["EXT-FreeboxTV"].hello) {
       var freeboxTV = await loadFreeboxTV();
-      console.log("FBTV:", freeboxTV);
       if (freeboxTV.length) {
         freeboxTV.forEach((TV) => {
           let option = document.createElement("option");
