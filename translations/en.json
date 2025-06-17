@@ -197,5 +197,7 @@
   "Tools_Spotify_Playlist": "Playlist",
   "Tools_Stop_Text": "Stop all running plugins",
   "Tools_Radio_Text": "Listen Radio",
-  "Tools_Radio_NoFound": "No radio found!"
+  "Tools_Radio_NoFound": "No radio found!",
+  "Tools_Assistant_Text": "Activate Google Assistant with your request",
+  "Tools_Assistant_Query": "Enter your request"
 }

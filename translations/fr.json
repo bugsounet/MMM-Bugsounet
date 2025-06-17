@@ -197,5 +197,7 @@
   "Tools_Spotify_Album": "Album",
   "Tools_Spotify_Playlist": "Play Liste",
   "Tools_Radio_Text": "Ecouter la Radio",
-  "Tools_Radio_NoFound": "Aucune radio trouvé!"
+  "Tools_Radio_NoFound": "Aucune radio trouvé!",
+  "Tools_Assistant_Text": "Active Google Assistant avec votre demande",
+  "Tools_Assistant_Query": "Entrez votre demande"
 }
