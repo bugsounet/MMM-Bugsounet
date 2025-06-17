@@ -1164,6 +1164,28 @@ document.addEventListener("Includes_Complete", async () => {
       });
     };
 
+    if (EXTStatus["EXT-Assistant"].hello) {
+      setTranslation("AssistantText", ToolsTranslations["Assistant_Text"]);
+      document.getElementById("AssistantQuery").setAttribute("placeholder", ToolsTranslations["Assistant_Query"]);
+      document.getElementById("AssistantQuery").addEventListener("keyup", function () {
+        if (this.value.length > 5) {
+          document.getElementById("AssistantSend").classList.remove("disabled");
+        } else {
+          document.getElementById("AssistantSend").classList.add("disabled");
+        }
+      });
+
+      document.getElementById("AssistantSend").onclick = function () {
+        document.getElementById("AssistantSend").classList.add("disabled");
+        doAssistantQuery(document.getElementById("AssistantQuery").value, () => {
+          document.getElementById("AssistantQuery").value = "";
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+    } else {
+      HideBlock("AssistantBlock");
+    }
+
     spinnerHide();
   }
 

@@ -292,6 +292,15 @@ function loadBackupConfig (file) {
   });
 }
 
+function doAssistantQuery(send) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Assistant/send", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ send: send }), "GoogleAssistant", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
 async function Request (url, type, header, data, from, success, fail) {
   // console.log(url, type, header, data, from, success, fail)
   var headers = {
