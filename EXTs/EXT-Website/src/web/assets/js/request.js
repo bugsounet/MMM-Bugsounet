@@ -292,9 +292,18 @@ function loadBackupConfig (file) {
   });
 }
 
-function doAssistantQuery(send) {
+function doAssistantQuery (send, success) {
   return new Promise((resolve) => {
     Request("/api/EXT/Assistant/send", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ send: send }), "GoogleAssistant", () => {
+      if (success) success();
+      resolve();
+    }, null);
+  });
+}
+
+function doScreenPower (power, success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Screen", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ power: power }), "Screen", () => {
       if (success) success();
       resolve();
     }, null);

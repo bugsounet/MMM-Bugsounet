@@ -3,6 +3,7 @@
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
+  doAssistantQuery doScreenPower
  */
 
 /* eslint-disable max-lines-per-function */
@@ -1184,6 +1185,23 @@ document.addEventListener("Includes_Complete", async () => {
       };
     } else {
       HideBlock("AssistantBlock");
+    }
+
+    if (EXTStatus["EXT-Screen"].hello) {
+      setTranslation("ScreenText", ToolsTranslations["Screen_Text"]);
+      if (EXTStatus["EXT-Screen"].power) {
+        setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
+      } else {
+        setTranslation("ScreenPower", GenericTranslations["TurnOff"]);
+      }
+      document.getElementById("ScreenPower").onclick = function () {
+        let powerControler = EXTStatus["EXT-Screen"].power ? "OFF" : "ON";
+        doScreenPower(powerControler, () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+    } else {
+      HideBlock("ScreenBlock");
     }
 
     spinnerHide();
