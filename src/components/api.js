@@ -708,6 +708,15 @@ class api {
         res.json({ done: "ok" });
         break;
 
+      case "/api/EXT/Assistant/send":
+        if (!this.Api.EXTStatus["Bugsounet_Ready"]) return res.status(404).json({ error: "Not Found" });
+        var send = req.body["send"];
+        if (typeof (send) !== "string" || send.length < 5) return res.status(400).json({ error: "Bad Request" });
+        log("Request MMM-GoogleAssistant send:", send);
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_ASSISTANT-ACTIVATE", payload: { type: "TEXT", key: send } });
+        res.json({ done: "ok" });
+        break;
+
       case "/api/backups/external":
         try {
           let decoded = this.decode(req.body["config"]);
