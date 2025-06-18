@@ -17,9 +17,7 @@
     "url": "https://github.com/bugsounet/MMM-Bugsounet"
   },
   "license": "MIT",
-  "author": [
-    "bugsounet"
-  ],
+  "author": "bugsounet",
   "main": "EXT-MeteoFrance.js",
   "scripts": {
     "clean": "node ../../installer/clean --path=EXTs/EXT-MeteoFrance",

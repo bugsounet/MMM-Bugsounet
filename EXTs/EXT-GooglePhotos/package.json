@@ -4,10 +4,7 @@
   "description": "An embedded Google Photos Displayer on MagicMirror.",
   "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
-  "author": [
-    "eouia",
-    "bugsounet <bugsounet@bugsounet.fr>"
-  ],
+  "author": "eouia, bugsounet <bugsounet@bugsounet.fr>",
   "main": "EXT-GooglePhotos.js",
   "scripts": {
     "clean": "node ../../installer/clean --path=EXTs/EXT-GooglePhotos",

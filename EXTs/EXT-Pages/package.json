@@ -4,10 +4,7 @@
   "description": "allows you to have pages in your magic mirror",
   "homepage": "https://github.com/bugsounet/MMM-Bugsounet/wiki",
   "license": "MIT",
-  "author": [
-    "edward-shen",
-    "bugsounet"
-  ],
+  "author": "edward-shen, bugsounet",
   "main": "EXT-Pages.js",
   "scripts": {
     "clean": "node ../../installer/clean --path=EXTs/EXT-Pages",
