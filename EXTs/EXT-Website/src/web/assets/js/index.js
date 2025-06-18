@@ -1204,6 +1204,66 @@ document.addEventListener("Includes_Complete", async () => {
       HideBlock("ScreenBlock");
     }
 
+    // Spotify Control
+    if (EXTStatus["EXT-Spotify"].hello) {
+      setTranslation("SpotifyText", ToolsTranslations["Spotify_Text"]);
+      setTranslation("SpotifyText2", ToolsTranslations["Spotify_Text2"]);
+      document.getElementById("SpotifyQuery").setAttribute("placeholder", ToolsTranslations["Spotify_Query"]);
+      setTranslation("SpotifyArtist", ToolsTranslations["Spotify_Artist"]);
+      setTranslation("SpotifyTrack", ToolsTranslations["Spotify_Track"]);
+      setTranslation("SpotifyAlbum", ToolsTranslations["Spotify_Album"]);
+      setTranslation("SpotifyPlaylist", ToolsTranslations["Spotify_Playlist"]);
+      setTranslation("SpotifySend", GenericTranslations["Send"]);
+      document.getElementById("SpotifyQuery").addEventListener("keyup", function () {
+        if (this.value.length > 1) {
+          document.getElementById("SpotifySend").classList.remove("disabled");
+        } else {
+          document.getElementById("SpotifySend").classList.add("disabled");
+        }
+      });
+
+      document.getElementById("SpotifySend").onclick = function () {
+        const selectedSpotifySearch = document.querySelector("input[name='spotifySearchType']:checked");
+        if (!selectedSpotifySearch) {
+          alertify.error("spotifySearchType missing");
+          return;
+        }
+        document.getElementById("SpotifySend").classList.add("disabled");
+        Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: document.getElementById("SpotifyQuery").value, type: selectedSpotifySearch.value }), "Spotify", () => {
+          document.getElementById("SpotifyQuery").value = "";
+          alertify.success(GenericTranslations["RequestDone"]);
+        }, null);
+      };
+
+      document.getElementById("SpotifyPlay").onclick = function () {
+        Request("/api/EXT/Spotify/play", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        }, null);
+      };
+
+      document.getElementById("SpotifyStop").onclick = function () {
+        Request("/api/EXT/Spotify/stop", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        }, null);
+      };
+
+      document.getElementById("SpotifyNext").onclick = function () {
+        Request("/api/EXT/Spotify/next", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        }, null);
+      };
+
+      document.getElementById("SpotifyPrevious").onclick = function () {
+        Request("/api/EXT/Spotify/previous", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+          alertify.success(GenericTranslations["RequestDone"]);
+        }, null);
+      };
+
+    } else {
+      HideBlock("SpotifyBlock");
+      HideBlock("SpotifyBlock2");
+    }
+
     spinnerHide();
   }
 
@@ -1409,6 +1469,7 @@ document.addEventListener("Includes_Complete", async () => {
         // do nothing
       });
     };
+
     spinnerHide();
   }
 

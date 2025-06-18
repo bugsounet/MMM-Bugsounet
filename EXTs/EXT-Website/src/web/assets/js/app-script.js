@@ -30,6 +30,13 @@ function applyBackgroundTheme (newTheme) {
   document.querySelector("body").className = `bg-theme ${newTheme}`;
 }
 
+window.addEventListener("error", function (event) {
+  console.error("[SCRIPT] An error occurred:", event.message);
+  console.error("[SCRIPT] Script:", event.filename);
+  console.error("[SCRIPT] Line:", event.lineno);
+  console.error("[SCRIPT] Column:", event.colno);
+});
+
 document.addEventListener("Includes_Complete", () => {
   console.log("Execute App-scripts");
 
