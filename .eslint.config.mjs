@@ -3,13 +3,13 @@ import eslintPluginStylistic from "@stylistic/eslint-plugin";
 import {configs as eslintPluginDepend_configs} from "eslint-plugin-depend";
 import {flatConfigs as eslintPluginImportX_flatConfigs} from "eslint-plugin-import-x";
 import eslintPluginJs from "@eslint/js";
-import eslintPluginPackageJson from "eslint-plugin-package-json";
+import {configs as eslintPluginPackageJson_configs} from "eslint-plugin-package-json";
 
 const config = [
   eslintPluginDepend_configs["flat/recommended"],
   eslintPluginImportX_flatConfigs.recommended,
   eslintPluginJs.configs.recommended,
-  eslintPluginPackageJson.configs.recommended,
+  eslintPluginPackageJson_configs.recommended,
   {
     "files": ["**/*.js"],
     "languageOptions": {
