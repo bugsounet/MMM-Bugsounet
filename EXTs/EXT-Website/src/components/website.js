@@ -2,6 +2,7 @@
 
 const http = require("node:http");
 const path = require("node:path");
+const { styleText } = require("node:util");
 
 const si = require("systeminformation");
 const express = require("express");
@@ -26,6 +27,7 @@ class website {
     if (config.pty) {
       pty = require("node-pty");
     } else {
+      this.stampLogs();
       console.log(`[WEBSITE] EXT-Website Server Version: ${require("../package.json").version} rev: ${require("../package.json").rev}`);
     }
     this.website = {
@@ -555,5 +557,50 @@ class website {
       resolve(result);
     });
   }
+
+  stampLogs () {
+    // add timestamps in front of log messages
+    require("console-stamp")(console, {
+      format: ":date(yyyy-mm-dd HH:MM:ss.l) :label(7) :msg",
+      tokens: {
+        label: (arg) => {
+          const { method, defaultTokens } = arg;
+          let label = defaultTokens.label(arg);
+          switch (method) {
+            case "error":
+              label = styleText("red", label);
+              break;
+            case "warn":
+              label = styleText("yellow", label);
+              break;
+            case "debug":
+              label = styleText("bgBlue", label);
+              break;
+            case "info":
+              label = styleText("blue", label);
+              break;
+          }
+          return label;
+        },
+        msg: (arg) => {
+          const { method, defaultTokens } = arg;
+          let msg = defaultTokens.msg(arg);
+          switch (method) {
+            case "error":
+              msg = styleText("red", msg);
+              break;
+            case "warn":
+              msg = styleText("yellow", msg);
+              break;
+            case "info":
+              msg = styleText("blue", msg);
+              break;
+          }
+          return msg;
+        }
+      }
+    });
+  }
+
 }
 module.exports = website;
