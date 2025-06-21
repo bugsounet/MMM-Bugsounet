@@ -300,7 +300,7 @@ class api {
         break;
 
       case "/api/translations/group":
-        if (!req.headers["group"] || req.headers["group"] === "undefined") return res.status(400).send("Bad Request");
+        if (!req.headers["group"] || req.headers["group"] === "undefined") return res.status(400).json({ error: "Bad Request" });
         var translatedGroup = Translator.findTranslatedGroup(req.headers["group"], req.headers["language"]);
         res.json({
           group: req.headers["group"],
@@ -311,7 +311,7 @@ class api {
       case "/api/translations/translate":
         var language = this.Api.language;
         var values = null;
-        if (!req.headers["translate"] || req.headers["translate"] === "undefined") return res.status(400).send("Bad Request");
+        if (!req.headers["translate"] || req.headers["translate"] === "undefined") return res.status(400).json({ error: "Bad Request" });
         if (req.headers["language"]) language = req.headers["language"];
         if (req.headers["values"]) values = JSON.parse(req.headers["values"]);
         var translated = await this.translate(language, req.headers["translate"], values);
@@ -372,7 +372,7 @@ class api {
         break;
 
       case "/api/backups/file":
-        if (!req.headers["backup"]) return res.status(400).send("Bad Request");
+        if (!req.headers["backup"]) return res.status(400).json({ error: "Bad Request" });
         var availableBackups = await this.loadBackupNames();
         if (availableBackups.indexOf(req.headers["backup"]) === -1) return res.status(404).json({ error: "Not Found" });
         log(`[API] Request backup config of ${req.headers["backup"]}`);
@@ -391,7 +391,7 @@ class api {
       case "/api/EXT/Updates":
         if (!this.Api.EXTStatus["EXT-Updates"].hello) return res.status(404).json({ error: "Not Found" });
         var updates = this.filterObject(this.Api.EXTStatus["EXT-Updates"].module, "canBeUpdated", true);
-        if (!updates.length) return res.status(404).send("Not Found");
+        if (!updates.length) return res.status(404).json({ error: "Not Found" });
         res.json(updates);
         break;
 
@@ -408,7 +408,7 @@ class api {
           Result.id = this.findUserIndex(req.user);
           res.json(Result);
         }
-        else res.status(404).send("Not Found");
+        else res.status(404).json({ error: "Not Found" });
         break;
 
       default:
@@ -430,11 +430,11 @@ class api {
           decoder = JSON.parse(this.decode(req.body["me"]));
         } catch (e) {
           log("Request error", e.message);
-          res.status(400).send("Bad Request");
+          res.status(400).json({ error: "Bad Request" });
           return;
         }
         if (isNaN(decoder.id) || decoder.id !== this.findUserIndex(req.user)) {
-          res.status(400).send("Bad Request");
+          res.status(400).json({ error: "Bad Request" });
           return;
         }
         if (decoder.username) this.Api.users[decoder.id].username = decoder.username;
@@ -455,7 +455,7 @@ class api {
           resultSaveConfig = await this.saveConfig(decoded);
         } catch (e) {
           log("Request error", e.message);
-          res.status(400).send("Bad Request");
+          res.status(400).json({ error: "Bad Request" });
           return;
         }
         log("Write config result:", resultSaveConfig);
@@ -573,12 +573,11 @@ class api {
           this.sendSocketNotification("SendNoti", "Bugsounet_SCREEN-FORCE_WAKEUP");
           return res.json({ done: "ok" });
         }
-        res.status(400).send("Bad Request");
+        res.status(400).json({ error: "Bad Request" });
         break;
 
       case "/api/EXT/FreeboxTV":
         if (!this.Api.EXTStatus["EXT-FreeboxTV"].hello) return res.status(404).json({ error: "Not Found" });
-        if (this.Api.language !== "fr") return res.status(409).send("Reserved for French language");
         var TV = req.body["TV"];
         if (!TV || typeof (TV) !== "string") return res.status(400).json({ error: "Bad Request" });
         var allTV = Object.keys(this.Api.freeTV);
