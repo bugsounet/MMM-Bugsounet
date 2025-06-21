@@ -36,9 +36,12 @@ function getMyUser () {
   });
 }
 
-function putMyUser (body) {
+function putMyUser (body, cb) {
   return new Promise((resolve) => {
-    Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ me: btoa(JSON.stringify(body)) }), "MyUser", (result) => resolve(result));
+    Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ me: btoa(JSON.stringify(body)) }), "MyUser", (result) => {
+      if (cb) cb();
+      resolve(result);
+    });
   });
 }
 

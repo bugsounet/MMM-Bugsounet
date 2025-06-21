@@ -3,7 +3,7 @@
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
-  doAssistantQuery doScreenPower doLogin showAlert
+  doAssistantQuery doScreenPower doLogin showAlert putMyUser
  */
 
 /* eslint-disable max-lines-per-function */
@@ -303,7 +303,7 @@ document.addEventListener("Includes_Complete", async () => {
 
       let MyUserSize = Object.keys(MyUser).length;
       if (MyUserSize > 1) {
-        Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ me: btoa(JSON.stringify(MyUser)) }), "MyUser", () => { location.href = "/Account"; }, null);
+        putMyUser(MyUser, () => { location.href = "/Account"; });
       } else {
         alertify.message("There is no change to save");
       }
