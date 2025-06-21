@@ -329,7 +329,6 @@ document.addEventListener("Includes_Complete", async () => {
     document.getElementsByTagName("BODY")[0].onresize = () => {
       clearTimeout(timerLogsResize);
       timerLogsResize = setTimeout(() => {
-        console.log("resize");
         fitAddonLogs.fit();
       }, 300);
     };
@@ -347,7 +346,7 @@ document.addEventListener("Includes_Complete", async () => {
     });
 
     socketLogs.io.on("error", (data) => {
-      console.log("Socket Error:", data);
+      console.error("Socket Error:", data);
       socketLogs.close();
     });
     spinnerHide();
@@ -371,7 +370,6 @@ document.addEventListener("Includes_Complete", async () => {
     document.getElementsByTagName("BODY")[0].onresize = () => {
       clearTimeout(timerTermSSHResize);
       timerTermSSHResize = setTimeout(() => {
-        console.log("resize");
         fitAddonPTY.fit();
         if (termPTY.rows && termPTY.cols) {
           socketPTY.emit("terminal.size", { cols: termPTY.cols, rows: termPTY.rows });
@@ -400,7 +398,7 @@ document.addEventListener("Includes_Complete", async () => {
     });
 
     socketPTY.io.on("error", (data) => {
-      console.log("Socket Error:", data);
+      console.error("Socket Error:", data);
       socketPTY.close();
     });
     spinnerHide();
