@@ -381,8 +381,6 @@ async function Request (url, type, header, data, from, success, fail) {
       if (Alert === 1) {
         if (result.status === 502 || response.status === 500) {
           showAlert("No response from MMM-Bugsounet");
-        } else {
-          showAlert(`[${from}] Server return Error ${response.status}: ${result.error}`);
         }
         alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
       }
