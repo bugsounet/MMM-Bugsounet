@@ -3,7 +3,7 @@
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
-  doAssistantQuery doScreenPower doLogin showAlert putMyUser
+  doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
  */
 
 /* eslint-disable max-lines-per-function */
@@ -1214,34 +1214,34 @@ document.addEventListener("Includes_Complete", async () => {
           return;
         }
         document.getElementById("SpotifySend").classList.add("disabled");
-        Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: document.getElementById("SpotifyQuery").value, type: selectedSpotifySearch.value }), "Spotify", () => {
+        SpotifySend(document.getElementById("SpotifyQuery").value, selectedSpotifySearch.value, () => {
           document.getElementById("SpotifyQuery").value = "";
           alertify.success(GenericTranslations["RequestDone"]);
-        }, null);
+        });
       };
 
       document.getElementById("SpotifyPlay").onclick = function () {
-        Request("/api/EXT/Spotify/play", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+        SpotifyPlay(() => {
           alertify.success(GenericTranslations["RequestDone"]);
-        }, null);
+        });
       };
 
       document.getElementById("SpotifyStop").onclick = function () {
-        Request("/api/EXT/Spotify/stop", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+        SpotifyStop(() => {
           alertify.success(GenericTranslations["RequestDone"]);
-        }, null);
+        });
       };
 
       document.getElementById("SpotifyNext").onclick = function () {
-        Request("/api/EXT/Spotify/next", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+        SpotifyNext(() => {
           alertify.success(GenericTranslations["RequestDone"]);
-        }, null);
+        });
       };
 
       document.getElementById("SpotifyPrevious").onclick = function () {
-        Request("/api/EXT/Spotify/previous", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+        SpotifyPrevious(() => {
           alertify.success(GenericTranslations["RequestDone"]);
-        }, null);
+        });
       };
 
     } else {

@@ -288,6 +288,51 @@ function doScreenPower (power, success) {
   });
 }
 
+function SpotifySend (send, type, success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: send, type: type }), "Spotify", () => {
+      if (success) success();
+      resolve();
+    });
+  });
+}
+
+function SpotifyPlay (success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Spotify/play", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+      if (success) success();
+      resolve();
+    });
+  });
+}
+
+function SpotifyStop (success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Spotify/stop", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+      if (success) success();
+      resolve();
+    });
+  });
+}
+
+function SpotifyNext (success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Spotify/next", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+      if (success) success();
+      resolve();
+    });
+  });
+}
+
+function SpotifyPrevious (success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/Spotify/previous", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+      if (success) success();
+      resolve();
+    });
+  });
+}
+
 async function Request (url, type, header, data, from, success, fail) {
   // console.log(url, type, header, data, from, success, fail)
   var headers = {
