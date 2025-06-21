@@ -3,7 +3,7 @@
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
-  doAssistantQuery doScreenPower
+  doAssistantQuery doScreenPower doLogin showAlert
  */
 
 /* eslint-disable max-lines-per-function */
@@ -61,28 +61,18 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("login-submit", loginTranslations["Login"]);
 
     const button = document.getElementById("login");
-    button.addEventListener("change", function () {
-      if (document.getElementById("username").value !== "" && document.getElementById("password").value !== "") {
-        document.getElementById("login-submit").classList.remove("disabled");
-      } else {
-        document.getElementById("login-submit").classList.add("disabled");
-      }
-    });
     button.addEventListener("submit", function () {
       event.preventDefault();
-      alertify.set("notifier", "position", "top-center");
       let credentials = `${document.getElementById("username").value}:${document.getElementById("password").value}`;
-      let encode = btoa(credentials);
-      Request("/auth", "POST", { Authorization: `Basic ${encode}` }, null, "Login", (response) => {
-        localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
-        location.href = "/";
-      }, (err) => {
+      let encodedCredentials = btoa(credentials);
+      doLogin(encodedCredentials, (err) => {
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
         let error = err?.error;
         let description = err?.description;
-        if (!err.status) alertify.error("Connexion Lost!");
-        else if (err.status === 403 || err.status === 401) alertify.error(`${error}: ${description}`);
+        if (!err.status || err.status === 500 || err.status === 502) showAlert("No response from MMM-Bugsounet");
+        else if (err.status === 403) alertify.error(loginTranslations["Error"]);
+        else if (err.status === 401) alertify.error(`${error}: ${description}`);
         else alertify.error(`Server return Error ${err.status} (${error})`);
       });
     });
@@ -272,8 +262,6 @@ document.addEventListener("Includes_Complete", async () => {
     // save change
     const accountButton = document.getElementById("SaveChange");
     accountButton.addEventListener("click", function () {
-      alertify.set("notifier", "position", "top-center");
-
       const NewUsername = document.getElementById("username").value;
       const NewPassword = document.getElementById("password").value;
       const NewPasswordConfirm = document.getElementById("newpassword").value;
@@ -430,7 +418,6 @@ document.addEventListener("Includes_Complete", async () => {
 
     system = await getCurrentSystem();
     do_System(() => { do_SystemStatic(); });
-    alertify.set("notifier", "position", "top-center");
 
     setInterval(async () => {
       system = await checkSystem();

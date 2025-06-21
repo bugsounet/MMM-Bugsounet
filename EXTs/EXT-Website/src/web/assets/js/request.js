@@ -1,78 +1,86 @@
 /** fetch datas **/
 
-/* global alertify, translation, PleaseRotate */
+/* global alertify, Swal */
 
 /* eslint-disable no-unused-vars */
 
 var Alert = 0;
+alertify.set("notifier", "position", "bottom-right");
 
 function getCurrentToken () {
   return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
 }
 
+function doLogin (credentials, cb) {
+  Request("/auth", "POST", { Authorization: `Basic ${credentials}` }, null, "Login", (response) => {
+    localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
+    location.href = "/";
+  }, (err) => cb(err));
+}
+
 function getTranslate (lang, query, values = null) {
   return new Promise((resolve) => {
-    Request("/api/translations/translate", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, translate: query, values: JSON.stringify(values) }, null, "translate", (translate) => resolve(translate.translate), null);
+    Request("/api/translations/translate", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, translate: query, values: JSON.stringify(values) }, null, "translate", (translate) => resolve(translate.translate));
   });
 }
 
 function getTranslateGroup (lang, group) {
   return new Promise((resolve) => {
-    Request("/api/translations/group", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, group: group }, null, "Grouptranslate", (translate) => resolve(translate.translate), null);
+    Request("/api/translations/group", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, group: group }, null, "Grouptranslate", (translate) => resolve(translate.translate));
   });
 }
 
 function getMyUser () {
   return new Promise((resolve) => {
-    Request("/api/me", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "MyUser", (user) => resolve(user), null);
+    Request("/api/me", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "MyUser", (user) => resolve(user));
   });
 }
 
 function putMyUser (body) {
   return new Promise((resolve) => {
-    Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ me: btoa(JSON.stringify(body)) }), "MyUser", (result) => resolve(result), null);
+    Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ me: btoa(JSON.stringify(body)) }), "MyUser", (result) => resolve(result));
   });
 }
 
 function getHomeText (lang) {
   return new Promise((resolve) => {
-    Request("/api/translations/homeText", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang }, null, "homeText", (text) => resolve(text.homeText), null);
+    Request("/api/translations/homeText", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang }, null, "homeText", (text) => resolve(text.homeText));
   });
 }
 
 function getVersion () {
   return new Promise((resolve) => {
-    Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "version", (version) => resolve(version), null);
+    Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "version", (version) => resolve(version));
   });
 }
 
 function getAPIDocs () {
   return new Promise((resolve) => {
-    Request("/api", "GET", null, null, "API", (api) => resolve(api.docs), null);
+    Request("/api", "GET", null, null, "API", (api) => resolve(api.docs));
   });
 }
 
 function doDie () {
   return new Promise((resolve) => {
-    Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Die", () => resolve(), null);
+    Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Die", () => resolve());
   });
 }
 
 function doRestart () {
   return new Promise((resolve) => {
-    Request("/api/system/restart", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Restart", () => resolve(), null);
+    Request("/api/system/restart", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Restart", () => resolve());
   });
 }
 
 function doReboot () {
   return new Promise((resolve) => {
-    Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Reboot", () => resolve(), null);
+    Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Reboot", () => resolve());
   });
 }
 
 function doShutdown () {
   return new Promise((resolve) => {
-    Request("/api/system/shutdown", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Shutdown", () => resolve(), null);
+    Request("/api/system/shutdown", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Shutdown", () => resolve());
   });
 }
 
@@ -81,7 +89,7 @@ function doUpdates (success) {
     Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -90,7 +98,7 @@ function doStop (success) {
     Request("/api/EXT/stop", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "STOP", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -99,7 +107,7 @@ function putRadio (radio, success) {
     Request("/api/EXT/RadioPlayer", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ radio: radio }), "RadioPlayer", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -108,7 +116,7 @@ function putSpeaker (volume, success) {
     Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: volume }), "Volume", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -117,7 +125,7 @@ function putMic (volume, success) {
     Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: volume }), "Volume", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -126,7 +134,7 @@ function putTV (channel, success) {
     Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ TV: channel }), "FreeboxTV", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -135,94 +143,61 @@ function doAlert (alert, success) {
     Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ alert: alert }), "Alert", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
 function getCurrentSystem () {
   return new Promise((resolve) => {
-    Request("/api/system/currentSysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
-      if (err.status === 401 || err.status === 403) location.href = "/logout";
-      if (Alert === 1) {
-        if (!err.status || err.status === 502) {
-          alertify.error("Connexion Lost!");
-          showAlert("No response from MMM-Bugsounet.");
-        } else {
-          alertify.error(`[sysInfo] Server return Error ${err.status} (${err.error})`);
-          showAlert(`[sysInfo] Server return Error ${err.status} (${err.error})`);
-        }
-      }
-    });
+    Request("/api/system/currentSysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system));
   });
 }
 
 function checkSystem () {
   return new Promise((resolve) => {
-    Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system), (err) => {
-      if (err.status === 401 || err.status === 403) location.href = "/logout";
-      if (Alert === 1) {
-        if (!err.status || err.status === 502) {
-          alertify.error("Connexion Lost!");
-          showAlert("No response from MMM-Bugsounet.");
-        } else {
-          alertify.error(`[sysInfo] Server return Error ${err.status} (${err.error})`);
-          showAlert(`[sysInfo] Server return Error ${err.status} (${err.error})`);
-        }
-      }
-    });
+    Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system));
   });
 }
 
 function checkEXTStatus () {
   return new Promise((resolve) => {
-    Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "status", (Status) => resolve(Status), (err) => {
-      if (err.status === 401 || err.status === 403) location.href = "/logout";
-      if (Alert === 1) {
-        if (!err.status || err.status === 502) {
-          alertify.error("Connexion Lost!");
-          showAlert("No response from MMM-Bugsounet.");
-        } else {
-          alertify.error(`[status] Server return Error ${err.status} (${err.error})`);
-          showAlert(`[status] Server return Error ${err.status} (${err.error})`);
-        }
-      }
-    });
+    Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "status", (Status) => resolve(Status));
   });
 }
 
 function loadLoginTranslation () {
   return new Promise((resolve) => {
-    Request("/api/translations/login", "GET", null, null, "loginTranslation", (tr) => resolve(tr), null);
+    Request("/api/translations/login", "GET", null, null, "loginTranslation", (tr) => resolve(tr));
   });
 }
 
 function loadTranslation () {
   return new Promise((resolve) => {
-    Request("/api/translations/common", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadTranslation", (tr) => resolve(tr), null);
+    Request("/api/translations/common", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadTranslation", (tr) => resolve(tr));
   });
 }
 
 function loadDataAllEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataAllEXT", (all) => resolve(all), null);
+    Request("/api/EXT", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataAllEXT", (all) => resolve(all));
   });
 }
 
 function loadDataConfiguredEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT/configured", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataConfiguredEXT", (confEXT) => resolve(confEXT), null);
+    Request("/api/EXT/configured", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataConfiguredEXT", (confEXT) => resolve(confEXT));
   });
 }
 
 function loadDataInstalledEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT/installed", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataInstalledEXT", (instEXT) => resolve(instEXT), null);
+    Request("/api/EXT/installed", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataInstalledEXT", (instEXT) => resolve(instEXT));
   });
 }
 
 function loadDataDescriptionEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT/descriptions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataDescriptionEXT", (desEXT) => resolve(desEXT), null);
+    Request("/api/EXT/descriptions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataDescriptionEXT", (desEXT) => resolve(desEXT));
   });
 }
 
@@ -237,19 +212,19 @@ function loadMMConfig () {
         alertify.error("[loadMMConfig] Error on decode server response");
         Alert = 0;
       }
-    }, null);
+    });
   });
 }
 
 function getEXTVersions () {
   return new Promise((resolve) => {
-    Request("/api/EXT/versions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getEXTVersions", (EXTs) => resolve(EXTs), null);
+    Request("/api/EXT/versions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getEXTVersions", (EXTs) => resolve(EXTs));
   });
 }
 
 function loadBackupNames () {
   return new Promise((resolve) => {
-    Request("/api/backups", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadBackupNames", (backups) => resolve(backups), null);
+    Request("/api/backups", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadBackupNames", (backups) => resolve(backups));
   });
 }
 
@@ -267,13 +242,13 @@ function deleteBackups (success, error) {
 
 function loadRadio () {
   return new Promise((resolve) => {
-    Request("/api/EXT/RadioPlayer", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadRadio", (radio) => resolve(radio), null);
+    Request("/api/EXT/RadioPlayer", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadRadio", (radio) => resolve(radio));
   });
 }
 
 function loadFreeboxTV () {
   return new Promise((resolve) => {
-    Request("/api/EXT/FreeboxTV", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadFreeboxTV", (radio) => resolve(radio), null);
+    Request("/api/EXT/FreeboxTV", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadFreeboxTV", (radio) => resolve(radio));
   });
 }
 
@@ -288,7 +263,7 @@ function loadBackupConfig (file) {
         alertify.error("[loadBackupConfig] Error on decode server response");
         Alert = 0;
       }
-    }, null);
+    });
   });
 }
 
@@ -297,7 +272,7 @@ function doAssistantQuery (send, success) {
     Request("/api/EXT/Assistant/send", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ send: send }), "GoogleAssistant", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -306,7 +281,7 @@ function doScreenPower (power, success) {
     Request("/api/EXT/Screen", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ power: power }), "Screen", () => {
       if (success) success();
       resolve();
-    }, null);
+    });
   });
 }
 
@@ -331,15 +306,16 @@ async function Request (url, type, header, data, from, success, fail) {
     });
   } catch {
     Alert++;
-    if (Alert === 1) alertify.error("Connexion Lost!");
-    showAlert("No response from MMM-Bugsounet");
+    if (Alert === 1) {
+      alertify.error("Connexion Lost!");
+      showAlert("No response from EXT-Website");
+    }
     return;
   }
 
   if (response.ok && response.status < 400) {
     result = await response.json();
     if (success) success(result);
-    if (Alert) hideAlert();
     Alert = 0;
   } else {
     Alert++;
@@ -354,12 +330,14 @@ async function Request (url, type, header, data, from, success, fail) {
     if (fail) fail(result);
     else {
       if (result.status === 401 || response.status === 403) location.href = "/logout";
-      if (result.status === 502) {
-        showAlert("No response from MMM-Bugsounet");
-      } else {
-        showAlert(`[${from}] Server return Error ${response.status}: ${result.error}`);
+      if (Alert === 1) {
+        if (result.status === 502 || response.status === 500) {
+          showAlert("No response from MMM-Bugsounet");
+        } else {
+          showAlert(`[${from}] Server return Error ${response.status}: ${result.error}`);
+        }
+        alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
       }
-      if (Alert === 1) alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
     }
   }
 }
@@ -415,42 +393,12 @@ function configMerge (result) {
   return result;
 }
 
-function forceMobileRotate () {
-  var Options = {
-    forcePortrait: false,
-    message: translation.Rotate_Msg,
-    subMessage: translation.Rotate_Continue,
-    allowClickBypass: true,
-    onlyMobile: true
-  };
-  PleaseRotate.start(Options);
-}
-
 function setTranslation (id, content) {
   try {
     document.getElementById(id).textContent = content;
   } catch (e) {
     console.error(`id: ${id}`, `content: ${content}`);
     console.error(e);
-  }
-}
-
-function showAlert (Text) {
-  const messageText = document.getElementById("messageText");
-  if (messageText) {
-    document.getElementById("alert").classList.remove("alert-success");
-    document.getElementById("alert").classList.add("alert-danger");
-    messageText.textContent = Text;
-    document.getElementById("alert").classList.remove("invisible");
-  }
-}
-
-function hideAlert () {
-  const messageText = document.getElementById("messageText");
-  if (messageText) {
-    document.getElementById("alert").classList.add("invisible");
-    document.getElementById("alert").classList.add("alert-success");
-    document.getElementById("alert").classList.remove("alert-danger");
   }
 }
 
@@ -466,4 +414,20 @@ function ShowBlock (id) {
   if (Block) {
     Block.classList.remove("d-none");
   }
+}
+
+function showAlert (alert) {
+  Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    text: alert,
+    confirmButtonText: "Retry",
+    showCancelButton: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      location.href = window.location.href;
+    } else {
+      Alert = 0;
+    }
+  });
 }

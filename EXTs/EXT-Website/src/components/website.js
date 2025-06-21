@@ -203,6 +203,7 @@ class website {
         .use("/animate.css", express.static(`${this.WebsiteModulePath}/node_modules/animate.css`, options))
         .use("/fontawesome", express.static(`${this.WebsiteModulePath}/node_modules/@fortawesome/fontawesome-free`, options))
         .use("/bootstrap", express.static(`${this.WebsiteModulePath}/node_modules/bootstrap/dist`, options))
+        .use("/sweetalert2", express.static(`${this.BugsounetModulePath}/node_modules/sweetalert2/dist`, options))
 
         .get("/login", (req, res) => {
           const logged = this.hasValidCookie(req);
@@ -305,24 +306,6 @@ class website {
         .get("/Account", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebPath}/account.html`);
         })
-
-      /*
-        .get("/Restart", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/restarting.html`);
-        })
-
-        .get("/Die", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/die.html`);
-        })
-
-        .get("/SystemRestart", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/reboot.html`);
-        })
-
-        .get("/SystemDie", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebsitePath}/shutdown.html`);
-        })
-      */
 
         .get("/robots.txt", (req, res) => {
           res.sendFile(`${this.WebPath}/robots.txt`);

@@ -2448,6 +2448,7 @@ iframe {
   opacity: 1;
 }
 
+.swal2-container,
 .alertify-notifier {
   z-index: 99999;
 }
