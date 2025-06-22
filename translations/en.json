@@ -13,6 +13,8 @@
   "Generic_Delete": "Delete",
   "Generic_Configure": "Configure",
   "Generic_Modify": "Modify",
+  "Generic_Export": "Export",
+  "Generic_Import": "Import",
   "Generic_Load": "Load",
   "Generic_Save": "Save",
   "Generic_Wait": "Please wait...",
@@ -35,6 +37,10 @@
   "Generic_Error-Long": "Warn: Some errors detected",
   "Generic_Update-Long": "Update available",
   "Generic_Control": "Control",
+  "Generic_FileName": "You need to enter a filename",
+  "Generic_ConfigName": "Select a MagicMirror² configuration file",
+  "Generic_DownloadReady": "Download is ready",
+  "Generic_ConfigLoaded": "New configuration loaded",
 
   "About": "About",
   "About_Title": "About MMM-Bugsounet",
@@ -169,6 +175,7 @@
   "Configuration_AcualConfig": "Actual Configuration",
   "Configuration_LoadTip": "Import personal backup",
   "Configuration_SaveTip": "Export this backup",
+  "Configuration_Filename": "Enter filename:",
 
   "Tools_Title": "Tools Box",
   "Tools_Description": "MMM-Bugsounet can offer you more control ! (only available displayed)",
