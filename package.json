@@ -97,7 +97,7 @@
     "stream": "^0.0.3",
     "swagger-ui-express": "^5.0.1",
     "sweetalert2": "^11.22.0",
-    "systeminformation": "^5.27.1"
+    "systeminformation": "^5.27.6"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^4.4.1",
