@@ -592,8 +592,8 @@ body.bg-theme15 {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background: transparent;
-  border-bottom: 1px solid rgb(255 255 255 / 12%);
+  background: rgb(0 0 0 / 12%);
+  border-bottom: 1px solid rgb(255 255 255 / 30%);
   font-weight: 600;
   font-size: 14px;
   color: #fff;
@@ -1467,8 +1467,6 @@ table.grid td {
   display: block;
   padding: 0.75rem 1.25rem;
   margin-bottom: -1px;
-  background-color: rgb(0 0 0 / 20%);
-  border: 1px solid rgb(255 255 255 / 12%);
 }
 
 .list-group-item-action {
@@ -2453,26 +2451,15 @@ iframe {
   z-index: 99999;
 }
 
-.tracking-tighter {
-  letter-spacing: -0.05em;
+body.swal2-shown {
+  padding: 0 !important;
 }
 
-.tracking-tight {
-  letter-spacing: -0.025em;
+.blur {
+  transition: 0.5s filter;
+  filter: blur(8px);
 }
 
-.tracking-normal {
-  letter-spacing: 0;
-}
-
-.tracking-wide {
-  letter-spacing: 0.025em;
-}
-
-.tracking-wider {
-  letter-spacing: 0.05em;
-}
-
-.tracking-widest {
-  letter-spacing: 0.1em;
+.border-bottom-none {
+  border-bottom: hidden !important;
 }

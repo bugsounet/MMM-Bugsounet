@@ -494,12 +494,23 @@ function ShowBlock (id) {
 }
 
 function showAlert (alert) {
+  const contentWrapper = document.querySelector(".content-wrapper");
   Swal.fire({
     icon: "error",
     title: "Oops...",
     text: alert,
     confirmButtonText: "Retry",
-    showCancelButton: true
+    showCancelButton: true,
+    didOpen: () => {
+      contentWrapper.classList.add("blur");
+    },
+    willClose: () => {
+      contentWrapper.classList.remove("blur");
+    },
+    customClass: {
+      confirmButton: "btn btn-primary btn-round me-3",
+      cancelButton: "btn btn-dark btn-round"
+    }
   }).then((result) => {
     if (result.isConfirmed) {
       location.href = window.location.href;

@@ -1,10 +1,10 @@
 /* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
   checkSystem io Terminal FitAddon getVersion getHomeText applyNavbarTheme
-  getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
+  getMyUser loadLoginTranslation saveAs JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
-  loadBackup saveBackup readBackup writeConfig
+  loadBackup saveBackup readBackup writeConfig Swal
  */
 
 /* eslint-disable max-lines-per-function */
@@ -1275,6 +1275,7 @@ document.addEventListener("Includes_Complete", async () => {
   let editConfigPage = document.getElementById("editConfig-html");
   if (editConfigPage) {
     console.log("detected edit Config page");
+
     GenericTranslations = await getTranslateGroup(user.language, "Generic_");
     const ConfigurationTranslations = await getTranslateGroup(user.language, "Configuration_");
 
@@ -1290,12 +1291,12 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("errorConfig", GenericTranslations["Error"]);
     setTranslation("save", GenericTranslations["Save"]);
     setTranslation("load", GenericTranslations["Load"]);
-    document.getElementById("wait").style.display = "none";
-    document.getElementById("done").style.display = "none";
-    document.getElementById("error").style.display = "none";
-    document.getElementById("errorConfig").style.display = "none";
-    document.getElementById("load").style.display = "none";
-    document.getElementById("save").style.display = "none";
+    document.getElementById("wait").classList.add("d-none");
+    document.getElementById("done").classList.add("d-none");
+    document.getElementById("error").classList.add("d-none");
+    document.getElementById("errorConfig").classList.add("d-none");
+    document.getElementById("load").classList.add("d-none");
+    document.getElementById("save").classList.add("d-none");
     document.getElementById("buttonGrp").classList.remove("invisible");
     let ActualConfig = document.querySelectorAll("option")[0];
     ActualConfig.textContent = ConfigurationTranslations["AcualConfig"];
@@ -1307,14 +1308,14 @@ document.addEventListener("Includes_Complete", async () => {
       mainMenuBar: false,
       onValidationError: (errors) => {
         if (errors.length) {
-          document.getElementById("save").style.display = "none";
-          document.getElementById("externalSave").classList.add("disabled");
-          document.getElementById("errorConfig").style.display = "block";
+          document.getElementById("save").classList.add("d-none");
+          document.getElementById("externalSave").classList.add("d-none");
+          document.getElementById("errorConfig").classList.remove("d-none");
         }
         else {
-          document.getElementById("errorConfig").style.display = "none";
-          document.getElementById("save").style.display = "block";
-          document.getElementById("externalSave").classList.remove("disabled");
+          document.getElementById("errorConfig").classList.add("d-none");
+          document.getElementById("save").classList.remove("d-none");
+          document.getElementById("externalSave").classList.remove("d-none");
         }
       }
     };
@@ -1337,7 +1338,7 @@ document.addEventListener("Includes_Complete", async () => {
           }
         };
         config = await loadBackupConfig(conf);
-        document.getElementById("load").style.display = "block";
+        document.getElementById("load").classList.remove("d-none");
       }
     } else {
       conf = "default";
@@ -1357,87 +1358,127 @@ document.addEventListener("Includes_Complete", async () => {
 
     const container = document.getElementById("jsoneditor");
     const editor = new JSONEditor(container, options, config);
+
     document.getElementById("load").onclick = function () {
-      document.getElementById("load").style.display = "none";
-      document.getElementById("wait").style.display = "block";
+      document.getElementById("load").classList.add("d-none");
+      document.getElementById("wait").classList.remove("d-none");
 
       loadBackup(conf, async () => {
-        document.getElementById("wait").style.display = "none";
-        document.getElementById("done").style.display = "block";
-        document.getElementById("alert").classList.remove("invisible");
-        alertify.success(await getTranslate(user.language, "Restart"));
+        document.getElementById("wait").classList.add("d-none");
+        document.getElementById("done").classList.remove("d-none");
+        alertify.success(GenericTranslations["Restart-Long"]);
       }, (err) => {
-        document.getElementById("wait").style.display = "none";
-        document.getElementById("error").style.display = "block";
-        document.getElementById("alert").classList.remove("invisible");
-        document.getElementById("alert").classList.remove("alert-success");
-        document.getElementById("alert").classList.add("alert-danger");
+        document.getElementById("wait").classList.add("d-none");
+        document.getElementById("error").classList.remove("d-none");
         alertify.error(`[loadBackup] Server return Error ${err.status} (${err.body})`);
       });
     };
+
     document.getElementById("save").onclick = function () {
       let data = editor.getText();
-      document.getElementById("save").style.display = "none";
-      document.getElementById("wait").style.display = "block";
+      document.getElementById("save").classList.add("d-none");
+      document.getElementById("wait").classList.remove("d-none");
       let encode = btoa(data);
 
       writeConfig(encode, async () => {
-        document.getElementById("wait").style.display = "none";
-        document.getElementById("done").style.display = "block";
-        document.getElementById("alert").classList.remove("invisible");
-        alertify.success(await getTranslate(user.language, "Restart"));
+        document.getElementById("wait").classList.add("d-none");
+        document.getElementById("done").classList.remove("d-none");
+        alertify.success(GenericTranslations["Restart-Long"]);
       }, (err) => {
-        document.getElementById("wait").style.display = "none";
-        document.getElementById("error").style.display = "block";
-        document.getElementById("alert").classList.remove("invisible");
-        document.getElementById("alert").classList.remove("alert-success");
-        document.getElementById("alert").classList.add("alert-danger");
+        document.getElementById("wait").classList.add("d-none");
+        document.getElementById("error").classList.remove("d-none");
         alertify.error(`[writeConfig] Server return Error ${err.status} (${err.body})`);
       });
     };
-    FileReaderJS.setupInput(document.getElementById("fileToLoad"), {
-      readAsDefault: "Text",
-      on: {
-        load (event) {
-          if (event.target.result) {
+
+    document.getElementById("externalLoad").onclick = async function () {
+      Swal.fire({
+        icon: "question",
+        title: ConfigurationTranslations["LoadTip"],
+        input: "file",
+        inputAttributes: {
+          accept: "text/javascript",
+          "aria-label": GenericTranslations["ConfigName"]
+        },
+        confirmButtonText: GenericTranslations["Import"],
+        cancelButtonText: GenericTranslations["Cancel"],
+        showCancelButton: true,
+        customClass: {
+          confirmButton: "btn btn-success btn-round bg-google-green me-3",
+          cancelButton: "btn btn-dark btn-round bg-google-grey-19"
+        },
+        inputValidator: (value) => {
+          if (!value) {
+            return GenericTranslations["ConfigName"];
+          }
+        },
+        didOpen: () => {
+          contentWrapper.classList.add("blur");
+        },
+        willClose: () => {
+          contentWrapper.classList.remove("blur");
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
             let encodedConfig = btoa(event.target.result);
             readBackup(encodedConfig, (back) => {
               let decode = atob(back.config);
               let config = JSON.parse(decode);
               editor.update(config);
               editor.refresh();
-              alertify.success("External Config Loaded !");
+              alertify.success(GenericTranslations["ConfigLoaded"]);
             });
-          }
+          };
+          reader.readAsText(result.value);
         }
-      }
-    });
+      });
+    };
+
+    //Testage ()
+
     document.getElementById("externalSave").onclick = function () {
-      alertify.prompt("MMM-Bugsounet", "Save config file as:", "config.js", function (evt, value) {
-        var fileName = value;
-        if (fileName.indexOf(".") === -1) {
-          fileName = `${fileName}.js`;
-        } else {
-          if (fileName.split(".").pop().toLowerCase() === "js") {
-            // Nothing to do
-          } else {
-            fileName = `${fileName.split(".")[0]}.js`;
+      Swal.fire({
+        icon: "question",
+        title: ConfigurationTranslations["SaveTip"],
+        input: "text",
+        text: ConfigurationTranslations["Filename"],
+        inputValue: "config.js",
+        confirmButtonText: GenericTranslations["Export"],
+        cancelButtonText: GenericTranslations["Cancel"],
+        showCancelButton: true,
+        customClass: {
+          confirmButton: "btn btn-success btn-round bg-google-green me-3",
+          cancelButton: "btn btn-dark btn-round bg-google-grey-19"
+        },
+        inputValidator: (value) => {
+          if (!value || !value.endsWith(".js")) {
+            return GenericTranslations["FileName"];
           }
+        },
+        didOpen: () => {
+          contentWrapper.classList.add("blur");
+        },
+        willClose: () => {
+          contentWrapper.classList.remove("blur");
         }
-        var configToSave = editor.getText();
-        let encoded = btoa(configToSave);
-        saveBackup(encoded, (back) => {
-          alertify.success("Download is ready !");
-          fetch(back.file)
-            .then((response) => response.blob())
-            .then((result) => saveAs(result, fileName))
-            .catch((e) => {
-              console.error("Save Error:", e);
-              alertify.error("Save Error!");
-            });
-        });
-      }, function () {
-        // do nothing
+      }).then((result) => {
+        if (result.isConfirmed) {
+          var fileName = result.value;
+          var configToSave = editor.getText();
+          let encoded = btoa(configToSave);
+          saveBackup(encoded, (back) => {
+            alertify.success(GenericTranslations["DownloadReady"]);
+            fetch(back.file)
+              .then((response) => response.blob())
+              .then((blob) => saveAs(blob, fileName))
+              .catch((e) => {
+                console.error("Download Error:", e);
+                alertify.error("Download Error!");
+              });
+          });
+        }
       });
     };
 
