@@ -12,7 +12,7 @@ function getCurrentToken () {
 }
 
 function doLogin (credentials, cb) {
-  Request("/auth", "POST", { Authorization: `Basic ${credentials}` }, null, "Login", (response) => {
+  Request("/auth", "POST", { Authorization: `Basic ${credentials}` }, null, "doLogin", (response) => {
     localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
     location.href = "/";
   }, (err) => cb(err));
@@ -20,25 +20,25 @@ function doLogin (credentials, cb) {
 
 function getTranslate (lang, query, values = null) {
   return new Promise((resolve) => {
-    Request("/api/translations/translate", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, translate: query, values: JSON.stringify(values) }, null, "translate", (translate) => resolve(translate.translate));
+    Request("/api/translations/translate", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, translate: query, values: JSON.stringify(values) }, null, "getTranslatee", (translate) => resolve(translate.translate));
   });
 }
 
 function getTranslateGroup (lang, group) {
   return new Promise((resolve) => {
-    Request("/api/translations/group", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, group: group }, null, "Grouptranslate", (translate) => resolve(translate.translate));
+    Request("/api/translations/group", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, group: group }, null, "getTranslateGroup", (translate) => resolve(translate.translate));
   });
 }
 
 function getMyUser () {
   return new Promise((resolve) => {
-    Request("/api/me", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "MyUser", (user) => resolve(user));
+    Request("/api/me", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getMyUser", (user) => resolve(user));
   });
 }
 
 function putMyUser (body, cb) {
   return new Promise((resolve) => {
-    Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ me: btoa(JSON.stringify(body)) }), "MyUser", (result) => {
+    Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { me: btoa(JSON.stringify(body)) }, "putMyUser", (result) => {
       if (cb) cb();
       resolve(result);
     });
@@ -47,49 +47,49 @@ function putMyUser (body, cb) {
 
 function getHomeText (lang) {
   return new Promise((resolve) => {
-    Request("/api/translations/homeText", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang }, null, "homeText", (text) => resolve(text.homeText));
+    Request("/api/translations/homeText", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang }, null, "getHomeText", (text) => resolve(text.homeText));
   });
 }
 
 function getVersion () {
   return new Promise((resolve) => {
-    Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "version", (version) => resolve(version));
+    Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getVersion", (version) => resolve(version));
   });
 }
 
 function getAPIDocs () {
   return new Promise((resolve) => {
-    Request("/api", "GET", null, null, "API", (api) => resolve(api.docs));
+    Request("/api", "GET", null, null, "getAPIDocs", (api) => resolve(api.docs));
   });
 }
 
 function doDie () {
   return new Promise((resolve) => {
-    Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Die", () => resolve());
+    Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doDie", () => resolve());
   });
 }
 
 function doRestart () {
   return new Promise((resolve) => {
-    Request("/api/system/restart", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Restart", () => resolve());
+    Request("/api/system/restart", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doRestart", () => resolve());
   });
 }
 
 function doReboot () {
   return new Promise((resolve) => {
-    Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Reboot", () => resolve());
+    Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doReboot", () => resolve());
   });
 }
 
 function doShutdown () {
   return new Promise((resolve) => {
-    Request("/api/system/shutdown", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Shutdown", () => resolve());
+    Request("/api/system/shutdown", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doShutdown", () => resolve());
   });
 }
 
 function doUpdates (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Updates", () => {
+    Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doUpdates", () => {
       if (success) success();
       resolve();
     });
@@ -98,7 +98,7 @@ function doUpdates (success) {
 
 function doStop (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/stop", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "STOP", () => {
+    Request("/api/EXT/stop", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doStop", () => {
       if (success) success();
       resolve();
     });
@@ -107,7 +107,7 @@ function doStop (success) {
 
 function putRadio (radio, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/RadioPlayer", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ radio: radio }), "RadioPlayer", () => {
+    Request("/api/EXT/RadioPlayer", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { radio: radio }, "putRadio", () => {
       if (success) success();
       resolve();
     });
@@ -116,7 +116,7 @@ function putRadio (radio, success) {
 
 function putSpeaker (volume, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: volume }), "Volume", () => {
+    Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { volume: volume }, "putSpeaker", () => {
       if (success) success();
       resolve();
     });
@@ -125,7 +125,7 @@ function putSpeaker (volume, success) {
 
 function putMic (volume, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ volume: volume }), "Volume", () => {
+    Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { volume: volume }, "putMic", () => {
       if (success) success();
       resolve();
     });
@@ -134,7 +134,7 @@ function putMic (volume, success) {
 
 function putTV (channel, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ TV: channel }), "FreeboxTV", () => {
+    Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { TV: channel }, "putTV", () => {
       if (success) success();
       resolve();
     });
@@ -143,7 +143,7 @@ function putTV (channel, success) {
 
 function doAlert (alert, success) {
   return new Promise((resolve) => {
-    Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ alert: alert }), "Alert", () => {
+    Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, { alert: alert }, "doAlert", () => {
       if (success) success();
       resolve();
     });
@@ -152,25 +152,25 @@ function doAlert (alert, success) {
 
 function getCurrentSystem () {
   return new Promise((resolve) => {
-    Request("/api/system/currentSysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system));
+    Request("/api/system/currentSysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getCurrentSystem", (system) => resolve(system));
   });
 }
 
 function checkSystem () {
   return new Promise((resolve) => {
-    Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "sysInfo", (system) => resolve(system));
+    Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "checkSystem", (system) => resolve(system));
   });
 }
 
 function checkEXTStatus () {
   return new Promise((resolve) => {
-    Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "status", (Status) => resolve(Status));
+    Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "checkEXTStatus", (Status) => resolve(Status));
   });
 }
 
 function loadLoginTranslation () {
   return new Promise((resolve) => {
-    Request("/api/translations/login", "GET", null, null, "loginTranslation", (tr) => resolve(tr));
+    Request("/api/translations/login", "GET", null, null, "loadLoginTranslation", (tr) => resolve(tr));
   });
 }
 
@@ -233,7 +233,7 @@ function loadBackupNames () {
 
 function deleteBackups (success, error) {
   return new Promise((resolve) => {
-    Request("/api/backups", "DELETE", { Authorization: `Bearer ${getCurrentToken()}` }, null, "backup-Delete", () => {
+    Request("/api/backups", "DELETE", { Authorization: `Bearer ${getCurrentToken()}` }, null, "deleteBackups", () => {
       if (success) success();
       resolve();
     }, (err) => {
@@ -272,7 +272,7 @@ function loadBackupConfig (file) {
 
 function doAssistantQuery (send, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Assistant/send", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ send: send }), "GoogleAssistant", () => {
+    Request("/api/EXT/Assistant/send", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, { send: send }, "doAssistantQuery", () => {
       if (success) success();
       resolve();
     });
@@ -281,7 +281,7 @@ function doAssistantQuery (send, success) {
 
 function doScreenPower (power, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Screen", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ power: power }), "Screen", () => {
+    Request("/api/EXT/Screen", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { power: power }, "doScreenPower", () => {
       if (success) success();
       resolve();
     });
@@ -290,7 +290,7 @@ function doScreenPower (power, success) {
 
 function SpotifySend (send, type, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ query: send, type: type }), "Spotify", () => {
+    Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { query: send, type: type }, "SpotifySend", () => {
       if (success) success();
       resolve();
     });
@@ -299,7 +299,7 @@ function SpotifySend (send, type, success) {
 
 function SpotifyPlay (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/play", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+    Request("/api/EXT/Spotify/play", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyPlay", () => {
       if (success) success();
       resolve();
     });
@@ -308,7 +308,7 @@ function SpotifyPlay (success) {
 
 function SpotifyStop (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/stop", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+    Request("/api/EXT/Spotify/stop", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyStop", () => {
       if (success) success();
       resolve();
     });
@@ -317,7 +317,7 @@ function SpotifyStop (success) {
 
 function SpotifyNext (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/next", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+    Request("/api/EXT/Spotify/next", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyNext", () => {
       if (success) success();
       resolve();
     });
@@ -326,15 +326,55 @@ function SpotifyNext (success) {
 
 function SpotifyPrevious (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/previous", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "Spotify", () => {
+    Request("/api/EXT/Spotify/previous", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyPrevious", () => {
       if (success) success();
       resolve();
     });
   });
 }
 
-async function Request (url, type, header, data, from, success, fail) {
-  // console.log(url, type, header, data, from, success, fail)
+function loadBackup (backup, success, failed) {
+  return new Promise((resolve) => {
+    Request("/api/backups/file", "PUT", { Authorization: `Bearer ${getCurrentToken()}`, backup: backup }, null, "loadBackup", () => {
+      if (success) success();
+      resolve();
+    }, (err) => {
+      if (err) failed(err);
+    });
+  });
+}
+
+function readBackup (config, success) {
+  return new Promise((resolve) => {
+    Request("/api/backups/external", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, { config: config }, "readBackup", (result) => {
+      if (success) success(result);
+      resolve();
+    });
+  });
+}
+
+function saveBackup (config, success) {
+  return new Promise((resolve) => {
+    Request("/api/backups/external", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { config: config }, "saveBackup", (result) => {
+      if (success) success(result);
+      resolve();
+    });
+  });
+}
+
+function writeConfig (config, success, failed) {
+  return new Promise((resolve) => {
+    Request("/api/config/MM", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { config: config }, "writeConfig", () => {
+      if (success) success();
+      resolve();
+    }, (err) => {
+      if (err) failed(err);
+    });
+  });
+}
+
+async function Request (url, type, header, body, from, success, fail) {
+
   var headers = {
     "Content-Type": "application/json"
   };
@@ -343,48 +383,42 @@ async function Request (url, type, header, data, from, success, fail) {
     headers = Object.assign(headers, header);
   }
 
-  var response;
-  var result = {};
+  const config = {
+    method: type,
+    headers: headers,
+    body: body ? JSON.stringify(body) : null
+  };
 
   try {
-    response = await fetch(url, {
-      method: type,
-      headers: headers,
-      body: data
-    });
-  } catch {
-    Alert++;
-    if (Alert === 1) {
-      alertify.error("Connexion Lost!");
-      showAlert("No response from EXT-Website");
-    }
-    return;
-  }
+    const response = await fetch(url, config);
 
-  if (response.ok && response.status < 400) {
-    result = await response.json();
-    if (success) success(result);
-    Alert = 0;
-  } else {
-    Alert++;
-    try {
-      result = await response.json();
-    } catch {
-      result.error = response.statusText;
-    }
+    if (!response.ok) {
+      Alert++;
+      const errorBody = await response.json().catch(() => null);
+      const error = new Error(`HTTP error! status: ${response.status}`);
+      error.status = response.status;
+      error.body = errorBody?.error || response.statusText;
 
-    result.status = response.status;
-
-    if (fail) fail(result);
-    else {
-      if (result.status === 401 || response.status === 403) location.href = "/logout";
-      if (Alert === 1) {
-        if (result.status === 502 || response.status === 500) {
-          showAlert("No response from MMM-Bugsounet");
+      if (fail) fail(error);
+      else {
+        if (response.status === 401 || response.status === 403) location.href = "/logout";
+        if (Alert === 1) {
+          if (response.status === 500 || response.status === 502) {
+            showAlert("No response from MMM-Bugsounet");
+          }
+          alertify.error(`[${from}] Server return Error ${error.status}: ${error.body}`);
         }
-        alertify.error(`[${from}] Server return Error ${response.status}: ${result.error}`);
       }
+      return;
     }
+    const result = await response.json();
+    Alert = 0;
+    if (success) success(result);
+
+  } catch (error) {
+    // EXT-Website Down
+    Alert++;
+    showAlert("No response from EXT-Website");
   }
 }
 

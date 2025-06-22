@@ -1,9 +1,10 @@
 /* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
-  checkSystem io Terminal FitAddon getVersion getCurrentToken getHomeText applyNavbarTheme
+  checkSystem io Terminal FitAddon getVersion getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs FileReaderJS JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
+  loadBackup saveBackup readBackup writeConfig
  */
 
 /* eslint-disable max-lines-per-function */
@@ -68,12 +69,9 @@ document.addEventListener("Includes_Complete", async () => {
       doLogin(encodedCredentials, (err) => {
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
-        let error = err?.error;
-        let description = err?.description;
         if (!err.status || err.status === 500 || err.status === 502) showAlert("No response from MMM-Bugsounet");
         else if (err.status === 403) alertify.error(loginTranslations["Error"]);
-        else if (err.status === 401) alertify.error(`${error}: ${description}`);
-        else alertify.error(`Server return Error ${err.status} (${error})`);
+        else alertify.error(`Server return Error ${err.status} (${err.body})`);
       });
     });
     spinnerHide();
@@ -1023,9 +1021,7 @@ document.addEventListener("Includes_Complete", async () => {
           alertify.success(ToolsTranslations["Backup_Deleted"]);
           HideBlock("BackupBlock");
         }, (err) => {
-          let error = err.error;
-          if (!err.status) alertify.error("Connexion Lost!");
-          else alertify.error(`[backup-Delete] Server return Error ${err.status} (${error})`);
+          alertify.error(`[backup-Delete] Server return Error ${err.status} (${err.body})`);
         });
       };
     } else {
@@ -1365,7 +1361,7 @@ document.addEventListener("Includes_Complete", async () => {
       document.getElementById("load").style.display = "none";
       document.getElementById("wait").style.display = "block";
 
-      Request("/api/backups/file", "PUT", { Authorization: `Bearer ${getCurrentToken()}`, backup: conf }, null, "loadBackup", async () => {
+      loadBackup(conf, async () => {
         document.getElementById("wait").style.display = "none";
         document.getElementById("done").style.display = "block";
         document.getElementById("alert").classList.remove("invisible");
@@ -1376,12 +1372,7 @@ document.addEventListener("Includes_Complete", async () => {
         document.getElementById("alert").classList.remove("invisible");
         document.getElementById("alert").classList.remove("alert-success");
         document.getElementById("alert").classList.add("alert-danger");
-        let error = err.error;
-        if (!err.status) {
-          alertify.error("Connexion Lost!");
-        } else {
-          alertify.error(`[loadBackup] Server return Error ${err.status} (${error})`);
-        }
+        alertify.error(`[loadBackup] Server return Error ${err.status} (${err.body})`);
       });
     };
     document.getElementById("save").onclick = function () {
@@ -1390,7 +1381,7 @@ document.addEventListener("Includes_Complete", async () => {
       document.getElementById("wait").style.display = "block";
       let encode = btoa(data);
 
-      Request("api/config/MM", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ config: encode }), "writeConfig", async () => {
+      writeConfig(encode, async () => {
         document.getElementById("wait").style.display = "none";
         document.getElementById("done").style.display = "block";
         document.getElementById("alert").classList.remove("invisible");
@@ -1401,12 +1392,7 @@ document.addEventListener("Includes_Complete", async () => {
         document.getElementById("alert").classList.remove("invisible");
         document.getElementById("alert").classList.remove("alert-success");
         document.getElementById("alert").classList.add("alert-danger");
-        let error = err.error;
-        if (!err.status) {
-          alertify.error("Connexion Lost!");
-        } else {
-          alertify.error(`[writeConfig] Server return Error ${err.status} (${error})`);
-        }
+        alertify.error(`[writeConfig] Server return Error ${err.status} (${err.body})`);
       });
     };
     FileReaderJS.setupInput(document.getElementById("fileToLoad"), {
@@ -1414,14 +1400,14 @@ document.addEventListener("Includes_Complete", async () => {
       on: {
         load (event) {
           if (event.target.result) {
-            let encode = btoa(event.target.result);
-            Request("/api/backups/external", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ config: encode }), "readExternalBackup", (back) => {
+            let encodedConfig = btoa(event.target.result);
+            readBackup(encodedConfig, (back) => {
               let decode = atob(back.config);
               let config = JSON.parse(decode);
               editor.update(config);
               editor.refresh();
               alertify.success("External Config Loaded !");
-            }, null);
+            });
           }
         }
       }
@@ -1439,8 +1425,8 @@ document.addEventListener("Includes_Complete", async () => {
           }
         }
         var configToSave = editor.getText();
-        let encode = btoa(configToSave);
-        Request("/api/backups/external", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, JSON.stringify({ config: encode }), "saveExternalBackup", (back) => {
+        let encoded = btoa(configToSave);
+        saveBackup(encoded, (back) => {
           alertify.success("Download is ready !");
           fetch(back.file)
             .then((response) => response.blob())
@@ -1449,7 +1435,7 @@ document.addEventListener("Includes_Complete", async () => {
               console.error("Save Error:", e);
               alertify.error("Save Error!");
             });
-        }, null);
+        });
       }, function () {
         // do nothing
       });
