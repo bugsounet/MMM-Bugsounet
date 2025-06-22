@@ -12,7 +12,7 @@ function getCurrentToken () {
 }
 
 function doLogin (credentials, cb) {
-  Request("/auth", "POST", { Authorization: `Basic ${credentials}` }, null, "doLogin", (response) => {
+  Request("/auth", "POST", false, { Authorization: `Basic ${credentials}` }, null, "doLogin", (response) => {
     localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
     location.href = "/";
   }, (err) => cb(err));
@@ -20,25 +20,25 @@ function doLogin (credentials, cb) {
 
 function getTranslate (lang, query, values = null) {
   return new Promise((resolve) => {
-    Request("/api/translations/translate", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, translate: query, values: JSON.stringify(values) }, null, "getTranslatee", (translate) => resolve(translate.translate));
+    Request("/api/translations/translate", "GET", true, { language: lang, translate: query, values: JSON.stringify(values) }, null, "getTranslatee", (translate) => resolve(translate.translate));
   });
 }
 
 function getTranslateGroup (lang, group) {
   return new Promise((resolve) => {
-    Request("/api/translations/group", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang, group: group }, null, "getTranslateGroup", (translate) => resolve(translate.translate));
+    Request("/api/translations/group", "GET", true, { language: lang, group: group }, null, "getTranslateGroup", (translate) => resolve(translate.translate));
   });
 }
 
 function getMyUser () {
   return new Promise((resolve) => {
-    Request("/api/me", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getMyUser", (user) => resolve(user));
+    Request("/api/me", "GET", true, null, null, "getMyUser", (user) => resolve(user));
   });
 }
 
 function putMyUser (body, cb) {
   return new Promise((resolve) => {
-    Request("/api/me", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { me: btoa(JSON.stringify(body)) }, "putMyUser", (result) => {
+    Request("/api/me", "PUT", true, null, { me: btoa(JSON.stringify(body)) }, "putMyUser", (result) => {
       if (cb) cb();
       resolve(result);
     });
@@ -47,49 +47,49 @@ function putMyUser (body, cb) {
 
 function getHomeText (lang) {
   return new Promise((resolve) => {
-    Request("/api/translations/homeText", "GET", { Authorization: `Bearer ${getCurrentToken()}`, language: lang }, null, "getHomeText", (text) => resolve(text.homeText));
+    Request("/api/translations/homeText", "GET", true, { language: lang }, null, "getHomeText", (text) => resolve(text.homeText));
   });
 }
 
 function getVersion () {
   return new Promise((resolve) => {
-    Request("/api/version", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getVersion", (version) => resolve(version));
+    Request("/api/version", "GET", true, null, null, "getVersion", (version) => resolve(version));
   });
 }
 
 function getAPIDocs () {
   return new Promise((resolve) => {
-    Request("/api", "GET", null, null, "getAPIDocs", (api) => resolve(api.docs));
+    Request("/api", "GET", false, null, null, "getAPIDocs", (api) => resolve(api.docs));
   });
 }
 
 function doDie () {
   return new Promise((resolve) => {
-    Request("/api/system/die", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doDie", () => resolve());
+    Request("/api/system/die", "POST", true, null, null, "doDie", () => resolve());
   });
 }
 
 function doRestart () {
   return new Promise((resolve) => {
-    Request("/api/system/restart", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doRestart", () => resolve());
+    Request("/api/system/restart", "POST", true, null, null, "doRestart", () => resolve());
   });
 }
 
 function doReboot () {
   return new Promise((resolve) => {
-    Request("/api/system/reboot", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doReboot", () => resolve());
+    Request("/api/system/reboot", "POST", true, null, null, "doReboot", () => resolve());
   });
 }
 
 function doShutdown () {
   return new Promise((resolve) => {
-    Request("/api/system/shutdown", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doShutdown", () => resolve());
+    Request("/api/system/shutdown", "POST", true, null, null, "doShutdown", () => resolve());
   });
 }
 
 function doUpdates (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Updates", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doUpdates", () => {
+    Request("/api/EXT/Updates", "PUT", true, null, null, "doUpdates", () => {
       if (success) success();
       resolve();
     });
@@ -98,7 +98,7 @@ function doUpdates (success) {
 
 function doStop (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/stop", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, null, "doStop", () => {
+    Request("/api/EXT/stop", "POST", true, null, null, "doStop", () => {
       if (success) success();
       resolve();
     });
@@ -107,7 +107,7 @@ function doStop (success) {
 
 function putRadio (radio, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/RadioPlayer", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { radio: radio }, "putRadio", () => {
+    Request("/api/EXT/RadioPlayer", "PUT", true, null, { radio: radio }, "putRadio", () => {
       if (success) success();
       resolve();
     });
@@ -116,7 +116,7 @@ function putRadio (radio, success) {
 
 function putSpeaker (volume, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Volume/speaker", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { volume: volume }, "putSpeaker", () => {
+    Request("/api/EXT/Volume/speaker", "PUT", true, null, { volume: volume }, "putSpeaker", () => {
       if (success) success();
       resolve();
     });
@@ -125,7 +125,7 @@ function putSpeaker (volume, success) {
 
 function putMic (volume, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Volume/recorder", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { volume: volume }, "putMic", () => {
+    Request("/api/EXT/Volume/recorder", "PUT", true, null, { volume: volume }, "putMic", () => {
       if (success) success();
       resolve();
     });
@@ -134,7 +134,7 @@ function putMic (volume, success) {
 
 function putTV (channel, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/FreeboxTV", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { TV: channel }, "putTV", () => {
+    Request("/api/EXT/FreeboxTV", "PUT", true, null, { TV: channel }, "putTV", () => {
       if (success) success();
       resolve();
     });
@@ -143,7 +143,7 @@ function putTV (channel, success) {
 
 function doAlert (alert, success) {
   return new Promise((resolve) => {
-    Request("/api/system/alert", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, { alert: alert }, "doAlert", () => {
+    Request("/api/system/alert", "POST", true, null, { alert: alert }, "doAlert", () => {
       if (success) success();
       resolve();
     });
@@ -152,61 +152,61 @@ function doAlert (alert, success) {
 
 function getCurrentSystem () {
   return new Promise((resolve) => {
-    Request("/api/system/currentSysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getCurrentSystem", (system) => resolve(system));
+    Request("/api/system/currentSysInfo", "GET", true, null, null, "getCurrentSystem", (system) => resolve(system));
   });
 }
 
 function checkSystem () {
   return new Promise((resolve) => {
-    Request("/api/system/sysInfo", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "checkSystem", (system) => resolve(system));
+    Request("/api/system/sysInfo", "GET", true, null, null, "checkSystem", (system) => resolve(system));
   });
 }
 
 function checkEXTStatus () {
   return new Promise((resolve) => {
-    Request("/api/EXT/status", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "checkEXTStatus", (Status) => resolve(Status));
+    Request("/api/EXT/status", "GET", true, null, null, "checkEXTStatus", (Status) => resolve(Status));
   });
 }
 
 function loadLoginTranslation () {
   return new Promise((resolve) => {
-    Request("/api/translations/login", "GET", null, null, "loadLoginTranslation", (tr) => resolve(tr));
+    Request("/api/translations/login", "GET", false, null, null, "loadLoginTranslation", (tr) => resolve(tr));
   });
 }
 
 function loadTranslation () {
   return new Promise((resolve) => {
-    Request("/api/translations/common", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadTranslation", (tr) => resolve(tr));
+    Request("/api/translations/common", "GET", true, null, null, "loadTranslation", (tr) => resolve(tr));
   });
 }
 
 function loadDataAllEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataAllEXT", (all) => resolve(all));
+    Request("/api/EXT", "GET", true, null, null, "loadDataAllEXT", (all) => resolve(all));
   });
 }
 
 function loadDataConfiguredEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT/configured", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataConfiguredEXT", (confEXT) => resolve(confEXT));
+    Request("/api/EXT/configured", "GET", true, null, null, "loadDataConfiguredEXT", (confEXT) => resolve(confEXT));
   });
 }
 
 function loadDataInstalledEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT/installed", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataInstalledEXT", (instEXT) => resolve(instEXT));
+    Request("/api/EXT/installed", "GET", true, null, null, "loadDataInstalledEXT", (instEXT) => resolve(instEXT));
   });
 }
 
 function loadDataDescriptionEXT () {
   return new Promise((resolve) => {
-    Request("/api/EXT/descriptions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadDataDescriptionEXT", (desEXT) => resolve(desEXT));
+    Request("/api/EXT/descriptions", "GET", true, null, null, "loadDataDescriptionEXT", (desEXT) => resolve(desEXT));
   });
 }
 
 function loadMMConfig () {
   return new Promise((resolve) => {
-    Request("/api/config/MM", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadMMConfig", (response) => {
+    Request("/api/config/MM", "GET", true, null, null, "loadMMConfig", (response) => {
       try {
         let parse = atob(response.config);
         let config = JSON.parse(parse);
@@ -221,19 +221,19 @@ function loadMMConfig () {
 
 function getEXTVersions () {
   return new Promise((resolve) => {
-    Request("/api/EXT/versions", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "getEXTVersions", (EXTs) => resolve(EXTs));
+    Request("/api/EXT/versions", "GET", true, null, null, "getEXTVersions", (EXTs) => resolve(EXTs));
   });
 }
 
 function loadBackupNames () {
   return new Promise((resolve) => {
-    Request("/api/backups", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadBackupNames", (backups) => resolve(backups));
+    Request("/api/backups", "GET", true, null, null, "loadBackupNames", (backups) => resolve(backups));
   });
 }
 
 function deleteBackups (success, error) {
   return new Promise((resolve) => {
-    Request("/api/backups", "DELETE", { Authorization: `Bearer ${getCurrentToken()}` }, null, "deleteBackups", () => {
+    Request("/api/backups", "DELETE", true, null, null, "deleteBackups", () => {
       if (success) success();
       resolve();
     }, (err) => {
@@ -245,19 +245,19 @@ function deleteBackups (success, error) {
 
 function loadRadio () {
   return new Promise((resolve) => {
-    Request("/api/EXT/RadioPlayer", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadRadio", (radio) => resolve(radio));
+    Request("/api/EXT/RadioPlayer", "GET", true, null, null, "loadRadio", (radio) => resolve(radio));
   });
 }
 
 function loadFreeboxTV () {
   return new Promise((resolve) => {
-    Request("/api/EXT/FreeboxTV", "GET", { Authorization: `Bearer ${getCurrentToken()}` }, null, "loadFreeboxTV", (radio) => resolve(radio));
+    Request("/api/EXT/FreeboxTV", "GET", true, null, null, "loadFreeboxTV", (radio) => resolve(radio));
   });
 }
 
 function loadBackupConfig (file) {
   return new Promise((resolve) => {
-    Request("/api/backups/file", "GET", { Authorization: `Bearer ${getCurrentToken()}`, backup: file }, null, "loadBackupConfig", (response) => {
+    Request("/api/backups/file", "GET", true, { backup: file }, null, "loadBackupConfig", (response) => {
       try {
         let parse = atob(response.config);
         let backup = JSON.parse(parse);
@@ -272,7 +272,7 @@ function loadBackupConfig (file) {
 
 function doAssistantQuery (send, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Assistant/send", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, { send: send }, "doAssistantQuery", () => {
+    Request("/api/EXT/Assistant/send", "POST", true, null, { send: send }, "doAssistantQuery", () => {
       if (success) success();
       resolve();
     });
@@ -281,7 +281,7 @@ function doAssistantQuery (send, success) {
 
 function doScreenPower (power, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Screen", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { power: power }, "doScreenPower", () => {
+    Request("/api/EXT/Screen", "PUT", true, null, { power: power }, "doScreenPower", () => {
       if (success) success();
       resolve();
     });
@@ -290,7 +290,7 @@ function doScreenPower (power, success) {
 
 function SpotifySend (send, type, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { query: send, type: type }, "SpotifySend", () => {
+    Request("/api/EXT/Spotify", "PUT", true, null, { query: send, type: type }, "SpotifySend", () => {
       if (success) success();
       resolve();
     });
@@ -299,7 +299,7 @@ function SpotifySend (send, type, success) {
 
 function SpotifyPlay (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/play", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyPlay", () => {
+    Request("/api/EXT/Spotify/play", "PUT", true, null, null, "SpotifyPlay", () => {
       if (success) success();
       resolve();
     });
@@ -308,7 +308,7 @@ function SpotifyPlay (success) {
 
 function SpotifyStop (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/stop", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyStop", () => {
+    Request("/api/EXT/Spotify/stop", "PUT", true, null, null, "SpotifyStop", () => {
       if (success) success();
       resolve();
     });
@@ -317,7 +317,7 @@ function SpotifyStop (success) {
 
 function SpotifyNext (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/next", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyNext", () => {
+    Request("/api/EXT/Spotify/next", "PUT", true, null, null, "SpotifyNext", () => {
       if (success) success();
       resolve();
     });
@@ -326,7 +326,7 @@ function SpotifyNext (success) {
 
 function SpotifyPrevious (success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/previous", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, null, "SpotifyPrevious", () => {
+    Request("/api/EXT/Spotify/previous", "PUT", true, null, null, "SpotifyPrevious", () => {
       if (success) success();
       resolve();
     });
@@ -335,7 +335,7 @@ function SpotifyPrevious (success) {
 
 function loadBackup (backup, success, failed) {
   return new Promise((resolve) => {
-    Request("/api/backups/file", "PUT", { Authorization: `Bearer ${getCurrentToken()}`, backup: backup }, null, "loadBackup", () => {
+    Request("/api/backups/file", "PUT", true, null, { backup: backup }, null, "loadBackup", () => {
       if (success) success();
       resolve();
     }, (err) => {
@@ -346,7 +346,7 @@ function loadBackup (backup, success, failed) {
 
 function readBackup (config, success) {
   return new Promise((resolve) => {
-    Request("/api/backups/external", "POST", { Authorization: `Bearer ${getCurrentToken()}` }, { config: config }, "readBackup", (result) => {
+    Request("/api/backups/external", "POST", true, null, { config: config }, "readBackup", (result) => {
       if (success) success(result);
       resolve();
     });
@@ -355,7 +355,7 @@ function readBackup (config, success) {
 
 function saveBackup (config, success) {
   return new Promise((resolve) => {
-    Request("/api/backups/external", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { config: config }, "saveBackup", (result) => {
+    Request("/api/backups/external", "PUT", true, null, { config: config }, "saveBackup", (result) => {
       if (success) success(result);
       resolve();
     });
@@ -364,7 +364,7 @@ function saveBackup (config, success) {
 
 function writeConfig (config, success, failed) {
   return new Promise((resolve) => {
-    Request("/api/config/MM", "PUT", { Authorization: `Bearer ${getCurrentToken()}` }, { config: config }, "writeConfig", () => {
+    Request("/api/config/MM", "PUT", true, null, { config: config }, "writeConfig", () => {
       if (success) success();
       resolve();
     }, (err) => {
@@ -373,19 +373,19 @@ function writeConfig (config, success, failed) {
   });
 }
 
-async function Request (url, type, header, body, from, success, fail) {
+async function Request (url, method = "GET", auth, headerOptions = {}, body, fromFunctionName, callbackSuccess, callbackFailed) {
 
   var headers = {
     "Content-Type": "application/json"
   };
 
-  if (header) {
-    headers = Object.assign(headers, header);
+  if (auth === true) {
+    headers.Authorization = `Bearer ${getCurrentToken()}`;
   }
 
   const config = {
-    method: type,
-    headers: headers,
+    method: method,
+    headers: { ...headers, ...headerOptions },
     body: body ? JSON.stringify(body) : null
   };
 
@@ -399,26 +399,23 @@ async function Request (url, type, header, body, from, success, fail) {
       error.status = response.status;
       error.body = errorBody?.error || response.statusText;
 
-      if (fail) fail(error);
-      else {
-        if (response.status === 401 || response.status === 403) location.href = "/logout";
-        if (Alert === 1) {
-          if (response.status === 500 || response.status === 502) {
-            showAlert("No response from MMM-Bugsounet");
-          }
-          alertify.error(`[${from}] Server return Error ${error.status}: ${error.body}`);
+      if (callbackFailed) return callbackFailed(error);
+      if (response.status === 401 || response.status === 403) location.href = "/logout";
+      if (Alert === 1) {
+        if (response.status === 500 || response.status === 502) {
+          showAlert("No response from MMM-Bugsounet");
         }
+        alertify.error(`[${fromFunctionName}] Server return Error ${error.status}: ${error.body}`);
       }
       return;
     }
     const result = await response.json();
     Alert = 0;
-    if (success) success(result);
-
+    if (callbackSuccess) callbackSuccess(result);
   } catch (error) {
     // EXT-Website Down
-    Alert++;
     showAlert("No response from EXT-Website");
+    alertify.error(`[${fromFunctionName}] Server return ${error.message}`);
   }
 }
 
