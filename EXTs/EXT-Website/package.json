@@ -21,7 +21,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
     "animate.css": "^4.1.1",
-    "bootstrap": "^5.3.6",
+    "bootstrap": "^5.3.7",
     "console-stamp": "^3.1.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
