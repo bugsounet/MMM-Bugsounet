@@ -4,7 +4,7 @@
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
-  loadBackup saveBackup readBackup writeConfig Swal
+  loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery
  */
 
 /* eslint-disable max-lines-per-function */
@@ -1243,6 +1243,28 @@ document.addEventListener("Includes_Complete", async () => {
     } else {
       HideBlock("SpotifyBlock");
       HideBlock("SpotifyBlock2");
+    }
+
+    if (EXTStatus["EXT-YouTube"].hello) {
+      setTranslation("YouTubeText", ToolsTranslations["YouTube_Text"]);
+      document.getElementById("YouTubeQuery").setAttribute("placeholder", ToolsTranslations["YouTube_Query"]);
+      document.getElementById("YouTubeQuery").addEventListener("keyup", function () {
+        if (this.value.length > 5) {
+          document.getElementById("YouTubeSend").classList.remove("disabled");
+        } else {
+          document.getElementById("YouTubeSend").classList.add("disabled");
+        }
+      });
+
+      document.getElementById("YouTubeSend").onclick = function () {
+        document.getElementById("YouTubeSend").classList.add("disabled");
+        doYouTubeQuery(document.getElementById("YouTubeQuery").value, () => {
+          document.getElementById("YouTubeQuery").value = "";
+          alertify.success(GenericTranslations["RequestDone"]);
+        });
+      };
+    } else {
+      HideBlock("YouTubeBlock");
     }
 
     spinnerHide();

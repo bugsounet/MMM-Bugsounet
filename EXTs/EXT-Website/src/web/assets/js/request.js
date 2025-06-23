@@ -279,6 +279,15 @@ function doAssistantQuery (send, success) {
   });
 }
 
+function doYouTubeQuery (search, success) {
+  return new Promise((resolve) => {
+    Request("/api/EXT/YouTube/search", "POST", true, null, { search: search }, "doYouTubeQuery", () => {
+      if (success) success();
+      resolve();
+    });
+  });
+}
+
 function doScreenPower (power, success) {
   return new Promise((resolve) => {
     Request("/api/EXT/Screen", "PUT", true, null, { power: power }, "doScreenPower", () => {
@@ -288,9 +297,9 @@ function doScreenPower (power, success) {
   });
 }
 
-function SpotifySend (send, type, success) {
+function SpotifySend (search, type, success) {
   return new Promise((resolve) => {
-    Request("/api/EXT/Spotify", "PUT", true, null, { query: send, type: type }, "SpotifySend", () => {
+    Request("/api/EXT/Spotify/search", "POST", true, null, { search: search, type: type }, "SpotifySend", () => {
       if (success) success();
       resolve();
     });
