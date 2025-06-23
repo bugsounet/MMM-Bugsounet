@@ -206,5 +206,7 @@
   "Tools_Radio_Text": "Ecouter la Radio",
   "Tools_Radio_NoFound": "Aucune radio trouvé!",
   "Tools_Assistant_Text": "Active Google Assistant avec votre demande",
-  "Tools_Assistant_Query": "Entrez votre demande"
+  "Tools_Assistant_Query": "Entrez votre demande",
+  "Tools_YouTube_Text": "Lance une vidéo YouTube",
+  "Tools_YouTube_Query": "Entrez votre recherche sur YouTube"
 }
