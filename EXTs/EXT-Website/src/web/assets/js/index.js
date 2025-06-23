@@ -955,17 +955,10 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("ToolsTitle", ToolsTranslations["Title"]);
     setTranslation("ToolsDescription", ToolsTranslations["Description"]);
 
-    setTranslation("AssistantSend", GenericTranslations["Send"]);
-    setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
-
-    setTranslation("SpotifySend", GenericTranslations["Listen"]);
-
     let ControlIDs = document.querySelectorAll("[id='Control']");
     ControlIDs.forEach((id) => {
       id.textContent = GenericTranslations["Control"];
     });
-
-    setTranslation("SystemHeader", ToolsTranslations["System_Header"]);
 
     if (EXTStatus["EXT-Updates"].hello) {
       setTranslation("UpdateHeader", ToolsTranslations["Update_Header"]);
@@ -995,6 +988,7 @@ document.addEventListener("Includes_Complete", async () => {
     };
 
     // reboot shutdown system
+    setTranslation("SystemHeader", ToolsTranslations["System_Header"]);
     setTranslation("SysDie", GenericTranslations["Stop"]);
     setTranslation("SysRestart", GenericTranslations["Restart"]);
 
@@ -1155,8 +1149,9 @@ document.addEventListener("Includes_Complete", async () => {
       SendAlertRequest();
     };
 
-    if (EXTStatus["EXT-Assistant"].hello) {
+    if (!EXTStatus["EXT-Assistant"].hello) {
       setTranslation("AssistantText", ToolsTranslations["Assistant_Text"]);
+      setTranslation("AssistantSend", GenericTranslations["Send"]);
       document.getElementById("AssistantQuery").setAttribute("placeholder", ToolsTranslations["Assistant_Query"]);
 
       function SendAssistantRequest () {
@@ -1274,6 +1269,7 @@ document.addEventListener("Includes_Complete", async () => {
 
     if (EXTStatus["EXT-YouTube"].hello) {
       setTranslation("YouTubeText", ToolsTranslations["YouTube_Text"]);
+      setTranslation("YouTubeSend", GenericTranslations["Send"]);
       document.getElementById("YouTubeQuery").setAttribute("placeholder", ToolsTranslations["YouTube_Query"]);
 
       function SendYouTubeRequest () {
