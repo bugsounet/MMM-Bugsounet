@@ -961,8 +961,10 @@ document.addEventListener("Includes_Complete", async () => {
     });
 
     if (EXTStatus["EXT-Updates"].hello) {
+      HideBlock("UpdateBlock");
       setTranslation("UpdateHeader", ToolsTranslations["Update_Header"]);
       setTranslation("UpdateApply", GenericTranslations["Update"]);
+      document.getElementById("UpdateApply").classList.add("disabled");
       document.getElementById("UpdateApply").onclick = function () {
         document.getElementById("UpdateApply").classList.add("disabled");
         doUpdates(() => {
@@ -1262,6 +1264,7 @@ document.addEventListener("Includes_Complete", async () => {
         });
       };
 
+      HideBlock("SpotifyBlock");
     } else {
       HideBlock("SpotifyBlock");
       HideBlock("SpotifyBlock2");
@@ -1298,6 +1301,68 @@ document.addEventListener("Includes_Complete", async () => {
     } else {
       HideBlock("YouTubeBlock");
     }
+
+    function updateTools () {
+      if (EXTStatus["EXT-Screen"].hello) {
+        if (EXTStatus["EXT-Screen"].power) setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
+        else setTranslation("ScreenPower", GenericTranslations["TurnOff"]);
+      }
+
+      if (EXTStatus["EXT-Volume"].hello) {
+        setTranslation("SpeakerValue", `${EXTStatus["EXT-Volume"].speaker}%`);
+        setTranslation("MicValue", `${EXTStatus["EXT-Volume"].recorder}%`);
+      }
+
+      if (hasPluginConnected(EXTStatus, "connected", true)) ShowBlock("StopBlock");
+      else HideBlock("StopBlock");
+
+      if (EXTStatus["EXT-Updates"].hello) {
+        let needUpdate = 0;
+        var updateModules = EXTStatus["EXT-Updates"].module;
+        if (!updateModules || !Object.keys(updateModules).length) return HideBlock("UpdateBlock");
+        if (Object.keys(updateModules).length) {
+          ShowBlock("UpdateBlock");
+          for (const [name] of Object.entries(updateModules)) {
+            if (!document.getElementById(`${name}`)) {
+              var UpdateModuleName = document.createElement("div");
+              UpdateModuleName.id = `${name}`;
+              UpdateModuleName.textContent = `${name}`;
+              document.getElementById("UpdateFiled").appendChild(UpdateModuleName);
+            }
+            if (EXTStatus["EXT-Updates"].list.indexOf(name) > -1) ++needUpdate;
+          }
+        }
+        if (!needUpdate) document.getElementById("UpdateApply").classList.add("disabled");
+        else document.getElementById("UpdateApply").classList.remove("disabled");
+      }
+
+      if (EXTStatus["EXT-Spotify"].hello) {
+        if (EXTStatus["EXT-Spotify"].connected || EXTStatus["EXT-Spotify"].remote) {
+          ShowBlock("SpotifyBlock");
+        } else {
+          HideBlock("SpotifyBlock");
+        }
+        if (EXTStatus["EXT-Spotify"].play) {
+          document.getElementById("SpotifyPlay").classList.add("d-none");
+          document.getElementById("SpotifyStop").classList.remove("d-none");
+          document.getElementById("SpotifyNext").classList.remove("disabled");
+          document.getElementById("SpotifyPrevious").classList.remove("disabled");
+        } else {
+          document.getElementById("SpotifyPlay").classList.remove("d-none");
+          document.getElementById("SpotifyStop").classList.add("d-none");
+          document.getElementById("SpotifyNext").classList.add("disabled");
+          document.getElementById("SpotifyPrevious").classList.add("disabled");
+        }
+      }
+
+    }
+
+    // live stream every secs of EXT for update
+    setInterval(async () => {
+      EXTStatus = await checkEXTStatus();
+      //console.warn("EXTs Status", EXTStatus);
+      updateTools();
+    }, 1000);
 
     spinnerHide();
   }
