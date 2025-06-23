@@ -1130,39 +1130,57 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("AlertSend", GenericTranslations["Send"]);
     document.getElementById("AlertQuery").setAttribute("placeholder", ToolsTranslations["Alert_Query"]);
     setTranslation("AlertText", ToolsTranslations["Alert_Text"]);
-    document.getElementById("AlertQuery").addEventListener("keyup", function () {
-      if (this.value.length > 5) {
-        document.getElementById("AlertSend").classList.remove("disabled");
-      } else {
-        document.getElementById("AlertSend").classList.add("disabled");
-      }
-    });
 
-    document.getElementById("AlertSend").onclick = function () {
+    function SendAlertRequest () {
       document.getElementById("AlertSend").classList.add("disabled");
       doAlert(document.getElementById("AlertQuery").value, () => {
         alertify.success(GenericTranslations["RequestDone"]);
         document.getElementById("AlertQuery").value = "";
       });
+    }
+
+    document.getElementById("AlertQuery").addEventListener("keyup", function (e) {
+      const AlertSend = document.getElementById("AlertSend");
+      if (this.value.length > 5) {
+        AlertSend.classList.remove("disabled");
+      } else {
+        AlertSend.classList.add("disabled");
+      }
+      if ((e.key === "Enter" || e.keyCode === 13) && !AlertSend.matches(".disabled")) {
+        SendAlertRequest();
+      }
+    });
+
+    document.getElementById("AlertSend").onclick = function () {
+      SendAlertRequest();
     };
 
     if (EXTStatus["EXT-Assistant"].hello) {
       setTranslation("AssistantText", ToolsTranslations["Assistant_Text"]);
       document.getElementById("AssistantQuery").setAttribute("placeholder", ToolsTranslations["Assistant_Query"]);
-      document.getElementById("AssistantQuery").addEventListener("keyup", function () {
-        if (this.value.length > 5) {
-          document.getElementById("AssistantSend").classList.remove("disabled");
-        } else {
-          document.getElementById("AssistantSend").classList.add("disabled");
-        }
-      });
 
-      document.getElementById("AssistantSend").onclick = function () {
+      function SendAssistantRequest () {
         document.getElementById("AssistantSend").classList.add("disabled");
         doAssistantQuery(document.getElementById("AssistantQuery").value, () => {
           document.getElementById("AssistantQuery").value = "";
           alertify.success(GenericTranslations["RequestDone"]);
         });
+      }
+
+      document.getElementById("AssistantQuery").addEventListener("keyup", function (e) {
+        const AssistantSend = document.getElementById("AssistantSend");
+        if (this.value.length > 5) {
+          AssistantSend.classList.remove("disabled");
+        } else {
+          AssistantSend.classList.add("disabled");
+        }
+        if ((e.key === "Enter" || e.keyCode === 13) && !AssistantSend.matches(".disabled")) {
+          SendAssistantRequest();
+        }
+      });
+
+      document.getElementById("AssistantSend").onclick = function () {
+        SendAssistantRequest();
       };
     } else {
       HideBlock("AssistantBlock");
@@ -1195,15 +1213,8 @@ document.addEventListener("Includes_Complete", async () => {
       setTranslation("SpotifyAlbum", ToolsTranslations["Spotify_Album"]);
       setTranslation("SpotifyPlaylist", ToolsTranslations["Spotify_Playlist"]);
       setTranslation("SpotifySend", GenericTranslations["Send"]);
-      document.getElementById("SpotifyQuery").addEventListener("keyup", function () {
-        if (this.value.length > 1) {
-          document.getElementById("SpotifySend").classList.remove("disabled");
-        } else {
-          document.getElementById("SpotifySend").classList.add("disabled");
-        }
-      });
 
-      document.getElementById("SpotifySend").onclick = function () {
+      function SendSpotifyRequest () {
         const selectedSpotifySearch = document.querySelector("input[name='spotifySearchType']:checked");
         if (!selectedSpotifySearch) {
           alertify.error("spotifySearchType missing");
@@ -1214,6 +1225,22 @@ document.addEventListener("Includes_Complete", async () => {
           document.getElementById("SpotifyQuery").value = "";
           alertify.success(GenericTranslations["RequestDone"]);
         });
+      }
+
+      document.getElementById("SpotifyQuery").addEventListener("keyup", function (e) {
+        const SpotifySendId = document.getElementById("SpotifySend");
+        if (this.value.length > 1) {
+          SpotifySendId.classList.remove("disabled");
+        } else {
+          SpotifySendId.classList.add("disabled");
+        }
+        if ((e.key === "Enter" || e.keyCode === 13) && !SpotifySendId.matches(".disabled")) {
+          SendSpotifyRequest();
+        }
+      });
+
+      document.getElementById("SpotifySend").onclick = function () {
+        SendSpotifyRequest();
       };
 
       document.getElementById("SpotifyPlay").onclick = function () {
@@ -1248,20 +1275,29 @@ document.addEventListener("Includes_Complete", async () => {
     if (EXTStatus["EXT-YouTube"].hello) {
       setTranslation("YouTubeText", ToolsTranslations["YouTube_Text"]);
       document.getElementById("YouTubeQuery").setAttribute("placeholder", ToolsTranslations["YouTube_Query"]);
-      document.getElementById("YouTubeQuery").addEventListener("keyup", function () {
-        if (this.value.length > 5) {
-          document.getElementById("YouTubeSend").classList.remove("disabled");
-        } else {
-          document.getElementById("YouTubeSend").classList.add("disabled");
-        }
-      });
 
-      document.getElementById("YouTubeSend").onclick = function () {
+      function SendYouTubeRequest () {
         document.getElementById("YouTubeSend").classList.add("disabled");
         doYouTubeQuery(document.getElementById("YouTubeQuery").value, () => {
           document.getElementById("YouTubeQuery").value = "";
           alertify.success(GenericTranslations["RequestDone"]);
         });
+      }
+
+      document.getElementById("YouTubeQuery").addEventListener("keyup", function (e) {
+        let YouTubeSend = document.getElementById("YouTubeSend");
+        if (this.value.length > 5) {
+          YouTubeSend.classList.remove("disabled");
+        } else {
+          YouTubeSend.classList.add("disabled");
+        }
+        if ((e.key === "Enter" || e.keyCode === 13) && !YouTubeSend.matches(".disabled")) {
+          SendYouTubeRequest();
+        }
+      });
+
+      document.getElementById("YouTubeSend").onclick = function () {
+        SendYouTubeRequest();
       };
     } else {
       HideBlock("YouTubeBlock");

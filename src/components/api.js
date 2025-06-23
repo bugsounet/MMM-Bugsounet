@@ -650,11 +650,6 @@ class api {
   /** POST API **/
   async PostAPI (req, res) {
     switch (req.url) {
-      case "/api/EXT/stop":
-        this.sendInternalCallback("STOP");
-        res.json({ done: "ok" });
-        break;
-
       case "/api/system/restart":
         setTimeout(() => this.sendInternalCallback("RESTART"), 1000);
         res.json({ done: "ok" });
@@ -688,6 +683,11 @@ class api {
           sound: "modules/MMM-Bugsounet/resources/message.mp3",
           icon: "modules/MMM-Bugsounet/resources/bugsounet.png"
         });
+        res.json({ done: "ok" });
+        break;
+
+      case "/api/EXT/stop":
+        this.sendInternalCallback("STOP");
         res.json({ done: "ok" });
         break;
 
