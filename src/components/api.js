@@ -542,22 +542,6 @@ class api {
         res.json({ done: "ok" });
         break;
 
-      case "/api/EXT/Spotify":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        var query = req.body["query"];
-        var type = req.body["type"];
-        var ArrayType = ["artist", "album", "playlist", "track"];
-        if (!query || typeof (query) !== "string" || !type || ArrayType.indexOf(type) === -1) return res.status(400).json({ error: "Bad Request" });
-        var pl = {
-          type: type,
-          query: query,
-          random: false
-        };
-        log("Request send Spotify search:", pl);
-        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_SPOTIFY-SEARCH", payload: pl });
-        res.json({ done: "ok" });
-        break;
-
       case "/api/EXT/Screen":
         if (!this.Api.EXTStatus["EXT-Screen"].hello) return res.status(404).json({ error: "Not Found" });
         var power = req.body["power"];
@@ -713,6 +697,31 @@ class api {
         if (typeof (send) !== "string" || send.length < 5) return res.status(400).json({ error: "Bad Request" });
         log("Request MMM-GoogleAssistant send:", send);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_ASSISTANT-ACTIVATE", payload: { type: "TEXT", key: send } });
+        res.json({ done: "ok" });
+        break;
+
+      case "/api/EXT/YouTube/search":
+        if (!this.Api.EXTStatus["EXT-YouTube"].hello) return res.status(404).json({ error: "Not Found" });
+        var YTquery = req.body["search"];
+        if (typeof (YTquery) !== "string" || YTquery.length < 5) return res.status(400).json({ error: "Bad Request" });
+        log("Request send youtube search:", YTquery);
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_YOUTUBE-SEARCH", payload: YTquery });
+        res.json({ done: "ok" });
+        break;
+
+      case "/api/EXT/Spotify/search":
+        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
+        var search = req.body["search"];
+        var type = req.body["type"];
+        var ArrayType = ["artist", "album", "playlist", "track"];
+        if (!search || typeof (search) !== "string" || !type || ArrayType.indexOf(type) === -1) return res.status(400).json({ error: "Bad Request" });
+        var pl = {
+          type: type,
+          query: search,
+          random: false
+        };
+        log("Request send Spotify search:", pl);
+        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_SPOTIFY-SEARCH", payload: pl });
         res.json({ done: "ok" });
         break;
 
