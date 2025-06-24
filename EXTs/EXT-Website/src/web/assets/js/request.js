@@ -424,8 +424,10 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
   } catch (error) {
     // EXT-Website Down
     Alert++;
-    if (Alert === 1) showAlert("No response from EXT-Website");
-    alertify.error(`[${fromFunctionName}] Server return ${error.message}`);
+    if (Alert === 1) {
+      showAlert("No response from EXT-Website");
+      alertify.error(`[${fromFunctionName}] Server return ${error.message}`);
+    }
   }
 }
 
