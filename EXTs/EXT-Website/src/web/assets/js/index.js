@@ -66,7 +66,10 @@ document.addEventListener("Includes_Complete", async () => {
       event.preventDefault();
       let credentials = `${document.getElementById("username").value}:${document.getElementById("password").value}`;
       let encodedCredentials = btoa(credentials);
-      doLogin(encodedCredentials, (err) => {
+      doLogin(encodedCredentials, (response) => {
+        localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
+        location.href = "/";
+      }, (err) => {
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
         if (!err.status || err.status === 500 || err.status === 502) showAlert("No response from MMM-Bugsounet");
@@ -1151,7 +1154,7 @@ document.addEventListener("Includes_Complete", async () => {
       SendAlertRequest();
     };
 
-    if (!EXTStatus["EXT-Assistant"].hello) {
+    if (EXTStatus["EXT-Assistant"].hello) {
       setTranslation("AssistantText", ToolsTranslations["Assistant_Text"]);
       setTranslation("AssistantSend", GenericTranslations["Send"]);
       document.getElementById("AssistantQuery").setAttribute("placeholder", ToolsTranslations["Assistant_Query"]);

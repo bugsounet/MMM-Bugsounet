@@ -11,16 +11,13 @@ function getCurrentToken () {
   return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
 }
 
-function doLogin (credentials, cb) {
-  Request("/auth", "POST", false, { Authorization: `Basic ${credentials}` }, null, "doLogin", (response) => {
-    localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
-    location.href = "/";
-  }, (err) => cb(err));
+function doLogin (credentials, success, failed) {
+  Request("/auth", "POST", false, { Authorization: `Basic ${credentials}` }, null, "doLogin", (response) => success(response), (err) => failed(err));
 }
 
 function getTranslate (lang, query, values = null) {
   return new Promise((resolve) => {
-    Request("/api/translations/translate", "GET", true, { language: lang, translate: query, values: JSON.stringify(values) }, null, "getTranslatee", (translate) => resolve(translate.translate));
+    Request("/api/translations/translate", "GET", true, { language: lang, translate: query, values: JSON.stringify(values) }, null, "getTranslate", (translate) => resolve(translate.translate));
   });
 }
 

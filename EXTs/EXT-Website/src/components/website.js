@@ -91,7 +91,7 @@ class website {
   /** add custom Headers **/
   customHeaders (req, res, next) {
     let version = require("../package.json").version;
-    res.setHeader("X-Powered-By", `MMM-Bugsounet v${version}`);
+    res.setHeader("X-Powered-By", `EXT-Website v${version}`);
     next();
   }
 
@@ -100,7 +100,8 @@ class website {
     return new Promise((resolve) => {
       const ProxyRequestLogger = (proxyServer) => {
         proxyServer.on("proxyReq", (proxyReq, req) => {
-          let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+          let ip = req.headers["x-forwarded-for"].split(",")[0];
+          //let ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
           let url = req.url.startsWith("/api") ? req.url : `/smarthome${req.url}`;
           log(`[${ip}] [PROXY] ${url}`);
         });
@@ -108,10 +109,11 @@ class website {
 
       const APIProxy = createProxyMiddleware({
         target: this.config.API,
-        changeOrigin: false,
+        changeOrigin: true,
         xfwd: true,
         pathFilter: ["/api"],
         plugins: [ProxyRequestLogger],
+        //logger: console,
         on: {
           onProxyReq: fixRequestBody,
           error: (err, req, res) => {
@@ -358,38 +360,15 @@ class website {
   // login deals with username // password in Basic
   async login (req, res) {
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    const authorization = req.headers.authorization;
-    const params = authorization?.split(" ");
     var APIResult = {
       error: "Invalid credentials"
     };
 
-    if (!authorization) {
-      console.warn(`[WEBSITE] [Web] [${ip}] Bad Login: missing authorization type`);
-      APIResult.description = "Missing authorization type";
-      return res.status(401).json(APIResult);
-    }
-
-    if (params[0] !== "Basic") {
-      console.warn(`[WEBSITE] [Web] [${ip}] Bad Login: Basic authorization type only`);
-      APIResult.description = "Authorization type Basic only";
-      return res.status(401).json(APIResult);
-    }
-
-    if (!params[1]) { // must never happen
-      console.warn(`[WEBSITE] [Web] [${ip}] Bad Login: missing Basic params`);
-      APIResult.description = "Missing Basic params";
-      return res.status(401).json(APIResult);
-    }
-
-    var headers = {
-      "Content-Type": "application/json"
-    };
-
-    headers = Object.assign(headers, { Authorization: authorization });
-
     var response;
     var result = {};
+
+    var headers = req.headers;
+    if (!headers["x-forwarded-for"]) headers["x-forwarded-for"] = ip;
 
     try {
       response = await fetch(`${this.config.API}/api/login`, {
