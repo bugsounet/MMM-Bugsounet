@@ -77,7 +77,8 @@ class api {
       validate: {
         xForwardedForHeader: false,
         trustProxy: false
-      }
+      },
+      message: { error: "Too many requests, please try again later." }
     });
   }
 
@@ -822,7 +823,7 @@ class api {
     } else {
       console.warn(`[Bugsounet] [API] [${ip}] Bad Login: Invalid username or password`);
       APIResult.description = "Invalid username or password";
-      res.status(401).json(APIResult);
+      res.status(403).json(APIResult);
     }
   }
 
@@ -852,9 +853,13 @@ class api {
       const accessToken = params[1];
       jwt.verify(accessToken, this.secret, (err, decoded) => {
         if (err) {
-          if (err.message === "jwt expired") console.warn("[Bugsounet] [API] Token expired !");
-          else console.error("[Bugsounet] [API] Token decode Error !", err.message);
-          return res.status(403).json({ error: "Unauthorized" });
+          if (err.message === "jwt expired") {
+            console.warn("[Bugsounet] [API] Token expired !");
+            return res.status(403).json({ error: "Token expired" });
+          } else {
+            console.error("[Bugsounet] [API] Token decode Error !", err.message);
+            return res.status(403).json({ error: "Token decode Error" });
+          }
         }
         const user = decoded.user;
         if (!user) return res.status(401).json({ error: "Unauthorized" });
