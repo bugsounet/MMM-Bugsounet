@@ -1263,7 +1263,6 @@ document.addEventListener("Includes_Complete", async () => {
           alertify.success(GenericTranslations["RequestDone"]);
         });
       };
-
       HideBlock("SpotifyBlock");
     } else {
       HideBlock("SpotifyBlock");
@@ -1319,7 +1318,7 @@ document.addEventListener("Includes_Complete", async () => {
       if (EXTStatus["EXT-Updates"].hello) {
         let needUpdate = 0;
         var updateModules = EXTStatus["EXT-Updates"].module;
-        if (!updateModules || !Object.keys(updateModules).length) return HideBlock("UpdateBlock");
+        if (!updateModules || !Object.keys(updateModules).length) HideBlock("UpdateBlock");
         if (Object.keys(updateModules).length) {
           ShowBlock("UpdateBlock");
           for (const [name] of Object.entries(updateModules)) {
@@ -1342,6 +1341,7 @@ document.addEventListener("Includes_Complete", async () => {
         } else {
           HideBlock("SpotifyBlock");
         }
+
         if (EXTStatus["EXT-Spotify"].play) {
           document.getElementById("SpotifyPlay").classList.add("d-none");
           document.getElementById("SpotifyStop").classList.remove("d-none");
