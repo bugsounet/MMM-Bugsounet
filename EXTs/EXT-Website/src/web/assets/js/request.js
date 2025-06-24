@@ -522,7 +522,8 @@ function showAlert (alert) {
     customClass: {
       confirmButton: "btn btn-primary btn-round me-3",
       cancelButton: "btn btn-dark btn-round"
-    }
+    },
+    allowOutsideClick: false
   }).then((result) => {
     if (result.isConfirmed) {
       location.href = window.location.href;
