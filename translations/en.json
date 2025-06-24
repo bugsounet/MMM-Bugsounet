@@ -119,6 +119,7 @@
   "Login_Password": "Password",
   "Login_Error": "Error: Invalid username and password.",
   "Login_Login": "Login",
+  "Login_Welcome": "Welcome",
 
   "Account_Administrator": "Administrator",
   "Account_Level": "Level {level}",

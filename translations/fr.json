@@ -119,6 +119,7 @@
   "Login_Password": "Mot de passe",
   "Login_Error": "Erreur: L'identification a échouée.",
   "Login_Login": "Se Connecter",
+  "Login_Welcome": "Bienvenue",
 
   "Account_Administrator": "Administrateur",
   "Account_Level": "Niveau {level}",
