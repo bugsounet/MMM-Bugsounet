@@ -1,10 +1,10 @@
-name: "MagicMirror² (develop) and electron-rebuild Testing"
+name: "electron v37 and electron-rebuild Testing"
 
 on: [pull_request]
 
 jobs:
   build:
-    name: Test electron-rebuild
+    name: Test electron v37 and electron-rebuild
     runs-on: ubuntu-latest
     strategy:
       matrix:
