@@ -202,7 +202,7 @@ class smarthome {
     }
 
     this.smarthome.app
-      .get("/*", (req, res) => {
+      .get("/{*other}", (req, res) => {
         console.warn("[SMARTHOME] Don't find:", req.url);
         res.status(404).sendFile(`${this.smarthomeWebsitePath}/404.html`);
       });
