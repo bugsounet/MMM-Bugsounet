@@ -1204,9 +1204,9 @@ document.addEventListener("Includes_Complete", async () => {
     if (EXTStatus["EXT-Screen"].hello) {
       setTranslation("ScreenText", ToolsTranslations["Screen_Text"]);
       if (EXTStatus["EXT-Screen"].power) {
-        setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
-      } else {
         setTranslation("ScreenPower", GenericTranslations["TurnOff"]);
+      } else {
+        setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
       }
       document.getElementById("ScreenPower").onclick = function () {
         let powerControler = EXTStatus["EXT-Screen"].power ? "OFF" : "ON";
@@ -1321,8 +1321,8 @@ document.addEventListener("Includes_Complete", async () => {
 
     function updateTools () {
       if (EXTStatus["EXT-Screen"].hello) {
-        if (EXTStatus["EXT-Screen"].power) setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
-        else setTranslation("ScreenPower", GenericTranslations["TurnOff"]);
+        if (EXTStatus["EXT-Screen"].power) setTranslation("ScreenPower", GenericTranslations["TurnOff"]);
+        else setTranslation("ScreenPower", GenericTranslations["TurnOn"]);
       }
 
       if (EXTStatus["EXT-Volume"].hello) {
