@@ -150,7 +150,7 @@ class PIR {
       numbers.every((number) => {
         try {
           this.pirChip = new Chip(number);
-          const label = this.pirChip.getChipLabel();
+          const label = this.pirChip.label;
           log(`[GPIOD] Check chip ${number}: ${label}`);
           const isAuto = this.config.chip === "auto" && label.includes("pinctrl-");
           const isManual = this.config.chip !== "auto" && label.includes(this.config.chip);
