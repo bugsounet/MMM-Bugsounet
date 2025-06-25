@@ -1,4 +1,4 @@
-/* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
+/* global do_includes alertify setTranslation getTranslate getEXTVersions getCurrentSystem
   checkSystem io Terminal FitAddon getVersion getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
@@ -6,6 +6,11 @@
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery
  */
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.warn("DOMContentLoaded Starting includes HTML");
+  do_includes();
+});
 
 /* eslint-disable max-lines-per-function */
 document.addEventListener("Includes_Complete", async () => {

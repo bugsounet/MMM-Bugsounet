@@ -7,8 +7,6 @@
     <meta name="description" content="MMM-Bugsounet MagicMirror control"/>
     <meta name="author" content="@bugsounet"/>
     <title>MMM-Bugsounet</title>
-    <!--include-->
-    <script src="/assets/js/include.js"></script>
     <!--favicon-->
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
     <!-- Bootstrap core CSS-->
@@ -31,7 +29,7 @@
   </head>
 
   <body class="bg-theme bg-theme2">
- 
+
     <!-- Start wrapper-->
     <div id="wrapper">
       <!-- Spinner Start -->
@@ -49,24 +47,23 @@
       <!--Start topbar header-->
       <div w3-include-html="/html/topbar.html"></div>
       <!--End topbar header-->
-  
-      <div class="clearfix"></div>
-    
+
       <div class="content-wrapper">
         <div class="container-fluid">
 
           <!--Start Home Content-->
           <div w3-include-html="/html/logs.html"></div>
           <!--End Dashboard Content-->
-      
+
           <!--start overlay-->
           <div class="overlay toggle-menu"></div>
           <!--end overlay-->
-      
+
         </div>
         <!-- End container-fluid-->
-      
-      </div><!--End content-wrapper-->
+
+      </div>
+      <!--End content-wrapper-->
 
       <!--Start Back To Top Button-->
       <div w3-include-html="/html/backtop.html"></div>
@@ -95,9 +92,9 @@
     <script src="/xterm/lib/xterm.js"></script>
     <!-- Custom scripts -->
     <script src="/assets/js/app-script.js"></script>
+    <!-- Include HTML -->
+    <script src="/assets/js/include.js"></script>
     <!-- Index js -->
     <script src="/assets/js/index.js"></script>
-    <!-- Apply includes -->
-    <script async >do_includes();</script>
   </body>
 </html>

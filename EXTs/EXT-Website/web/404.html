@@ -7,8 +7,6 @@
     <meta name="description" content="MMM-Bugsounet MagicMirror control"/>
     <meta name="author" content="@bugsounet"/>
     <title>MMM-Bugsounet</title>
-    <!--include-->
-    <script src="/assets/js/include.js"></script>
     <!--favicon-->
     <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon" />
     <!-- Bootstrap core CSS-->
@@ -30,38 +28,30 @@
 
     <!-- Start wrapper-->
     <div id="wrapper">
-      <!-- Spinner Start
-      <div id="spinner" class="show bg-black position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-white" style="width: 3rem; height: 3rem;" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-      <!-- Spinner End -->
-
-      <div class="clearfix"></div>
 
       <div class="content-wrapper">
         <div class="container-fluid">
-          <!--Start Home Content-->
+          <!--Start 404 Content-->
           <div w3-include-html="/html/404.html"></div>
-          <!--End Dashboard Content-->
+          <!--End 404 Content-->
 
         </div>
         <!-- End container-fluid-->
 
-      </div><!--End content-wrapper-->
+      </div>
+      <!--End content-wrapper-->
 
     </div>
     <!--End wrapper-->
 
-    <!-- Bootstrap core JavaScript-->
+    <!-- Bootstrap core JavaScript -->
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Sweatalert2 -->
     <script src="/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Include HTML -->
+    <script src="/assets/js/include.js"></script>
     <!-- Index js -->
     <script src="/assets/js/index.js"></script>
-    <!-- Apply includes -->
-    <script async >do_includes();</script>
   </body>
 </html>
 
