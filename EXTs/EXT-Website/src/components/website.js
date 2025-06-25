@@ -183,7 +183,7 @@ class website {
         etag: false,
         extensions: ["css", "js", "html", "map", "woff2"],
         index: false,
-        maxAge: "1d",
+        maxAge: "1h",
         redirect: false,
         setHeaders (res) {
           res.set("x-timestamp", Date.now());

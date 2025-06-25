@@ -1622,6 +1622,31 @@ document.addEventListener("Includes_Complete", async () => {
     spinnerHide();
   }
 
+  // 404 Page
+  let Page404 = document.getElementById("404-html");
+  if (Page404) {
+    function getRandomIntInclusive (min, max) {
+      const Min = Math.ceil(min);
+      const Max = Math.floor(max);
+      return Math.floor(Math.random() * (Max - Min + 1)) + Min;
+    }
+
+    let random = getRandomIntInclusive(1, 4);
+    Swal.fire({
+      title: "Error 404",
+      text: "The page you are looking for was moved, removed or might never existed.",
+      icon: "warning",
+      imageUrl: `/assets/images/404/${random}.jpeg`,
+      showClass: {
+        icon: "swal2-icon-show border-danger"
+      },
+      showConfirmButton: false,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      theme: "dark"
+    });
+  }
+
   // enable tooltip
   var tooltipTriggerList = [].slice.call(document.querySelectorAll("[data-bs-toggle='tooltip']"));
   tooltipTriggerList.map(function (tooltipTriggerEl) {
