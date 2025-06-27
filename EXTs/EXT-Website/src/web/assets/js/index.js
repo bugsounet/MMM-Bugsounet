@@ -72,23 +72,8 @@ document.addEventListener("Includes_Complete", async () => {
       let credentials = `${document.getElementById("username").value}:${document.getElementById("password").value}`;
       let encodedCredentials = btoa(credentials);
       doLogin(encodedCredentials, (response) => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: `${loginTranslations["Welcome"]} ${document.getElementById("username").value}`,
-          showConfirmButton: false,
-          timer: 1200,
-          didOpen: () => {
-            document.getElementById("wrapper").classList.add("blur");
-          },
-          allowOutsideClick: false,
-          allowEscapeKey: false
-        }).then((result) => {
-          if (result.isDismissed) {
-            localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
-            location.href = "/";
-          }
-        });
+        localStorage.setItem("MMM-Bugsounet", JSON.stringify(response.session));
+        location.href = "/";
       }, (err) => {
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
