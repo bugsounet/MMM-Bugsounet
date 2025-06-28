@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+
+/* global getTranslateGroup setTranslation */
+
 function hasTheme (classes) {
   let classNames = classes.value;
   const themesRegex = new RegExp("bg-theme(\\d{2}|\\d{1})", "gm");
@@ -28,6 +32,87 @@ function applyNavbarTheme (newTheme) {
 
 function applyBackgroundTheme (newTheme) {
   document.querySelector("body").className = `bg-theme ${newTheme}`;
+}
+
+async function UpdateFlagsLanguage (user) {
+  const LanguageTranslations = await getTranslateGroup(user.language, "Language_");
+  setTranslation("English", LanguageTranslations["English"]);
+  setTranslation("French", LanguageTranslations["French"]);
+  setTranslation("German", LanguageTranslations["German"]);
+  setTranslation("Italian", LanguageTranslations["Italian"]);
+  setTranslation("Spanish", LanguageTranslations["Spanish"]);
+  setTranslation("Dutch", LanguageTranslations["Dutch"]);
+  setTranslation("Turkish", LanguageTranslations["Turkish"]);
+}
+
+function FlagsSelector (user) {
+  // Get all the dropdown items
+  const dropdownLanguageItems = document.querySelectorAll("a.dropdown-item"); // Select the 'a' tag
+
+  // Get the hidden input field
+  const selectedLanguageInput = document.getElementById("selectedLanguage");
+
+  // Get the dropdown button
+  const dropdownLanguageButton = document.getElementById("LanguageButton");
+
+  // --- Set the default language on page load ---
+  const defaultLanguageValue = user.language;
+
+  // Find the dropdown item that matches the default language value
+  const defaultLanguageItem = Array.from(dropdownLanguageItems).find((item) => {
+    return item.getAttribute("data-value") === defaultLanguageValue;
+  });
+
+  // If a default item is found, set it as the selected one initially
+  if (defaultLanguageItem) {
+    const defaultLanguageTextElement = defaultLanguageItem.querySelector("div");
+    const defaultLanguageText = defaultLanguageTextElement ? defaultLanguageTextElement.textContent.trim() : "";
+
+    const defaultLanguageFlagIconElement = defaultLanguageItem.querySelector("i.flag-icon");
+    const defaultLanguageFlagIconHtml = defaultLanguageFlagIconElement ? defaultLanguageFlagIconElement.outerHTML : "";
+
+    // Update the value of the hidden input field
+    if (selectedLanguageInput) {
+      selectedLanguageInput.value = defaultLanguageValue;
+    }
+
+    // Update the text and flag on the dropdown button
+    if (dropdownLanguageButton) {
+      dropdownLanguageButton.innerHTML = `${defaultLanguageFlagIconHtml} ${defaultLanguageText}`;
+    }
+  } else {
+    console.warn(`Dropdown item with data-value="${defaultLanguageValue}" not found for default selection.`);
+  }
+  // --- End of default country setting ---
+
+  // Add a click event listener to each dropdown item
+  dropdownLanguageItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Get the value from the 'data-value' attribute of the clicked 'a' tag
+      const selectedLanguageValue = this.getAttribute("data-value");
+
+      // Find the div containing the text and get its text content
+      const selectedLanguageTextElement = this.querySelector("div");
+      const selectedLanguageText = selectedLanguageTextElement ? selectedLanguageTextElement.textContent.trim() : "";
+
+      // Find the flag icon element (the <i> tag) and get its outerHTML
+      const flagLanguageIconElement = this.querySelector("i.flag-icon");
+      const flagLanguageIconHtml = flagLanguageIconElement ? flagLanguageIconElement.outerHTML : "";
+
+      // Update the value of the hidden input field
+      if (selectedLanguageInput) {
+        selectedLanguageInput.value = selectedLanguageValue;
+      }
+
+      // update the text and image on the dropdown button
+      if (dropdownLanguageButton) {
+        // Clear existing content and add the flag icon and text
+        dropdownLanguageButton.innerHTML = `${flagLanguageIconHtml} ${selectedLanguageText}`;
+      }
+    });
+  });
 }
 
 window.addEventListener("error", function (event) {

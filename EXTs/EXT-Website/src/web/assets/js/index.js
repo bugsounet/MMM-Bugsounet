@@ -4,7 +4,8 @@
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
-  loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs
+  loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
+  UpdateFlagsLanguage FlagsSelector
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -149,7 +150,6 @@ document.addEventListener("Includes_Complete", async () => {
   if (accountPage) {
     console.log("detected Account page");
     const AccountTranslations = await getTranslateGroup(user.language, "Account_");
-    const LanguageTranslations = await getTranslateGroup(user.language, "Language_");
     // translation
     setTranslation("Profile", AccountTranslations["Profile"]);
     setTranslation("Background", AccountTranslations["Background"]);
@@ -162,14 +162,6 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("ChangePassword", AccountTranslations["ChangePassword"]);
     setTranslation("PasswordProfile", AccountTranslations["PasswordProfile"]);
     setTranslation("NewPasswordProfile", AccountTranslations["NewPasswordProfile"]);
-
-    setTranslation("English", LanguageTranslations["English"]);
-    setTranslation("French", LanguageTranslations["French"]);
-    setTranslation("German", LanguageTranslations["German"]);
-    setTranslation("Italian", LanguageTranslations["Italian"]);
-    setTranslation("Spanish", LanguageTranslations["Spanish"]);
-    setTranslation("Dutch", LanguageTranslations["Dutch"]);
-    setTranslation("Turkish", LanguageTranslations["Turkish"]);
 
     setTranslation("BackgroundProfile", AccountTranslations["BackgroundTheme"]);
     setTranslation("NavbarProfile", AccountTranslations["NavbarTheme"]);
@@ -185,73 +177,8 @@ document.addEventListener("Includes_Complete", async () => {
     const avatarInput = document.querySelector(`input[name="avatar"][value="${user.avatar}"]`);
     if (avatarInput) avatarInput.checked = true;
 
-    // Get all the dropdown items
-    const dropdownLanguageItems = document.querySelectorAll("a.dropdown-item"); // Select the 'a' tag
-
-    // Get the hidden input field
-    const selectedLanguageInput = document.getElementById("selectedLanguage");
-
-    // Get the dropdown button
-    const dropdownLanguageButton = document.getElementById("LanguageButton");
-
-    // --- Set the default language on page load ---
-    const defaultLanguageValue = user.language;
-
-    // Find the dropdown item that matches the default language value
-    const defaultLanguageItem = Array.from(dropdownLanguageItems).find((item) => {
-      return item.getAttribute("data-value") === defaultLanguageValue;
-    });
-
-    // If a default item is found, set it as the selected one initially
-    if (defaultLanguageItem) {
-      const defaultLanguageTextElement = defaultLanguageItem.querySelector("div");
-      const defaultLanguageText = defaultLanguageTextElement ? defaultLanguageTextElement.textContent.trim() : "";
-
-      const defaultLanguageFlagIconElement = defaultLanguageItem.querySelector("i.flag-icon");
-      const defaultLanguageFlagIconHtml = defaultLanguageFlagIconElement ? defaultLanguageFlagIconElement.outerHTML : "";
-
-      // Update the value of the hidden input field
-      if (selectedLanguageInput) {
-        selectedLanguageInput.value = defaultLanguageValue;
-      }
-
-      // Update the text and flag on the dropdown button
-      if (dropdownLanguageButton) {
-        dropdownLanguageButton.innerHTML = `${defaultLanguageFlagIconHtml} ${defaultLanguageText}`;
-      }
-    } else {
-      console.warn(`Dropdown item with data-value="${defaultLanguageValue}" not found for default selection.`);
-    }
-    // --- End of default country setting ---
-
-    // Add a click event listener to each dropdown item
-    dropdownLanguageItems.forEach((item) => {
-      item.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        // Get the value from the 'data-value' attribute of the clicked 'a' tag
-        const selectedLanguageValue = this.getAttribute("data-value");
-
-        // Find the div containing the text and get its text content
-        const selectedLanguageTextElement = this.querySelector("div");
-        const selectedLanguageText = selectedLanguageTextElement ? selectedLanguageTextElement.textContent.trim() : "";
-
-        // Find the flag icon element (the <i> tag) and get its outerHTML
-        const flagLanguageIconElement = this.querySelector("i.flag-icon");
-        const flagLanguageIconHtml = flagLanguageIconElement ? flagLanguageIconElement.outerHTML : "";
-
-        // Update the value of the hidden input field
-        if (selectedLanguageInput) {
-          selectedLanguageInput.value = selectedLanguageValue;
-        }
-
-        // update the text and image on the dropdown button
-        if (dropdownLanguageButton) {
-          // Clear existing content and add the flag icon and text
-          dropdownLanguageButton.innerHTML = `${flagLanguageIconHtml} ${selectedLanguageText}`;
-        }
-      });
-    });
+    await UpdateFlagsLanguage(user);
+    FlagsSelector(user);
 
     let newpassword = document.getElementById("newpassword");
     newpassword.value = "";
@@ -277,6 +204,7 @@ document.addEventListener("Includes_Complete", async () => {
       const NewUsername = document.getElementById("username").value;
       const NewPassword = document.getElementById("password").value;
       const NewPasswordConfirm = document.getElementById("newpassword").value;
+      const selectedLanguageInput = document.getElementById("selectedLanguage").value;
 
       let MyUser = {
         id: user.id
@@ -291,7 +219,7 @@ document.addEventListener("Includes_Complete", async () => {
 
       if (NewUsername !== user.username) MyUser.username = NewUsername;
 
-      if (selectedLanguageInput.value !== user.language) MyUser.language = selectedLanguageInput.value;
+      if (selectedLanguageInput !== user.language) MyUser.language = selectedLanguageInput;
 
       if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
         alertify.error("Password don't match");
@@ -1646,6 +1574,44 @@ document.addEventListener("Includes_Complete", async () => {
   // Admin page
   let AdminPage = document.getElementById("admin-html");
   if (AdminPage) {
+    console.log("detected edit Admin page");
+    const LoginPrefs = await getLoginPrefs();
+    const AccountTranslations = await getTranslateGroup(user.language, "Account_");
+    const AdminTranslations = await getTranslateGroup(user.language, "Admin_");
+
+    setTranslation("Login", AdminTranslations["Login"]);
+    setTranslation("Accounts", AdminTranslations["Users"]);
+
+    await UpdateFlagsLanguage(user);
+    FlagsSelector(LoginPrefs);
+
+    setTranslation("LoginBackground", AccountTranslations["BackgroundTheme"]);
+    setTranslation("LoginPrefs", AdminTranslations["LoginPrefs"]);
+
+    const backgroundInput = document.querySelector(`input[name="background"][value="${LoginPrefs.background}"]`);
+    if (backgroundInput) backgroundInput.checked = true;
+    document.getElementById("SaveLoginPrefs").value = AccountTranslations["SaveChange"];
+
+    const SaveLoginChange = document.getElementById("SaveLoginPrefs");
+    SaveLoginChange.addEventListener("click", function () {
+      const selectedLanguageInput = document.getElementById("selectedLanguage").value;
+      const selectedBackgroundInput = document.querySelector("input[name='background']:checked");
+
+      let MyLogin = {};
+      if (selectedLanguageInput !== LoginPrefs.language) MyLogin.language = selectedLanguageInput;
+      let selectedBackgroundValue = null;
+      if (selectedBackgroundInput) {
+        selectedBackgroundValue = parseInt(selectedBackgroundInput.value);
+        if (selectedBackgroundValue !== LoginPrefs.background) MyLogin.background = selectedBackgroundValue;
+      }
+
+      let MyLoginSize = Object.keys(MyLogin).length;
+      if (MyLoginSize > 0) {
+        putLoginPrefs(MyLogin, () => { location.href = "/Admin"; });
+      } else {
+        alertify.message("There is no change to save");
+      }
+    });
     spinnerHide();
   }
 

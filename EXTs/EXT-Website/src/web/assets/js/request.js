@@ -48,6 +48,15 @@ function getLoginPrefs () {
   });
 }
 
+function putLoginPrefs (body, cb) {
+  return new Promise((resolve) => {
+    Request("/api/databases/login", "PUT", true, null, { login: btoa(JSON.stringify(body)) }, "putLoginPrefs", (result) => {
+      if (cb) cb();
+      resolve(result);
+    });
+  });
+}
+
 function getHomeText (lang) {
   return new Promise((resolve) => {
     Request("/api/translations/homeText", "GET", true, { language: lang }, null, "getHomeText", (text) => resolve(text.homeText));
