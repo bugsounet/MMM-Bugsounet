@@ -431,6 +431,22 @@ class api {
   async PutAPI (req, res) {
     var resultSaveConfig = {};
     switch (req.url) {
+      case "/api/databases/login":
+        if (!req.body["login"]) return res.status(400).json({ error: "Bad Request" });
+        log("Receiving new login info...");
+        var loginDecoder;
+        try {
+          loginDecoder = JSON.parse(this.decode(req.body["login"]));
+        } catch (e) {
+          log("Request error", e.message);
+          res.status(400).json({ error: "Bad Request" });
+          return;
+        }
+        if (loginDecoder.language) this.Api.login.language = loginDecoder.language;
+        if (loginDecoder.background) this.Api.login.background = loginDecoder.background;
+        await this.writeLoginPrefs();
+        res.json({ done: "ok" });
+        break;
       case "/api/databases/users/me":
         if (!req.body["me"]) return res.status(400).json({ error: "Bad Request" });
         log("Receiving new user info...");
