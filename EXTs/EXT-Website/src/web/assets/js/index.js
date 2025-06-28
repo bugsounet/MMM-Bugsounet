@@ -4,7 +4,7 @@
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
-  loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery
+  loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -61,6 +61,12 @@ document.addEventListener("Includes_Complete", async () => {
   if (loginPage) {
     console.log("detected login page");
     const loginTranslations = await loadLoginTranslation();
+    const loginPrefs = await getLoginPrefs();
+
+    // background theme
+    if ((loginPrefs.background >= 1 && loginPrefs.background <= 15)) {
+      document.querySelector("body").className = `bg-theme bg-theme${loginPrefs.background}`;
+    }
 
     document.getElementById("username").setAttribute("placeholder", loginTranslations["Username"]);
     document.getElementById("password").setAttribute("placeholder", loginTranslations["Password"]);
@@ -1635,6 +1641,12 @@ document.addEventListener("Includes_Complete", async () => {
       allowEscapeKey: false,
       theme: "dark"
     });
+  }
+
+  // Admin page
+  let AdminPage = document.getElementById("admin-html");
+  if (AdminPage) {
+    spinnerHide();
   }
 
   // enable tooltip

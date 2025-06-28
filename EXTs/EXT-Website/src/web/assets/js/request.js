@@ -29,16 +29,22 @@ function getTranslateGroup (lang, group) {
 
 function getMyUser () {
   return new Promise((resolve) => {
-    Request("/api/me", "GET", true, null, null, "getMyUser", (user) => resolve(user));
+    Request("/api/databases/users/me", "GET", true, null, null, "getMyUser", (user) => resolve(user));
   });
 }
 
 function putMyUser (body, cb) {
   return new Promise((resolve) => {
-    Request("/api/me", "PUT", true, null, { me: btoa(JSON.stringify(body)) }, "putMyUser", (result) => {
+    Request("/api/databases/users/me", "PUT", true, null, { me: btoa(JSON.stringify(body)) }, "putMyUser", (result) => {
       if (cb) cb();
       resolve(result);
     });
+  });
+}
+
+function getLoginPrefs () {
+  return new Promise((resolve) => {
+    Request("/api/databases/login", "GET", null, null, null, "getLoginPrefs", (result) => resolve(result));
   });
 }
 

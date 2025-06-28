@@ -225,6 +225,10 @@ class website {
           res.sendFile(`${this.WebPath}/index.html`);
         })
 
+        .get("/Admin", (req, res, next) => this.auth(req, res, next), (req, res) => {
+          res.sendFile(`${this.WebPath}/admin.html`);
+        })
+
         .get("/viewConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
           res.sendFile(`${this.WebPath}/viewConfig.html`);
         })
