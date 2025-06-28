@@ -39,6 +39,7 @@ class api {
       EXTStatus: {}, // status of EXT
       EXTVersions: {},
       users: [],
+      login: {},
       initialized: false,
       app: null,
       server: null,
@@ -111,7 +112,6 @@ class api {
     this.Api.systemInformation.result = await this.Api.systemInformation.lib.initData();
 
     console.log("[Bugsounet] [API] Reading users Database...");
-
     await this.getUsers();
 
     const verify = this.Api.users.find((x) => !x.username || !x.password);
@@ -134,6 +134,9 @@ class api {
     } else {
       console.log("[Bugsounet] [API] There is", this.Api.users.length, "username in database");
     }
+
+    console.log("[Bugsounet] [API] Reading login Database...");
+    await this.getLoginPrefs();
 
     this.Api.EXTConfigured = this.searchConfigured();
     this.Api.EXTInstalled = this.searchInstalled();
@@ -261,7 +264,11 @@ class api {
         })
 
         .get("/api/translations/login", (req, res) => {
-          res.json(Translator.findTranslatedGroup("Login_", this.Api.language));
+          res.json(Translator.findTranslatedGroup("Login_", this.Api.login.language));
+        })
+
+        .get("/api/databases/login", (req, res) => {
+          res.json(this.Api.login);
         })
 
         .post("/api/login", (req, res) => this.login(req, res))
@@ -404,7 +411,7 @@ class api {
         res.json(allTV);
         break;
 
-      case "/api/me":
+      case "/api/databases/users/me":
         var Result = this.findUser(req.user);
         if (Result) {
           Result.id = this.findUserIndex(req.user);
@@ -424,7 +431,7 @@ class api {
   async PutAPI (req, res) {
     var resultSaveConfig = {};
     switch (req.url) {
-      case "/api/me":
+      case "/api/databases/users/me":
         if (!req.body["me"]) return res.status(400).json({ error: "Bad Request" });
         log("Receiving new user info...");
         var decoder;
@@ -1596,6 +1603,45 @@ class api {
       return Translator.translate(lang, key, defaultValueOrVariables) || defaultValue || "";
     }
     return Translator.translate(lang, key) || defaultValueOrVariables || "";
+  }
+
+  getLoginPrefs () {
+    return new Promise((resolve) => {
+      const loginFile = `${this.BugsounetModulePath}/databases/login`;
+      if (fs.existsSync(loginFile)) {
+        fs.readFile(loginFile, "utf8", (error, data) => {
+          if (error) {
+            console.error("[Bugsounet] [API] readFile login error!", error.message);
+            return resolve();
+          }
+          try {
+            this.Api.login = JSON.parse(data);
+            console.log("[Bugsounet] [API] login Database:", this.Api.login);
+          } catch (e) {
+            console.error("[Bugsounet] [API] - readFile login error!", e.message);
+            return resolve();
+          }
+          resolve();
+        });
+      } else {
+        this.Api.login = {
+          language: "en",
+          background: 1
+        };
+        console.warn("[Bugsounet] [API] Create default login database");
+        this.writeLoginPrefs().then(() => resolve());
+      }
+    });
+  }
+
+  writeLoginPrefs () {
+    return new Promise((resolve) => {
+      const loginFile = `${this.BugsounetModulePath}/databases/login`;
+      fs.writeFile(loginFile, JSON.stringify(this.Api.login), (error) => {
+        if (error) console.error("[Bugsounet] [API] login database file writing error", error);
+        resolve();
+      });
+    });
   }
 }
 module.exports = api;
