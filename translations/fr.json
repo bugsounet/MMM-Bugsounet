@@ -141,6 +141,10 @@
   "Account_Navbar": "Navigation",
   "Account_NavbarTheme": "Sélectionnez la couleur de la barre de navigation",
 
+  "Admin_Login": "Identification",
+  "Admin_Users": "Compte utilisateurs",
+  "Admin_LoginPrefs": "Définissez vos préférences de la page d'identification",
+
   "Language_English": "Anglais",
   "Language_French": "Français",
   "Language_German": "Allemand",

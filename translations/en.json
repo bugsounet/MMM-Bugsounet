@@ -141,6 +141,10 @@
   "Account_Navbar": "Navbar",
   "Account_NavbarTheme": "Select your navbar color",
 
+  "Admin_Login": "Login",
+  "Admin_Users": "Users Account",
+  "Admin_LoginPrefs": "Set your login page preferences",
+
   "Language_English": "English",
   "Language_French": "French",
   "Language_German": "German",
