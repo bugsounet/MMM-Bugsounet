@@ -8,34 +8,78 @@
   UpdateFlagsLanguage FlagsSelector
  */
 
+/* eslint-disable max-lines-per-function */
+
+var interval = null;
+var user = {};
+const contentWrapper = document.querySelector(".content-wrapper");
+
 document.addEventListener("DOMContentLoaded", () => {
   console.warn("DOMContentLoaded Starting includes HTML");
   do_includes();
 });
 
-/* eslint-disable max-lines-per-function */
-document.addEventListener("Includes_Complete", async () => {
-  console.log("Execute index.js");
+document.addEventListener("Includes_Complete", doIndex);
+document.addEventListener("NewContent_Loaded", doLoaded);
 
-  // define all vars
-  var version = {};
-  var user = {};
-  var GenericTranslations = {};
-  var EXTStatus = {};
-  var allBackup = [];
+async function doIndex () {
+  console.log("Execute index.js - doIndex");
+  doPassword();
+  await do404Page();
+  await doLoginPage();
+  await doSidebar();
+  await doHomePage();
+}
 
+async function doLoaded () {
+  console.log("Execute index.js - doLoaded");
+
+  clearInterval(interval);
+  interval = null;
+
+  await doHomePage();
+  await doConfigPage();
+  await doEditConfigPage();
+  await doLogsPage();
+  await doSSHPage();
+  await doToolsPage();
+  await doSystemPage();
+  await doPartyPage();
+  await doAPIPage();
+  await doAboutPage();
+  await doIframe();
+  await doAccountPage();
+  await doAdminPage();
+
+  // enable tooltip
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll("[data-bs-toggle='tooltip']"));
+  tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl, { container: tooltipTriggerEl });
+  });
+}
+
+/** all functions **/
+
+function removeLoader () {
   const spinner = document.getElementById("spinner");
-  function spinnerHide () {
-    if (spinner) spinner.classList.remove("show");
-  }
+  const contentContainer = document.querySelector(".content-container");
+  const loadingBar = document.getElementById("loading-bar");
+  if (spinner) spinner.classList.remove("show");
+  if (contentContainer && contentContainer.classList.contains("is-loading")) {
+    loadingBar.style.width = "100%";
+    loadingBar.classList.add("is-complete");
 
-  const contentWrapper = document.querySelector(".content-wrapper");
-  const iframeChild = document.querySelector("iframe");
-  if (iframeChild) {
-    console.log("detected iframe");
-    contentWrapper.classList.add("has-iframe");
+    // Remove classes after a short delay to allow animations to complete
+    setTimeout(() => {
+      loadingBar.classList.remove("is-active");
+      loadingBar.classList.remove("is-complete");
+      loadingBar.style.width = "0%";
+    }, 300);
+    contentContainer.classList.remove("is-loading");
   }
+}
 
+function doPassword () {
   let password = document.getElementById("password");
   if (password) {
     console.log("detected password");
@@ -56,7 +100,9 @@ document.addEventListener("Includes_Complete", async () => {
       });
     });
   }
+}
 
+async function doLoginPage () {
   // login page
   let loginPage = document.getElementById("login-html");
   if (loginPage) {
@@ -89,10 +135,11 @@ document.addEventListener("Includes_Complete", async () => {
         else alertify.error(`Server return Error ${err.status} (${err.body})`);
       });
     });
-    spinnerHide();
-    return;
+    removeLoader();
   }
+}
 
+async function doSidebar () {
   // sidebar and navbar
   let SideNavBar = document.getElementById("sidebar-wrapper");
   if (SideNavBar) {
@@ -135,16 +182,33 @@ document.addEventListener("Includes_Complete", async () => {
     setTranslation("API", MenuTranslations["API"]);
     setTranslation("About", MenuTranslations["About"]);
   }
+}
 
+async function doHomePage () {
   // Home page
   let homePage = document.getElementById("home-html");
   if (homePage) {
     console.log("detected Home page");
     setTranslation("welcome", await getTranslate(user.language, "Home_Welcome"));
     document.getElementById("HomeText").innerHTML = await getHomeText(user.language);
-    spinnerHide();
+    removeLoader();
   }
+}
 
+function doIframe () {
+  const iframeChild = document.querySelector("iframe");
+  const containerFluid = document.querySelector(".container-fluid");
+  if (iframeChild) {
+    console.log("detected iframe");
+    contentWrapper.classList.add("has-iframe");
+    containerFluid.classList.add("m-0", "p-0");
+  } else {
+    contentWrapper?.classList.remove("has-iframe");
+    containerFluid?.classList.remove("m-0", "p-0");
+  }
+}
+
+async function doAccountPage () {
   // account page
   let accountPage = document.getElementById("account-html");
   if (accountPage) {
@@ -183,6 +247,7 @@ document.addEventListener("Includes_Complete", async () => {
     let newpassword = document.getElementById("newpassword");
     newpassword.value = "";
     newpassword.disabled = true;
+    let password = document.getElementById("password");
     password.addEventListener("change", function () {
       if (password.value !== "") {
         newpassword.disabled = false;
@@ -248,14 +313,16 @@ document.addEventListener("Includes_Complete", async () => {
         alertify.message("There is no change to save");
       }
     });
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doLogsPage () {
   // logs page
   let logsPage = document.getElementById("logs-html");
   if (logsPage) {
     console.log("detected logs page");
-    version = await getVersion();
+    const version = await getVersion();
     var timerLogsResize = null;
     let terminalTitle = document.getElementById("terminalTitle");
     terminalTitle.textContent = await getTranslate(user.language, "Terminal_Logs");
@@ -289,13 +356,15 @@ document.addEventListener("Includes_Complete", async () => {
       console.error("Socket Error:", data);
       socketLogs.close();
     });
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doSSHPage () {
   let SSHPage = document.getElementById("SSH-html");
   if (SSHPage) {
     console.log("detected SSH page");
-    version = await getVersion();
+    const version = await getVersion();
     var timerTermSSHResize = null;
     let terminalTitle = document.getElementById("terminalTitle");
     terminalTitle.textContent = await getTranslate(user.language, "Terminal_SSH");
@@ -341,9 +410,11 @@ document.addEventListener("Includes_Complete", async () => {
       console.error("Socket Error:", data);
       socketPTY.close();
     });
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doSystemPage () {
   // system page
   let systemPage = document.getElementById("system-html");
   if (systemPage) {
@@ -357,7 +428,7 @@ document.addEventListener("Includes_Complete", async () => {
     system = await getCurrentSystem();
     do_System(() => { do_SystemStatic(); });
 
-    setInterval(async () => {
+    interval = setInterval(async () => {
       system = await checkSystem();
       do_System();
     }, 15000);
@@ -434,7 +505,7 @@ document.addEventListener("Includes_Complete", async () => {
       setTranslation("SysRecord", SystemTranslations["System"]);
 
       document.getElementById("SystemDisplayer").classList.remove("visually-hidden");
-      spinnerHide();
+      removeLoader();
     }
 
     async function do_System (cb = null) {
@@ -442,7 +513,8 @@ document.addEventListener("Includes_Complete", async () => {
 
       progressOrText(system);
       window.addEventListener("resize", function () {
-        progressOrText(system);
+        let checkSystemPage = document.getElementById("system-html");
+        if (checkSystemPage) progressOrText(system);
       });
 
       //CPU
@@ -845,13 +917,15 @@ document.addEventListener("Includes_Complete", async () => {
       setTranslation(Text, Display);
     }
   }
+}
 
+async function doAboutPage () {
   // about page
   let aboutPage = document.getElementById("about-html");
   if (aboutPage) {
     console.log("detected about page");
     const AboutTranslations = await getTranslateGroup(user.language, "About_");
-    version = await getVersion();
+    const version = await getVersion();
     setTranslation("version", version.version);
     setTranslation("api", version.api);
     setTranslation("rev", version.rev);
@@ -867,31 +941,37 @@ document.addEventListener("Includes_Complete", async () => {
       if (trans) setTranslation(`translator-${tr}`, trans);
       else break;
     }
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doAPIPage () {
   // API page
   let APIPage = document.getElementById("API-html");
   if (APIPage) {
     console.log("detected API page");
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doPartyPage () {
   // 3rdparty page
   let partyPage = document.getElementById("3rdparty-html");
   if (partyPage) {
     console.log("detected 3rdparty page");
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doToolsPage () {
   // tools page
   let toolsPage = document.getElementById("tools-html");
   if (toolsPage) {
     console.log("detected tools page");
-    EXTStatus = await checkEXTStatus();
+    var EXTStatus = await checkEXTStatus();
     console.warn("EXTs Status", EXTStatus);
 
-    GenericTranslations = await getTranslateGroup(user.language, "Generic_");
+    const GenericTranslations = await getTranslateGroup(user.language, "Generic_");
     const ToolsTranslations = await getTranslateGroup(user.language, "Tools_");
 
     setTranslation("ToolsTitle", ToolsTranslations["Title"]);
@@ -947,7 +1027,7 @@ document.addEventListener("Includes_Complete", async () => {
     };
 
     // backups
-    allBackup = await loadBackupNames();
+    const allBackup = await loadBackupNames();
     if (allBackup.length > 5) {
       setTranslation("BackupDelete", GenericTranslations["Delete"]);
       setTranslation("backupFoundNumber", allBackup.length);
@@ -1300,15 +1380,17 @@ document.addEventListener("Includes_Complete", async () => {
     }
 
     // live stream every secs of EXT for update
-    setInterval(async () => {
+    interval = setInterval(async () => {
       EXTStatus = await checkEXTStatus();
       //console.warn("EXTs Status", EXTStatus);
       updateTools();
     }, 1000);
 
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doConfigPage () {
   // view Config page
   let viewConfigPage = document.getElementById("viewConfig-html");
   if (viewConfigPage) {
@@ -1329,15 +1411,17 @@ document.addEventListener("Includes_Complete", async () => {
       }
     };
     new JSONEditor(container, options, modules);
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function doEditConfigPage () {
   // edit Config page
   let editConfigPage = document.getElementById("editConfig-html");
   if (editConfigPage) {
     console.log("detected edit Config page");
 
-    GenericTranslations = await getTranslateGroup(user.language, "Generic_");
+    const GenericTranslations = await getTranslateGroup(user.language, "Generic_");
     const ConfigurationTranslations = await getTranslateGroup(user.language, "Configuration_");
 
     let LoadFile = document.getElementById("externalLoad");
@@ -1361,7 +1445,7 @@ document.addEventListener("Includes_Complete", async () => {
     document.getElementById("buttonGrp").classList.remove("invisible");
     let ActualConfig = document.querySelectorAll("option")[0];
     ActualConfig.textContent = ConfigurationTranslations["AcualConfig"];
-    allBackup = await loadBackupNames();
+    const allBackup = await loadBackupNames();
     var config = {};
     var conf = null;
     var options = {
@@ -1497,8 +1581,6 @@ document.addEventListener("Includes_Complete", async () => {
       });
     };
 
-    //Testage ()
-
     document.getElementById("externalSave").onclick = function () {
       Swal.fire({
         icon: "question",
@@ -1543,9 +1625,11 @@ document.addEventListener("Includes_Complete", async () => {
       });
     };
 
-    spinnerHide();
+    removeLoader();
   }
+}
 
+async function do404Page () {
   // 404 Page
   let Page404 = document.getElementById("404-html");
   if (Page404) {
@@ -1570,7 +1654,9 @@ document.addEventListener("Includes_Complete", async () => {
       theme: "dark"
     });
   }
+}
 
+async function doAdminPage () {
   // Admin page
   let AdminPage = document.getElementById("admin-html");
   if (AdminPage) {
@@ -1612,13 +1698,6 @@ document.addEventListener("Includes_Complete", async () => {
         alertify.message("There is no change to save");
       }
     });
-    spinnerHide();
+    removeLoader();
   }
-
-  // enable tooltip
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll("[data-bs-toggle='tooltip']"));
-  tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl, { container: tooltipTriggerEl });
-  });
-
-});
+}

@@ -22,12 +22,17 @@
     <!-- Alertify CSS-->
     <link href="/alertify/css/alertify.min.css" rel="stylesheet" />
     <link href="/alertify/css/themes/bootstrap.min.css" rel="stylesheet" />
+    <!-- jsoneditor CSS -->
+    <link rel="stylesheet" href="/jsoneditor/dist/jsoneditor.min.css">
+    <!-- xterm CSS-->
+    <link href="/xterm/css/xterm.css" rel="stylesheet"/>
     <!-- Custom Style-->
     <link href="/assets/css/app-style.css" rel="stylesheet"/>
   </head>
 
   <body class="bg-theme bg-theme2">
  
+    <div id="loading-bar"></div>
     <!-- Start wrapper-->
     <div id="wrapper">
       <!-- Spinner Start -->
@@ -48,10 +53,12 @@
 
       <div class="content-wrapper">
         <div class="container-fluid">
-          <!--Start Home Content-->
-          <div w3-include-html="/html/home.html"></div>
-          <!--End Dashboard Content-->
-      
+          <div class="content-container">
+            <!--Start Home Content-->
+            <div w3-include-html="/html/home.html"></div>
+            <!--End Home Content-->
+          </div>
+     
           <!--start overlay-->
           <div class="overlay toggle-menu"></div>
           <!--end overlay-->
@@ -83,8 +90,16 @@
     <script src="/assets/js/request.js"></script>
     <!-- sidebar-menu js -->
     <script src="/assets/js/sidebar-menu.js"></script>
+    <!-- socket io for terminal -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+    <script src="/xterm/lib/xterm.js"></script>
     <!-- Custom scripts -->
     <script src="/assets/js/app-script.js"></script>
+    <!-- jsoneditor -->
+    <script src="/jsoneditor/dist/jsoneditor.min.js"></script>
+    <!-- save file -->
+    <script src="/assets/js/FileSaver.js"></script>
     <!-- Include HTML -->
     <script src="/assets/js/include.js"></script>
     <!-- Index js -->

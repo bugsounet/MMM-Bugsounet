@@ -6,22 +6,22 @@
   <ul class="sidebar-menu">
     <li class="sidebar-header">MAIN NAVIGATION</li>
 
-    <li>
-      <a href="/">
+    <li class="active">
+      <a data-loading="/html/home.html" class="active">
         <i class="fa fa-home"></i>
         <span id="Home">Home</span>
       </a>
     </li>
 
     <li class="d-none">
-      <a class="pe-none" href="dashboard.html">
+      <a data-loading="/html/dashboard.html">
         <i class="fa fa-panorama"></i>
         <span id="Dashboard">Dashboard</span>
       </a>
     </li>
 
     <li>
-      <a class="d-flex" data-bs-toggle="collapse" href="#collapseConfig" aria-expanded="false" aria-controls="collapseConfig">
+      <a class="d-flex collapsed" data-bs-toggle="collapse" href="#collapseConfig" aria-expanded="false" aria-controls="collapseConfig">
         <div>
           <i class="fa fa-code"></i>
           <span id="MMConfig">MagicMirror² Config</span>
@@ -29,13 +29,13 @@
       </a>
       <div class="collapse" id="collapseConfig">
         <div class="dropdown-item ms-3">
-          <a href="/viewConfig">
+          <a data-loading="/html/viewConfig.html">
             <i class="fa-solid fa-eye"></i>
             <span id="MMView">View</span>
           </a>
         </div>
         <div class="dropdown-item ms-3">
-          <a href="/editConfig">
+          <a data-loading="/html/editConfig.html">
             <i class="fa-solid fa-pencil"></i>
             <span id="MMEdit">Edit</span>
           </a>
@@ -44,7 +44,7 @@
     </li>
 
     <li>
-      <a class="d-flex" data-bs-toggle="collapse" href="#collapseTerminal" aria-expanded="false" aria-controls="collapseTerminal">
+      <a class="d-flex collapsed" data-bs-toggle="collapse" href="#collapseTerminal" aria-expanded="false" aria-controls="collapseTerminal">
         <div>
           <i class="fa fa-terminal"></i>
           <span id="Terminal">Terminal</span>
@@ -52,13 +52,13 @@
       </a>
       <div class="collapse" id="collapseTerminal">
         <div class="dropdown-item ms-3">
-          <a href="/logs">
+          <a data-loading="/html/logs.html">
             <i class="fa fa-bug"></i>
             <span id="TerminalLogs">Logs</span>
           </a>
         </div>
         <div class="dropdown-item ms-3">
-          <a href="/SSH">
+          <a data-loading="/html/SSH.html">
             <i class="fa fa-keyboard"></i>
             <span id="TerminalSSH">SSH</span>
           </a>
@@ -67,35 +67,35 @@
     </li>
 
     <li>
-      <a href="/Tools">
+      <a data-loading="/html/tools.html">
         <i class="fa fa-tools"></i>
         <span id="Tools">Tools</span>
       </a>
     </li>
 
     <li>
-      <a href="/System">
+      <a data-loading="/html/system.html">
         <i class="fa fa-microchip"></i>
         <span id="System">System informations</span>
       </a>
     </li>
 
     <li>
-      <a href="/3rdParty">
+      <a data-loading="/html/3rdparty.html">
         <i class="fa fa-newspaper"></i>
         <span id="3rdPartyModules">3rd Party Modules</span>
       </a>
     </li>
 
     <li>
-      <a href="/APIDocs">
+      <a data-loading="/html/API.html">
         <i class="fa fa-file-code"></i>
         <span id="API">API Docs</span>
       </a>
     </li>
 
     <li>
-      <a href="/About">
+       <a data-loading="/html/about.html">
         <i class="fa fa-circle-info"></i>
         <span id="About">About</span>
       </a>

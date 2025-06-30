@@ -2463,3 +2463,35 @@ body.swal2-shown {
 .border-bottom-none {
   border-bottom: hidden !important;
 }
+
+#loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: blue;
+  z-index: 9999;
+  opacity: 0;
+}
+
+#loading-bar.is-active {
+  opacity: 1;
+  width: 30%;
+}
+
+#loading-bar.is-complete {
+  width: 100%;
+  opacity: 0;
+  transition:
+    width 0.3s ease-out,
+    opacity 0.3s ease-out 0.3s;
+}
+
+.content-container {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.content-container.is-loading {
+  opacity: 0;
+}

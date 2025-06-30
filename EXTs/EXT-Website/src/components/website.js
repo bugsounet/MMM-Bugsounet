@@ -183,7 +183,7 @@ class website {
         etag: false,
         extensions: ["css", "js", "html", "map", "woff2"],
         index: false,
-        maxAge: "1h",
+        maxAge: "10s", // only for develop to change later (1h)
         redirect: false,
         setHeaders (res) {
           res.set("x-timestamp", Date.now());
@@ -196,7 +196,6 @@ class website {
         .use(this.logRequest)
         .use(cors({ origin: "*" }))
         .use("/assets", express.static(`${this.WebPath}/assets`, options))
-        .use("/html", express.static(`${this.WebPath}/html`, options))
 
         .use("/jsoneditor", express.static(`${this.WebsiteModulePath}/node_modules/jsoneditor`, options))
         .use("/xterm", express.static(`${this.WebsiteModulePath}/node_modules/xterm`, options))
@@ -225,92 +224,57 @@ class website {
           res.sendFile(`${this.WebPath}/index.html`);
         })
 
-        .get("/Admin", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/admin.html`);
-        })
-
-        .get("/viewConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/viewConfig.html`);
-        })
-
-        .get("/editConfig", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/editConfig.html`);
-        })
-
-        .get("/logs", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-          res.sendFile(`${this.WebPath}/logs.html`);
-
-          io.once("connection", async (socket) => {
-            log(`[${ip}] Connected to Terminal Logs:`, req.user);
-            socket.on("disconnect", (err) => {
-              log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
+        .get("/html/:file", (req, res) => {
+          res.sendFile(`${this.WebPath}/html/${req.params.file}`);
+          const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+          if (req.params.file === "logs.html") {
+            this.auth(req, res, () => { // todo better ?
+              io.once("connection", async (socket) => {
+                log(`[${ip}] Connected to Terminal Logs:`, req.user);
+                socket.on("disconnect", (err) => {
+                  log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
+                });
+                var pastLogs = await this.readAllMMLogs(HyperWatch.logs());
+                io.emit("terminal.logs", pastLogs);
+                HyperWatch.stream().on("stdData", (data) => {
+                  if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
+                });
+              });
             });
-            var pastLogs = await this.readAllMMLogs(HyperWatch.logs());
-            io.emit("terminal.logs", pastLogs);
-            HyperWatch.stream().on("stdData", (data) => {
-              if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
+          }
+          if (req.params.file === "SSH.html") {
+            this.auth(req, res, () => {
+              io.once("connection", (client) => {
+                log(`[${ip}] Connected to Terminal:`, req.user);
+                client.on("disconnect", (err) => {
+                  log(`[${ip}] Disconnected from Terminal:`, req.user, `[${err}]`);
+                });
+                var cols = 80;
+                var rows = 24;
+                if (!pty) {
+                  console.warn("[WEBSITE] Server mode: Terminal is disabled!");
+                  io.to(client.id).emit("terminal.incData", "This Terminal is disabled in server mode.");
+                  return;
+                }
+                var ptyProcess = pty.spawn("bash", [], {
+                  name: "xterm-color",
+                  cols: cols,
+                  rows: rows,
+                  cmd: process.env.HOME,
+                  env: process.env
+                });
+                ptyProcess.on("data", (data) => {
+                  io.to(client.id).emit("terminal.incData", data);
+                });
+                client.on("terminal.toTerm", (data) => {
+                  ptyProcess.write(data);
+                });
+                client.on("terminal.size", (size) => {
+                  ptyProcess.resize(size.cols, size.rows);
+                });
+              });
             });
-          });
-        })
-
-        .get("/SSH", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-          res.sendFile(`${this.WebPath}/SSH.html`);
-
-          io.once("connection", (client) => {
-            log(`[${ip}] Connected to Terminal:`, req.user);
-            client.on("disconnect", (err) => {
-              log(`[${ip}] Disconnected from Terminal:`, req.user, `[${err}]`);
-            });
-            var cols = 80;
-            var rows = 24;
-            if (!pty) {
-              console.warn("[WEBSITE] Server mode: Terminal is disabled!");
-              io.to(client.id).emit("terminal.incData", "This Terminal is disabled in server mode.");
-              return;
-            }
-            var ptyProcess = pty.spawn("bash", [], {
-              name: "xterm-color",
-              cols: cols,
-              rows: rows,
-              cmd: process.env.HOME,
-              env: process.env
-            });
-            ptyProcess.on("data", (data) => {
-              io.to(client.id).emit("terminal.incData", data);
-            });
-            client.on("terminal.toTerm", (data) => {
-              ptyProcess.write(data);
-            });
-            client.on("terminal.size", (size) => {
-              ptyProcess.resize(size.cols, size.rows);
-            });
-          });
-        })
-
-        .get("/Tools", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/tools.html`);
-        })
-
-        .get("/System", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/system.html`);
-        })
-
-        .get("/3rdParty", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/3rdparty.html`);
-        })
-
-        .get("/APIDocs", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/API.html`);
-        })
-
-        .get("/About", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/about.html`);
-        })
-
-        .get("/Account", (req, res, next) => this.auth(req, res, next), (req, res) => {
-          res.sendFile(`${this.WebPath}/account.html`);
+          }
         })
 
         .get("/robots.txt", (req, res) => {

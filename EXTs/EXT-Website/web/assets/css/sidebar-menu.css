@@ -182,3 +182,7 @@
   align-items: center;
   width: 250px;
 }
+
+a[data-loading] {
+  cursor: pointer;
+}
