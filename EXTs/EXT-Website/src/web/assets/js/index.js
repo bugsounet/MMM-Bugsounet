@@ -1705,7 +1705,8 @@ async function doAdminPage () {
 
       let MyLoginSize = Object.keys(MyLogin).length;
       if (MyLoginSize > 0) {
-        putLoginPrefs(MyLogin, () => {
+        putLoginPrefs(MyLogin, async () => {
+          await doAdminPage();
           alertify.success("New login preferences applied");
         });
       } else {
