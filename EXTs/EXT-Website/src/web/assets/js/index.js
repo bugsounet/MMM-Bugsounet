@@ -59,7 +59,6 @@ async function doLoaded () {
 }
 
 /** all functions **/
-
 function removeLoader () {
   const spinner = document.getElementById("spinner");
   const contentContainer = document.querySelector(".content-container");
@@ -79,13 +78,18 @@ function removeLoader () {
   }
 }
 
+function AddSpinner () {
+  const spinner = document.getElementById("spinner");
+  spinner.classList.add("show");
+}
+
 function doPassword () {
   let password = document.getElementById("password");
   if (password) {
     console.log("detected password");
     let eyeIcon = document.getElementsByClassName("toggle-password");
     Array.from(eyeIcon).forEach((icon) => {
-      icon.addEventListener("click", function () {
+      icon.onclick = function () {
         let textZone = this.parentNode.parentNode.children[1].id;
         let Zone = document.getElementById(textZone);
         if (Zone.type === "password") {
@@ -97,7 +101,7 @@ function doPassword () {
           icon.classList.remove("icon-lock");
           icon.classList.add("icon-eye");
         }
-      });
+      };
     });
   }
 }
@@ -265,7 +269,8 @@ async function doAccountPage () {
 
     // save change
     const accountButton = document.getElementById("SaveChange");
-    accountButton.addEventListener("click", function () {
+    accountButton.onclick = function () {
+      AddSpinner();
       const NewUsername = document.getElementById("username").value;
       const NewPassword = document.getElementById("password").value;
       const NewPasswordConfirm = document.getElementById("newpassword").value;
@@ -288,6 +293,7 @@ async function doAccountPage () {
 
       if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
         alertify.error("Password don't match");
+        removeLoader();
       } else if (NewPassword !== "") {
         MyUser.password = btoa(NewPassword);
       }
@@ -308,11 +314,17 @@ async function doAccountPage () {
 
       let MyUserSize = Object.keys(MyUser).length;
       if (MyUserSize > 1) {
-        putMyUser(MyUser, () => { location.href = "/Account"; });
+        putMyUser(MyUser, async () => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          await doSidebar();
+          await doAccountPage();
+          removeLoader();
+        });
       } else {
         alertify.message("There is no change to save");
+        removeLoader();
       }
-    });
+    };
     removeLoader();
   }
 }
@@ -1679,7 +1691,7 @@ async function doAdminPage () {
     document.getElementById("SaveLoginPrefs").value = AccountTranslations["SaveChange"];
 
     const SaveLoginChange = document.getElementById("SaveLoginPrefs");
-    SaveLoginChange.addEventListener("click", function () {
+    SaveLoginChange.onclick = function () {
       const selectedLanguageInput = document.getElementById("selectedLanguage").value;
       const selectedBackgroundInput = document.querySelector("input[name='background']:checked");
 
@@ -1693,11 +1705,13 @@ async function doAdminPage () {
 
       let MyLoginSize = Object.keys(MyLogin).length;
       if (MyLoginSize > 0) {
-        putLoginPrefs(MyLogin, () => { location.href = "/Admin"; });
+        putLoginPrefs(MyLogin, () => {
+          alertify.success("New login preferences applied");
+        });
       } else {
         alertify.message("There is no change to save");
       }
-    });
+    };
     removeLoader();
   }
 }
