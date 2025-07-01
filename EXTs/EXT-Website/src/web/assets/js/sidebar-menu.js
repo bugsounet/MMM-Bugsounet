@@ -14,6 +14,7 @@ document.addEventListener("Includes_Complete", function () {
   var currentLoadedUrl = initialContentUrl;
 
   async function handleNavigationClick (event) {
+    const wrapper = document.getElementById("wrapper");
     const targetLink = event.target.closest("a[data-loading]");
 
     if (targetLink) {
@@ -21,17 +22,17 @@ document.addEventListener("Includes_Complete", function () {
 
       if (urlToLoad) {
         if (urlToLoad === currentLoadedUrl) {
-          console.log(`Content for ${urlToLoad} is already displayed. Skipping reload.`);
-
-          if (event.currentTarget === sidebar) {
-            HilightCurrentLink(targetLink);
-          } else if (event.currentTarget === topbar) {
-            closeAllHilightLink();
+          console.log(`Content for ${urlToLoad} is already displayed.`);
+          if (wrapper.classList.contains("toggled")) {
+            wrapper.classList.remove("toggled");
           }
           return;
         }
 
         if (event.currentTarget === sidebar) {
+          if (wrapper.classList.contains("toggled")) {
+            wrapper.classList.remove("toggled");
+          }
           HilightCurrentLink(targetLink);
         } else if (event.currentTarget === topbar) {
           closeAllHilightLink();
