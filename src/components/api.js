@@ -65,8 +65,8 @@ class api {
     this.ApiDOCS = {};
     this.secret = this.encode(`MMM-Bugsounet v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
 
-    //const allowlist = ["127.0.0.1", "192.168.0.10"]; // for testing
-    const allowlist = [];
+    const allowlist = ["127.0.0.1", "192.168.0.10"]; // for testing
+    //const allowlist = [];
 
     this.Api_rateLimiter = rateLimit({
       windowMs: 15 * 60 * 1000,
