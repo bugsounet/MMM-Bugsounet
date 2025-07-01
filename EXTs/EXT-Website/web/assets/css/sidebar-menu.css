@@ -36,6 +36,11 @@
   right: 0;
 }
 
+#sidebar-wrapper,
+.topbar-nav {
+  user-select: none;
+}
+
 .sidebar-menu {
   list-style: none;
   margin: 0;
@@ -185,4 +190,25 @@
 
 a[data-loading] {
   cursor: pointer;
+}
+
+a[data-loading].active {
+  cursor: pointer;
+}
+
+.sidebar-menu li a:not([href], [class]) {
+  color: rgb(255 255 255 / 65%);
+}
+
+.sidebar-menu li a:not([href], [class]):hover {
+  color: #fff;
+}
+
+.topbar-nav ul.dropdown-menu li:not(.user-details):hover {
+  color: #fff;
+  background: rgb(255 255 255 / 15%);
+}
+
+ul[id="LanguageSelectorDropdown"] li a.dropdown-item:hover {
+  background: rgb(255 255 255 / 15%);
 }
