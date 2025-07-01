@@ -111,7 +111,7 @@
     "stylelint-prettier": "^5.0.3"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=23"
   },
   "installer": {
     "apt": [
