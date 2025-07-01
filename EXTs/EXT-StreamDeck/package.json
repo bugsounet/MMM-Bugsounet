@@ -21,9 +21,6 @@
     "@elgato-stream-deck/node": "^7.3.1",
     "jimp": "^1.6.0"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "installer": {
     "apt": [
       "libusb-1.0-0-dev",

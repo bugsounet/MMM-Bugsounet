@@ -22,8 +22,5 @@
     "axios": "^1.10.0",
     "google-auth-library": "^9.15.1"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250408"
 }

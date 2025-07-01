@@ -16,8 +16,5 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-Photos",
     "setup": "node ../../installer/setup --path=EXTs/EXT-Photos"
   },
-  "engines": {
-    "node": ">=23.0.0"
-  },
   "rev": "250408"
 }

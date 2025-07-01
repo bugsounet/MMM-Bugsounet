@@ -41,9 +41,6 @@
     "progressbar.js": "^1.1.1",
     "python-shell": "^5.0.0"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "installer": {
     "rebuild": true,
     "apt": [

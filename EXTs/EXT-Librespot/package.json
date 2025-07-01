@@ -19,8 +19,5 @@
     "setup:develop": "installer/setup-from-devsource.sh",
     "setup:source": "installer/setup-from-source.sh"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250328"
 }

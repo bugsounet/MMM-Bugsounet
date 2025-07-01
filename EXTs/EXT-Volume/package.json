@@ -16,8 +16,5 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-Volume",
     "setup": "node ../../installer/setup --path=EXTs/EXT-Volume"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250328"
 }

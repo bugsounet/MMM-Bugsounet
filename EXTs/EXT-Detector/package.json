@@ -30,9 +30,6 @@
     "@types/node": "^24.0.7",
     "typescript": "^5.8.3"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "installer" : {
     "rebuild": true,
     "apt": [

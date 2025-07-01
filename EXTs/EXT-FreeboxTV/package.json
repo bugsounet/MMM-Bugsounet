@@ -19,9 +19,6 @@
   "dependencies": {
     "vlc-client": "^1.1.1"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "installer": {
     "apt": [
       "vlc"

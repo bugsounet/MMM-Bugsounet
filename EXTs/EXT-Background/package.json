@@ -16,8 +16,5 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-Background",
     "setup": "node ../../installer/setup --path=EXTs/EXT-Background"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250405"
 }

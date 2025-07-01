@@ -16,9 +16,6 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-VLCServer",
     "setup": "node ../../installer/setup --path=EXTs/EXT-VLCServer"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "installer": {
     "apt": [
       "vlc"

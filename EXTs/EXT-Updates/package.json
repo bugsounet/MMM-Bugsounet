@@ -19,8 +19,5 @@
   "dependencies": {
     "ps-node": "^0.1.6"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250329"
 }

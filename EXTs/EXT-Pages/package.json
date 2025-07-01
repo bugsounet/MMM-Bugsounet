@@ -16,8 +16,5 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-Pages",
     "setup": "node ../../installer/setup --path=EXTs/EXT-Pages"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250329"
 }

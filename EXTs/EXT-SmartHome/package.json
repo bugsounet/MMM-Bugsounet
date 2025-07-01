@@ -25,9 +25,6 @@
     "is-valid-domain": "^0.1.6",
     "prompt": "^1.3.0"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "installer": {
     "apt": [
       "nginx",
