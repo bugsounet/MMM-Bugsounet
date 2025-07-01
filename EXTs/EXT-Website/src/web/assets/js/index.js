@@ -5,7 +5,7 @@
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
-  UpdateFlagsLanguage FlagsSelector
+  UpdateFlagsLanguage FlagsSelector applyBackgroundTheme
  */
 
 /* eslint-disable max-lines-per-function */
@@ -260,6 +260,30 @@ async function doAccountPage () {
         newpassword.value = "";
       }
     });
+
+    document.getElementById("theme1").onclick = () => applyBackgroundTheme("bg-theme1");
+    document.getElementById("theme2").onclick = () => applyBackgroundTheme("bg-theme2");
+    document.getElementById("theme3").onclick = () => applyBackgroundTheme("bg-theme3");
+    document.getElementById("theme4").onclick = () => applyBackgroundTheme("bg-theme4");
+    document.getElementById("theme5").onclick = () => applyBackgroundTheme("bg-theme5");
+    document.getElementById("theme6").onclick = () => applyBackgroundTheme("bg-theme6");
+    document.getElementById("theme7").onclick = () => applyBackgroundTheme("bg-theme7");
+    document.getElementById("theme8").onclick = () => applyBackgroundTheme("bg-theme8");
+    document.getElementById("theme9").onclick = () => applyBackgroundTheme("bg-theme9");
+    document.getElementById("theme10").onclick = () => applyBackgroundTheme("bg-theme10");
+    document.getElementById("theme11").onclick = () => applyBackgroundTheme("bg-theme11");
+    document.getElementById("theme12").onclick = () => applyBackgroundTheme("bg-theme12");
+    document.getElementById("theme13").onclick = () => applyBackgroundTheme("bg-theme13");
+    document.getElementById("theme14").onclick = () => applyBackgroundTheme("bg-theme14");
+    document.getElementById("theme15").onclick = () => applyBackgroundTheme("bg-theme15");
+
+    document.getElementById("theme20").onclick = () => applyNavbarTheme("bg-theme20");
+    document.getElementById("theme21").onclick = () => applyNavbarTheme("bg-theme21");
+    document.getElementById("theme22").onclick = () => applyNavbarTheme("bg-theme22");
+    document.getElementById("theme23").onclick = () => applyNavbarTheme("bg-theme23");
+    document.getElementById("theme24").onclick = () => applyNavbarTheme("bg-theme24");
+    document.getElementById("theme25").onclick = () => applyNavbarTheme("bg-theme25");
+    document.getElementById("theme26").onclick = () => applyNavbarTheme("bg-theme26");
 
     const backgroundInput = document.querySelector(`input[name="background"][value="${user.background}"]`);
     if (backgroundInput) backgroundInput.checked = true;
