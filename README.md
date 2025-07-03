@@ -31,6 +31,7 @@ This module include (with install on demand)
 * EXT-Updates
 * EXT-VLCServer
 * EXT-Volume
+* EXT-Website
 * EXT-YouTube
 * EXT-YouTubeCast
 
