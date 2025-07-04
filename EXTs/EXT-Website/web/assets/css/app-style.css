@@ -2286,13 +2286,15 @@ table.grid td {
   }
 }
 
+/* Overrides autofill */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:active,
 input:-webkit-autofill:focus {
-  background-color: #fff !important;
-  box-shadow: 0 0 0 1000px #323232 inset !important;
-  -webkit-text-fill-color: white !important;
+  background-clip: text;
+  -webkit-text-fill-color: #fff;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px rgb(255 255 255 / 20%);
 }
 
 #avatars-choice img {
