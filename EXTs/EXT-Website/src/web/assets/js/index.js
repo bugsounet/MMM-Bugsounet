@@ -24,11 +24,12 @@ document.addEventListener("NewContent_Loaded", doLoaded);
 
 async function doIndex () {
   console.log("Execute index.js - doIndex");
-  doPassword();
+
   await do404Page();
   await doLoginPage();
   await doSidebar();
   await doHomePage();
+  doPassword();
 }
 
 async function doLoaded () {
@@ -56,6 +57,9 @@ async function doLoaded () {
   tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl, { container: tooltipTriggerEl });
   });
+
+  // enable password checker
+  doPassword();
 }
 
 /** all functions **/
