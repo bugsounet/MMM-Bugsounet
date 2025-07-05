@@ -913,7 +913,8 @@ label {
 /* Forms */
 .input-group .btn {
   box-shadow: none;
-  padding: 0.375rem 0.75rem;
+
+  /* padding: 0.375rem 0.75rem; */
 }
 
 .input-group-text {

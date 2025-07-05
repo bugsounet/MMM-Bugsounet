@@ -1696,6 +1696,9 @@ async function doAdminPage () {
   let AdminPage = document.getElementById("admin-html");
   if (AdminPage) {
     console.log("detected edit Admin page");
+
+    // user login
+
     const LoginPrefs = await getLoginPrefs();
     const AccountTranslations = await getTranslateGroup(user.language, "Account_");
     const AdminTranslations = await getTranslateGroup(user.language, "Admin_");
@@ -1735,6 +1738,31 @@ async function doAdminPage () {
       } else {
         alertify.message("There is no change to save");
       }
+    };
+
+    // user management
+
+    const switchNewUser = document.getElementById("switchNewUser");
+    switchNewUser.onclick = function () {
+      const AdminSaveChange = document.getElementById("AdminSaveChange");
+      const AdminDelete = document.getElementById("AdminDelete");
+      const AdminNewUser = document.getElementById("AdminNewUser");
+      const UserSelectButton = document.getElementById("UserSelectButton");
+      const UserName = document.getElementById("username");
+      if (switchNewUser.checked) {
+        AdminSaveChange.classList.add("d-none");
+        AdminDelete.classList.add("d-none");
+        AdminNewUser.classList.remove("d-none");
+        UserSelectButton.classList.add("d-none");
+        UserName.classList.remove("d-none");
+      } else {
+        AdminSaveChange.classList.remove("d-none");
+        AdminDelete.classList.remove("d-none");
+        AdminNewUser.classList.add("d-none");
+        UserSelectButton.classList.remove("d-none");
+        UserName.classList.add("d-none");
+      }
+
     };
     removeLoader();
   }
