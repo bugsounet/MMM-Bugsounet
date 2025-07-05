@@ -1,4 +1,4 @@
-/* global do_includes alertify setTranslation getTranslate getEXTVersions getCurrentSystem
+/* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
   checkSystem io Terminal FitAddon getVersion getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
@@ -13,11 +13,6 @@
 var interval = null;
 var user = {};
 const contentWrapper = document.querySelector(".content-wrapper");
-
-document.addEventListener("DOMContentLoaded", () => {
-  console.warn("DOMContentLoaded Starting includes HTML");
-  do_includes();
-});
 
 document.addEventListener("Includes_Complete", doIndex);
 document.addEventListener("NewContent_Loaded", doLoaded);

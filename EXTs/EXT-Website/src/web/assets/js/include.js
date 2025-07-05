@@ -1,5 +1,13 @@
 /** include HTML file from w3-include-html */
 
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("⭐ Start HTML includes");
+  await _include2HTML();
+  console.log("⭐ Finish HTML includes");
+  const event = new Event("Includes_Complete");
+  document.dispatchEvent(event);
+});
+
 function _include2HTML () {
   return new Promise((resolve) => {
     var z, i, elmnt, file, xhttp;
@@ -43,13 +51,4 @@ function _file2name (file) {
     return name;
   }
   return file;
-}
-
-/* eslint-disable-next-line */
-async function do_includes () {
-  console.log("⭐ Start HTML includes");
-  await _include2HTML();
-  console.log("⭐ Finish HTML includes");
-  const event = new Event("Includes_Complete");
-  document.dispatchEvent(event);
 }
