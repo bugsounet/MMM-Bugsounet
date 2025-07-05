@@ -5,10 +5,7 @@ document.addEventListener("Includes_Complete", function () {
   const contentArea = document.querySelector(".content-container");
   const topbar = document.getElementById("topbar-html");
 
-  if (!sidebar || !contentArea || !topbar) {
-    console.error("Sidebar (#sidebar-html) or content area (.content-container) element not found.");
-    return;
-  }
+  if (!sidebar || !contentArea || !topbar) return;
 
   const initialContentUrl = "/html/home.html";
   var currentLoadedUrl = initialContentUrl;
