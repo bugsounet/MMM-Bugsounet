@@ -1706,8 +1706,8 @@ async function doAdminPage () {
     setTranslation("Login", AdminTranslations["Login"]);
     setTranslation("Accounts", AdminTranslations["Users"]);
 
-    await UpdateFlagsLanguage(user);
-    FlagsSelector(LoginPrefs);
+    await UpdateFlagsLanguage(user, "LoginLanguageSelectorDropdown");
+    FlagsSelector(LoginPrefs, "LoginLanguageButton", "LoginSelectedLanguage", "LoginLanguageSelectorDropdown");
 
     setTranslation("LoginBackground", AccountTranslations["BackgroundTheme"]);
     setTranslation("LoginPrefs", AdminTranslations["LoginPrefs"]);
@@ -1741,6 +1741,8 @@ async function doAdminPage () {
     };
 
     // user management
+    await UpdateFlagsLanguage(user, "UserLanguageSelectorDropdown");
+    FlagsSelector(user, "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
 
     const switchNewUser = document.getElementById("switchNewUser");
     switchNewUser.onclick = function () {

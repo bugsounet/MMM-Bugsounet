@@ -34,26 +34,40 @@ function applyBackgroundTheme (newTheme) {
   document.querySelector("body").className = `bg-theme ${newTheme}`;
 }
 
-async function UpdateFlagsLanguage (user) {
+async function UpdateFlagsLanguage (user, from) {
   const LanguageTranslations = await getTranslateGroup(user.language, "Language_");
-  setTranslation("English", LanguageTranslations["English"]);
-  setTranslation("French", LanguageTranslations["French"]);
-  setTranslation("German", LanguageTranslations["German"]);
-  setTranslation("Italian", LanguageTranslations["Italian"]);
-  setTranslation("Spanish", LanguageTranslations["Spanish"]);
-  setTranslation("Dutch", LanguageTranslations["Dutch"]);
-  setTranslation("Turkish", LanguageTranslations["Turkish"]);
+  if (from) {
+    const section = document.getElementById(from)
+    section.querySelector("#English").textContent = LanguageTranslations["English"];
+    section.querySelector("#French").textContent = LanguageTranslations["French"];
+    section.querySelector("#German").textContent = LanguageTranslations["German"];
+    section.querySelector("#Italian").textContent = LanguageTranslations["Italian"];
+    section.querySelector("#Spanish").textContent = LanguageTranslations["Spanish"];
+    section.querySelector("#Dutch").textContent = LanguageTranslations["Dutch"];
+    section.querySelector("#Turkish").textContent = LanguageTranslations["Turkish"];
+  } else {
+    setTranslation("English", LanguageTranslations["English"]);
+    setTranslation("French", LanguageTranslations["French"]);
+    setTranslation("German", LanguageTranslations["German"]);
+    setTranslation("Italian", LanguageTranslations["Italian"]);
+    setTranslation("Spanish", LanguageTranslations["Spanish"]);
+    setTranslation("Dutch", LanguageTranslations["Dutch"]);
+    setTranslation("Turkish", LanguageTranslations["Turkish"]);
+  }
 }
 
-function FlagsSelector (user) {
+function FlagsSelector (user, dropdown, input, items) {
   // Get all the dropdown items
-  const dropdownLanguageItems = document.querySelectorAll("a.dropdown-item"); // Select the 'a' tag
+  //const dropdownLanguageItems = document.querySelectorAll("a.dropdown-item"); // Select the 'a' tag
+  
+  const dropdownLanguageItems = items ? document.getElementById(items).querySelectorAll("a.dropdown-item") : document.querySelectorAll("a.dropdown-item"); // Select the 'a' tag
 
+  console.log("-->", dropdownLanguageItems)
   // Get the hidden input field
-  const selectedLanguageInput = document.getElementById("selectedLanguage");
+  const selectedLanguageInput = input ? document.getElementById(input) : document.getElementById("selectedLanguage");
 
   // Get the dropdown button
-  const dropdownLanguageButton = document.getElementById("LanguageButton");
+  const dropdownLanguageButton = dropdown ? document.getElementById(dropdown) : document.getElementById("LanguageButton");
 
   // --- Set the default language on page load ---
   const defaultLanguageValue = user.language;
