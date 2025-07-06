@@ -420,6 +420,19 @@ class api {
         else res.status(404).json({ error: "Not Found" });
         break;
 
+      case "/api/databases/users/all":
+        var Users = [];
+        for (const user of this.Api.users) {
+          var User = {};
+          if (user.username) {
+            User = this.findUser(user.username);
+            User.id = this.findUserIndex(user.username);
+            Users.push(User);
+          }
+        }
+        res.json(Users);
+        break;
+
       default:
         console.warn("[Bugsounet] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
