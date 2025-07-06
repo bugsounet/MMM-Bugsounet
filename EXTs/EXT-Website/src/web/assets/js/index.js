@@ -5,7 +5,8 @@
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
-  UpdateFlagsLanguage FlagsSelector applyBackgroundTheme
+  UpdateFlagsLanguage FlagsSelector applyBackgroundTheme AdminSaveChange AdminDelete getAllUsers
+  UserSelector LevelSelector
  */
 
 /* eslint-disable max-lines-per-function */
@@ -1700,6 +1701,9 @@ async function doAdminPage () {
     // user login
 
     const LoginPrefs = await getLoginPrefs();
+    const AllUsers = await getAllUsers();
+    console.warn("AllUsers", AllUsers);
+
     const AccountTranslations = await getTranslateGroup(user.language, "Account_");
     const AdminTranslations = await getTranslateGroup(user.language, "Admin_");
 
@@ -1741,9 +1745,6 @@ async function doAdminPage () {
     };
 
     // user management
-    await UpdateFlagsLanguage(user, "UserLanguageSelectorDropdown");
-    FlagsSelector(user, "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
-
     const switchNewUser = document.getElementById("switchNewUser");
     switchNewUser.onclick = function () {
       const AdminSaveChange = document.getElementById("AdminSaveChange");
@@ -1764,8 +1765,127 @@ async function doAdminPage () {
         UserSelectButton.classList.remove("d-none");
         UserName.classList.add("d-none");
       }
-
     };
+
+    if ((AllUsers[0].username === user.username) && (AllUsers[0].id === user.id) || AllUsers[0].level >= user.level) {
+      AdminDelete.disabled = true;
+      AdminSaveChange.disabled = true;
+    }
+
+    const switchUserDisabled = document.getElementById("switchUserDisabled");
+    if (AllUsers[0].disabled) switchUserDisabled.checked = true;
+    else switchUserDisabled.checked = false;
+
+    await UpdateFlagsLanguage(user, "UserLanguageSelectorDropdown");
+    FlagsSelector(AllUsers[0], "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
+
+    const UserAvatarInput = document.querySelector(`input[name="avatar"][value="${AllUsers[0].avatar}"]`);
+    if (UserAvatarInput) UserAvatarInput.checked = true;
+
+    const UserSelectorDropdown = document.getElementById("UserSelectorDropdown");
+    for (const user of AllUsers) {
+      var Li = document.createElement("li");
+      Li.innerHTML = `<a class="dropdown-item d-flex align-items-baseline" href="#" data-value="${user.username}" data-id="${user.id}">
+        <i class="icon-user me-2"></i>
+        <div id="${user.username}">${user.username}</div>
+      </a>`;
+      UserSelectorDropdown.appendChild(Li);
+    }
+    UserSelector(AllUsers[0]);
+    LevelSelector(AllUsers[0]);
+
+    let newpassword = document.getElementById("newpassword");
+    newpassword.value = "";
+    newpassword.disabled = true;
+    let password = document.getElementById("password");
+    password.addEventListener("change", function () {
+      if (password.value !== "") {
+        newpassword.disabled = false;
+      } else {
+        newpassword.disabled = true;
+        newpassword.value = "";
+      }
+    });
+
+    const selectedUser = document.getElementById("selectedUser");
+    selectedUser.onchange = (event) => {
+      const newId = event.target.getAttribute("identifier");
+
+      console.log("change New User:", event.target.value, "ID:", newId);
+      LevelSelector(AllUsers[newId]);
+      FlagsSelector(AllUsers[newId], "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
+      if (AllUsers[newId].disabled) switchUserDisabled.checked = true;
+      else switchUserDisabled.checked = false;
+      const NewUserAvatarInput = document.querySelector(`input[name="avatar"][value="${AllUsers[newId].avatar}"]`);
+      if (NewUserAvatarInput) NewUserAvatarInput.checked = true;
+      if ((AllUsers[newId].username === user.username) && (AllUsers[newId].id === user.id) || AllUsers[newId].level >= user.level) {
+        AdminDelete.disabled = true;
+        AdminSaveChange.disabled = true;
+      } else {
+        AdminDelete.disabled = false;
+        AdminSaveChange.disabled = false;
+      }
+    };
+
+    const CreateUser = document.getElementById("AdminNewUser");
+    CreateUser.onclick = function () {
+      AddSpinner();
+      const NewUsername = document.getElementById("username").value;
+      const NewPassword = document.getElementById("password").value;
+      const NewPasswordConfirm = document.getElementById("newpassword").value;
+      const selectedLanguageInput = document.getElementById("UserSelectedLanguage").value;
+
+      console.log("NewUsername", NewUsername);
+      console.log("NewPassword", NewPassword);
+      console.log("NewPasswordConfirm", NewPasswordConfirm);
+      console.log("selectedLanguageInput", selectedLanguageInput);
+
+      let MyUser = {
+        id: user.id
+      };
+
+      const selectedAvatarInput = document.querySelector("input[name='avatar']:checked");
+      let selectedAvatarValue = null;
+      if (selectedAvatarInput) {
+        selectedAvatarValue = parseInt(selectedAvatarInput.value);
+        if (selectedAvatarValue !== user.avatar) MyUser.avatar = selectedAvatarValue;
+      }
+
+      if (NewUsername !== user.username) MyUser.username = NewUsername;
+
+      if (selectedLanguageInput !== user.language) MyUser.language = selectedLanguageInput;
+
+      if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
+        alertify.error("Password don't match");
+        removeLoader();
+      } else if (NewPassword !== "") {
+        MyUser.password = btoa(NewPassword);
+      }
+
+      const selectedBackgroundInput = document.querySelector("input[name='background']:checked");
+      const selectedNavbarInput = document.querySelector("input[name='navbar']:checked");
+      let selectedBackgroundValue = null;
+      if (selectedBackgroundInput) {
+        selectedBackgroundValue = parseInt(selectedBackgroundInput.value);
+        if (selectedBackgroundValue !== user.background) MyUser.background = selectedBackgroundValue;
+      }
+
+      let selectedNavbarValue = null;
+      if (selectedNavbarInput) {
+        selectedNavbarValue = parseInt(selectedNavbarInput.value);
+        if (selectedNavbarValue !== user.topbar) MyUser.topbar = selectedNavbarValue;
+      }
+
+      let MyUserSize = Object.keys(MyUser).length;
+      if (MyUserSize > 1) {
+        console.log("Done");
+        removeLoader();
+      } else {
+        alertify.message("There is no change to save");
+        removeLoader();
+      }
+    };
+
     removeLoader();
   }
 }

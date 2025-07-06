@@ -33,6 +33,12 @@ function getMyUser () {
   });
 }
 
+function getAllUsers () {
+  return new Promise((resolve) => {
+    Request("/api/databases/users/all", "GET", true, null, null, "getAllUsers", (user) => resolve(user));
+  });
+}
+
 function putMyUser (body, cb) {
   return new Promise((resolve) => {
     Request("/api/databases/users/me", "PUT", true, null, { me: btoa(JSON.stringify(body)) }, "putMyUser", (result) => {

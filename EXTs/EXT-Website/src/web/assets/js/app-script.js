@@ -37,7 +37,7 @@ function applyBackgroundTheme (newTheme) {
 async function UpdateFlagsLanguage (user, from) {
   const LanguageTranslations = await getTranslateGroup(user.language, "Language_");
   if (from) {
-    const section = document.getElementById(from)
+    const section = document.getElementById(from);
     section.querySelector("#English").textContent = LanguageTranslations["English"];
     section.querySelector("#French").textContent = LanguageTranslations["French"];
     section.querySelector("#German").textContent = LanguageTranslations["German"];
@@ -58,11 +58,8 @@ async function UpdateFlagsLanguage (user, from) {
 
 function FlagsSelector (user, dropdown, input, items) {
   // Get all the dropdown items
-  //const dropdownLanguageItems = document.querySelectorAll("a.dropdown-item"); // Select the 'a' tag
-  
   const dropdownLanguageItems = items ? document.getElementById(items).querySelectorAll("a.dropdown-item") : document.querySelectorAll("a.dropdown-item"); // Select the 'a' tag
 
-  console.log("-->", dropdownLanguageItems)
   // Get the hidden input field
   const selectedLanguageInput = input ? document.getElementById(input) : document.getElementById("selectedLanguage");
 
@@ -128,6 +125,127 @@ function FlagsSelector (user, dropdown, input, items) {
     });
   });
 }
+
+function UserSelector (user) {
+  // Get all the dropdown items
+  const dropdownUserItems = document.getElementById("UserSelectorDropdown").querySelectorAll("a.dropdown-item");
+
+  // Get the hidden input field
+  const selectedUserInput = document.getElementById("selectedUser");
+
+  // Get the dropdown button
+  const dropdownUserButton = document.getElementById("UserSelectButton");
+
+  // --- Set the default user on page load ---
+  const defaultUserValue = user.username;
+  const defaultUserId = user.id;
+
+  // Find the dropdown item that matches the default user value
+  const defaultUserItem = Array.from(dropdownUserItems).find((item) => {
+    return item.getAttribute("data-value") === defaultUserValue;
+  });
+
+  // If a default item is found, set it as the selected one initially
+  if (defaultUserItem) {
+    const defaultUserTextElement = defaultUserItem.querySelector("div");
+    const defaultUserText = defaultUserTextElement ? defaultUserTextElement.textContent.trim() : "";
+
+    // Update the value of the hidden input field
+    if (selectedUserInput) {
+      selectedUserInput.value = defaultUserValue;
+      selectedUserInput.setAttribute("identifier", defaultUserId);
+    }
+
+    // Update the text on the dropdown button
+    if (dropdownUserButton) {
+      dropdownUserButton.innerHTML = defaultUserText;
+    }
+  } else {
+    console.warn(`Dropdown item with data-value="${defaultUserValue}" not found for default selection.`);
+  }
+
+  // Add a click event listener to each dropdown item
+  dropdownUserItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Get the value from the 'data-value' attribute of the clicked 'a' tag
+      const selectedUserValue = this.getAttribute("data-value");
+      const selectedUserId = this.getAttribute("data-id");
+
+      // Find the div containing the text and get its text content
+      const selectedUserTextElement = this.querySelector("div");
+      const selectedUserText = selectedUserTextElement ? selectedUserTextElement.textContent.trim() : "";
+
+      // Update the value of the hidden input field
+      if (selectedUserInput) {
+        selectedUserInput.value = selectedUserValue;
+        selectedUserInput.setAttribute("identifier", selectedUserId);
+        selectedUserInput.dispatchEvent(new Event("change"));
+      }
+
+      // update the text on the dropdown button
+      if (dropdownUserButton) {
+        dropdownUserButton.innerHTML = selectedUserText;
+      }
+    });
+  });
+}
+
+function LevelSelector (user) {
+  // Get all the dropdown items
+  const dropdownLevelItems = document.getElementById("LevelSelectorDropdown").querySelectorAll("a.dropdown-item");
+
+  // Get the hidden input field
+  const selectedLevelInput = document.getElementById("selectedLevel");
+
+  // Get the dropdown button
+  const dropdownLevelButton = document.getElementById("LevelButton");
+
+  // --- Set the default user on page load ---
+  const defaultLevelValue = user.level.toString();
+
+  // Find the dropdown item that matches the default user value
+  const defaultLevelItem = Array.from(dropdownLevelItems).find((item) => {
+    return item.getAttribute("data-value") === defaultLevelValue;
+  });
+
+  // If a default item is found, set it as the selected one initially
+  if (defaultLevelItem) {
+    // Update the value of the hidden input field
+    if (selectedLevelInput) {
+      selectedLevelInput.value = defaultLevelValue;
+    }
+
+    // Update the text on the dropdown button
+    if (dropdownLevelButton) {
+      dropdownLevelButton.innerHTML = defaultLevelValue;
+    }
+  } else {
+    console.warn(`Dropdown item with data-value="${defaultLevelValue}" not found for default selection.`);
+  }
+
+  // Add a click event listener to each dropdown item
+  dropdownLevelItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      // Get the value from the 'data-value' attribute of the clicked 'a' tag
+      const selectedLevelValue = this.getAttribute("data-value");
+
+      // Update the value of the hidden input field
+      if (selectedLevelInput) {
+        selectedLevelInput.value = selectedLevelValue;
+      }
+
+      // update the text on the dropdown button
+      if (dropdownLevelButton) {
+        dropdownLevelButton.innerHTML = selectedLevelValue;
+      }
+    });
+  });
+}
+
 
 window.addEventListener("error", function (event) {
   console.error("[SCRIPT] An error occurred:", event.message);

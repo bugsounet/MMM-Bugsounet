@@ -16,8 +16,7 @@ body {
   font-family: Roboto, sans-serif;
   font-size: 15px;
   color: rgb(255 255 255 / 85%);
-
-  /* letter-spacing: 0.5px; */
+  user-select: none;
 }
 
 [tabindex="-1"]:focus {
@@ -610,6 +609,34 @@ body.bg-theme15 {
   padding: 0.75rem 1.25rem;
   background-color: rgb(0 0 0 / 0%);
   border-top: 1px solid rgb(255 255 255 / 12%);
+}
+
+.text-unset {
+  text-transform: unset !important;
+}
+
+.text-form {
+  padding: 0.335rem 0.75rem !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  letter-spacing: unset !important;
+}
+
+.text-form-no-padding {
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  letter-spacing: unset !important;
+  color: #fff;
+}
+
+.form-check-warn.form-check-input:checked {
+  background-color: #de2935;
+  border-color: #de2935;
+}
+
+.form-check-success.form-check-input:checked {
+  background-color: #04b962;
+  border-color: #04b962;
 }
 
 /* Buttons */
