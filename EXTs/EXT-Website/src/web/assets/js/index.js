@@ -1835,53 +1835,51 @@ async function doAdminPage () {
       const NewPasswordConfirm = document.getElementById("newpassword").value;
       const selectedLanguageInput = document.getElementById("UserSelectedLanguage").value;
 
-      console.log("NewUsername", NewUsername);
-      console.log("NewPassword", NewPassword);
-      console.log("NewPasswordConfirm", NewPasswordConfirm);
-      console.log("selectedLanguageInput", selectedLanguageInput);
-
-      let MyUser = {
-        id: user.id
+      let NewUser = {
+        background: 2,
+        topbar: 26
       };
+
+      if (switchUserDisabled.checked) NewUser.disabled = true;
+      else NewUser.disabled = false;
+
+      if (NewUsername === "") alertify.error("Username Missing");
+      else NewUser.username = NewUsername;
+
+      const selectedLevel = document.getElementById("selectedLevel");
+      if (selectedLevel.value) {
+        let level = parseInt(selectedLevel.value);
+        if (level >= user.level) alertify.error("Can't add a level > at yours");
+        else NewUser.level = level;
+      }
+      else alertify.error("Level Missing");
 
       const selectedAvatarInput = document.querySelector("input[name='avatar']:checked");
       let selectedAvatarValue = null;
       if (selectedAvatarInput) {
         selectedAvatarValue = parseInt(selectedAvatarInput.value);
-        if (selectedAvatarValue !== user.avatar) MyUser.avatar = selectedAvatarValue;
+        NewUser.avatar = selectedAvatarValue;
       }
+      else alertify.error("Avatar Missing");
 
-      if (NewUsername !== user.username) MyUser.username = NewUsername;
-
-      if (selectedLanguageInput !== user.language) MyUser.language = selectedLanguageInput;
+      if (selectedLanguageInput) NewUser.language = selectedLanguageInput;
+      else alertify.error("User Language Missing");
 
       if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
         alertify.error("Password don't match");
         removeLoader();
       } else if (NewPassword !== "") {
-        MyUser.password = btoa(NewPassword);
+        NewUser.password = btoa(NewPassword);
+      } else {
+        alertify.error("Please select a Password");
       }
 
-      const selectedBackgroundInput = document.querySelector("input[name='background']:checked");
-      const selectedNavbarInput = document.querySelector("input[name='navbar']:checked");
-      let selectedBackgroundValue = null;
-      if (selectedBackgroundInput) {
-        selectedBackgroundValue = parseInt(selectedBackgroundInput.value);
-        if (selectedBackgroundValue !== user.background) MyUser.background = selectedBackgroundValue;
-      }
-
-      let selectedNavbarValue = null;
-      if (selectedNavbarInput) {
-        selectedNavbarValue = parseInt(selectedNavbarInput.value);
-        if (selectedNavbarValue !== user.topbar) MyUser.topbar = selectedNavbarValue;
-      }
-
-      let MyUserSize = Object.keys(MyUser).length;
-      if (MyUserSize > 1) {
-        console.log("Done");
+      let NewUserSize = Object.keys(NewUser).length;
+      if (NewUserSize === 8) {
+        console.log("Done", NewUser);
         removeLoader();
       } else {
-        alertify.message("There is no change to save");
+        alertify.warning("Please Correct this form");
         removeLoader();
       }
     };
