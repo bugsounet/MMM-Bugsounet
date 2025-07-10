@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-/* global getTranslateGroup setTranslation */
+/* global getTranslateGroup setTranslation Swal */
 
 function hasTheme (classes) {
   let classNames = classes.value;
@@ -252,6 +252,29 @@ window.addEventListener("error", function (event) {
   console.error("[SCRIPT] Script:", event.filename);
   console.error("[SCRIPT] Line:", event.lineno);
   console.error("[SCRIPT] Column:", event.colno);
+  const contentWrapper = document.querySelector(".content-wrapper");
+  Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    html: `<div>${event.message}</div><div>Script: ${event.filename}</div><div>Line: ${event.lineno}</div><div>Column: ${event.colno}</div>`,
+    confirmButtonText: "Retry",
+    showCancelButton: true,
+    didOpen: () => {
+      contentWrapper.classList.add("blur");
+    },
+    willClose: () => {
+      contentWrapper.classList.remove("blur");
+    },
+    customClass: {
+      confirmButton: "btn btn-primary btn-round me-3",
+      cancelButton: "btn btn-dark btn-round"
+    },
+    allowOutsideClick: false
+  }).then((result) => {
+    if (result.isConfirmed) {
+      location.href = window.location.href;
+    }
+  });
 });
 
 document.addEventListener("Includes_Complete", () => {
