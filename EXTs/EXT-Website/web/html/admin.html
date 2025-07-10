@@ -366,8 +366,35 @@
                 <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
                   <div class="input-group">
                     <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
-                    <input id="password" class="form-control" type="password" autocomplete="new-password" placeholder="Enter Password">
+                    <input id="password" class="form-control" type="password" minlength="10" autocomplete="new-password" placeholder="Enter Password">
                     <div class="input-group-text"><i toggle="#password" class="icon-eye toggle-password text-white me-0"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label id="PasswordStrength"class="col-lg-3 col-form-label form-control-label">Password Strength</label>
+                <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
+                  <div id="PasswordStrengthChecker" data-Strength-check="">
+                    <div id="LengthGrp" class="d-flex align-items-center text-white">
+                      <i class="icon-check"></i>
+                      <div id="Length">Length: 10 characters minimum</div>
+                    </div>
+                    <div class="d-flex align-items-center text-white LowercaseGrp">
+                      <i class="icon-check"></i>
+                      <div id="Lowercase">Lowercase</div>
+                    </div>
+                    <div class="d-flex align-items-center text-white UppercaseGrp">
+                      <i class="icon-check"></i>
+                      <div id="Uppercase">Uppercase</div>
+                    </div>
+                    <div class="d-flex align-items-center text-white NumberGrp">
+                      <i class="icon-check"></i>
+                      <div id="Number">Number</div>
+                    </div>
+                    <div class="d-flex align-items-center text-white SymbolGrp">
+                      <i class="icon-check"></i>
+                      <div id="Symbol">Symbol</div>
                     </div>
                   </div>
                 </div>
@@ -375,7 +402,6 @@
               <div class="row">
                 <label id="NewPasswordProfile"class="col-lg-3 col-form-label form-control-label">Confirm password</label>
                 <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
-                  
                   <div class="input-group">
                     <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
                     <input id="newpassword" class="form-control" type="password" autocomplete="new-password" placeholder="Confirm Password">

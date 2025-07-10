@@ -6,7 +6,7 @@
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
   UpdateFlagsLanguage FlagsSelector applyBackgroundTheme AdminSaveChange AdminDelete getAllUsers
-  UserSelector LevelSelector
+  UserSelector LevelSelector checkPasswordStrength
  */
 
 /* eslint-disable max-lines-per-function */
@@ -14,6 +14,7 @@
 var interval = null;
 var user = {};
 const contentWrapper = document.querySelector(".content-wrapper");
+// import checkPasswordStrength from 'check-password-strength'
 
 document.addEventListener("Includes_Complete", doIndex);
 document.addEventListener("NewContent_Loaded", doLoaded);
@@ -1745,39 +1746,70 @@ async function doAdminPage () {
     };
 
     // user management
+    var NewUser = {
+      background: 2,
+      topbar: 26,
+      level: 1,
+      language: "en"
+    };
+    const switchUserDisabled = document.getElementById("switchUserDisabled");
     const switchNewUser = document.getElementById("switchNewUser");
+    const newpassword = document.getElementById("newpassword");
+    const password = document.getElementById("password");
+
     switchNewUser.onclick = function () {
       const AdminSaveChange = document.getElementById("AdminSaveChange");
       const AdminDelete = document.getElementById("AdminDelete");
       const AdminNewUser = document.getElementById("AdminNewUser");
       const UserSelectButton = document.getElementById("UserSelectButton");
       const UserName = document.getElementById("username");
+
       if (switchNewUser.checked) {
         AdminSaveChange.classList.add("d-none");
         AdminDelete.classList.add("d-none");
         AdminNewUser.classList.remove("d-none");
         UserSelectButton.classList.add("d-none");
         UserName.classList.remove("d-none");
+
+        document.getElementById("username").value = "";
+        switchUserDisabled.checked = false;
+        LevelSelector(NewUser);
+        FlagsSelector(NewUser, "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
+        password.value = "";
+        newpassword.value = "";
+        newpassword.disabled = true;
       } else {
         AdminSaveChange.classList.remove("d-none");
         AdminDelete.classList.remove("d-none");
         AdminNewUser.classList.add("d-none");
         UserSelectButton.classList.remove("d-none");
         UserName.classList.add("d-none");
+        checkFirstUser();
       }
     };
 
-    if ((AllUsers[0].username === user.username) && (AllUsers[0].id === user.id) || AllUsers[0].level >= user.level) {
-      AdminDelete.disabled = true;
-      AdminSaveChange.disabled = true;
+    function checkFirstUser () {
+      if ((AllUsers[0].username === user.username) && (AllUsers[0].id === user.id) || AllUsers[0].level >= user.level) {
+        AdminDelete.disabled = true;
+        AdminSaveChange.disabled = true;
+      }
+
+      if (AllUsers[0].disabled) switchUserDisabled.checked = true;
+      else switchUserDisabled.checked = false;
+
+      FlagsSelector(AllUsers[0], "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
+
+      if (UserAvatarInput) UserAvatarInput.checked = true;
+
+      UserSelector(AllUsers[0]);
+      LevelSelector(AllUsers[0]);
+
+      password.value = "";
+      newpassword.value = "";
+      newpassword.disabled = true;
     }
 
-    const switchUserDisabled = document.getElementById("switchUserDisabled");
-    if (AllUsers[0].disabled) switchUserDisabled.checked = true;
-    else switchUserDisabled.checked = false;
-
     await UpdateFlagsLanguage(user, "UserLanguageSelectorDropdown");
-    FlagsSelector(AllUsers[0], "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
 
     const UserAvatarInput = document.querySelector(`input[name="avatar"][value="${AllUsers[0].avatar}"]`);
     if (UserAvatarInput) UserAvatarInput.checked = true;
@@ -1791,19 +1823,26 @@ async function doAdminPage () {
       </a>`;
       UserSelectorDropdown.appendChild(Li);
     }
-    UserSelector(AllUsers[0]);
-    LevelSelector(AllUsers[0]);
 
-    let newpassword = document.getElementById("newpassword");
-    newpassword.value = "";
-    newpassword.disabled = true;
-    let password = document.getElementById("password");
+    checkFirstUser();
+
+    password.onkeyup = () => {
+      let pwdChecker = checkPasswordStrength.passwordStrength(password.value);
+      let LengthGrp = document.getElementById("LengthGrp");
+      let PasswordStrengthChecker = document.getElementById("PasswordStrengthChecker");
+      PasswordStrengthChecker.setAttribute("data-Strength-check", pwdChecker.contains.toString());
+      if (pwdChecker.length >= 10) LengthGrp.classList.add("LengthGrp");
+      else LengthGrp.classList.remove("LengthGrp");
+      password.setAttribute("passwordStrength", pwdChecker.value);
+    };
+
     password.addEventListener("change", function () {
       if (password.value !== "") {
         newpassword.disabled = false;
       } else {
         newpassword.disabled = true;
         newpassword.value = "";
+        password.setAttribute("passwordStrength", "");
       }
     });
 
@@ -1834,11 +1873,6 @@ async function doAdminPage () {
       const NewPassword = document.getElementById("password").value;
       const NewPasswordConfirm = document.getElementById("newpassword").value;
       const selectedLanguageInput = document.getElementById("UserSelectedLanguage").value;
-
-      let NewUser = {
-        background: 2,
-        topbar: 26
-      };
 
       if (switchUserDisabled.checked) NewUser.disabled = true;
       else NewUser.disabled = false;

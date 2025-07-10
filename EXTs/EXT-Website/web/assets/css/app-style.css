@@ -2526,3 +2526,43 @@ body.swal2-shown {
 .content-container.is-loading {
   opacity: 0;
 }
+
+.input-group:has(input#password[passwordstrength="Too weak"])
+  > .input-group-text:first-child {
+  background-color: #000 !important;
+}
+
+.input-group:has(input#password[passwordstrength="Weak"])
+  > .input-group-text:first-child {
+  background-color: #de2935 !important;
+}
+
+.input-group:has(input#password[passwordstrength="Medium"])
+  > .input-group-text:first-child {
+  background-color: #f80 !important;
+}
+
+.input-group:has(input#password[passwordstrength="Strong"])
+  > .input-group-text:first-child {
+  background-color: #04b962 !important;
+}
+
+#PasswordStrengthChecker .LengthGrp {
+  color: #04b962 !important;
+}
+
+#PasswordStrengthChecker[data-strength-check*="lowercase"] .LowercaseGrp {
+  color: #04b962 !important;
+}
+
+#PasswordStrengthChecker[data-strength-check*="uppercase"] .UppercaseGrp {
+  color: #04b962 !important;
+}
+
+#PasswordStrengthChecker[data-strength-check*="number"] .NumberGrp {
+  color: #04b962 !important;
+}
+
+#PasswordStrengthChecker[data-strength-check*="symbol"] .SymbolGrp {
+  color: #04b962 !important;
+}
