@@ -1898,12 +1898,16 @@ async function doAdminPage () {
       else NewUser.disabled = false;
 
       if (NewUsername === "") alertify.error("Username Missing");
-      else NewUser.username = NewUsername;
+      else {
+        const FindUserAlreadyExist = AllUsers.find(({ username }) => username === NewUsername);
+        if (FindUserAlreadyExist) alertify.error("Username already exist");
+        else NewUser.username = NewUsername;
+      }
 
       const selectedLevel = document.getElementById("selectedLevel");
       if (selectedLevel.value) {
         let level = parseInt(selectedLevel.value);
-        if (level >= user.level) alertify.error("Can't add a level > at yours");
+        if (level >= user.level) alertify.error("Can't add a level higher or equal than yours");
         else NewUser.level = level;
       }
       else alertify.error("Level Missing");
@@ -1946,7 +1950,6 @@ async function doAdminPage () {
           const newContentEvent = new Event("NewContent_Loaded");
           document.dispatchEvent(newContentEvent);
           alertify.success(`User ${NewUser.username} added with success!`);
-
         });
       } else {
         alertify.warning("Please Correct this form");
