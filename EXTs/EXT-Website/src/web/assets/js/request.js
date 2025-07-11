@@ -48,6 +48,15 @@ function putMyUser (body, cb) {
   });
 }
 
+function putNewUser (body, cb) {
+  return new Promise((resolve) => {
+    Request("/api/databases/users/new", "PUT", true, null, { new: btoa(JSON.stringify(body)) }, "putNewUser", (result) => {
+      if (cb) cb();
+      resolve(result);
+    });
+  });
+}
+
 function getLoginPrefs () {
   return new Promise((resolve) => {
     Request("/api/databases/login", "GET", null, null, null, "getLoginPrefs", (result) => resolve(result));

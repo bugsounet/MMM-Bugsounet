@@ -6,7 +6,7 @@
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
   UpdateFlagsLanguage FlagsSelector applyBackgroundTheme AdminSaveChange AdminDelete getAllUsers
-  UserSelector LevelSelector checkPasswordStrength
+  UserSelector LevelSelector checkPasswordStrength putNewUser loadContentDynamically
  */
 
 /* eslint-disable max-lines-per-function */
@@ -1755,7 +1755,7 @@ async function doAdminPage () {
 
     const SaveLoginChange = document.getElementById("SaveLoginPrefs");
     SaveLoginChange.onclick = function () {
-      const selectedLanguageInput = document.getElementById("selectedLanguage").value;
+      const selectedLanguageInput = document.getElementById("LoginSelectedLanguage").value;
       const selectedBackgroundInput = document.querySelector("input[name='background']:checked");
 
       let MyLogin = {};
@@ -1887,7 +1887,7 @@ async function doAdminPage () {
     };
 
     const CreateUser = document.getElementById("AdminNewUser");
-    CreateUser.onclick = function () {
+    CreateUser.onclick = async function () {
       AddSpinner();
       const NewUsername = document.getElementById("username").value;
       const NewPassword = document.getElementById("password").value;
@@ -1931,8 +1931,23 @@ async function doAdminPage () {
 
       let NewUserSize = Object.keys(NewUser).length;
       if (NewUserSize === 8) {
-        console.log("Done", NewUser);
-        removeLoader();
+        putNewUser(NewUser, async () => {
+          const contentArea = document.querySelector(".content-container");
+          await loadContentDynamically("/html/admin.html", contentArea);
+
+          const loginTab = document.getElementById("loginTab");
+          const loginContent = document.getElementById("login");
+          const accountsTab = document.getElementById("accountsTab");
+          const accountsContent = document.getElementById("accounts");
+          loginTab.classList.remove("active");
+          accountsTab.classList.add("active");
+          loginContent.classList.remove("active", "show");
+          accountsContent.classList.add("active", "show");
+          const newContentEvent = new Event("NewContent_Loaded");
+          document.dispatchEvent(newContentEvent);
+          alertify.success(`User ${NewUser.username} added with success!`);
+
+        });
       } else {
         alertify.warning("Please Correct this form");
         removeLoader();
