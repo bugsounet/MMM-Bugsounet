@@ -277,10 +277,10 @@ class api {
           this.Api.healthDownloader(req, res);
         })
 
-        .get("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.GetAPI(req, res))
-        .post("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PostAPI(req, res))
-        .put("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.PutAPI(req, res))
-        .delete("/api/{*fn}", (res, req, next) => this.hasValidToken(res, req, next), (req, res) => this.DeleteAPI(req, res))
+        .get("/api/{*fn}", this.hasValidToken, (req, res) => this.GetAPI(req, res))
+        .post("/api/{*fn}", this.hasValidToken, (req, res) => this.PostAPI(req, res))
+        .put("/api/{*fn}", this.hasValidToken, (req, res) => this.PutAPI(req, res))
+        .delete("/api/{*fn}", this.hasValidToken, (req, res) => this.DeleteAPI(req, res))
 
         .get("/{*other}", (req, res) => {
           console.warn("[Bugsounet] [API] Don't find:", req.url);
@@ -460,9 +460,10 @@ class api {
         await this.writeLoginPrefs();
         res.json({ done: "ok" });
         break;
+
       case "/api/databases/users/me":
         if (!req.body["me"]) return res.status(400).json({ error: "Bad Request" });
-        log("Receiving new user info...");
+        log("Update user info...");
         var decoder;
         try {
           decoder = JSON.parse(this.decode(req.body["me"]));
@@ -484,6 +485,41 @@ class api {
         await this.writeUsers();
         res.json({ done: "ok" });
         break;
+
+      case "/api/databases/users/new":
+        if (!req.body["new"]) return res.status(400).json({ error: "Bad Request" });
+        log("Receiving new user info...");
+        var NewUserDecode;
+        try {
+          NewUserDecode = JSON.parse(this.decode(req.body["new"]));
+        } catch (e) {
+          log("Request error", e.message);
+          res.status(400).json({ error: "Bad Request" });
+          return;
+        }
+
+        if (!NewUserDecode.username || !NewUserDecode.language || !NewUserDecode.avatar || !NewUserDecode.password || !NewUserDecode.background || !NewUserDecode.topbar || !NewUserDecode.level) {
+          res.status(400).json({ error: "Bad Request" });
+          return;
+        }
+
+        if (this.findUser(NewUserDecode.username)) {
+          res.status(400).json({ error: "Bad User Request" });
+          return;
+        }
+
+        if (NewUserDecode.level >= req.level) {
+          res.status(400).json({ error: "Bad Level Request" });
+          return;
+        }
+
+        var newUser = NewUserDecode;
+        newUser.password = this.cryptPassword(this.decode(NewUserDecode.password));
+        this.Api.users.push(newUser);
+        await this.writeUsers();
+        res.json({ done: "ok" });
+        break;
+
       case "/api/config/MM":
         if (!req.body["config"]) return res.status(400).json({ error: "Bad Request" });
         log("Receiving write MagicMirror config...");
@@ -903,6 +939,8 @@ class api {
         const DB_User = this.Api.users.find((x) => x.username === user && !x.disabled);
         if (!DB_User) return res.status(401).json({ error: "Unauthorized" });
         req.user = user;
+        req.level = DB_User.level;
+        req.userID = DB_User.id;
         this.Api_rateLimiter.resetKey(req.ip);
         next();
       });
