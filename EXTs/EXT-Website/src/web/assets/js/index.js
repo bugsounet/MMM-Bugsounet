@@ -86,6 +86,9 @@ function AddSpinner () {
 
 function doPassword () {
   let password = document.getElementById("password");
+  let newpassword = document.getElementById("newpassword");
+  let PasswordStrengthChecker = document.getElementById("PasswordStrengthChecker");
+
   if (password) {
     console.log("detected password");
     let eyeIcon = document.getElementsByClassName("toggle-password");
@@ -104,6 +107,34 @@ function doPassword () {
         }
       };
     });
+
+    if (PasswordStrengthChecker) {
+      password.onkeyup = () => {
+        let pwdChecker = checkPasswordStrength.passwordStrength(password.value);
+        let LengthGrp = document.getElementById("LengthGrp");
+
+        if (pwdChecker.length === 0 && pwdChecker.value === "Too weak") password.setAttribute("passwordStrength", "");
+        else password.setAttribute("passwordStrength", pwdChecker.value);
+
+        PasswordStrengthChecker.setAttribute("data-Strength-check", pwdChecker.contains.toString());
+
+        if (pwdChecker.length >= 10) LengthGrp.classList.add("LengthGrp");
+        else LengthGrp.classList.remove("LengthGrp");
+      };
+
+      password.onchange = () => {
+        if (password.value || password.value !== "") {
+          if (newpassword) newpassword.disabled = false;
+        } else {
+          password.setAttribute("passwordStrength", "");
+          PasswordStrengthChecker.setAttribute("data-Strength-check", "");
+          if (newpassword) {
+            newpassword.disabled = true;
+            newpassword.value = "";
+          }
+        }
+      };
+    }
   }
 }
 
@@ -318,7 +349,8 @@ async function doAccountPage () {
 
       if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
         alertify.error("Password don't match");
-        removeLoader();
+      } else if (password.getAttribute("passwordstrength") !== "Strong") {
+        alertify.error("Password must be Strong");
       } else if (NewPassword !== "") {
         MyUser.password = btoa(NewPassword);
       }
@@ -1756,6 +1788,8 @@ async function doAdminPage () {
     const switchNewUser = document.getElementById("switchNewUser");
     const newpassword = document.getElementById("newpassword");
     const password = document.getElementById("password");
+    const PasswordStrengthChecker = document.getElementById("PasswordStrengthChecker");
+    const LengthGrp = document.getElementById("LengthGrp");
 
     switchNewUser.onclick = function () {
       const AdminSaveChange = document.getElementById("AdminSaveChange");
@@ -1775,6 +1809,9 @@ async function doAdminPage () {
         switchUserDisabled.checked = false;
         LevelSelector(NewUser);
         FlagsSelector(NewUser, "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
+        password.setAttribute("passwordStrength", "");
+        PasswordStrengthChecker.setAttribute("data-strength-check", "");
+        LengthGrp.classList.remove("LengthGrp");
         password.value = "";
         newpassword.value = "";
         newpassword.disabled = true;
@@ -1804,6 +1841,9 @@ async function doAdminPage () {
       UserSelector(AllUsers[0]);
       LevelSelector(AllUsers[0]);
 
+      password.setAttribute("passwordStrength", "");
+      PasswordStrengthChecker.setAttribute("data-strength-check", "");
+      LengthGrp.classList.remove("LengthGrp");
       password.value = "";
       newpassword.value = "";
       newpassword.disabled = true;
@@ -1825,26 +1865,6 @@ async function doAdminPage () {
     }
 
     checkFirstUser();
-
-    password.onkeyup = () => {
-      let pwdChecker = checkPasswordStrength.passwordStrength(password.value);
-      let LengthGrp = document.getElementById("LengthGrp");
-      let PasswordStrengthChecker = document.getElementById("PasswordStrengthChecker");
-      PasswordStrengthChecker.setAttribute("data-Strength-check", pwdChecker.contains.toString());
-      if (pwdChecker.length >= 10) LengthGrp.classList.add("LengthGrp");
-      else LengthGrp.classList.remove("LengthGrp");
-      password.setAttribute("passwordStrength", pwdChecker.value);
-    };
-
-    password.addEventListener("change", function () {
-      if (password.value !== "") {
-        newpassword.disabled = false;
-      } else {
-        newpassword.disabled = true;
-        newpassword.value = "";
-        password.setAttribute("passwordStrength", "");
-      }
-    });
 
     const selectedUser = document.getElementById("selectedUser");
     selectedUser.onchange = (event) => {
@@ -1901,7 +1921,8 @@ async function doAdminPage () {
 
       if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
         alertify.error("Password don't match");
-        removeLoader();
+      } else if (password.getAttribute("passwordstrength") !== "Strong") {
+        alertify.error("Password must be Strong");
       } else if (NewPassword !== "") {
         NewUser.password = btoa(NewPassword);
       } else {
