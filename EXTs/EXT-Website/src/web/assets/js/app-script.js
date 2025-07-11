@@ -260,10 +260,10 @@ window.addEventListener("error", function (event) {
     confirmButtonText: "Retry",
     showCancelButton: true,
     didOpen: () => {
-      contentWrapper.classList.add("blur");
+      if (contentWrapper) contentWrapper.classList.add("blur");
     },
     willClose: () => {
-      contentWrapper.classList.remove("blur");
+      if (contentWrapper) contentWrapper.classList.remove("blur");
     },
     customClass: {
       confirmButton: "btn btn-primary btn-round me-3",
