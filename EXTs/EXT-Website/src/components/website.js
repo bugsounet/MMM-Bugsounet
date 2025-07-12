@@ -137,7 +137,7 @@ class website {
           onProxyReq: fixRequestBody,
           error: (err, req, res) => {
             console.error("[WEBSITE] [Web] SmartHome Proxy ERROR", err);
-            if (!this.website.EXTStatus["EXT-SmartHome"].hello) {
+            if (!this.website.EXTStatus["EXT-SmartHome"]?.hello) {
               res.redirect("/404");
             } else {
               res.writeHead(500, {
