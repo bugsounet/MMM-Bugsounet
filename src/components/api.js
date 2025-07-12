@@ -832,6 +832,60 @@ class api {
         res.json(deleteBackup);
         break;
 
+      case "/api/databases/users/delete":
+        log("Receiving delete user demand...");
+        if (!req.body["delete"]) return res.status(400).json({ error: "Bad Request" });
+        var DeleteUserDecode;
+        try {
+          DeleteUserDecode = JSON.parse(this.decode(req.body["delete"]));
+        } catch (e) {
+          log("Request error", e.message);
+          res.status(400).json({ error: "Bad Request - Decode Error" });
+          return;
+        }
+
+        if (DeleteUserDecode.username === req.user) {
+          res.status(409).json({ error: "You can't delete your username" });
+          return;
+        }
+
+        if (!DeleteUserDecode.username || !DeleteUserDecode.id) {
+          res.status(400).json({ error: "Bad Request" });
+          return;
+        }
+
+        var DeleteUserIndex = this.findUserIndex(DeleteUserDecode.username);
+        if (!DeleteUserIndex) { // !!! and again consider that Admin is id 0 !!!
+          res.status(404).json({ error: "UserID not found" });
+          return;
+        }
+
+        if (DeleteUserIndex === req.id) {
+          res.status(409).json({ error: "You can't delete your username" });
+          return;
+        }
+
+        if (DeleteUserIndex !== DeleteUserDecode.id) {
+          res.status(409).json({ error: "Database/ID conflit error" });
+          return;
+        }
+
+        var FindUserToDelete = this.findUser(DeleteUserDecode.username);
+        if (!FindUserToDelete) {
+          res.status(404).json({ error: "Username not found" });
+          return;
+        }
+
+        if (FindUserToDelete.level >= req.level) {
+          res.status(409).json({ error: "Level to high" });
+          return;
+        }
+
+        this.Api.users.splice(DeleteUserIndex, 1);
+        await this.writeUsers();
+        res.json({ done: "ok" });
+        break;
+
       default:
         console.warn("[Bugsounet] [API] Don't find:", req.url);
         res.status(404).json({ error: "You Are Lost in Space" });
