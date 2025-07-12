@@ -57,6 +57,15 @@ function putNewUser (body, cb) {
   });
 }
 
+function deleteUser (body, cb) {
+  return new Promise((resolve) => {
+    Request("/api/databases/users/delete", "DELETE", true, null, { delete: btoa(JSON.stringify(body)) }, "deleteUser", (result) => {
+      if (cb) cb();
+      resolve(result);
+    });
+  });
+}
+
 function getLoginPrefs () {
   return new Promise((resolve) => {
     Request("/api/databases/login", "GET", null, null, null, "getLoginPrefs", (result) => resolve(result));

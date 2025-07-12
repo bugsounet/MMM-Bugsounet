@@ -6,7 +6,7 @@
   doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
   UpdateFlagsLanguage FlagsSelector applyBackgroundTheme AdminSaveChange AdminDelete getAllUsers
-  UserSelector LevelSelector checkPasswordStrength putNewUser loadContentDynamically
+  UserSelector LevelSelector checkPasswordStrength putNewUser loadContentDynamically deleteUser
  */
 
 /* eslint-disable max-lines-per-function */
@@ -1884,6 +1884,50 @@ async function doAdminPage () {
         AdminDelete.disabled = false;
         AdminSaveChange.disabled = false;
       }
+    };
+
+    const DeleteUser = document.getElementById("AdminDelete");
+    DeleteUser.onclick = function () {
+      const SelectedUserDelete = document.getElementById("selectedUser");
+      const UserDeleteUsername = SelectedUserDelete.value;
+      const UserDeleteID = parseInt(SelectedUserDelete.getAttribute("identifier"));
+      const contentWrapper = document.querySelector(".content-wrapper");
+      Swal.fire({
+        title: "Are you sure?",
+        text: `I will delete this user: ${UserDeleteUsername}`,
+        icon: "warning",
+        showCancelButton: true,
+        didOpen: () => {
+          contentWrapper.classList.add("blur");
+        },
+        willClose: () => {
+          contentWrapper.classList.remove("blur");
+        },
+        customClass: {
+          confirmButton: "btn btn-primary btn-round me-3",
+          cancelButton: "btn btn-dark btn-round"
+        },
+        allowOutsideClick: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteUser({ username: UserDeleteUsername, id: UserDeleteID }, async () => {
+            const contentArea = document.querySelector(".content-container");
+            await loadContentDynamically("/html/admin.html", contentArea);
+
+            const loginTab = document.getElementById("loginTab");
+            const loginContent = document.getElementById("login");
+            const accountsTab = document.getElementById("accountsTab");
+            const accountsContent = document.getElementById("accounts");
+            loginTab.classList.remove("active");
+            accountsTab.classList.add("active");
+            loginContent.classList.remove("active", "show");
+            accountsContent.classList.add("active", "show");
+            const newContentEvent = new Event("NewContent_Loaded");
+            document.dispatchEvent(newContentEvent);
+            alertify.success(`User ${UserDeleteUsername} deleted!`);
+          });
+        }
+      });
     };
 
     const CreateUser = document.getElementById("AdminNewUser");
