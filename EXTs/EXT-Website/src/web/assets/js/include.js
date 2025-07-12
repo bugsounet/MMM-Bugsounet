@@ -1,54 +1,56 @@
-/** include HTML file from w3-include-html */
+/** include HTML file */
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("⭐ Start HTML includes");
-  await _include2HTML();
+  await includeHTML();
   console.log("⭐ Finish HTML includes");
   const event = new Event("Includes_Complete");
   document.dispatchEvent(event);
 });
 
-function _include2HTML () {
-  return new Promise((resolve) => {
-    var z, i, elmnt, file, xhttp;
-    z = document.getElementsByTagName("*");
-    for (i = 0; i < z.length; i++) {
-      elmnt = z[i];
-      file = elmnt.getAttribute("w3-include-html");
-      if (file) {
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = async function () {
-          if (this.readyState === 4) {
-            if (this.status === 200) {
-              elmnt.innerHTML = this.responseText;
+async function includeHTML () {
+  const elementsToInclude = document.querySelectorAll("[w3-include-html]");
+  const includePromises = [];
+
+  for (const elmnt of elementsToInclude) {
+    const file = elmnt.getAttribute("w3-include-html");
+    if (file) {
+      includePromises.push(
+        fetch(file)
+          .then((response) => {
+            if (!response.ok) {
+              console.error(`❗Include Error for file: ${file}`, response.status, response.statusText);
+              elmnt.innerHTML = `File Include Error: ${file} (${response.status})`;
+            }
+            return response.text();
+          })
+          .then((html) => {
+            if (html) {
+              elmnt.innerHTML = html;
               console.log("✅ File:", file);
             }
-            if (this.status === 404 || this.status === 0) {
-              elmnt.innerHTML = `File Include Error: ${file}`;
-              console.error("❗Include Error for file:", file);
-            }
+          })
+          .catch((error) => {
+            console.error(`❗Include Error for file: ${file}`, error);
+            elmnt.innerHTML = `File Include Error: ${file}`;
+          })
+          .finally(() => {
             elmnt.removeAttribute("w3-include-html");
             elmnt.setAttribute("id", _file2name(file));
-            await _include2HTML();
-            resolve();
-          }
-        };
-        xhttp.open("GET", file, true);
-        xhttp.send();
-        return;
-      }
+          })
+      );
     }
-    resolve();
-  });
+  }
+
+  await Promise.all(includePromises);
 }
 
 function _file2name (file) {
-  const regexp = /[^/]*$/g;
-  const re = new RegExp(regexp);
-  const res = re.exec(file);
-  if (res[0]) {
-    const name = res[0].replace(".", "-");
-    return name;
+  const parts = file.split("/");
+  const filenameWithExtension = parts[parts.length - 1];
+  if (filenameWithExtension) {
+    const nameWithoutDot = filenameWithExtension.replace(".", "-");
+    return nameWithoutDot;
   }
   return file;
 }
