@@ -14,7 +14,6 @@
 var interval = null;
 var user = {};
 const contentWrapper = document.querySelector(".content-wrapper");
-// import checkPasswordStrength from 'check-password-strength'
 
 document.addEventListener("Includes_Complete", doIndex);
 document.addEventListener("NewContent_Loaded", doLoaded);
@@ -347,12 +346,12 @@ async function doAccountPage () {
 
       if (selectedLanguageInput !== user.language) MyUser.language = selectedLanguageInput;
 
-      if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
-        alertify.error("Password don't match");
-      } else if (password.getAttribute("passwordstrength") !== "Strong") {
-        alertify.error("Password must be Strong");
-      } else if (NewPassword !== "") {
-        MyUser.password = btoa(NewPassword);
+      if (NewPassword !== "") {
+        if (NewPassword !== NewPasswordConfirm) alertify.error("Password don't match");
+        else {
+          if (password.getAttribute("passwordstrength") !== "Strong") alertify.error("Password must be Strong");
+          else MyUser.password = btoa(NewPassword);
+        }
       }
 
       const selectedBackgroundInput = document.querySelector("input[name='background']:checked");
@@ -1790,6 +1789,8 @@ async function doAdminPage () {
     const password = document.getElementById("password");
     const PasswordStrengthChecker = document.getElementById("PasswordStrengthChecker");
     const LengthGrp = document.getElementById("LengthGrp");
+    const UserLanguageButton = document.getElementById("UserLanguageButton");
+    const AvatarsGrp = document.getElementById("AvatarsGrp");
 
     switchNewUser.onclick = function () {
       const AdminSaveChange = document.getElementById("AdminSaveChange");
@@ -1815,6 +1816,8 @@ async function doAdminPage () {
         password.value = "";
         newpassword.value = "";
         newpassword.disabled = true;
+        UserLanguageButton.classList.remove("disabled");
+        AvatarsGrp.classList.remove("d-none");
       } else {
         AdminSaveChange.classList.remove("d-none");
         AdminDelete.classList.remove("d-none");
@@ -1847,6 +1850,8 @@ async function doAdminPage () {
       password.value = "";
       newpassword.value = "";
       newpassword.disabled = true;
+      UserLanguageButton.classList.add("disabled");
+      AvatarsGrp.classList.add("d-none");
     }
 
     await UpdateFlagsLanguage(user, "UserLanguageSelectorDropdown");
@@ -1883,6 +1888,44 @@ async function doAdminPage () {
       } else {
         AdminDelete.disabled = false;
         AdminSaveChange.disabled = false;
+      }
+    };
+
+    const ChangeUser = document.getElementById("AdminSaveChange");
+    ChangeUser.onclick = function () {
+      const SelectedUserChange = document.getElementById("selectedUser");
+      const UserChangeUsername = SelectedUserChange.value;
+      const UserChangeID = parseInt(SelectedUserChange.getAttribute("identifier"));
+      const NewPassword = document.getElementById("password").value;
+      const NewPasswordConfirm = document.getElementById("newpassword").value;
+      var userChange = {
+        username: UserChangeUsername,
+        id: UserChangeID
+      };
+
+      if (switchUserDisabled.checked !== AllUsers[UserChangeID].disabled) userChange.disabled = switchUserDisabled.checked;
+
+      const selectedLevel = document.getElementById("selectedLevel");
+      if (selectedLevel.value) {
+        let level = parseInt(selectedLevel.value);
+        if (level >= user.level) alertify.error("Can't add a level higher or equal than yours");
+        else if (level !== AllUsers[UserChangeID].level) userChange.level = level;
+      }
+      else alertify.error("Level Missing");
+
+      if (NewPassword !== "") {
+        if (NewPassword !== NewPasswordConfirm) alertify.error("Password don't match");
+        else {
+          if (password.getAttribute("passwordstrength") !== "Strong") alertify.error("Password must be Strong");
+          else userChange.password = btoa(NewPassword);
+        }
+      }
+
+      let userChangeSize = Object.keys(userChange).length;
+      if (userChangeSize > 2) {
+        console.log("---->", userChange);
+      } else {
+        alertify.message("There is no change to save");
       }
     };
 

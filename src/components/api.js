@@ -12,6 +12,7 @@ const bodyParserErrorHandler = require("express-body-parser-error-handler");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+//const uuid = require("uuid");
 
 const swaggerUi = require("swagger-ui-express");
 
@@ -1685,6 +1686,7 @@ class api {
           {
             username: "admin",
             password: this.cryptPassword("admin"),
+            warn: true,
             level: 10,
             avatar: 1,
             language: "en",
