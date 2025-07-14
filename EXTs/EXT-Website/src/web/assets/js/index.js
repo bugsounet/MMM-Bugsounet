@@ -1876,13 +1876,14 @@ async function doAdminPage () {
       const newId = event.target.getAttribute("identifier");
 
       console.log("change New User:", event.target.value, "ID:", newId);
-      LevelSelector(AllUsers[newId]);
-      FlagsSelector(AllUsers[newId], "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
-      if (AllUsers[newId].disabled) switchUserDisabled.checked = true;
+      const UserFind = AllUsers.find(({ id }) => id === newId);
+      LevelSelector(UserFind);
+      FlagsSelector(UserFind, "UserLanguageButton", "UserSelectedLanguage", "UserLanguageSelectorDropdown");
+      if (UserFind.disabled) switchUserDisabled.checked = true;
       else switchUserDisabled.checked = false;
-      const NewUserAvatarInput = document.querySelector(`input[name="avatar"][value="${AllUsers[newId].avatar}"]`);
+      const NewUserAvatarInput = document.querySelector(`input[name="avatar"][value="${UserFind.avatar}"]`);
       if (NewUserAvatarInput) NewUserAvatarInput.checked = true;
-      if ((AllUsers[newId].username === user.username) && (AllUsers[newId].id === user.id) || AllUsers[newId].level >= user.level) {
+      if ((UserFind.username === user.username) && (UserFind.id === user.id) || UserFind.level >= user.level) {
         AdminDelete.disabled = true;
         AdminSaveChange.disabled = true;
       } else {
@@ -1895,21 +1896,22 @@ async function doAdminPage () {
     ChangeUser.onclick = function () {
       const SelectedUserChange = document.getElementById("selectedUser");
       const UserChangeUsername = SelectedUserChange.value;
-      const UserChangeID = parseInt(SelectedUserChange.getAttribute("identifier"));
+      const UserChangeID = SelectedUserChange.getAttribute("identifier");
       const NewPassword = document.getElementById("password").value;
       const NewPasswordConfirm = document.getElementById("newpassword").value;
+      const UserFind = AllUsers.find(({ id }) => id === UserChangeID);
       var userChange = {
         username: UserChangeUsername,
         id: UserChangeID
       };
 
-      if (switchUserDisabled.checked !== AllUsers[UserChangeID].disabled) userChange.disabled = switchUserDisabled.checked;
+      if (switchUserDisabled.checked !== UserFind.disabled) userChange.disabled = switchUserDisabled.checked;
 
       const selectedLevel = document.getElementById("selectedLevel");
       if (selectedLevel.value) {
         let level = parseInt(selectedLevel.value);
         if (level >= user.level) alertify.error("Can't add a level higher or equal than yours");
-        else if (level !== AllUsers[UserChangeID].level) userChange.level = level;
+        else if (level !== UserFind.level) userChange.level = level;
       }
       else alertify.error("Level Missing");
 
@@ -1933,7 +1935,7 @@ async function doAdminPage () {
     DeleteUser.onclick = function () {
       const SelectedUserDelete = document.getElementById("selectedUser");
       const UserDeleteUsername = SelectedUserDelete.value;
-      const UserDeleteID = parseInt(SelectedUserDelete.getAttribute("identifier"));
+      const UserDeleteID = SelectedUserDelete.getAttribute("identifier");
       const contentWrapper = document.querySelector(".content-wrapper");
       Swal.fire({
         title: "Are you sure?",
