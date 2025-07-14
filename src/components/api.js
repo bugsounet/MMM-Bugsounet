@@ -12,7 +12,7 @@ const bodyParserErrorHandler = require("express-body-parser-error-handler");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-//const uuid = require("uuid");
+const uuid = require("uuid");
 
 const swaggerUi = require("swagger-ui-express");
 
@@ -39,7 +39,7 @@ class api {
       EXTInstalled: [], // installed EXT in MM
       EXTStatus: {}, // status of EXT
       EXTVersions: {},
-      users: [],
+      users: {},
       login: {},
       initialized: false,
       app: null,
@@ -115,7 +115,7 @@ class api {
     console.log("[Bugsounet] [API] Reading users Database...");
     await this.getUsers();
 
-    const verify = this.Api.users.find((x) => !x.username || !x.password);
+    const verify = this.verifyUsers();
     if (verify) {
       console.error("[Bugsounet] [API] Invalid Users database detected!");
       console.warn("[Bugsounet] [API] Detected:", verify);
@@ -124,8 +124,7 @@ class api {
       return;
     }
 
-    let lookup = Object.groupBy(this.Api.users, (user) => user.username);
-    const duplicate = this.Api.users.filter((user) => lookup[user.username].length > 1);
+    const duplicate = this.verifyDuplicate();
     if (duplicate.length) {
       console.error("[Bugsounet] [API] Error: There are duplicates in the Users database!");
       console.warn("[Bugsounet] [API] Duplicates:", duplicate);
@@ -133,7 +132,7 @@ class api {
       process.exit();
       return;
     } else {
-      console.log("[Bugsounet] [API] There is", this.Api.users.length, "username in database");
+      console.log("[Bugsounet] [API] There is", Object.keys(this.Api.users).length, "username in database");
     }
 
     console.log("[Bugsounet] [API] Reading login Database...");
@@ -414,24 +413,12 @@ class api {
 
       case "/api/databases/users/me":
         var Result = this.findUser(req.user);
-        if (Result) {
-          Result.id = this.findUserIndex(req.user);
-          res.json(Result);
-        }
+        if (Result) res.json(Result);
         else res.status(404).json({ error: "Not Found" });
         break;
 
       case "/api/databases/users/all":
-        var Users = [];
-        for (const user of this.Api.users) {
-          var User = {};
-          if (user.username) {
-            User = this.findUser(user.username);
-            User.id = this.findUserIndex(user.username);
-            Users.push(User);
-          }
-        }
-        res.json(Users);
+        res.json(this.getAllUsers());
         break;
 
       default:
@@ -473,8 +460,8 @@ class api {
           res.status(400).json({ error: "Bad Request" });
           return;
         }
-        if (isNaN(decoder.id) || decoder.id !== this.findUserIndex(req.user)) {
-          res.status(400).json({ error: "Bad Request" });
+        if (decoder.id !== req.userID) {
+          res.status(400).json({ error: "Bad User ID Request" });
           return;
         }
         if (decoder.username) this.Api.users[decoder.id].username = decoder.username;
@@ -504,7 +491,7 @@ class api {
           return;
         }
 
-        if (this.findUser(NewUserDecode.username)) {
+        if (this.getUserByUsername(NewUserDecode.username)) {
           res.status(400).json({ error: "Bad User Request" });
           return;
         }
@@ -516,7 +503,8 @@ class api {
 
         var newUser = NewUserDecode;
         newUser.password = this.cryptPassword(this.decode(NewUserDecode.password));
-        this.Api.users.push(newUser);
+        var UserId = uuid.v4();
+        this.Api.users[UserId] = newUser;
         await this.writeUsers();
         res.json({ done: "ok" });
         break;
@@ -855,7 +843,7 @@ class api {
           return;
         }
 
-        var DeleteUserIndex = this.findUserIndex(DeleteUserDecode.username);
+        var DeleteUserIndex = this.findUserId(DeleteUserDecode.username);
         if (!DeleteUserIndex) { // !!! and again consider that Admin is id 0 !!!
           res.status(404).json({ error: "UserID not found" });
           return;
@@ -882,7 +870,7 @@ class api {
           return;
         }
 
-        this.Api.users.splice(DeleteUserIndex, 1);
+        delete (this.Api.users[DeleteUserIndex]);
         await this.writeUsers();
         res.json({ done: "ok" });
         break;
@@ -927,8 +915,8 @@ class api {
     const base64Credentials = this.decode(params[1]);
     const [username, password] = base64Credentials.split(":");
 
-    const Find = this.Api.users.find((x) => x.username === username && bcrypt.compareSync(password, x.password) && !x.disabled);
-    if (Find) {
+    const FindUsername = this.getUserByUsername(username);
+    if (FindUsername && !FindUsername.disabled && bcrypt.compareSync(password, FindUsername.password)) {
       const token = jwt.sign(
         {
           user: username
@@ -985,17 +973,17 @@ class api {
             console.warn("[Bugsounet] [API] Token expired !");
             return res.status(403).json({ error: "Token expired" });
           } else {
-            console.error("[Bugsounet] [API] Token decode Error !", err.message);
+            console.error("[Bugsounet] [API] Token decode Error:", err.message);
             return res.status(403).json({ error: "Token decode Error" });
           }
         }
         const user = decoded.user;
         if (!user) return res.status(401).json({ error: "Unauthorized" });
-        const DB_User = this.Api.users.find((x) => x.username === user && !x.disabled);
-        if (!DB_User) return res.status(401).json({ error: "Unauthorized" });
+        const FindUsername = this.getUserByUsername(user);
+        if (!FindUsername || FindUsername.disabled) return res.status(401).json({ error: "Unauthorized" });
         req.user = user;
-        req.level = DB_User.level;
-        req.userID = DB_User.id;
+        req.level = FindUsername.level;
+        req.userID = this.getUuidByUsername(user);
         this.Api_rateLimiter.resetKey(req.ip);
         next();
       });
@@ -1650,17 +1638,52 @@ class api {
   }
 
   /* user database */
-  findUser (user) {
-    const TempUsers = JSON.stringify(this.Api.users);
-    const Users = JSON.parse(TempUsers);
-    const User = Users.find(({ username }) => username === user);
-    if (User) delete User.password;
+
+  verifyUsers () {
+    const users = Object.values(this.Api.users);
+    return users.find((x) => !x.username || !x.password);
+  }
+
+  verifyDuplicate () {
+    const users = Object.values(this.Api.users);
+    let lookup = Object.groupBy(users, (user) => user.username);
+    return users.filter((user) => lookup[user.username].length > 1);
+  }
+
+  getUserByUsername (username) {
+    const users = Object.values(this.Api.users);
+    return users.find((user) => user.username === username);
+  }
+
+  getUuidByUsername (username) {
+    return Object.keys(this.Api.users).find((key) => this.Api.users[key].username === username);
+  }
+
+  findUser (username) {
+    let FindUser = this.getUserByUsername(username);
+    let TempFindUser = JSON.stringify(FindUser);
+    let User = JSON.parse(TempFindUser);
+
+    User.id = this.getUuidByUsername(username);
+    delete (User.password);
     return User;
   }
 
-  findUserIndex (user) {
-    const index = this.Api.users.findIndex(({ username }) => username === user);
-    return index;
+  findUserId (username) {
+    return Object.keys(this.Api.users).find((key) => this.Api.users[key].username === username);
+  }
+
+  getAllUsers () {
+    var Users = [];
+    const uuids = Object.keys(this.Api.users);
+    for (const id of uuids) {
+      var User = {};
+      if (this.Api.users[id].username) {
+        User = this.findUser(this.Api.users[id].username);
+        Users.push(User);
+      }
+    }
+    return Users;
   }
 
   getUsers () {
@@ -1682,17 +1705,16 @@ class api {
           resolve();
         });
       } else {
-        this.Api.users = [
-          {
-            username: "admin",
-            password: this.cryptPassword("admin"),
-            warn: true,
-            level: 10,
-            avatar: 1,
-            language: "en",
-            disabled: false
-          }
-        ];
+        let initUserId = uuid.v4();
+        this.Api.users[initUserId] = {
+          username: "admin",
+          password: this.cryptPassword("admin"),
+          warn: true,
+          level: 10,
+          avatar: 1,
+          language: "en",
+          disabled: false
+        };
         console.warn("[Bugsounet] [API] Create default users database (login: admin // password: admin)");
         this.writeUsers().then(() => resolve());
       }
@@ -1702,7 +1724,7 @@ class api {
   writeUsers () {
     return new Promise((resolve) => {
       const usersFile = `${this.BugsounetModulePath}/databases/users`;
-      fs.writeFile(usersFile, JSON.stringify(this.Api.users), (error) => {
+      fs.writeFile(usersFile, JSON.stringify(this.Api.users, null, 2), (error) => {
         if (error) console.error("[Bugsounet] [API] Users database file writing error", error);
         resolve();
       });
