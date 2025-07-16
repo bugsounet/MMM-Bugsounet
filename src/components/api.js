@@ -451,7 +451,7 @@ class api {
 
       case "/api/databases/users/me":
         if (!req.body["me"]) return res.status(400).json({ error: "Bad Request" });
-        log("Update user info...");
+        log("Update curent user info...");
         var decoder;
         try {
           decoder = JSON.parse(this.decode(req.body["me"]));
@@ -505,6 +505,46 @@ class api {
         newUser.password = this.cryptPassword(this.decode(NewUserDecode.password));
         var UserId = uuid.v4();
         this.Api.users[UserId] = newUser;
+        await this.writeUsers();
+        res.json({ done: "ok" });
+        break;
+
+      case "/api/databases/users/user":
+        if (!req.body["user"]) return res.status(400).json({ error: "Bad Request" });
+        log("Update user info...");
+        var UserDecode;
+        try {
+          UserDecode = JSON.parse(this.decode(req.body["user"]));
+        } catch (e) {
+          log("Request error", e.message);
+          res.status(400).json({ error: "Bad Request" });
+          return;
+        }
+        if (!UserDecode.username || !UserDecode.id) {
+          res.status(400).json({ error: "Bad Request" });
+          return;
+        }
+        if (!this.getUserByUsername(UserDecode.username)) {
+          res.status(404).json({ error: "User not found" });
+          return;
+        }
+
+        if (this.findUserId(UserDecode.username) !== UserDecode.id) {
+          res.status(404).json({ error: "ID not found" });
+          return;
+        }
+        if (UserDecode.id === req.userID) {
+          res.status(400).json({ error: "Bad ID: self Request" });
+          return;
+        }
+        if (UserDecode.level >= req.Level) {
+          res.status(400).json({ error: "Bad Level Request" });
+          return;
+        }
+
+        if (UserDecode.password) this.Api.users[UserDecode.id].password = this.cryptPassword(this.decode(UserDecode.password));
+        if (UserDecode.level) this.Api.users[UserDecode.id].level = UserDecode.level;
+        if (UserDecode.disabled) this.Api.users[UserDecode.id].disabled = UserDecode.disabled;
         await this.writeUsers();
         res.json({ done: "ok" });
         break;
@@ -985,12 +1025,81 @@ class api {
         req.level = FindUsername.level;
         req.userID = this.getUuidByUsername(user);
         this.Api_rateLimiter.resetKey(req.ip);
-        next();
+        this.userAccess(req, res, next);
       });
     } catch (err) {
       console.error("[Bugsounet] [API] Token Fatal Error !", err.message);
       return res.status(500).json({ error: "Internal error" });
     }
+  };
+
+  userAccess = (req, res, next) => {
+    const Access = {
+      GET: {
+        "/api/version": 1,
+        "/api/translations/common": 1,
+        "/api/translations/group": 1,
+        "/api/translations/translate": 1,
+        "/api/translations/homeText": 1,
+        "/api/system/currentSysInfo": 10,
+        "/api/system/sysInfo": 10,
+        "/api/EXT/versions": 10,
+        "/api/EXT": 10,
+        "/api/EXT/installed": 10,
+        "/api/EXT/configured": 10,
+        "/api/EXT/status": 2,
+        "/api/config/MM": 10,
+        "/api/backups": 2,
+        "/api/backups/file": 10,
+        "/api/EXT/RadioPlayer": 10,
+        "/api/EXT/Updates": 10,
+        "/api/EXT/FreeboxTV": 10,
+        "/api/databases/users/me": 1,
+        "/api/databases/users/all": 10
+      },
+      PUT: {
+        "/api/databases/login": 10,
+        "/api/databases/users/me": 1,
+        "/api/databases/users/new": 10,
+        "/api/config/MM": 10,
+        "/api/EXT/Volume/speaker": 10,
+        "/api/EXT/Updates": 10,
+        "/api/EXT/Spotify/play": 10,
+        "/api/EXT/Spotify/pause": 10,
+        "/api/EXT/Spotify/toggle": 10,
+        "/api/EXT/Spotify/stop": 10,
+        "/api/EXT/Spotify/next": 10,
+        "/api/EXT/Spotify/previous": 10,
+        "/api/EXT/Screen": 10,
+        "/api/EXT/FreeboxTV": 10,
+        "/api/EXT/RadioPlayer": 10,
+        "/api/backups/file": 10,
+        "/api/backups/external": 10,
+        "/api/MM": 10
+      },
+      POST: {
+        "/api/system/restart": 10,
+        "/api/system/die": 10,
+        "/api/system/reboot": 10,
+        "/api/system/shutdown": 10,
+        "/api/system/alert": 10,
+        "/api/EXT/stop": 10,
+        "/api/EXT/Assistant/send": 10,
+        "/api/EXT/YouTube/search": 10,
+        "/api/EXT/Spotify/search": 10,
+        "/api/backups/external": 10
+      },
+      DELETE: {
+        "/api/backups": 10,
+        "/api/databases/users/delete": 10
+      }
+    };
+
+    const CheckAccess = Access[req.method][req.url] || 10;
+
+    console.log("CheckAccess --> Required:", CheckAccess, "-- User Level:", req.level);
+    if (req.level >= CheckAccess) next();
+    else res.status(423).json({ error: "Insufficient access level" });
   };
 
   // encode rule
