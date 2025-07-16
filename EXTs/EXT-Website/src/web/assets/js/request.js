@@ -455,7 +455,7 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
 
       if (response.status === 423) {
         const contentArea = document.querySelector(".content-container");
-        await this.do423Error();
+        await do423Error();
         return;
       }
 
@@ -582,34 +582,34 @@ function showAlert (alert) {
       Alert = 0;
     }
   });
+}
 
-  function do423Error () {
-    function getRandomIntInclusive (min, max) {
-      const Min = Math.ceil(min);
-      const Max = Math.floor(max);
-      return Math.floor(Math.random() * (Max - Min + 1)) + Min;
-    }
-
-    let random = getRandomIntInclusive(1, 4);
-    Swal.fire({
-      title: "Error 423",
-      text: "Insufficient access level",
-      icon: "error",
-      imageUrl: `/assets/images/423/${random}.png`,
-      showClass: {
-        icon: "swal2-icon-show border-danger"
-      },
-      showConfirmButton: true,
-      allowOutsideClick: true,
-      allowEscapeKey: true,
-      theme: "dark",
-      willOpen: async () => {
-        // will redirect to Home
-        document.querySelector("a[data-loading='/html/home.html']").click();
-      },
-      customClass: {
-        confirmButton: "btn btn-primary btn-round me-3"
-      }
-    });
+function do423Error () {
+  function getRandomIntInclusive (min, max) {
+    const Min = Math.ceil(min);
+    const Max = Math.floor(max);
+    return Math.floor(Math.random() * (Max - Min + 1)) + Min;
   }
+
+  let random = getRandomIntInclusive(1, 4);
+  Swal.fire({
+    title: "Error 423",
+    text: "Insufficient access level",
+    icon: "error",
+    imageUrl: `/assets/images/423/${random}.png`,
+    showClass: {
+      icon: "swal2-icon-show border-danger"
+    },
+    showConfirmButton: true,
+    allowOutsideClick: true,
+    allowEscapeKey: true,
+    theme: "dark",
+    willOpen: async () => {
+      // will redirect to Home
+      document.querySelector("a[data-loading='/html/home.html']").click();
+    },
+    customClass: {
+      confirmButton: "btn btn-primary btn-round me-3"
+    }
+  });
 }
