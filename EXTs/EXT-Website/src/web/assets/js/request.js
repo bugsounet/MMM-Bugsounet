@@ -57,6 +57,15 @@ function putNewUser (body, cb) {
   });
 }
 
+function updateUser (body, cb) {
+  return new Promise((resolve) => {
+    Request("/api/databases/users/user", "PUT", true, null, { user: btoa(JSON.stringify(body)) }, "updateUser", (result) => {
+      if (cb) cb();
+      resolve(result);
+    });
+  });
+}
+
 function deleteUser (body, cb) {
   return new Promise((resolve) => {
     Request("/api/databases/users/delete", "DELETE", true, null, { delete: btoa(JSON.stringify(body)) }, "deleteUser", (result) => {
@@ -444,6 +453,12 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
       error.status = response.status;
       error.body = errorBody?.error || response.statusText;
 
+      if (response.status === 423) {
+        const contentArea = document.querySelector(".content-container");
+        await this.do423Error();
+        return;
+      }
+
       if (callbackFailed) return callbackFailed(error);
       if (response.status === 401 || response.status === 403) location.href = "/logout";
       if (Alert === 1) {
@@ -474,7 +489,7 @@ function hasPluginConnected (obj, key, value) {
       if (obj.hasOwnProperty(p) && this.hasPluginConnected(obj[p], key, value)) {
         //logGW("check", key+":"+value, "in", p)
         if (obj[p][key] === value) {
-          //logGW(p, "is connected")
+          // logGW(p, "is connected")
           return true;
         }
       }
@@ -567,4 +582,34 @@ function showAlert (alert) {
       Alert = 0;
     }
   });
+
+  function do423Error () {
+    function getRandomIntInclusive (min, max) {
+      const Min = Math.ceil(min);
+      const Max = Math.floor(max);
+      return Math.floor(Math.random() * (Max - Min + 1)) + Min;
+    }
+
+    let random = getRandomIntInclusive(1, 4);
+    Swal.fire({
+      title: "Error 423",
+      text: "Insufficient access level",
+      icon: "error",
+      imageUrl: `/assets/images/423/${random}.png`,
+      showClass: {
+        icon: "swal2-icon-show border-danger"
+      },
+      showConfirmButton: true,
+      allowOutsideClick: true,
+      allowEscapeKey: true,
+      theme: "dark",
+      willOpen: async () => {
+        // will redirect to Home
+        document.querySelector("a[data-loading='/html/home.html']").click();
+      },
+      customClass: {
+        confirmButton: "btn btn-primary btn-round me-3"
+      }
+    });
+  }
 }
