@@ -467,7 +467,10 @@ class api {
         if (decoder.username) this.Api.users[decoder.id].username = decoder.username;
         if (decoder.language) this.Api.users[decoder.id].language = decoder.language;
         if (decoder.avatar) this.Api.users[decoder.id].avatar = decoder.avatar;
-        if (decoder.password) this.Api.users[decoder.id].password = this.cryptPassword(this.decode(decoder.password));
+        if (decoder.password) {
+          this.Api.users[decoder.id].password = this.cryptPassword(this.decode(decoder.password));
+          this.Api.users[decoder.id].warn = false;
+        }
         if (decoder.background) this.Api.users[decoder.id].background = decoder.background;
         if (decoder.topbar) this.Api.users[decoder.id].topbar = decoder.topbar;
         await this.writeUsers();

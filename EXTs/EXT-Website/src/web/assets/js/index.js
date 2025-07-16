@@ -183,6 +183,34 @@ async function doSidebar () {
     const MenuTranslations = await getTranslateGroup(user.language, "Menu_");
     console.warn("User:", user);
 
+    if (user.warn) {
+      const contentWrapper = document.querySelector(".content-wrapper");
+      Swal.fire({
+        title: "Please change your password",
+        text: "To enhance your account's security, we recommend changing your current password to a more secure one.",
+        imageUrl: "/assets/images/gallery/secure.png",
+        didOpen: () => {
+          contentWrapper.classList.add("blur");
+        },
+        willClose: () => {
+          contentWrapper.classList.remove("blur");
+        },
+        showConfirmButton: true,
+        confirmButtonText: "Change now",
+        showCancelButton: true,
+        cancelButtonText: "Change later",
+        theme: "dark",
+        customClass: {
+          confirmButton: "btn btn-primary btn-round me-3",
+          cancelButton: "btn btn-dark btn-round"
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.querySelector("a[data-loading='/html/account.html']").click();
+        }
+      });
+    }
+
     // background theme
     if ((user.background >= 1 && user.background <= 15)) {
       document.querySelector("body").className = `bg-theme bg-theme${user.background}`;

@@ -454,12 +454,12 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
       error.body = errorBody?.error || response.statusText;
 
       if (response.status === 423) {
-        const contentArea = document.querySelector(".content-container");
-        await do423Error();
-        return;
+        Alert = 0;
+        return do423Error();
       }
 
       if (callbackFailed) return callbackFailed(error);
+
       if (response.status === 401 || response.status === 403) location.href = "/logout";
       if (Alert === 1) {
         if (response.status === 500 || response.status === 502) {
@@ -592,6 +592,7 @@ function do423Error () {
   }
 
   let random = getRandomIntInclusive(1, 4);
+  const contentWrapper = document.querySelector(".content-wrapper");
   Swal.fire({
     title: "Error 423",
     text: "Insufficient access level",
@@ -607,6 +608,12 @@ function do423Error () {
     willOpen: async () => {
       // will redirect to Home
       document.querySelector("a[data-loading='/html/home.html']").click();
+    },
+    didOpen: () => {
+      contentWrapper.classList.add("blur");
+    },
+    willClose: () => {
+      contentWrapper.classList.remove("blur");
     },
     customClass: {
       confirmButton: "btn btn-primary btn-round me-3"
