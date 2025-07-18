@@ -2478,7 +2478,7 @@ iframe {
 }
 
 .swal2-container,
-.alertify-notifier {
+.toast-container {
   z-index: 99999;
 }
 

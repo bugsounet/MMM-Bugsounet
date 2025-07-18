@@ -470,7 +470,8 @@ window.addEventListener("beforeinstallprompt", (e) => {
     toastClass: "text-white bg-info bg-gradient",
     animation: true,
     delay: 30000,
-    ariaLive: "assertive"
+    ariaLive: "assertive",
+    animationPrefix: ""
   };
 
   if (bootstrap && bootstrap.showToast) {
@@ -486,6 +487,7 @@ window.addEventListener("appinstalled", () => {
   console.log("PWA was installed");
   hideInstallToast();
 });
+
 
 function DoToast (type, header, small, body) {
   var toastClass, headerIcon;
@@ -516,6 +518,7 @@ function DoToast (type, header, small, body) {
     headerSmall: small,
     body: body,
     toastClass: toastClass,
-    position: "top-0 end-0"
+    position: "bottom-0 end-0",
+    animationPrefix: ""
   });
 }

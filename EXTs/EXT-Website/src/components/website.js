@@ -205,7 +205,6 @@ class website {
         .use("/bootstrap", express.static(`${this.WebsiteModulePath}/node_modules/bootstrap/dist`, options))
         .use("/sweetalert2", express.static(`${this.BugsounetModulePath}/node_modules/sweetalert2/dist`, options))
         .use("/check-password-strength", express.static(`${this.WebsiteModulePath}/node_modules/check-password-strength/dist`, options))
-        .use("/bootstrap-show-toast", express.static(`${this.WebsiteModulePath}/node_modules/bootstrap-show-toast`, options))
 
         .get("/login", (req, res) => {
           const logged = this.hasValidCookie(req);
