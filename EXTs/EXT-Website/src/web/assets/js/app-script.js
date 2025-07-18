@@ -413,6 +413,39 @@ document.addEventListener("Includes_Complete", () => {
 
 let deferredPrompt;
 
+function hideInstallToast () {
+  const toastContainer = document.querySelector(".toast-container");
+  if (toastContainer) {
+    const displayedToast = toastContainer.querySelector(".toast.show");
+    if (displayedToast) {
+      const toastInstance = bootstrap.Toast.getInstance(displayedToast);
+      if (toastInstance) {
+        toastInstance.hide();
+      } else {
+        displayedToast.classList.remove("show");
+        displayedToast.style.display = "none";
+      }
+    }
+  }
+}
+
+const handleInstallButtonClick = async (event) => {
+  if (deferredPrompt && event.target.classList.contains("install-pwa-button")) {
+    event.preventDefault();
+
+    hideInstallToast();
+
+    deferredPrompt.prompt();
+
+    const choiceResult = await deferredPrompt.userChoice;
+    console.log(`User response to the install prompt: ${choiceResult.outcome}`);
+
+    deferredPrompt = null;
+
+    document.removeEventListener("click", handleInstallButtonClick);
+  }
+};
+
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
@@ -440,55 +473,18 @@ window.addEventListener("beforeinstallprompt", (e) => {
     ariaLive: "assertive"
   };
 
-  bootstrap.showToast(toastOptions);
-
-  const handleInstallButtonClick = async (event) => {
-    if (deferredPrompt && event.target.classList.contains("install-pwa-button")) {
-      event.preventDefault();
-
-      const toastContainer = document.querySelector(".toast-container");
-      if (toastContainer) {
-        const displayedToast = toastContainer.querySelector(".toast.show");
-        if (displayedToast) {
-          const toastInstance = bootstrap.Toast.getInstance(displayedToast);
-          if (toastInstance) {
-            toastInstance.hide();
-          } else {
-            displayedToast.classList.remove("show");
-            displayedToast.style.display = "none";
-          }
-        }
-      }
-
-      deferredPrompt.prompt();
-
-      const choiceResult = await deferredPrompt.userChoice;
-      console.log(`User response to the install prompt: ${choiceResult.outcome}`);
-
-      deferredPrompt = null;
-
-      document.removeEventListener("click", handleInstallButtonClick);
-    }
-  };
+  if (bootstrap && bootstrap.showToast) {
+    bootstrap.showToast(toastOptions);
+  } else {
+    console.warn("Bootstrap showToast function not available.");
+  }
 
   document.addEventListener("click", handleInstallButtonClick);
 });
 
 window.addEventListener("appinstalled", () => {
   console.log("PWA was installed");
-  const toastContainer = document.querySelector(".toast-container");
-  if (toastContainer) {
-    const displayedToast = toastContainer.querySelector(".toast.show");
-    if (displayedToast) {
-      const toastInstance = bootstrap.Toast.getInstance(displayedToast);
-      if (toastInstance) {
-        toastInstance.hide();
-      } else {
-        displayedToast.classList.remove("show");
-        displayedToast.style.display = "none";
-      }
-    }
-  }
+  hideInstallToast();
 });
 
 function DoToast (type, header, small, body) {
