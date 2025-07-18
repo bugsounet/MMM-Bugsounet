@@ -200,12 +200,12 @@ class website {
         .use("/jsoneditor", express.static(`${this.WebsiteModulePath}/node_modules/jsoneditor`, options))
         .use("/xterm", express.static(`${this.WebsiteModulePath}/node_modules/xterm`, options))
         .use("/xterm-addon-fit", express.static(`${this.WebsiteModulePath}/node_modules/xterm-addon-fit`, options))
-        .use("/alertify", express.static(`${this.BugsounetModulePath}/node_modules/alertifyjs/build`, options))
         .use("/animate.css", express.static(`${this.WebsiteModulePath}/node_modules/animate.css`, options))
         .use("/fontawesome", express.static(`${this.WebsiteModulePath}/node_modules/@fortawesome/fontawesome-free`, options))
         .use("/bootstrap", express.static(`${this.WebsiteModulePath}/node_modules/bootstrap/dist`, options))
         .use("/sweetalert2", express.static(`${this.BugsounetModulePath}/node_modules/sweetalert2/dist`, options))
         .use("/check-password-strength", express.static(`${this.WebsiteModulePath}/node_modules/check-password-strength/dist`, options))
+        .use("/bootstrap-show-toast", express.static(`${this.WebsiteModulePath}/node_modules/bootstrap-show-toast`, options))
 
         .get("/login", (req, res) => {
           const logged = this.hasValidCookie(req);

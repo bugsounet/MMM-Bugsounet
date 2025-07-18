@@ -1,11 +1,10 @@
 /** fetch datas **/
 
-/* global alertify, Swal */
+/* global DoToast Swal */
 
 /* eslint-disable no-unused-vars */
 
 var Alert = 0;
-alertify.set("notifier", "position", "bottom-right");
 
 function getCurrentToken () {
   return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
@@ -257,7 +256,7 @@ function loadMMConfig () {
         let config = JSON.parse(parse);
         resolve(config);
       } catch {
-        alertify.error("[loadMMConfig] Error on decode server response");
+        DoToast("error", "MMM-Bugsounet", "loadMMConfig", "Error on decode server response");
         Alert = 0;
       }
     });
@@ -308,7 +307,7 @@ function loadBackupConfig (file) {
         let backup = JSON.parse(parse);
         resolve(backup);
       } catch {
-        alertify.error("[loadBackupConfig] Error on decode server response");
+        DoToast("error", "MMM-Bugsounet", "loadBackupConfig", "Error on decode server response");
         Alert = 0;
       }
     });
@@ -465,7 +464,7 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
         if (response.status === 500 || response.status === 502) {
           showAlert("No response from MMM-Bugsounet");
         }
-        alertify.error(`[${fromFunctionName}] Server return Error ${error.status}: ${error.body}`);
+        DoToast("error", `Error ${error.status}`, fromFunctionName, error.body);
       }
       return;
     }
@@ -477,7 +476,7 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
     Alert++;
     if (Alert === 1) {
       showAlert("No response from EXT-Website");
-      alertify.error(`[${fromFunctionName}] Server return ${error.message}`);
+      DoToast("error", "EXT-Website", fromFunctionName, error.message);
     }
   }
 }

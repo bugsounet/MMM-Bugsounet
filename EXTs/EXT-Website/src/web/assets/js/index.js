@@ -1,4 +1,4 @@
-/* global alertify setTranslation getTranslate getEXTVersions getCurrentSystem
+/* global DoToast setTranslation getTranslate getEXTVersions getCurrentSystem
   checkSystem io Terminal FitAddon getVersion getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
@@ -166,8 +166,11 @@ async function doLoginPage () {
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
         if (!err.status || err.status === 500 || err.status === 502) showAlert("No response from MMM-Bugsounet");
-        else if (err.status === 403) alertify.error(loginTranslations["Error"]);
-        else alertify.error(`Server return Error ${err.status} (${err.body})`);
+        else if (err.status === 403) {
+          DoToast("error", `Error ${err.status}`, "Login", loginTranslations["Error"]);
+        } else {
+          DoToast("error", `Error ${err.status}`, "API Server", err.body);
+        }
       });
     });
     removeLoader();
@@ -375,9 +378,12 @@ async function doAccountPage () {
       if (selectedLanguageInput !== user.language) MyUser.language = selectedLanguageInput;
 
       if (NewPassword !== "") {
-        if (NewPassword !== NewPasswordConfirm) alertify.error("Password don't match");
-        else {
-          if (password.getAttribute("passwordstrength") !== "Strong") alertify.error("Password must be Strong");
+        if (NewPassword !== NewPasswordConfirm) {
+          DoToast("error", AccountTranslations["Account"], user.username, "Password don't match");
+        } else {
+          if (password.getAttribute("passwordstrength") !== "Strong") {
+            DoToast("error", AccountTranslations["Account"], user.username, "Password must be Strong");
+          }
           else MyUser.password = btoa(NewPassword);
         }
       }
@@ -405,7 +411,7 @@ async function doAccountPage () {
           removeLoader();
         });
       } else {
-        alertify.message("There is no change to save");
+        DoToast("warning", AccountTranslations["Account"], user.username, "Sorry, there is no change to save");
         removeLoader();
       }
     };
@@ -1086,7 +1092,7 @@ async function doToolsPage () {
       document.getElementById("UpdateApply").onclick = function () {
         document.getElementById("UpdateApply").classList.add("disabled");
         doUpdates(() => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Updates", null, GenericTranslations["RequestDone"]);
         });
       };
     } else {
@@ -1098,12 +1104,12 @@ async function doToolsPage () {
     setTranslation("MMRestart", GenericTranslations["Restart"]);
 
     document.getElementById("MMDie").onclick = function () {
-      alertify.success(ToolsTranslations["MM_Die"]);
+      DoToast("success", "MagicMirror²", null, ToolsTranslations["MM_Die"]);
       doDie();
     };
 
     document.getElementById("MMRestart").onclick = function () {
-      alertify.success(ToolsTranslations["MM_Restart"]);
+      DoToast("success", "MagicMirror²", null, ToolsTranslations["MM_Restart"]);
       doRestart();
     };
 
@@ -1113,12 +1119,12 @@ async function doToolsPage () {
     setTranslation("SysRestart", GenericTranslations["Restart"]);
 
     document.getElementById("SysDie").onclick = function () {
-      alertify.success(ToolsTranslations["System_Die"]);
+      DoToast("success", ToolsTranslations["System_Header"], null, ToolsTranslations["System_Die"]);
       doShutdown();
     };
 
     document.getElementById("SysRestart").onclick = function () {
-      alertify.success(ToolsTranslations["System_Restart"]);
+      DoToast("success", ToolsTranslations["System_Header"], null, ToolsTranslations["System_Restart"]);
       doReboot();
     };
 
@@ -1132,10 +1138,10 @@ async function doToolsPage () {
 
       document.getElementById("BackupDelete").onclick = function () {
         deleteBackups(() => {
-          alertify.success(ToolsTranslations["Backup_Deleted"]);
+          DoToast("success", "MMM-Bugsounet", null, ToolsTranslations["Backup_Deleted"]);
           HideBlock("BackupBlock");
         }, (err) => {
-          alertify.error(`[backup-Delete] Server return Error ${err.status} (${err.body})`);
+          DoToast("error", `Error ${err.status}`, "deleteBackups", err.body);
         });
       };
     } else {
@@ -1148,7 +1154,7 @@ async function doToolsPage () {
     else HideBlock("StopBlock");
     document.getElementById("StopApply").onclick = function () {
       doStop(() => {
-        alertify.success(GenericTranslations["RequestDone"]);
+        DoToast("success", "MMM-Bugsounet", "Stop", GenericTranslations["RequestDone"]);
         HideBlock("StopBlock");
       });
     };
@@ -1177,7 +1183,7 @@ async function doToolsPage () {
       }
       document.getElementById("RadioSend").onclick = function () {
         putRadio(document.getElementById("RadioQuery").value, () => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-RadioPlayer", null, GenericTranslations["RequestDone"]);
         });
       };
     } else {
@@ -1194,7 +1200,7 @@ async function doToolsPage () {
 
       document.getElementById("SpeakerVolumeSend").onclick = function () {
         putSpeaker(Number(document.getElementById("SpeakerQuery").value), () => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Volume", null, GenericTranslations["RequestDone"]);
         });
       };
 
@@ -1207,7 +1213,7 @@ async function doToolsPage () {
 
       document.getElementById("MicVolumeSend").onclick = function () {
         putMic(Number(document.getElementById("MicQuery").value), () => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Volume", null, GenericTranslations["RequestDone"]);
         });
       };
     } else {
@@ -1233,7 +1239,7 @@ async function doToolsPage () {
 
       document.getElementById("FreeboxTVSend").onclick = function () {
         putTV(document.getElementById("FreeboxTVQuery").value, () => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-FreeboxTV", null, GenericTranslations["RequestDone"]);
         });
       };
     } else {
@@ -1248,7 +1254,7 @@ async function doToolsPage () {
     function SendAlertRequest () {
       document.getElementById("AlertSend").classList.add("disabled");
       doAlert(document.getElementById("AlertQuery").value, () => {
-        alertify.success(GenericTranslations["RequestDone"]);
+        DoToast("success", "EXT-Alert", null, GenericTranslations["RequestDone"]);
         document.getElementById("AlertQuery").value = "";
       });
     }
@@ -1278,7 +1284,7 @@ async function doToolsPage () {
         document.getElementById("AssistantSend").classList.add("disabled");
         doAssistantQuery(document.getElementById("AssistantQuery").value, () => {
           document.getElementById("AssistantQuery").value = "";
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Assistant", null, GenericTranslations["RequestDone"]);
         });
       }
 
@@ -1311,7 +1317,7 @@ async function doToolsPage () {
       document.getElementById("ScreenPower").onclick = function () {
         let powerControler = EXTStatus["EXT-Screen"].power ? "OFF" : "ON";
         doScreenPower(powerControler, () => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Screen", null, GenericTranslations["RequestDone"]);
         });
       };
     } else {
@@ -1332,13 +1338,13 @@ async function doToolsPage () {
       function SendSpotifyRequest () {
         const selectedSpotifySearch = document.querySelector("input[name='spotifySearchType']:checked");
         if (!selectedSpotifySearch) {
-          alertify.error("spotifySearchType missing");
+          DoToast("error", "EXT-Spotify", null, "spotifySearchType missing");
           return;
         }
         document.getElementById("SpotifySend").classList.add("disabled");
         SpotifySend(document.getElementById("SpotifyQuery").value, selectedSpotifySearch.value, () => {
           document.getElementById("SpotifyQuery").value = "";
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
         });
       }
 
@@ -1360,25 +1366,25 @@ async function doToolsPage () {
 
       document.getElementById("SpotifyPlay").onclick = function () {
         SpotifyPlay(() => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
         });
       };
 
       document.getElementById("SpotifyStop").onclick = function () {
         SpotifyStop(() => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
         });
       };
 
       document.getElementById("SpotifyNext").onclick = function () {
         SpotifyNext(() => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
         });
       };
 
       document.getElementById("SpotifyPrevious").onclick = function () {
         SpotifyPrevious(() => {
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
         });
       };
       HideBlock("SpotifyBlock");
@@ -1396,7 +1402,7 @@ async function doToolsPage () {
         document.getElementById("YouTubeSend").classList.add("disabled");
         doYouTubeQuery(document.getElementById("YouTubeQuery").value, () => {
           document.getElementById("YouTubeQuery").value = "";
-          alertify.success(GenericTranslations["RequestDone"]);
+          DoToast("success", "EXT-YouTube", null, GenericTranslations["RequestDone"]);
         });
       }
 
@@ -1607,11 +1613,11 @@ async function doEditConfigPage () {
       loadBackup(conf, async () => {
         document.getElementById("wait").classList.add("d-none");
         document.getElementById("done").classList.remove("d-none");
-        alertify.success(GenericTranslations["Restart-Long"]);
+        DoToast("success", "MMM-Bugsounet", null, GenericTranslations["Restart-Long"]);
       }, (err) => {
         document.getElementById("wait").classList.add("d-none");
         document.getElementById("error").classList.remove("d-none");
-        alertify.error(`[loadBackup] Server return Error ${err.status} (${err.body})`);
+        DoToast("error", `Error ${err.status}`, "loadBackup", err.body);
       });
     };
 
@@ -1624,11 +1630,11 @@ async function doEditConfigPage () {
       writeConfig(encode, async () => {
         document.getElementById("wait").classList.add("d-none");
         document.getElementById("done").classList.remove("d-none");
-        alertify.success(GenericTranslations["Restart-Long"]);
+        DoToast("success", "MMM-Bugsounet", null, GenericTranslations["Restart-Long"]);
       }, (err) => {
         document.getElementById("wait").classList.add("d-none");
         document.getElementById("error").classList.remove("d-none");
-        alertify.error(`[writeConfig] Server return Error ${err.status} (${err.body})`);
+        DoToast("error", `Error ${err.status}`, "writeConfig", err.body);
       });
     };
 
@@ -1669,7 +1675,7 @@ async function doEditConfigPage () {
               let config = JSON.parse(decode);
               editor.update(config);
               editor.refresh();
-              alertify.success(GenericTranslations["ConfigLoaded"]);
+              DoToast("success", "MMM-Bugsounet", null, GenericTranslations["ConfigLoaded"]);
             });
           };
           reader.readAsText(result.value);
@@ -1708,13 +1714,13 @@ async function doEditConfigPage () {
           var configToSave = editor.getText();
           let encoded = btoa(configToSave);
           saveBackup(encoded, (back) => {
-            alertify.success(GenericTranslations["DownloadReady"]);
+            DoToast("success", "MMM-Bugsounet", null, GenericTranslations["DownloadReady"]);
             fetch(back.file)
               .then((response) => response.blob())
               .then((blob) => saveAs(blob, fileName))
               .catch((e) => {
                 console.error("Download Error:", e);
-                alertify.error("Download Error!");
+                DoToast("error", "MMM-Bugsounet", null, "Download Error!");
               });
           });
         }
@@ -1797,10 +1803,10 @@ async function doAdminPage () {
       if (MyLoginSize > 0) {
         putLoginPrefs(MyLogin, async () => {
           await doAdminPage();
-          alertify.success("New login preferences applied");
+          DoToast("success", "Admin", AdminTranslations["Login"], "New login preferences applied");
         });
       } else {
-        alertify.message("There is no change to save");
+        DoToast("warning", "Admin", AdminTranslations["Login"], "There is no change to save");
       }
     };
 
@@ -1939,15 +1945,17 @@ async function doAdminPage () {
       const selectedLevel = document.getElementById("selectedLevel");
       if (selectedLevel.value) {
         let level = parseInt(selectedLevel.value);
-        if (level >= user.level) alertify.error("Can't add a level higher or equal than yours");
+        if (level >= user.level) {
+          DoToast("error", "Admin", userChange.username, "Can't add a level higher or equal than yours");
+        }
         else if (level !== UserFind.level) userChange.level = level;
       }
-      else alertify.error("Level Missing");
+      else DoToast("error", "Admin", userChange.username, "Level Missing");
 
       if (NewPassword !== "") {
-        if (NewPassword !== NewPasswordConfirm) alertify.error("Password don't match");
+        if (NewPassword !== NewPasswordConfirm) DoToast("error", "Admin", userChange.username, "Password don't match");
         else {
-          if (password.getAttribute("passwordstrength") !== "Strong") alertify.error("Password must be Strong");
+          if (password.getAttribute("passwordstrength") !== "Strong") DoToast("error", "Admin", userChange.username, "Password must be Strong");
           else userChange.password = btoa(NewPassword);
         }
       }
@@ -1968,10 +1976,10 @@ async function doAdminPage () {
           accountsContent.classList.add("active", "show");
           const newContentEvent = new Event("NewContent_Loaded");
           document.dispatchEvent(newContentEvent);
-          alertify.success(`${userChange.username}: Profil Updated successfully`);
+          DoToast("success", "Admin", userChange.username, "Profil Updated successfully");
         });
       } else {
-        alertify.message("There is no change to save");
+        DoToast("warning", "Admin", userChange.username, "There is no change to save");
         removeLoader();
       }
     };
@@ -2014,7 +2022,7 @@ async function doAdminPage () {
             accountsContent.classList.add("active", "show");
             const newContentEvent = new Event("NewContent_Loaded");
             document.dispatchEvent(newContentEvent);
-            alertify.success(`User ${UserDeleteUsername} deleted!`);
+            DoToast("success", "Admin", UserDeleteUsername, "User Deleted!");
           });
         }
       });
@@ -2031,20 +2039,20 @@ async function doAdminPage () {
       if (switchUserDisabled.checked) NewUser.disabled = true;
       else NewUser.disabled = false;
 
-      if (NewUsername === "") alertify.error("Username Missing");
+      if (NewUsername === "") DoToast("error", "Admin", null, "Username Missing");
       else {
         const FindUserAlreadyExist = AllUsers.find(({ username }) => username === NewUsername);
-        if (FindUserAlreadyExist) alertify.error("Username already exist");
+        if (FindUserAlreadyExist) DoToast("error", "Admin", NewUsername, "Username already exist");
         else NewUser.username = NewUsername;
       }
 
       const selectedLevel = document.getElementById("selectedLevel");
       if (selectedLevel.value) {
         let level = parseInt(selectedLevel.value);
-        if (level >= user.level) alertify.error("Can't add a level higher or equal than yours");
+        if (level >= user.level) DoToast("error", "Admin", NewUser.username, "Can't add a level higher or equal than yours");
         else NewUser.level = level;
       }
-      else alertify.error("Level Missing");
+      else DoToast("error", "Admin", NewUser.username, "Level Missing");
 
       const selectedAvatarInput = document.querySelector("input[name='avatar']:checked");
       let selectedAvatarValue = null;
@@ -2052,19 +2060,19 @@ async function doAdminPage () {
         selectedAvatarValue = parseInt(selectedAvatarInput.value);
         NewUser.avatar = selectedAvatarValue;
       }
-      else alertify.error("Avatar Missing");
+      else DoToast("error", "Admin", NewUser.username, "Avatar Missing");
 
       if (selectedLanguageInput) NewUser.language = selectedLanguageInput;
-      else alertify.error("User Language Missing");
+      else DoToast("error", "Admin", NewUser.username, "User Language Missing");
 
       if ((NewPassword !== NewPasswordConfirm) && NewPassword !== "") {
-        alertify.error("Password don't match");
+        DoToast("error", "Admin", NewUser.username, "Password don't match");
       } else if (password.getAttribute("passwordstrength") !== "Strong") {
-        alertify.error("Password must be Strong");
+        DoToast("error", "Admin", NewUser.username, "Password must be Strong");
       } else if (NewPassword !== "") {
         NewUser.password = btoa(NewPassword);
       } else {
-        alertify.error("Please select a Password");
+        DoToast("error", "Admin", NewUser.username, "Please select a Password");
       }
 
       let NewUserSize = Object.keys(NewUser).length;
@@ -2083,10 +2091,10 @@ async function doAdminPage () {
           accountsContent.classList.add("active", "show");
           const newContentEvent = new Event("NewContent_Loaded");
           document.dispatchEvent(newContentEvent);
-          alertify.success(`User ${NewUser.username} added with success!`);
+          DoToast("success", "Admin", NewUser.username, "User added with success!");
         });
       } else {
-        alertify.warning("Please Correct this form");
+        DoToast("warning", "Admin", null, "Please Correct this form");
         removeLoader();
       }
     };

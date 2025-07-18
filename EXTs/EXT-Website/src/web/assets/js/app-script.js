@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-/* global getTranslateGroup setTranslation Swal */
+/* global getTranslateGroup setTranslation Swal bootstrap */
 
 function hasTheme (classes) {
   let classNames = classes.value;
@@ -408,4 +408,118 @@ document.addEventListener("Includes_Complete", () => {
       }
     });
   });
+
 });
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const toastOptions = {
+    header: `
+      <div class="d-flex gap-1">
+        <span class="text-info">
+          <i class="fa-solid fa-circle-info fa-lg"></i>
+        </span>
+        <span>MMM-Bugsounet<span>
+      </div>
+    `,
+    headerSmall: "Installation Available",
+    body: `
+      Install the app for a better experience!
+      <div class="mt-2 pt-2 border-top">
+        <button type="button" class="btn btn-primary btn-sm install-pwa-button">Install</button>
+      </div>
+    `,
+    position: "bottom-0 end-0",
+    toastClass: "text-white bg-info bg-gradient",
+    animation: true,
+    delay: 30000,
+    ariaLive: "assertive"
+  };
+
+  bootstrap.showToast(toastOptions);
+
+  const handleInstallButtonClick = async (event) => {
+    if (deferredPrompt && event.target.classList.contains("install-pwa-button")) {
+      event.preventDefault();
+
+      const toastContainer = document.querySelector(".toast-container");
+      if (toastContainer) {
+        const displayedToast = toastContainer.querySelector(".toast.show");
+        if (displayedToast) {
+          const toastInstance = bootstrap.Toast.getInstance(displayedToast);
+          if (toastInstance) {
+            toastInstance.hide();
+          } else {
+            displayedToast.classList.remove("show");
+            displayedToast.style.display = "none";
+          }
+        }
+      }
+
+      deferredPrompt.prompt();
+
+      const choiceResult = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${choiceResult.outcome}`);
+
+      deferredPrompt = null;
+
+      document.removeEventListener("click", handleInstallButtonClick);
+    }
+  };
+
+  document.addEventListener("click", handleInstallButtonClick);
+});
+
+window.addEventListener("appinstalled", () => {
+  console.log("PWA was installed");
+  const toastContainer = document.querySelector(".toast-container");
+  if (toastContainer) {
+    const displayedToast = toastContainer.querySelector(".toast.show");
+    if (displayedToast) {
+      const toastInstance = bootstrap.Toast.getInstance(displayedToast);
+      if (toastInstance) {
+        toastInstance.hide();
+      } else {
+        displayedToast.classList.remove("show");
+        displayedToast.style.display = "none";
+      }
+    }
+  }
+});
+
+function DoToast (type, header, small, body) {
+  var toastClass, headerIcon;
+  switch (type) {
+    case "error":
+      toastClass = "text-white bg-gradient bg-danger";
+      headerIcon = `<div class="d-flex gap-1"><span class="text-danger"><i class="fa-solid fa-times-circle fa-lg"></i></span><span>${header}<span></div>`;
+      break;
+    case "warning":
+      toastClass = "text-white bg-gradient bg-warning";
+      headerIcon = `<div class="d-flex gap-1"><span class="text-warning"><i class="fa-solid fa-exclamation-circle fa-lg"></i></span><span>${header}<span></div>`;
+      break;
+    case "success":
+      toastClass = "text-white bg-gradient bg-success";
+      headerIcon = `<div class="d-flex gap-1"><span class="text-success"><i class="fa-solid fa-check-circle fa-lg"></i></span><span>${header}<span></div>`;
+      break;
+    case "info":
+      toastClass = "text-white bg-gradient bg-info";
+      headerIcon = `<div class="d-flex gap-1"><span class="text-info"><i class="fa-solid fa-circle-info fa-lg"></i></span><span>${header}<span></div>`;
+      break;
+    default:
+      toastClass = type;
+      headerIcon = header;
+  }
+
+  bootstrap.showToast({
+    header: headerIcon,
+    headerSmall: small,
+    body: body,
+    toastClass: toastClass,
+    position: "top-0 end-0"
+  });
+}
