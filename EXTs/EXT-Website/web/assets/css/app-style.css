@@ -650,6 +650,11 @@ body.bg-theme15 {
   box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 7.5%);
 }
 
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
 .btn-link {
   color: #14abef;
 }
