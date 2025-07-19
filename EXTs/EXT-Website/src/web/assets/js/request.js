@@ -450,7 +450,7 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
       const errorBody = await response.json().catch(() => null);
       const error = new Error(`HTTP error! status: ${response.status}`);
       error.status = response.status;
-      error.body = errorBody?.error || response.statusText;
+      error.body = errorBody?.error || response.statusText || "No Text Error Specified";
 
       if (response.status === 423) {
         Alert = 0;
