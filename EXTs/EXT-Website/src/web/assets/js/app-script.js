@@ -289,7 +289,46 @@ document.addEventListener("Includes_Complete", () => {
       document.querySelector("footer").classList.toggle("toggled");
     });
   }
-  const wrapper = document.querySelector("#wrapper");
+
+  // sync toogled wrapper and footer
+  const wrapper = document.getElementById("wrapper");
+  const footer = document.querySelector("footer");
+
+  if (wrapper && footer) {
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
+          const wrapperIsToggled = wrapper.classList.contains("toggled");
+          const footerIsToggled = footer.classList.contains("toggled");
+
+          if (wrapperIsToggled !== footerIsToggled) {
+            if (wrapperIsToggled) {
+              footer.classList.add("toggled");
+            } else {
+              footer.classList.remove("toggled");
+            }
+            console.warn("MutationObserver toggled: Syncing footer class with wrapper.");
+          }
+        }
+      }
+    });
+
+    // Observe changes to the 'class' attribute of both elements
+    observer.observe(wrapper, { attributes: true });
+    observer.observe(footer, { attributes: true });
+
+    // Initial sync on page load
+    const initialWrapperToggled = wrapper.classList.contains("toggled");
+    if (initialWrapperToggled !== footer.classList.contains("toggled")) {
+      if (initialWrapperToggled) {
+        footer.classList.add("toggled");
+      } else {
+        footer.classList.remove("toggled");
+      }
+      console.warn("Initial toogled sync: Syncing footer class with wrapper.");
+    }
+  }
+
   const overlay = wrapper.querySelector(".overlay");
   if (overlay) {
     overlay.addEventListener("click", () => {
