@@ -580,6 +580,17 @@ body.bg-theme15 {
   font-size: 12px;
 }
 
+.sidebar-menu {
+  overflow-y: auto;
+  height: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.sidebar-menu::-webkit-scrollbar {
+  display: none;
+}
+
 /* Cards */
 .card {
   margin-bottom: 25px;
