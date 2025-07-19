@@ -225,6 +225,7 @@ a:hover {
   padding: 70px 10px;
   overflow-x: hidden;
   transition: all 0.3s ease;
+  overflow: visible;
 }
 
 .bg-theme {
