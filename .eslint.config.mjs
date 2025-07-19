@@ -28,10 +28,10 @@ const config = [
       }
     },
     "plugins": {
-      ...eslintPluginStylistic.configs["all-flat"].plugins
+      ...eslintPluginStylistic.configs["all"].plugins
     },
     "rules": {
-      ...eslintPluginStylistic.configs["all-flat"].rules,
+      ...eslintPluginStylistic.configs["all"].rules,
       "@stylistic/array-element-newline": ["error", "consistent"],
       "@stylistic/arrow-parens": ["error", "always"],
       "@stylistic/brace-style": "off",
@@ -93,10 +93,10 @@ const config = [
       "sourceType": "module"
     },
     "plugins": {
-      ...eslintPluginStylistic.configs["all-flat"].plugins
+      ...eslintPluginStylistic.configs["all"].plugins
     },
     "rules": {
-      ...eslintPluginStylistic.configs["all-flat"].rules,
+      ...eslintPluginStylistic.configs["all"].rules,
       "@stylistic/indent": ["error", 2],
       "@stylistic/array-element-newline": "off",
       "@stylistic/function-call-argument-newline": "off",
