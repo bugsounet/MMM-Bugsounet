@@ -975,7 +975,8 @@ class api {
         access_token: token,
         token_type: "Bearer",
         expire_in: 3600,
-        user: username
+        user: FindUsername.username,
+        level: FindUsername.level
       };
       res.json(APIResult);
 
@@ -1044,9 +1045,9 @@ class api {
         "/api/translations/group": 1,
         "/api/translations/translate": 1,
         "/api/translations/homeText": 1,
-        "/api/system/currentSysInfo": 10,
-        "/api/system/sysInfo": 10,
-        "/api/EXT/versions": 10,
+        "/api/system/currentSysInfo": 3,
+        "/api/system/sysInfo": 3,
+        "/api/EXT/versions": 3,
         "/api/EXT": 10,
         "/api/EXT/installed": 10,
         "/api/EXT/configured": 10,
