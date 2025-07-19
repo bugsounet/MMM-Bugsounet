@@ -83,7 +83,7 @@
     "esbuild": "^0.25.6",
     "express": "^5.1.0",
     "express-body-parser-error-handler": "^1.0.9",
-    "express-rate-limit": "^7.5.1",
+    "express-rate-limit": "^8.0.1",
     "fdir": "^6.4.6",
     "jsonwebtoken": "^9.0.2",
     "nan": "^2.23.0",
