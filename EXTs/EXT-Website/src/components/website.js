@@ -234,11 +234,15 @@ class website {
                 socket.on("disconnect", (err) => {
                   log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
                 });
-                var pastLogs = await this.readAllMMLogs(HyperWatch.logs());
-                io.emit("terminal.logs", pastLogs);
-                HyperWatch.stream().on("stdData", (data) => {
-                  if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
-                });
+                if (req.level >= 5) {
+                  var pastLogs = await this.readAllMMLogs(HyperWatch.logs());
+                  io.emit("terminal.logs", pastLogs);
+                  HyperWatch.stream().on("stdData", (data) => {
+                    if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
+                  });
+                } else {
+                  io.emit("terminal.logs", "Logs is disabled: insufficient access level.");
+                }
               });
             });
           }
@@ -254,6 +258,10 @@ class website {
                 if (!pty) {
                   console.warn("[WEBSITE] Server mode: Terminal is disabled!");
                   io.to(client.id).emit("terminal.incData", "This Terminal is disabled in server mode.");
+                  return;
+                }
+                if (req.level < 9) {
+                  io.to(client.id).emit("terminal.incData", "Terminal is disabled: insufficient access level.");
                   return;
                 }
                 var ptyProcess = pty.spawn("bash", [], {
@@ -312,12 +320,13 @@ class website {
         return res.redirect("/login");
       }
 
-      if (!cookies["MMM-Bugsounet"].token || !cookies["MMM-Bugsounet"].user) {
+      if (!cookies["MMM-Bugsounet"].token || !cookies["MMM-Bugsounet"].user || !cookies["MMM-Bugsounet"].level) {
         console.warn("[WEBSITE] [Web] [AUTH] Bad MMM-Bugsounet cookie");
-        return res.redirect("/login");
+        return res.redirect("/logout");
       }
 
       req.user = cookies["MMM-Bugsounet"].user;
+      req.level = cookies["MMM-Bugsounet"].level;
       next();
     } catch (err) {
       console.error("[WEBSITE] [Web] [AUTH] Error 500!", err.message);
@@ -378,9 +387,18 @@ class website {
         res.status(500).json(APIResult);
         return;
       }
+      let level = result.level;
+      if (!level) {
+        APIResult = {
+          error: "Server return no user level"
+        };
+        res.status(500).json(APIResult);
+        return;
+      }
+
       let expire = result.expire_in;
       console.log(`[WEBSITE] [Web] [${ip}] Login ${user}`);
-      res.cookie("MMM-Bugsounet", { token: token, user: user }, {
+      res.cookie("MMM-Bugsounet", { token: token, user: user, level: level }, {
         httpOnly: true,
         maxAge: expire * 1000
       });
