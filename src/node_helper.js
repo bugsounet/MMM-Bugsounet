@@ -60,10 +60,10 @@ module.exports = NodeHelper.create({
         this.controler.doClose();
         break;
       case "GET-SYSINFO":
-        this.sendSocketNotification("SYSINFO-RESULT", await this.api.website.systemInformation.lib.Get());
+        this.sendSocketNotification("SYSINFO-RESULT", await this.api.Api.systemInformation.lib.Get());
         break;
       case "TB_SYSINFO":
-        var result = await this.api.website.systemInformation.lib.Get();
+        var result = await this.api.Api.systemInformation.lib.Get();
         result.sessionId = payload;
         this.sendSocketNotification("TB_SYSINFO-RESULT", result);
         break;
