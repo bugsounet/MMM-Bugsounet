@@ -223,9 +223,8 @@ a:hover {
 .content-wrapper {
   margin-left: 250px;
   padding: 70px 10px;
-  overflow-x: hidden;
-  transition: all 0.3s ease;
   overflow: visible;
+  transition: all 0.3s ease;
 }
 
 .bg-theme {
@@ -2234,9 +2233,7 @@ table.grid td {
   .nav-tabs .nav-link {
     padding: 10px;
   }
-}
 
-@media only screen and (width <= 1024px) {
   #sidebar-wrapper {
     background: #000;
     position: fixed;
@@ -2308,6 +2305,10 @@ table.grid td {
     padding-top: 40px;
     padding-bottom: 40px;
   }
+
+  #backgroundNavbar-container {
+    justify-content: center;
+  }
 }
 
 @media only screen and (width <= 480px) {
@@ -2317,6 +2318,18 @@ table.grid td {
 
   .topbar-nav .navbar {
     padding: 0 10px 0 5px;
+  }
+}
+
+@media only screen and (width <= 700px) {
+  #avatars-choice {
+    justify-content: center;
+  }
+}
+
+@media only screen and (width <= 1875px) {
+  #background-container {
+    justify-content: center;
   }
 }
 
