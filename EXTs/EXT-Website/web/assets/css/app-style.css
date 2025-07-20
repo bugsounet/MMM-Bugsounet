@@ -2514,7 +2514,7 @@ iframe {
 }
 
 #spinner:not(.show) .spinner-border {
-  animation: none;
+  animation-iteration-count: 2;
 }
 
 #spinner.show {
@@ -2627,5 +2627,5 @@ body.swal2-shown {
 }
 
 #containerLoader:not(.show) .spinner-border {
-  animation: none;
+  animation-iteration-count: 2;
 }
