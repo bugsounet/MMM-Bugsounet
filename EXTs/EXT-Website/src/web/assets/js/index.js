@@ -469,6 +469,10 @@ async function doLogsPage () {
       termLogs.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n");
     });
 
+    socket.on("forceDisconnect", () => {
+      socket.close();
+    });
+
     socket.on("terminal.logs", function (data) {
       termLogs.write(data);
     });
@@ -516,6 +520,10 @@ async function doSSHPage () {
 
     socket.on("disconnect", () => {
       termPTY.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n");
+    });
+
+    socket.on("forceDisconnect", () => {
+      socket.close();
     });
 
     termPTY.onData((data) => {

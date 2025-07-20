@@ -236,32 +236,35 @@ class website {
                 });
                 if (req.level >= 5) {
                   var pastLogs = await this.readAllMMLogs(HyperWatch.logs());
-                  io.emit("terminal.logs", pastLogs);
+                  io.to(socket.id).emit("terminal.logs", pastLogs);
                   HyperWatch.stream().on("stdData", (data) => {
                     if (typeof data === "string") io.to(socket.id).emit("terminal.logs", data.replace(/\r?\n/g, "\r\n"));
                   });
                 } else {
-                  io.emit("terminal.logs", "Logs is disabled: insufficient access level.");
+                  io.to(socket.id).emit("terminal.logs", "\x1B[1;3;33mInsufficient access level.");
+                  io.to(socket.id).emit("forceDisconnect");
                 }
               });
             });
           }
           if (req.params.file === "SSH.html") {
             this.auth(req, res, () => {
-              io.once("connection", (client) => {
+              io.once("connection", (socket) => {
                 log(`[${ip}] Connected to Terminal:`, req.user);
-                client.on("disconnect", (err) => {
+                socket.on("disconnect", (err) => {
                   log(`[${ip}] Disconnected from Terminal:`, req.user, `[${err}]`);
                 });
                 var cols = 80;
                 var rows = 24;
                 if (!pty) {
                   console.warn("[WEBSITE] Server mode: Terminal is disabled!");
-                  io.to(client.id).emit("terminal.incData", "This Terminal is disabled in server mode.");
+                  io.to(socket.id).emit("terminal.incData", "\x1B[1;3;33mThis Terminal is disabled in server mode.");
+                  io.to(socket.id).emit("forceDisconnect");
                   return;
                 }
                 if (req.level < 9) {
-                  io.to(client.id).emit("terminal.incData", "Terminal is disabled: insufficient access level.");
+                  io.to(socket.id).emit("terminal.incData", "\x1B[1;3;33mInsufficient access level.");
+                  io.to(socket.id).emit("forceDisconnect");
                   return;
                 }
                 var ptyProcess = pty.spawn("bash", [], {
@@ -272,12 +275,12 @@ class website {
                   env: process.env
                 });
                 ptyProcess.on("data", (data) => {
-                  io.to(client.id).emit("terminal.incData", data);
+                  io.to(socket.id).emit("terminal.incData", data);
                 });
-                client.on("terminal.toTerm", (data) => {
+                socket.on("terminal.toTerm", (data) => {
                   ptyProcess.write(data);
                 });
-                client.on("terminal.size", (size) => {
+                socket.on("terminal.size", (size) => {
                   ptyProcess.resize(size.cols, size.rows);
                 });
               });
