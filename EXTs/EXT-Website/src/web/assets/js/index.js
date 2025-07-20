@@ -32,7 +32,6 @@ async function doIndex () {
 
 async function doLoaded () {
   console.log("Execute index.js - doLoaded");
-  AddContainerLoader();
   if (interval) {
     clearInterval(interval);
     interval = null;
@@ -81,9 +80,7 @@ function removeLoader () {
   const spinner = document.getElementById("spinner");
   const contentContainer = document.querySelector(".content-container");
   const loadingBar = document.getElementById("loading-bar");
-  const containerLoader = document.getElementById("containerLoader");
   if (spinner) spinner.classList.remove("show");
-  if (containerLoader) containerLoader.classList.remove("show");
 
   if (contentContainer && contentContainer.classList.contains("is-loading")) {
     loadingBar.style.width = "100%";
@@ -102,11 +99,6 @@ function removeLoader () {
 function AddSpinner () {
   const spinner = document.getElementById("spinner");
   spinner.classList.add("show");
-}
-
-function AddContainerLoader () {
-  const containerLoader = document.getElementById("containerLoader");
-  containerLoader.classList.add("show");
 }
 
 function doPassword () {
