@@ -2316,10 +2316,6 @@ table.grid td {
     padding-top: 40px;
     padding-bottom: 40px;
   }
-
-  #backgroundNavbar-container {
-    justify-content: center;
-  }
 }
 
 @media only screen and (width <= 480px) {
@@ -2332,6 +2328,18 @@ table.grid td {
   }
 }
 
+@media (width >= 700px) and (width <= 1024px) {
+  #avatars-choice {
+    justify-content: start;
+  }
+}
+
+@media (width >= 1024px) and (width <= 1130px) {
+  #avatars-choice {
+    justify-content: center;
+  }
+}
+
 @media only screen and (width <= 700px) {
   #avatars-choice {
     justify-content: center;
@@ -2340,6 +2348,12 @@ table.grid td {
 
 @media only screen and (width <= 1875px) {
   #background-container {
+    justify-content: center;
+  }
+}
+
+@media only screen and (width <= 1050px) {
+  #backgroundNavbar-container {
     justify-content: center;
   }
 }
@@ -2499,6 +2513,10 @@ iframe {
   z-index: 99998;
 }
 
+#spinner:not(.show) .spinner-border {
+  animation: none;
+}
+
 #spinner.show {
   transition:
     opacity 0.5s ease-out,
@@ -2595,4 +2613,19 @@ body.swal2-shown {
 
 #PasswordStrengthChecker[data-strength-check*="symbol"] .SymbolGrp {
   color: #04b962 !important;
+}
+
+#containerLoader {
+  display: none;
+}
+
+#containerLoader.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px - 50px - 20px);
+}
+
+#containerLoader:not(.show) .spinner-border {
+  animation: none;
 }

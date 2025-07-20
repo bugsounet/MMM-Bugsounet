@@ -1,4 +1,4 @@
-/* global DoToast setTranslation getTranslate getEXTVersions getCurrentSystem
+/* global DoToast setTranslation getTranslate getEXTVersions
   checkSystem io Terminal FitAddon getVersion getHomeText applyNavbarTheme
   getMyUser loadLoginTranslation saveAs JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
@@ -12,6 +12,8 @@
 /* eslint-disable max-lines-per-function */
 
 var interval = null;
+var timerTerminalResize = null;
+var socket = null;
 var user = {};
 const contentWrapper = document.querySelector(".content-wrapper");
 
@@ -30,9 +32,25 @@ async function doIndex () {
 
 async function doLoaded () {
   console.log("Execute index.js - doLoaded");
+  AddContainerLoader();
+  if (interval) {
+    clearInterval(interval);
+    interval = null;
+    console.log("interval checker canceled");
+  }
 
-  clearInterval(interval);
-  interval = null;
+  if (socket) {
+    socket.close();
+    socket = null;
+    console.log("socket closed");
+  }
+
+  if (document.body.onresize) {
+    document.body.onresize = null;
+    clearTimeout(timerTerminalResize);
+    timerTerminalResize = null;
+    console.log("check body resize canceled");
+  }
 
   await doHomePage();
   await doConfigPage();
@@ -63,7 +81,10 @@ function removeLoader () {
   const spinner = document.getElementById("spinner");
   const contentContainer = document.querySelector(".content-container");
   const loadingBar = document.getElementById("loading-bar");
+  const containerLoader = document.getElementById("containerLoader");
   if (spinner) spinner.classList.remove("show");
+  if (containerLoader) containerLoader.classList.remove("show");
+
   if (contentContainer && contentContainer.classList.contains("is-loading")) {
     loadingBar.style.width = "100%";
     loadingBar.classList.add("is-complete");
@@ -81,6 +102,11 @@ function removeLoader () {
 function AddSpinner () {
   const spinner = document.getElementById("spinner");
   spinner.classList.add("show");
+}
+
+function AddContainerLoader () {
+  const containerLoader = document.getElementById("containerLoader");
+  containerLoader.classList.add("show");
 }
 
 function doPassword () {
@@ -415,6 +441,7 @@ async function doAccountPage () {
         removeLoader();
       }
     };
+
     removeLoader();
   }
 }
@@ -425,38 +452,38 @@ async function doLogsPage () {
   if (logsPage) {
     console.log("detected logs page");
     const version = await getVersion();
-    var timerLogsResize = null;
+    // var timerLogsResize = null;
     let terminalTitle = document.getElementById("terminalTitle");
     terminalTitle.textContent = await getTranslate(user.language, "Terminal_Logs");
-    var socketLogs = io();
+    socket = io();
     const termLogs = new Terminal({ cursorBlink: true });
     const fitAddonLogs = new FitAddon.FitAddon();
     termLogs.loadAddon(fitAddonLogs);
     termLogs.open(document.getElementById("terminal"));
     fitAddonLogs.fit();
 
-    document.getElementsByTagName("BODY")[0].onresize = () => {
-      clearTimeout(timerLogsResize);
-      timerLogsResize = setTimeout(() => {
+    document.body.onresize = () => {
+      clearTimeout(timerTerminalResize);
+      timerTerminalResize = setTimeout(() => {
         fitAddonLogs.fit();
       }, 300);
     };
 
-    socketLogs.on("connect", () => {
+    socket.on("connect", () => {
       termLogs.write(`\x1B[1;3;31mMMM-Bugsounet v${version.version} (${version.rev}.${user.language})\x1B[0m \r\n\n`);
     });
 
-    socketLogs.on("disconnect", () => {
+    socket.on("disconnect", () => {
       termLogs.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n");
     });
 
-    socketLogs.on("terminal.logs", function (data) {
+    socket.on("terminal.logs", function (data) {
       termLogs.write(data);
     });
 
-    socketLogs.io.on("error", (data) => {
+    socket.io.on("error", (data) => {
       console.error("Socket Error:", data);
-      socketLogs.close();
+      socket.close();
     });
     removeLoader();
   }
@@ -467,50 +494,49 @@ async function doSSHPage () {
   if (SSHPage) {
     console.log("detected SSH page");
     const version = await getVersion();
-    var timerTermSSHResize = null;
     let terminalTitle = document.getElementById("terminalTitle");
     terminalTitle.textContent = await getTranslate(user.language, "Terminal_SSH");
 
-    var socketPTY = io();
+    socket = io();
     const termPTY = new Terminal({ cursorBlink: true });
     const fitAddonPTY = new FitAddon.FitAddon();
     termPTY.loadAddon(fitAddonPTY);
     termPTY.open(document.getElementById("terminal"));
     fitAddonPTY.fit();
 
-    document.getElementsByTagName("BODY")[0].onresize = () => {
-      clearTimeout(timerTermSSHResize);
-      timerTermSSHResize = setTimeout(() => {
+    document.body.onresize = () => {
+      clearTimeout(timerTerminalResize);
+      timerTerminalResize = setTimeout(() => {
         fitAddonPTY.fit();
         if (termPTY.rows && termPTY.cols) {
-          socketPTY.emit("terminal.size", { cols: termPTY.cols, rows: termPTY.rows });
+          socket.emit("terminal.size", { cols: termPTY.cols, rows: termPTY.rows });
         }
       }, 300);
     };
 
     if (termPTY.rows && termPTY.cols) {
-      socketPTY.emit("terminal.size", { cols: termPTY.cols, rows: termPTY.rows });
+      socket.emit("terminal.size", { cols: termPTY.cols, rows: termPTY.rows });
     }
 
-    socketPTY.on("connect", () => {
+    socket.on("connect", () => {
       termPTY.write(`\x1B[1;3;31mMMM-Bugsounet v${version.version} (${version.rev}.${user.language})\x1B[0m \r\n\n`);
     });
 
-    socketPTY.on("disconnect", () => {
+    socket.on("disconnect", () => {
       termPTY.write("\r\n\n\x1B[1;3;31mDisconnected\x1B[0m\r\n");
     });
 
     termPTY.onData((data) => {
-      socketPTY.emit("terminal.toTerm", data);
+      socket.emit("terminal.toTerm", data);
     });
 
-    socketPTY.on("terminal.incData", function (data) {
+    socket.on("terminal.incData", function (data) {
       termPTY.write(data);
     });
 
-    socketPTY.io.on("error", (data) => {
+    socket.io.on("error", (data) => {
       console.error("Socket Error:", data);
-      socketPTY.close();
+      socket.close();
     });
     removeLoader();
   }
@@ -527,13 +553,15 @@ async function doSystemPage () {
 
     const SystemTranslations = await getTranslateGroup(user.language, "System_");
 
-    system = await getCurrentSystem();
-    do_System(() => { do_SystemStatic(); });
+    system = await checkSystem();
+    do_System(() => {
+      do_SystemStatic();
+    });
 
     interval = setInterval(async () => {
       system = await checkSystem();
       do_System();
-    }, 15000);
+    }, 8000);
 
     async function do_SystemStatic () {
       // Display static values
