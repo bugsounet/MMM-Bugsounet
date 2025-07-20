@@ -453,8 +453,9 @@ async function Request (url, method = "GET", auth, headerOptions = {}, body, fro
       error.body = errorBody?.error || response.statusText || "No Text Error Specified";
 
       if (response.status === 423) {
+        DoToast("error", "Access", fromFunctionName, error.body);
         Alert = 0;
-        return do423Error();
+        return do423Error(error.body);
       }
 
       if (callbackFailed) return callbackFailed(error);
@@ -583,7 +584,7 @@ function showAlert (alert) {
   });
 }
 
-function do423Error () {
+function do423Error (errorText) {
   function getRandomIntInclusive (min, max) {
     const Min = Math.ceil(min);
     const Max = Math.floor(max);
@@ -593,8 +594,8 @@ function do423Error () {
   let random = getRandomIntInclusive(1, 4);
   const contentWrapper = document.querySelector(".content-wrapper");
   Swal.fire({
-    title: "Error 423",
-    text: "Insufficient access level",
+    title: "Insufficient access level",
+    text: `${errorText}`,
     icon: "error",
     imageUrl: `/assets/images/423/${random}.png`,
     showClass: {

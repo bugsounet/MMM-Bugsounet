@@ -863,10 +863,10 @@ async function doSystemPage () {
         }
       });
 
-      setTranslation("SysUptime", system.UPTIME.currentDHM);
-      setTranslation("MMUptime", system.UPTIME.MMDHM);
-      setTranslation("SysUptimeRecord", system.UPTIME.recordCurrentDHM);
-      setTranslation("MMUptimeRecord", system.UPTIME.recordMMDHM);
+      setTranslation("SysUptime", decodeDHM(system.UPTIME.currentDHM));
+      setTranslation("MMUptime", decodeDHM(system.UPTIME.MMDHM));
+      setTranslation("SysUptimeRecord", decodeDHM(system.UPTIME.recordCurrentDHM));
+      setTranslation("MMUptimeRecord", decodeDHM(system.UPTIME.recordMMDHM));
 
       if (SystemFirstScan) {
         makeProgress(system.CPU.temp.C, "TempDisplay", "TempValue", `${system.CPU.temp.imperial ? system.CPU.temp.F : system.CPU.temp.C}°`);
@@ -928,6 +928,31 @@ async function doSystemPage () {
       setTranslation("interface", system.NETWORK.name);
 
       if (cb) cb();
+    }
+
+    function decodeDHM (DHM) {
+      var Days = DHM.Days;
+      var Hours = DHM.Hours;
+      var Minutes = DHM.Minutes;
+
+      if (DHM.Days > 0) {
+        if (DHM.Days > 1) Days += ` ${SystemTranslations["DAYS"]} `;
+        else Days += ` ${SystemTranslations["DAY"]} `;
+      } else {
+        Days = "";
+      }
+
+      if (DHM.Hours > 0) {
+        if (DHM.Hours > 1) Hours += ` ${SystemTranslations["HOURS"]} `;
+        else Hours += ` ${SystemTranslations["HOUR"]} `;
+      } else {
+        Hours = "";
+      }
+
+      if (DHM.Minutes > 1) Minutes += ` ${SystemTranslations["MINUTES"]}`;
+      else Minutes += ` ${SystemTranslations["MINUTE"]}`;
+
+      return Days + Hours + Minutes;
     }
 
     function progressOrText (system) {

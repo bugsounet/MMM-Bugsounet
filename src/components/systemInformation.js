@@ -6,8 +6,7 @@ const si = require("systeminformation");
 // see to add fetch from website ?
 
 class systemInfo {
-  constructor (translate, units) {
-    this.translate = translate;
+  constructor (units) {
     this.System = {
       VERSION: {
         Bugsounet: `${require("../package.json").version} (${require("../package.json").rev})`,
@@ -271,23 +270,15 @@ class systemInfo {
     if (seconds === 0) return "Loading...";
     var Days = Math.floor(seconds / 86400);
     var Seconds = seconds - (Days * 86400);
-    var hours = Math.floor(Seconds / 3600);
-    Seconds = Seconds - (hours * 3600);
-    var minutes = Math.floor(Seconds / 60);
+    var Hours = Math.floor(Seconds / 3600);
+    Seconds = Seconds - (Hours * 3600);
+    var Minutes = Math.floor(Seconds / 60);
 
-    if (Days > 0) {
-      if (Days > 1) Days = `${Days} ${this.translate.System_DAYS} `;
-      else Days = `${Days} ${this.translate.System_DAY} `;
-    }
-    else Days = "";
-    if (hours > 0) {
-      if (hours > 1) hours = `${hours} ${this.translate.System_HOURS} `;
-      else hours = `${hours} ${this.translate.System_HOUR} `;
-    }
-    else hours = "";
-    if (minutes > 1) minutes = `${minutes} ${this.translate.System_MINUTES}`;
-    else minutes = `${minutes} ${this.translate.System_MINUTE}`;
-    return Days + hours + minutes;
+    return {
+      Days: Days,
+      Hours: Hours,
+      Minutes: Minutes
+    };
   }
 
   uptimed () {

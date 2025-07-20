@@ -19,8 +19,6 @@ Module.register("MMM-Bugsounet", {
   start () {
     if (this.config.debug) logBugsounet = (...args) => { console.log("[Bugsounet]", ...args); };
     this.ready = false;
-    this.config.translations = {};
-    this.EXT_DB = [];
     this.callbacks = {
       translate: (text) => {
         return this.translate(text);
@@ -143,7 +141,6 @@ Module.register("MMM-Bugsounet", {
       sendSocketNotification: (...args) => this.sendSocketNotification(...args)
     };
     this.session = {};
-    this.config.EXT_DB = this.EXTs.Get_DB();
     this.sysInfo = new sysInfoPage(Tools);
     this.sysInfo.prepare();
   },

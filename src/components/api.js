@@ -34,9 +34,6 @@ class api {
 
     this.Api = {
       MMConfig: null, // real config file (config.js)
-      EXT: null, // EXT plugins list
-      EXTConfigured: [], // configured EXT in config
-      EXTInstalled: [], // installed EXT in MM
       EXTStatus: {}, // status of EXT
       EXTVersions: {},
       users: {},
@@ -46,7 +43,7 @@ class api {
       server: null,
       api: null,
       serverAPI: null,
-      translations: null, // V1 compatibility
+      translations: null,
       language: null,
       radio: null,
       freeTV: {},
@@ -57,7 +54,64 @@ class api {
       errorInit: false,
       listening: "127.0.0.1",
       APIDocs: false,
-      healthDownloader: null
+      healthDownloader: null,
+      Access: {
+        GET: {
+          "/api/version": 1, // ok
+          "/api/translations/common": 1, // ok
+          "/api/translations/group": 1, // ok
+          "/api/translations/translate": 1, // ok
+          "/api/translations/homeText": 1, // ok
+          "/api/system/sysInfo": 3, // ok
+          "/api/EXT/versions": 3, // ok
+          "/api/EXT/status": 2, // ok
+          "/api/config/MM": 10, // ok
+          "/api/backups": 2, // ok ~~
+          "/api/backups/file": 10, // ok
+          "/api/EXT/RadioPlayer": 5, // ok
+          "/api/EXT/Updates": 10, // ok
+          "/api/EXT/FreeboxTV": 5, // ok
+          "/api/databases/users/me": 1, // ok
+          "/api/databases/users/all": 9 // ok
+        },
+        PUT: {
+          "/api/databases/login": 10, // ok
+          "/api/databases/users/me": 1, // ok
+          "/api/databases/users/new": 9, // ok
+          "/api/databases/users/user": 9, // ok
+          "/api/config/MM": 10, // ok
+          "/api/EXT/Volume/speaker": 7, // ok
+          "/api/EXT/Updates": 10, // ok
+          "/api/EXT/Spotify/play": 6, // ok
+          "/api/EXT/Spotify/pause": 6, // ok
+          "/api/EXT/Spotify/toggle": 6, // ok
+          "/api/EXT/Spotify/stop": 6, // ok
+          "/api/EXT/Spotify/next": 6, // ok
+          "/api/EXT/Spotify/previous": 6, // ok
+          "/api/EXT/Screen": 4, // ok
+          "/api/EXT/FreeboxTV": 5, // ok
+          "/api/EXT/RadioPlayer": 5, // ok
+          "/api/backups/file": 10, // ok
+          "/api/backups/external": 10, // ok
+          "/api/MM": 9 // ok
+        },
+        POST: {
+          "/api/system/restart": 8, // ok
+          "/api/system/die": 8, // ok
+          "/api/system/reboot": 9, //ok
+          "/api/system/shutdown": 9, // ok
+          "/api/system/alert": 3, //ok
+          "/api/EXT/stop": 5, // ok
+          "/api/EXT/Assistant/send": 6, // ok
+          "/api/EXT/YouTube/search": 6, // ok
+          "/api/EXT/Spotify/search": 6, // ok
+          "/api/backups/external": 10 //ok
+        },
+        DELETE: {
+          "/api/backups": 10, //ok
+          "/api/databases/users/delete": 9 //ok
+        }
+      }
     };
     this.MMVersion = global.version;
     this.root_path = global.root_path;
@@ -100,14 +154,13 @@ class api {
     await this.MMConfigAddress();
 
     this.Api.language = this.Api.MMConfig.language;
-    this.Api.EXT = data.EXT_DB.sort();
 
     this.Api.freeTV = await this.readFreeTV();
     this.Api.radio = await this.readRadio();
 
-    this.Api.translations = await Translator.translations[this.Api.language]; // V1 "compatibility"
+    this.Api.translations = await Translator.translations[this.Api.language];
 
-    this.Api.systemInformation.lib = new systemInformation(this.Api.translations, this.Api.MMConfig.units);
+    this.Api.systemInformation.lib = new systemInformation(this.Api.MMConfig.units);
 
     console.log("[Bugsounet] [API] Init System informations...");
     this.Api.systemInformation.result = await this.Api.systemInformation.lib.initData();
@@ -138,14 +191,9 @@ class api {
     console.log("[Bugsounet] [API] Reading login Database...");
     await this.getLoginPrefs();
 
-    this.Api.EXTConfigured = this.searchConfigured();
-    this.Api.EXTInstalled = this.searchInstalled();
     this.Api.listening = await this.purposeIP();
     this.Api.APIDocs = data.useAPIDocs;
 
-    log("EXT plugins in database:", this.Api.EXT.length);
-    log("Find", this.Api.EXTInstalled.length, "installed plugins in MagicMirror");
-    log("Find", this.Api.EXTConfigured.length, "configured plugins in config file");
     log("Language set:", this.Api.language);
     log("Listening:", this.Api.listening);
     log("APIDocs:", this.Api.APIDocs);
@@ -343,18 +391,6 @@ class api {
 
       case "/api/EXT/versions":
         res.json(this.Api.EXTVersions);
-        break;
-
-      case "/api/EXT":
-        res.json(this.Api.EXT);
-        break;
-
-      case "/api/EXT/installed":
-        res.json(this.Api.EXTInstalled);
-        break;
-
-      case "/api/EXT/configured":
-        res.json(this.Api.EXTConfigured);
         break;
 
       case "/api/EXT/status":
@@ -1034,71 +1070,16 @@ class api {
   };
 
   userAccess = (req, res, next) => {
-    const Access = {
-      GET: {
-        "/api/version": 1,
-        "/api/translations/common": 1,
-        "/api/translations/group": 1,
-        "/api/translations/translate": 1,
-        "/api/translations/homeText": 1,
-        "/api/system/sysInfo": 3,
-        "/api/EXT/versions": 3,
-        "/api/EXT": 10,
-        "/api/EXT/installed": 10,
-        "/api/EXT/configured": 10,
-        "/api/EXT/status": 2,
-        "/api/config/MM": 10,
-        "/api/backups": 2,
-        "/api/backups/file": 10,
-        "/api/EXT/RadioPlayer": 10,
-        "/api/EXT/Updates": 10,
-        "/api/EXT/FreeboxTV": 10,
-        "/api/databases/users/me": 1,
-        "/api/databases/users/all": 10
-      },
-      PUT: {
-        "/api/databases/login": 10,
-        "/api/databases/users/me": 1,
-        "/api/databases/users/new": 10,
-        "/api/config/MM": 10,
-        "/api/EXT/Volume/speaker": 10,
-        "/api/EXT/Updates": 10,
-        "/api/EXT/Spotify/play": 10,
-        "/api/EXT/Spotify/pause": 10,
-        "/api/EXT/Spotify/toggle": 10,
-        "/api/EXT/Spotify/stop": 10,
-        "/api/EXT/Spotify/next": 10,
-        "/api/EXT/Spotify/previous": 10,
-        "/api/EXT/Screen": 10,
-        "/api/EXT/FreeboxTV": 10,
-        "/api/EXT/RadioPlayer": 10,
-        "/api/backups/file": 10,
-        "/api/backups/external": 10,
-        "/api/MM": 10
-      },
-      POST: {
-        "/api/system/restart": 10,
-        "/api/system/die": 10,
-        "/api/system/reboot": 10,
-        "/api/system/shutdown": 10,
-        "/api/system/alert": 10,
-        "/api/EXT/stop": 10,
-        "/api/EXT/Assistant/send": 10,
-        "/api/EXT/YouTube/search": 10,
-        "/api/EXT/Spotify/search": 10,
-        "/api/backups/external": 10
-      },
-      DELETE: {
-        "/api/backups": 10,
-        "/api/databases/users/delete": 10
-      }
-    };
+    var CheckAccess = this.Api.Access[req.method][req.url];
+    if (!CheckAccess) {
+      console.warn("[Bugsounet] [API] No Access rule found for", req.method, req.url);
+      CheckAccess = 10;
+    } else {
+      console.log("[Bugsounet] [API] CheckAccess --> Required:", CheckAccess, "-- User Level:", req.level);
+    }
 
-    const CheckAccess = Access[req.method][req.url] || 10;
-
-    console.log("CheckAccess --> Required:", CheckAccess, "-- User Level:", req.level);
     if (req.level >= CheckAccess) next();
-    else res.status(423).json({ error: "Insufficient access level" });
+    else res.status(423).json({ error: `Level ${CheckAccess} required` });
   };
 
   // encode rule
@@ -1169,37 +1150,6 @@ class api {
       }
       resolve(RadioResult);
     });
-  }
-
-  /** search installed EXT from DB**/
-  searchConfigured () {
-    try {
-      var Configured = [];
-      this.Api.MMConfig.modules.find((m) => {
-        if (m.module.startsWith("MMM-Bugsounet/EXTs/")) {
-          let plugin = m.module.split("MMM-Bugsounet/EXTs/")[1];
-          if (this.Api.EXT.includes(plugin)) Configured.push(plugin);
-        }
-      });
-      return Configured.sort();
-    } catch (e) {
-      console.error(`[Bugsounet] [API] Error! ${e}`);
-      return Configured.sort();
-    }
-  }
-
-  /** search installed EXT **/
-  searchInstalled () {
-    var Installed = [];
-    var ext = this.Api.EXT;
-    ext.find((m) => {
-      if (fs.existsSync(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/node_helper.js`)) {
-        let name = require(`${this.root_path}/modules/MMM-Bugsounet/EXTs/${m}/package.json`).name;
-        if (name === m) Installed.push(m);
-        else console.warn(`[Bugsounet] [API] Found: ${m} but in package.json name is not the same: ${name}`);
-      }
-    });
-    return Installed.sort();
   }
 
   /** timeStamp for backup **/
