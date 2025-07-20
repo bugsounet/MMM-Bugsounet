@@ -336,10 +336,6 @@ class api {
         res.json({ homeText: await this.getHomeText(homeTextLang) });
         break;
 
-      case "/api/system/currentSysInfo":
-        res.json(this.Api.systemInformation.result);
-        break;
-
       case "/api/system/sysInfo":
         this.Api.systemInformation.result = await this.Api.systemInformation.lib.Get();
         res.json(this.Api.systemInformation.result);
@@ -1045,7 +1041,6 @@ class api {
         "/api/translations/group": 1,
         "/api/translations/translate": 1,
         "/api/translations/homeText": 1,
-        "/api/system/currentSysInfo": 3,
         "/api/system/sysInfo": 3,
         "/api/EXT/versions": 3,
         "/api/EXT": 10,

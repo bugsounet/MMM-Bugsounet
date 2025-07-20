@@ -12,24 +12,24 @@ class systemInfo {
       VERSION: {
         Bugsounet: `${require("../package.json").version} (${require("../package.json").rev})`,
         MagicMirror: require("../../../package.json").version,
-        ELECTRON: "unknow",
-        NODECORE: "unknow",
-        NPM: "unknow",
-        KERNEL: "unknow",
-        OS: "Loading..."
+        ELECTRON: "...",
+        NODECORE: "...",
+        NPM: "...",
+        KERNEL: "...",
+        OS: "..."
       },
-      HOSTNAME: "unknow",
+      HOSTNAME: "...",
       NETWORK: {
-        type: "unknow",
-        ip: "unknow",
-        name: "unknow",
+        type: "...",
+        ip: "...",
+        name: "...",
         speed: null,
         duplex: "",
-        ssid: "unknow",
+        ssid: "...",
         frequency: undefined,
         signalLevel: -99,
         barLevel: 0,
-        interface: "unknow",
+        interface: "...",
         rate: undefined,
         quality: undefined
       },
@@ -44,25 +44,25 @@ class systemInfo {
       STORAGE: [],
       CPU: {
         usage: 0,
-        type: "unknow",
+        type: "...",
         temp: {
           imperial: (units === "imperial") ? true : false,
           C: 0,
           F: 0
         },
-        speed: "unknow",
-        governor: "unknow"
+        speed: "...",
+        governor: "..."
       },
       GPU: process.env.ELECTRON_ENABLE_GPU !== "1" ? false : true,
       UPTIME: {
         current: 0,
-        currentDHM: "unknow",
+        currentDHM: "...",
         recordCurrent: 0,
-        recordCurrentDHM: "unknow",
+        recordCurrentDHM: "...",
         MM: 0,
-        MMDHM: "unknow",
+        MMDHM: "...",
         recordMM: 0,
-        recordMMDHM: "unknow"
+        recordMMDHM: "..."
       },
       PROCESS: {
         nginx: {
@@ -102,7 +102,6 @@ class systemInfo {
       });
     });
     await this.getStaticData();
-    await this.getData();
     await this.getUptimeRecord();
     setInterval(async () => { await this.uptimed(); }, 5000);
     console.log("[Bugsounet] [SysInfo] Initialized");
