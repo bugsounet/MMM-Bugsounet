@@ -1340,43 +1340,6 @@ table.grid td {
 }
 
 /* Alerts */
-.alert {
-  position: relative;
-  padding: 0;
-  margin-bottom: 1rem;
-  border: none;
-  background-color: rgb(0 0 0 / 20%);
-  box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 7.5%);
-  border-radius: 0.25rem;
-}
-
-.alert .alert-icon {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-  width: 60px;
-  font-size: 20px;
-}
-
-.alert .alert-message {
-  display: table-cell;
-  padding: 20px 15px;
-  font-size: 14px;
-}
-
-.alert-dismissible .close {
-  position: absolute;
-  top: 8px;
-  right: 0;
-  font-weight: 300;
-  padding: 10px 15px;
-  color: inherit;
-}
-
-.alert .contrast-alert {
-  background-color: rgb(255 255 255 / 20%);
-}
-
 .alert-success {
   color: #fff;
   background-color: #02ba5a;
@@ -2567,6 +2530,10 @@ body.swal2-shown {
     opacity 0.3s ease-out 0.3s;
 }
 
+#loading-bar.is-error {
+  background-color: red;
+}
+
 .content-container {
   transition: opacity 0.3s ease-in-out;
 }
@@ -2613,4 +2580,8 @@ body.swal2-shown {
 
 #PasswordStrengthChecker[data-strength-check*="symbol"] .SymbolGrp {
   color: #04b962 !important;
+}
+
+.justify-self-center {
+  justify-self: center !important;
 }

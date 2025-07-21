@@ -547,13 +547,17 @@ async function doSystemPage () {
   let systemPage = document.getElementById("system-html");
   if (systemPage) {
     console.log("detected system page");
+    const loadingBar = document.getElementById("loading-bar");
     var SystemFirstScan = true;
     var EXTVersions = {};
     var system = {};
 
     const SystemTranslations = await getTranslateGroup(user.language, "System_");
+    loadingBar.style.width = "75%";
 
     system = await checkSystem();
+    loadingBar.style.width = "90%";
+
     do_System(() => {
       do_SystemStatic();
     });
