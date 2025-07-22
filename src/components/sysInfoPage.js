@@ -1,9 +1,8 @@
-/* global removeAnimateCSS, addAnimateCSS */
+/* global removeAnimateCSS, addAnimateCSS, Bugsounet_translate */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable-next-line */
 class sysInfoPage {
   constructor (Tools) {
-    this.translate = (...args) => Tools.translate(...args);
     this.sendSocketNotification = (...args) => Tools.sendSocketNotification(...args);
     this.sendNotification = (...args) => Tools.sendNotification(...args);
 
@@ -85,7 +84,7 @@ class sysInfoPage {
 
     var Hostname_value = document.createElement("div");
     Hostname_value.id = "BUGSOUNET-HOSTNAME_VALUE";
-    Hostname_value.textContent = this.translate("LOADING");
+    Hostname_value.textContent = Bugsounet_translate("LOADING");
     Hostname_container.appendChild(Hostname_value);
 
     var GPU_container = document.createElement("div");
@@ -120,7 +119,7 @@ class sysInfoPage {
 
     var Sysinfo_version_heading_value = document.createElement("div");
     Sysinfo_version_heading_value.id = "BUGSOUNET-SYSINFO_VERSION_HEADING_VALUE";
-    Sysinfo_version_heading_value.textContent = this.translate("System_Box_Version");
+    Sysinfo_version_heading_value.textContent = Bugsounet_translate("System_Box_Version");
     Sysinfo_version_heading.appendChild(Sysinfo_version_heading_value);
 
     var Sysinfo_version_list = document.createElement("div");
@@ -156,7 +155,7 @@ class sysInfoPage {
 
     var Node = document.createElement("div");
     Node.id = "BUGSOUNET-SYSINFO_VERSION-NODE";
-    Node.textContent = this.translate("System_NodeVersion");
+    Node.textContent = Bugsounet_translate("System_NodeVersion");
     Sysinfo_version_list.appendChild(Node);
     var Node_Value = document.createElement("div");
     Node_Value.id = "BUGSOUNET-SYSINFO_VERSION-NODE-VALUE";
@@ -165,7 +164,7 @@ class sysInfoPage {
 
     var NPM = document.createElement("div");
     NPM.id = "BUGSOUNET-SYSINFO_VERSION-NPM";
-    NPM.textContent = this.translate("System_NPMVersion");
+    NPM.textContent = Bugsounet_translate("System_NPMVersion");
     Sysinfo_version_list.appendChild(NPM);
     var NPM_Value = document.createElement("div");
     NPM_Value.id = "BUGSOUNET-SYSINFO_VERSION-NPM-VALUE";
@@ -174,7 +173,7 @@ class sysInfoPage {
 
     var OS = document.createElement("div");
     OS.id = "BUGSOUNET-SYSINFO_VERSION-OS";
-    OS.textContent = this.translate("System_OSVersion");
+    OS.textContent = Bugsounet_translate("System_OSVersion");
     Sysinfo_version_list.appendChild(OS);
     var OS_Value = document.createElement("div");
     OS_Value.id = "BUGSOUNET-SYSINFO_VERSION-OS-VALUE";
@@ -183,7 +182,7 @@ class sysInfoPage {
 
     var Kernel = document.createElement("div");
     Kernel.id = "BUGSOUNET-SYSINFO_VERSION-KERNEL";
-    Kernel.textContent = this.translate("System_KernelVersion");
+    Kernel.textContent = Bugsounet_translate("System_KernelVersion");
     Sysinfo_version_list.appendChild(Kernel);
     var Kernel_Value = document.createElement("div");
     Kernel_Value.id = "BUGSOUNET-SYSINFO_VERSION-KERNEL-VALUE";
@@ -205,7 +204,7 @@ class sysInfoPage {
 
     var Sysinfo_cpu_heading_value = document.createElement("div");
     Sysinfo_cpu_heading_value.id = "BUGSOUNET-SYSINFO_CPU_HEADING_VALUE";
-    Sysinfo_cpu_heading_value.textContent = this.translate("System_CPUSystem");
+    Sysinfo_cpu_heading_value.textContent = Bugsounet_translate("System_CPUSystem");
     Sysinfo_cpu_heading.appendChild(Sysinfo_cpu_heading_value);
 
     var Sysinfo_cpu_list = document.createElement("div");
@@ -214,7 +213,7 @@ class sysInfoPage {
 
     var Type = document.createElement("div");
     Type.id = "BUGSOUNET-SYSINFO_CPU-TYPE";
-    Type.textContent = this.translate("System_TypeCPU");
+    Type.textContent = Bugsounet_translate("System_TypeCPU");
     Sysinfo_cpu_list.appendChild(Type);
     var Type_Value = document.createElement("div");
     Type_Value.id = "BUGSOUNET-SYSINFO_CPU-TYPE-VALUE";
@@ -223,7 +222,7 @@ class sysInfoPage {
 
     var Speed = document.createElement("div");
     Speed.id = "BUGSOUNET-SYSINFO_CPU-SPEED";
-    Speed.textContent = this.translate("System_SpeedCPU");
+    Speed.textContent = Bugsounet_translate("System_SpeedCPU");
     Sysinfo_cpu_list.appendChild(Speed);
     var Speed_Value = document.createElement("div");
     Speed_Value.id = "BUGSOUNET-SYSINFO_CPU-SPEED-VALUE";
@@ -232,7 +231,7 @@ class sysInfoPage {
 
     var Usage = document.createElement("div");
     Usage.id = "BUGSOUNET-SYSINFO_CPU-USAGE";
-    Usage.textContent = this.translate("System_CurrentLoadCPU");
+    Usage.textContent = Bugsounet_translate("System_CurrentLoadCPU");
     Sysinfo_cpu_list.appendChild(Usage);
     var Usage_Progress = document.createElement("div");
     Usage_Progress.id = "BUGSOUNET-SYSINFO_CPU-USAGE-PROGRESS";
@@ -244,7 +243,7 @@ class sysInfoPage {
     Usage_Progress.appendChild(Usage_ProgressBar);
     var Governor = document.createElement("div");
     Governor.id = "BUGSOUNET-SYSINFO_CPU-GOVERNOR";
-    Governor.textContent = this.translate("System_GovernorCPU");
+    Governor.textContent = Bugsounet_translate("System_GovernorCPU");
     Sysinfo_cpu_list.appendChild(Governor);
     var Governor_Value = document.createElement("div");
     Governor_Value.id = "BUGSOUNET-SYSINFO_CPU-GOVERNOR-VALUE";
@@ -253,7 +252,7 @@ class sysInfoPage {
 
     var Temp = document.createElement("div");
     Temp.id = "BUGSOUNET-SYSINFO_CPU-TEMP";
-    Temp.textContent = this.translate("System_TempCPU");
+    Temp.textContent = Bugsounet_translate("System_TempCPU");
     Sysinfo_cpu_list.appendChild(Temp);
     var Temp_Progress = document.createElement("div");
     Temp_Progress.id = "BUGSOUNET-SYSINFO_CPU-TEMP-PROGRESS";
@@ -279,7 +278,7 @@ class sysInfoPage {
 
     var Sysinfo_memory_heading_value = document.createElement("div");
     Sysinfo_memory_heading_value.id = "BUGSOUNET-SYSINFO_MEMORY_HEADING_VALUE";
-    Sysinfo_memory_heading_value.textContent = this.translate("System_MemorySystem");
+    Sysinfo_memory_heading_value.textContent = Bugsounet_translate("System_MemorySystem");
     Sysinfo_memory_heading.appendChild(Sysinfo_memory_heading_value);
 
     var Sysinfo_memory_list = document.createElement("div");
@@ -288,7 +287,7 @@ class sysInfoPage {
 
     var Active = document.createElement("div");
     Active.id = "BUGSOUNET-SYSINFO_MEMORY-ACTIVE";
-    Active.textContent = this.translate("System_TypeMemory");
+    Active.textContent = Bugsounet_translate("System_TypeMemory");
     Sysinfo_memory_list.appendChild(Active);
 
     var Active_Progress = document.createElement("div");
@@ -307,7 +306,7 @@ class sysInfoPage {
 
     var Swap = document.createElement("div");
     Swap.id = "BUGSOUNET-SYSINFO_MEMORY-SWAP";
-    Swap.textContent = this.translate("System_SwapMemory");
+    Swap.textContent = Bugsounet_translate("System_SwapMemory");
     Sysinfo_memory_list.appendChild(Swap);
 
     var Swap_Progress = document.createElement("div");
@@ -339,7 +338,7 @@ class sysInfoPage {
 
     var Sysinfo_storage_heading_value = document.createElement("div");
     Sysinfo_storage_heading_value.id = "BUGSOUNET-SYSINFO_STORAGE_VALUE";
-    Sysinfo_storage_heading_value.textContent = this.translate("System_StorageSystem");
+    Sysinfo_storage_heading_value.textContent = Bugsounet_translate("System_StorageSystem");
     Sysinfo_storage_heading.appendChild(Sysinfo_storage_heading_value);
 
     var Sysinfo_storage_list = document.createElement("div");
@@ -356,22 +355,22 @@ class sysInfoPage {
 
     var Sysinfo_storage_table_mount = document.createElement("th");
     Sysinfo_storage_table_mount.id = "BUGSOUNET-SYSINFO_STORAGE_TABLE_MOUNT";
-    Sysinfo_storage_table_mount.textContent = this.translate("System_MountStorage");
+    Sysinfo_storage_table_mount.textContent = Bugsounet_translate("System_MountStorage");
     Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_mount);
 
     var Sysinfo_storage_table_used = document.createElement("th");
     Sysinfo_storage_table_used.id = "BUGSOUNET-SYSINFO_STORAGE_TABLE_USED";
-    Sysinfo_storage_table_used.textContent = this.translate("System_UsedStorage");
+    Sysinfo_storage_table_used.textContent = Bugsounet_translate("System_UsedStorage");
     Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_used);
 
     var Sysinfo_storage_table_percent = document.createElement("th");
     Sysinfo_storage_table_percent.id = "BUGSOUNET-SYSINFO_STORAGE_TABLE_PERCENT";
-    Sysinfo_storage_table_percent.textContent = this.translate("System_PercentStorage");
+    Sysinfo_storage_table_percent.textContent = Bugsounet_translate("System_PercentStorage");
     Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_percent);
 
     var Sysinfo_storage_table_total = document.createElement("th");
     Sysinfo_storage_table_total.id = "BUGSOUNET-SYSINFO_STORAGE_TABLE_TOTAL";
-    Sysinfo_storage_table_total.textContent = this.translate("System_TotalStorage");
+    Sysinfo_storage_table_total.textContent = Bugsounet_translate("System_TotalStorage");
     Sysinfo_storage_table_header.appendChild(Sysinfo_storage_table_total);
 
     /** Network **/
@@ -410,7 +409,7 @@ class sysInfoPage {
 
     var Sysinfo_network_heading_value = document.createElement("div");
     Sysinfo_network_heading_value.id = "BUGSOUNET-SYSINFO_NETWORK_HEADING_VALUE";
-    Sysinfo_network_heading_value.textContent = this.translate("System_NetworkSystem");
+    Sysinfo_network_heading_value.textContent = Bugsounet_translate("System_NetworkSystem");
     Sysinfo_network_heading.appendChild(Sysinfo_network_heading_value);
 
     var Sysinfo_network_list = document.createElement("div");
@@ -419,7 +418,7 @@ class sysInfoPage {
 
     var IP = document.createElement("div");
     IP.id = "BUGSOUNET-SYSINFO_NETWORK-IP";
-    IP.textContent = this.translate("System_IPNetwork");
+    IP.textContent = Bugsounet_translate("System_IPNetwork");
     Sysinfo_network_list.appendChild(IP);
     var IP_Value = document.createElement("div");
     IP_Value.id = "BUGSOUNET-SYSINFO_NETWORK-IP-VALUE";
@@ -428,7 +427,7 @@ class sysInfoPage {
 
     var Interface = document.createElement("div");
     Interface.id = "BUGSOUNET-SYSINFO_NETWORK-INTERFACE";
-    Interface.textContent = this.translate("System_InterfaceNetwork");
+    Interface.textContent = Bugsounet_translate("System_InterfaceNetwork");
     Sysinfo_network_list.appendChild(Interface);
     var Interface_Value = document.createElement("div");
     Interface_Value.id = "BUGSOUNET-SYSINFO_NETWORK-INTERFACE-VALUE";
@@ -437,12 +436,12 @@ class sysInfoPage {
 
     var Information = document.createElement("div");
     Information.id = "BUGSOUNET-SYSINFO_NETWORK_INFORMATION";
-    Information.textContent = this.translate("System_WirelessInfo");
+    Information.textContent = Bugsounet_translate("System_WirelessInfo");
     Sysinfo_network_list.appendChild(Information);
 
     var networkSpeed = document.createElement("div");
     networkSpeed.id = "BUGSOUNET-SYSINFO_NETWORK-SPEED";
-    networkSpeed.textContent = this.translate("System_SpeedNetwork");
+    networkSpeed.textContent = Bugsounet_translate("System_SpeedNetwork");
     Sysinfo_network_list.appendChild(networkSpeed);
     var networkSpeed_Value = document.createElement("div");
     networkSpeed_Value.id = "BUGSOUNET-SYSINFO_NETWORK-SPEED-VALUE";
@@ -451,7 +450,7 @@ class sysInfoPage {
 
     var Duplex = document.createElement("div");
     Duplex.id = "BUGSOUNET-SYSINFO_NETWORK-DUPLEX";
-    Duplex.textContent = this.translate("System_DuplexNetwork");
+    Duplex.textContent = Bugsounet_translate("System_DuplexNetwork");
     Sysinfo_network_list.appendChild(Duplex);
     var Duplex_Value = document.createElement("div");
     Duplex_Value.id = "BUGSOUNET-SYSINFO_NETWORK-DUPLEX-VALUE";
@@ -460,7 +459,7 @@ class sysInfoPage {
 
     var SSID = document.createElement("div");
     SSID.id = "BUGSOUNET-SYSINFO_NETWORK-SSID";
-    SSID.textContent = this.translate("System_SSIDNetwork");
+    SSID.textContent = Bugsounet_translate("System_SSIDNetwork");
     Sysinfo_network_list.appendChild(SSID);
     var SSID_Value = document.createElement("div");
     SSID_Value.id = "BUGSOUNET-SYSINFO_NETWORK-SSID-VALUE";
@@ -469,7 +468,7 @@ class sysInfoPage {
 
     var bitRate = document.createElement("div");
     bitRate.id = "BUGSOUNET-SYSINFO_NETWORK-RATE";
-    bitRate.textContent = this.translate("System_RateNetwork");
+    bitRate.textContent = Bugsounet_translate("System_RateNetwork");
     Sysinfo_network_list.appendChild(bitRate);
     var bitRate_Value = document.createElement("div");
     bitRate_Value.id = "BUGSOUNET-SYSINFO_NETWORK-RATE-VALUE";
@@ -478,7 +477,7 @@ class sysInfoPage {
 
     var frequency = document.createElement("div");
     frequency.id = "BUGSOUNET-SYSINFO_NETWORK-FREQUENCY";
-    frequency.textContent = this.translate("System_FrequencyNetwork");
+    frequency.textContent = Bugsounet_translate("System_FrequencyNetwork");
     Sysinfo_network_list.appendChild(frequency);
     var frequency_Value = document.createElement("div");
     frequency_Value.id = "BUGSOUNET-SYSINFO_NETWORK-FREQUENCY-VALUE";
@@ -487,7 +486,7 @@ class sysInfoPage {
 
     var quality = document.createElement("div");
     quality.id = "BUGSOUNET-SYSINFO_NETWORK-QUALITY";
-    quality.textContent = this.translate("System_QualityNetwork");
+    quality.textContent = Bugsounet_translate("System_QualityNetwork");
     Sysinfo_network_list.appendChild(quality);
     var quality_Value = document.createElement("div");
     quality_Value.id = "BUGSOUNET-SYSINFO_NETWORK-QUALITY-VALUE";
@@ -496,7 +495,7 @@ class sysInfoPage {
 
     var Signal = document.createElement("div");
     Signal.id = "BUGSOUNET-SYSINFO_NETWORK-SIGNAL";
-    Signal.textContent = this.translate("System_SignalNetwork");
+    Signal.textContent = Bugsounet_translate("System_SignalNetwork");
     Sysinfo_network_list.appendChild(Signal);
     var Signal_Value = document.createElement("div");
     Signal_Value.id = "BUGSOUNET-SYSINFO_NETWORK-SIGNAL-VALUE";
@@ -518,7 +517,7 @@ class sysInfoPage {
 
     var Sysinfo_uptimes_heading_value = document.createElement("div");
     Sysinfo_uptimes_heading_value.id = "BUGSOUNET-SYSINFO_MEMORY_UPTIMES_VALUE";
-    Sysinfo_uptimes_heading_value.textContent = this.translate("System_UptimeSystem");
+    Sysinfo_uptimes_heading_value.textContent = Bugsounet_translate("System_UptimeSystem");
     Sysinfo_uptimes_heading.appendChild(Sysinfo_uptimes_heading_value);
 
     var Sysinfo_uptimes_list = document.createElement("div");
@@ -527,12 +526,12 @@ class sysInfoPage {
 
     var Sysinfo_uptime_current = document.createElement("div");
     Sysinfo_uptime_current.id = "BUGSOUNET-SYSINFO_UPTIMES_CURRENT";
-    Sysinfo_uptime_current.textContent = this.translate("System_CurrentUptime");
+    Sysinfo_uptime_current.textContent = Bugsounet_translate("System_CurrentUptime");
     Sysinfo_uptimes_list.appendChild(Sysinfo_uptime_current);
 
     var Sysinfo_uptime_current_system = document.createElement("div");
     Sysinfo_uptime_current_system.id = "BUGSOUNET-SYSINFO_UPTIMES_CURRENT_SYSTEM";
-    Sysinfo_uptime_current_system.textContent = this.translate("System_System");
+    Sysinfo_uptime_current_system.textContent = Bugsounet_translate("System_System");
     Sysinfo_uptimes_list.appendChild(Sysinfo_uptime_current_system);
 
     var Sysinfo_uptime_current_system_value = document.createElement("div");
@@ -552,12 +551,12 @@ class sysInfoPage {
 
     var Sysinfo_uptime_record = document.createElement("div");
     Sysinfo_uptime_record.id = "BUGSOUNET-SYSINFO_UPTIMES_RECORD";
-    Sysinfo_uptime_record.textContent = this.translate("System_RecordUptime");
+    Sysinfo_uptime_record.textContent = Bugsounet_translate("System_RecordUptime");
     Sysinfo_uptimes_list.appendChild(Sysinfo_uptime_record);
 
     var Sysinfo_uptime_record_system = document.createElement("div");
     Sysinfo_uptime_record_system.id = "BUGSOUNET-SYSINFO_UPTIMES_RECORD_SYSTEM";
-    Sysinfo_uptime_record_system.textContent = this.translate("System_System");
+    Sysinfo_uptime_record_system.textContent = Bugsounet_translate("System_System");
     Sysinfo_uptimes_list.appendChild(Sysinfo_uptime_record_system);
 
     var Sysinfo_uptime_record_system_value = document.createElement("div");
@@ -634,7 +633,7 @@ class sysInfoPage {
     /* GPU */
     var GPU_value = document.getElementById("BUGSOUNET-GPU_VALUE");
     let animateGPUWarn = ["animate__animated", "animate__flash", "animate__infinite"];
-    GPU_value.textContent = this.System.GPU ? this.translate("System_GPUAcceleration_Enabled") : this.translate("System_GPUAcceleration_Disabled");
+    GPU_value.textContent = this.System.GPU ? Bugsounet_translate("System_GPUAcceleration_Enabled") : Bugsounet_translate("System_GPUAcceleration_Disabled");
     if (this.System.GPU) {
       GPU_value.classList.remove(...animateGPUWarn);
       GPU_value.classList.remove("red");

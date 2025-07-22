@@ -1,7 +1,7 @@
-/* global logBugsounet Swal */
+/* global logBugsounet Swal Bugsounet_translate */
 /* eslint-disable-next-line */
 class AlertCommander {
-  constructor (Tools) {
+  constructor () {
     this.alerts = {
       displayed: false,
       buffer: []
@@ -36,7 +36,6 @@ class AlertCommander {
     this.sound = new Audio();
     this.sound.autoplay = true;
     this.warningTimeout = null;
-    this.translate = (...args) => Tools.translate(...args);
     console.log("[Bugsounet] AlertCommander Ready");
   }
 
@@ -136,7 +135,7 @@ class AlertCommander {
       options.backdrop = true;
       options.width = "32em";
       options.position = "center";
-      options.title = this.translate("AlertError");
+      options.title = Bugsounet_translate("AlertError");
       options.imageUrl = alert.info.icon || undefined;
       options.imageWidth = 100;
       options.customClass.timerProgressBar = "AlertProgressColorError";

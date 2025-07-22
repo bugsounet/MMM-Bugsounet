@@ -4,9 +4,14 @@
  * ©2025
  */
 
-/* global AlertCommander, EXTs, sysInfoPage */
+/* global AlertCommander, EXTs, sysInfoPage, Translator */
 
 var logBugsounet = () => { /* do nothing */ };
+
+/*  Bugsounet's global translator */
+function Bugsounet_translate (...args) {
+  return Translator.translate({ name: "MMM-Bugsounet" }, ...args);
+}
 
 Module.register("MMM-Bugsounet", {
   requiresVersion: "2.31.0",
@@ -19,12 +24,7 @@ Module.register("MMM-Bugsounet", {
   start () {
     if (this.config.debug) logBugsounet = (...args) => { console.log("[Bugsounet]", ...args); };
     this.ready = false;
-    this.callbacks = {
-      translate: (text) => {
-        return this.translate(text);
-      }
-    };
-    this.AlertCommander = new AlertCommander(this.callbacks);
+    this.AlertCommander = new AlertCommander();
     this.sendSocketNotification("PRE-INIT");
   },
 
@@ -78,7 +78,7 @@ Module.register("MMM-Bugsounet", {
         break;
       case "ERROR":
         this.sendAlert({
-          message: this.translate(payload),
+          message: Bugsounet_translate(payload),
           type: "error"
         }, "MMM-Bugsounet");
         break;
@@ -104,7 +104,6 @@ Module.register("MMM-Bugsounet", {
 
   async EXT_Config () {
     const Tools = {
-      translate: (...args) => this.translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
       sendSocketNotification: (...args) => this.sendSocketNotification(...args),
       socketNotificationReceived: (...args) => this.socketNotificationReceived(...args),
@@ -136,7 +135,7 @@ Module.register("MMM-Bugsounet", {
 
   async websiteInit () {
     const Tools = {
-      translate: (...args) => this.translate(...args),
+      translate: (...args) => Bugsounet_translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
       sendSocketNotification: (...args) => this.sendSocketNotification(...args)
     };
@@ -151,32 +150,32 @@ Module.register("MMM-Bugsounet", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "sysinfo",
-      description: this.translate("TB_SYSINFO_DESCRIPTION"),
+      description: Bugsounet_translate("TB_SYSINFO_DESCRIPTION"),
       callback: "cmd_sysinfo"
     });
     commander.add({
       command: "stop",
-      description: this.translate("Tools_Stop_Text"),
+      description: Bugsounet_translate("Tools_Stop_Text"),
       callback: "tbStopEXT"
     });
     commander.add({
       command: "reboot",
-      description: this.translate("System_Box_Restart"),
+      description: Bugsounet_translate("System_Box_Restart"),
       callback: "tbReboot"
     });
     commander.add({
       command: "shutdown",
-      description: this.translate("System_Box_Shutdown"),
+      description: Bugsounet_translate("System_Box_Shutdown"),
       callback: "tbShutdown"
     });
     commander.add({
       command: "close",
-      description: this.translate("Tools_Die"),
+      description: `MagicMirror²: ${Bugsounet_translate("System_Shutdown")}`,
       callback: "tbClose"
     });
     commander.add({
       command: "restart",
-      description: this.translate("Tools_Restart"),
+      description: `MagicMirror²: ${Bugsounet_translate("System_Restart")}`,
       callback: "tbRestart"
     });
   },
@@ -212,58 +211,58 @@ Module.register("MMM-Bugsounet", {
     var text = "";
     text += `*${result["HOSTNAME"]}*\n\n`;
     // version
-    text += `*-- ${this.translate("System_Box_Version")} --*\n`;
+    text += `*-- ${Bugsounet_translate("System_Box_Version")} --*\n`;
     text += "*" + `MMM-Bugsounet:* \`${result["VERSION"]["Bugsounet"]}\`\n`;
     text += "*" + `MagicMirror²:* \`${result["VERSION"]["MagicMirror"]}\`\n`;
     text += "*" + `Electron:* \`${result["VERSION"]["ELECTRON"]}\`\n`;
-    text += `*${this.translate("System_NodeVersion")}* \`${result["VERSION"]["NODECORE"]}\`\n`;
-    text += `*${this.translate("System_NPMVersion")}* \`${result["VERSION"]["NPM"]}\`\n`;
-    text += `*${this.translate("System_OSVersion")}* \`${result["VERSION"]["OS"]}\`\n`;
-    text += `*${this.translate("System_KernelVersion")}* \`${result["VERSION"]["KERNEL"]}\`\n`;
+    text += `*${Bugsounet_translate("System_NodeVersion")}* \`${result["VERSION"]["NODECORE"]}\`\n`;
+    text += `*${Bugsounet_translate("System_NPMVersion")}* \`${result["VERSION"]["NPM"]}\`\n`;
+    text += `*${Bugsounet_translate("System_OSVersion")}* \`${result["VERSION"]["OS"]}\`\n`;
+    text += `*${Bugsounet_translate("System_KernelVersion")}* \`${result["VERSION"]["KERNEL"]}\`\n`;
     // GPU
     text += "*-- GPU --*\n";
-    let GPU_INFO = result.GPU ? this.translate("System_GPUAcceleration_Enabled") : (`WARN: ${this.translate("System_GPUAcceleration_Disabled")}`);
+    let GPU_INFO = result.GPU ? Bugsounet_translate("System_GPUAcceleration_Enabled") : (`WARN: ${Bugsounet_translate("System_GPUAcceleration_Disabled")}`);
     text += `*${GPU_INFO}*\n`;
     // CPU
-    text += `*-- ${this.translate("System_CPUSystem")} --*\n`;
-    text += `*${this.translate("System_TypeCPU")}* \`${result["CPU"]["type"]}\`\n`;
-    text += `*${this.translate("System_SpeedCPU")}* \`${result["CPU"]["speed"]}\`\n`;
-    text += `*${this.translate("System_CurrentLoadCPU")}* \`${result["CPU"]["usage"]}%\`\n`;
-    text += `*${this.translate("System_GovernorCPU")}* \`${result["CPU"]["governor"]}\`\n`;
-    text += `*${this.translate("System_TempCPU")}* \`${config.units === "metric" ? result["CPU"]["temp"]["C"] : result["CPU"]["temp"]["F"]}°\`\n`;
+    text += `*-- ${Bugsounet_translate("System_CPUSystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_TypeCPU")}* \`${result["CPU"]["type"]}\`\n`;
+    text += `*${Bugsounet_translate("System_SpeedCPU")}* \`${result["CPU"]["speed"]}\`\n`;
+    text += `*${Bugsounet_translate("System_CurrentLoadCPU")}* \`${result["CPU"]["usage"]}%\`\n`;
+    text += `*${Bugsounet_translate("System_GovernorCPU")}* \`${result["CPU"]["governor"]}\`\n`;
+    text += `*${Bugsounet_translate("System_TempCPU")}* \`${config.units === "metric" ? result["CPU"]["temp"]["C"] : result["CPU"]["temp"]["F"]}°\`\n`;
     // memory
-    text += `*-- ${this.translate("System_MemorySystem")} --*\n`;
-    text += `*${this.translate("System_TypeMemory")}* \`${result["MEMORY"]["used"]} / ${result["MEMORY"]["total"]} (${result["MEMORY"]["percent"]}%)\`\n`;
-    text += `*${this.translate("System_SwapMemory")}* \`${result["MEMORY"]["swapUsed"]} / ${result["MEMORY"]["swapTotal"]} (${result["MEMORY"]["swapPercent"]}%)\`\n`;
+    text += `*-- ${Bugsounet_translate("System_MemorySystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_TypeMemory")}* \`${result["MEMORY"]["used"]} / ${result["MEMORY"]["total"]} (${result["MEMORY"]["percent"]}%)\`\n`;
+    text += `*${Bugsounet_translate("System_SwapMemory")}* \`${result["MEMORY"]["swapUsed"]} / ${result["MEMORY"]["swapTotal"]} (${result["MEMORY"]["swapPercent"]}%)\`\n`;
     // network
-    text += `*-- ${this.translate("System_NetworkSystem")} --*\n`;
-    text += `*${this.translate("System_IPNetwork")}* \`${result["NETWORK"]["ip"]}\`\n`;
-    text += `*${this.translate("System_InterfaceNetwork")}* \`${result["NETWORK"]["name"]} (${result["NETWORK"]["type"] === "wired" ? this.translate("TB_SYSINFO_ETHERNET") : this.translate("TB_SYSINFO_WLAN")})\`\n`;
+    text += `*-- ${Bugsounet_translate("System_NetworkSystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_IPNetwork")}* \`${result["NETWORK"]["ip"]}\`\n`;
+    text += `*${Bugsounet_translate("System_InterfaceNetwork")}* \`${result["NETWORK"]["name"]} (${result["NETWORK"]["type"] === "wired" ? Bugsounet_translate("TB_SYSINFO_ETHERNET") : Bugsounet_translate("TB_SYSINFO_WLAN")})\`\n`;
     if (result["NETWORK"]["type"] === "wired") {
-      text += `*${this.translate("System_SpeedNetwork")}* \`${result["NETWORK"]["speed"]} Mbit/s\`\n`;
-      text += `*${this.translate("System_DuplexNetwork")}* \`${result["NETWORK"]["duplex"]}\`\n`;
+      text += `*${Bugsounet_translate("System_SpeedNetwork")}* \`${result["NETWORK"]["speed"]} Mbit/s\`\n`;
+      text += `*${Bugsounet_translate("System_DuplexNetwork")}* \`${result["NETWORK"]["duplex"]}\`\n`;
     } else {
-      text += `*${this.translate("System_WirelessInfo")}:*\n`;
-      text += `*  ${this.translate("System_SSIDNetwork")}* \`${result["NETWORK"]["ssid"]}\`\n`;
-      text += `*  ${this.translate("System_FrequencyNetwork")}* \`${result["NETWORK"]["frequency"]} GHz\`\n`;
-      text += `*  ${this.translate("System_RateNetwork")}* \`${result["NETWORK"]["rate"]}\`\n`;
-      text += `*  ${this.translate("System_QualityNetwork")}* \`${result["NETWORK"]["quality"]}\`\n`;
-      text += `*  ${this.translate("System_SignalNetwork")}* \`${result["NETWORK"]["signalLevel"]} dBm (${result["NETWORK"]["barLevel"]})\`\n`;
+      text += `*${Bugsounet_translate("System_WirelessInfo")}:*\n`;
+      text += `*  ${Bugsounet_translate("System_SSIDNetwork")}* \`${result["NETWORK"]["ssid"]}\`\n`;
+      text += `*  ${Bugsounet_translate("System_FrequencyNetwork")}* \`${result["NETWORK"]["frequency"]} GHz\`\n`;
+      text += `*  ${Bugsounet_translate("System_RateNetwork")}* \`${result["NETWORK"]["rate"]}\`\n`;
+      text += `*  ${Bugsounet_translate("System_QualityNetwork")}* \`${result["NETWORK"]["quality"]}\`\n`;
+      text += `*  ${Bugsounet_translate("System_SignalNetwork")}* \`${result["NETWORK"]["signalLevel"]} dBm (${result["NETWORK"]["barLevel"]})\`\n`;
     }
     // storage
-    text += `*-- ${this.translate("System_StorageSystem")} --*\n`;
+    text += `*-- ${Bugsounet_translate("System_StorageSystem")} --*\n`;
     result["STORAGE"].forEach((partition) => {
       for (let [name, values] of Object.entries(partition)) {
-        text += `*${this.translate("System_MountStorage")} ${name}:* \`${values.used} / ${values.size} (${values.use}%)\`\n`;
+        text += `*${Bugsounet_translate("System_MountStorage")} ${name}:* \`${values.used} / ${values.size} (${values.use}%)\`\n`;
       }
     });
     // uptimes
-    text += `*-- ${this.translate("System_UptimeSystem")} --*\n`;
-    text += `*${this.translate("System_CurrentUptime")}:*\n`;
-    text += `*  ${this.translate("System_System")}* \`${result["UPTIME"]["currentDHM"]}\`\n`;
+    text += `*-- ${Bugsounet_translate("System_UptimeSystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_CurrentUptime")}:*\n`;
+    text += `*  ${Bugsounet_translate("System_System")}* \`${result["UPTIME"]["currentDHM"]}\`\n`;
     text += `*  MagicMirror²:* \`${result["UPTIME"]["MMDHM"]}\`\n`;
-    text += `*${this.translate("System_RecordUptime")}:*\n`;
-    text += `*  ${this.translate("System_System")}* \`${result["UPTIME"]["recordCurrentDHM"]}\`\n`;
+    text += `*${Bugsounet_translate("System_RecordUptime")}:*\n`;
+    text += `*  ${Bugsounet_translate("System_System")}* \`${result["UPTIME"]["recordCurrentDHM"]}\`\n`;
     text += `*  MagicMirror²:* \`${result["UPTIME"]["recordMMDHM"]}\`\n`;
 
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
@@ -272,27 +271,27 @@ Module.register("MMM-Bugsounet", {
 
   tbReboot (command, handler) {
     this.sendSocketNotification("REBOOT");
-    handler.reply("TEXT", this.translate("RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbShutdown (command, handler) {
     this.sendSocketNotification("SHUTDOWN");
-    handler.reply("TEXT", this.translate("RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbClose (command, handler) {
     this.sendSocketNotification("CLOSE");
-    handler.reply("TEXT", this.translate("RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbRestart (command, handler) {
     this.sendSocketNotification("RESTART");
-    handler.reply("TEXT", this.translate("RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbStopEXT (command, handler) {
     this.EXTs.ActionsEXTs("Bugsounet_STOP", undefined, { sender: { name: "MMM-Bugsounet" } });
     this.sendNotification("Bugsounet_STOP");
-    handler.reply("TEXT", this.translate("RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   }
 });
