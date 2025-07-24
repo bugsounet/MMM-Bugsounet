@@ -3,6 +3,8 @@
  ** @bugsounet
  **/
 
+/* global Bugsounet_translate */
+
 Module.register("EXT-YouTubeCast", {
   defaults: {
     debug: false,
@@ -23,22 +25,6 @@ Module.register("EXT-YouTubeCast", {
 
   getStyles () {
     return ["EXT-YouTubeCast.css"];
-  },
-
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      ko: "translations/ko.json",
-      el: "translations/el.json",
-      "zh-cn": "translations/zh-cn.json",
-      tr: "translations/tr.json"
-    };
   },
 
   getDom () {
@@ -91,7 +77,7 @@ Module.register("EXT-YouTubeCast", {
       case "CAST_START":
         this.sendNotification("Bugsounet_ALERT", {
           type: "information",
-          message: this.translate("CastStart"),
+          message: Bugsounet_translate("EXT-YouTubeCast_Start"),
           icon: this.file("resources/cast-icon.png")
         });
         this.broadcastStatus("START");
@@ -100,7 +86,7 @@ Module.register("EXT-YouTubeCast", {
       case "CAST_STOP":
         this.sendNotification("Bugsounet_ALERT", {
           type: "information",
-          message: this.translate("CastStop"),
+          message: Bugsounet_translate("EXT-YouTubeCast_Stop"),
           icon: this.file("resources/cast-icon.png")
         });
         this.broadcastStatus("END");
