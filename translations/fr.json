@@ -213,5 +213,8 @@
   "Tools_Assistant_Text": "Active Google Assistant avec votre demande",
   "Tools_Assistant_Query": "Entrez votre demande",
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
-  "Tools_YouTube_Query": "Entrez votre recherche sur YouTube"
+  "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
+
+  "EXT-YouTubeCast_Start": "Démarrage de YouTube-Cast",
+  "EXT-YouTubeCast_Stop": "Fin de YouTube-Cast"
 }

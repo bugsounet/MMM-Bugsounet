@@ -95,5 +95,8 @@
   "GW_TurnOn": "Accendi",
   "GW_TurnOff": "Spegni",
   "GW_RequestDone": "Richiesta Inviata con successo",
-  "GW_Listen": "Ascolta"
+  "GW_Listen": "Ascolta",
+
+  "EXT-YouTubeCast_Start": "Start Casting YouTube",
+  "EXT-YouTubeCast_Stop": "Stop Casting YouTube"
 }

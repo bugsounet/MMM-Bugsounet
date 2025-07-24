@@ -97,5 +97,8 @@
   "GW_TurnOff": "Apagar",
   "GW_RequestDone": "La petición fue enviada correctamente",
   "GW_Listen": "Escuchando",
-  "GW_Update": "Disponible una actualización"
+  "GW_Update": "Disponible una actualización",
+
+  "EXT-YouTubeCast_Start": "Iniciar Emisión de YouTube",
+  "EXT-YouTubeCast_Stop": "Detener Emisión de YouTube"
 }

@@ -158,5 +158,8 @@
 
   "TB_SYSINFO_DESCRIPTION": "Zeige Systeminformationen.",
   "TB_SYSINFO_ETHERNET": "Ethernet",
-  "TB_SYSINFO_WLAN": "WLAN"
+  "TB_SYSINFO_WLAN": "WLAN",
+
+  "EXT-YouTubeCast_Start": "Starte YouTube-Casting.",
+  "EXT-YouTubeCast_Stop": "Beende YouTube-Casting."
 }

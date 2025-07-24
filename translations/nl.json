@@ -157,5 +157,8 @@
   "GW_RequestDone": "Uw verzoek is met succesvol verzonden",
   "GW_Listen": "Luister",
   "GW_Update": "Update beschikbaar",
-  "GW_Start": "Start"
+  "GW_Start": "Start",
+
+  "EXT-YouTubeCast_Start": "Begin met het casten van YouTube",
+  "EXT-YouTubeCast_Stop": "Stop met het casten van YouTube"
 }

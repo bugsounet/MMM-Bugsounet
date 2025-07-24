@@ -156,5 +156,8 @@
   "GW_RequestDone": "İstek başarıyla gönderildi",
   "GW_Listen": "Dinle",
   "GW_Update": "Güncelleme uygun",
-  "GW_Start": "Başlangıç"
+  "GW_Start": "Başlangıç",
+
+  "EXT-YouTubeCast_Start": "YouTube'u Yayınlamaya Başlayın",
+  "EXT-YouTubeCast_Stop": "YouTube Yayınını Durdur"
 }
