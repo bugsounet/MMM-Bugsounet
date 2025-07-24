@@ -320,7 +320,7 @@ Module.register("EXT-YouTube", {
       }
     } else {
       if (!this.config.password) handler.reply("TEXT", "This module is reserved to Donators of @bugsounet's modules\nIf you need password: Ask to @bugsounet to create it\nFreeDays youtube playing is every month from 01 to 07.", { parse_mode: "Markdown" });
-      handler.reply("TEXT", Bugsounet_translate("EXT-YouTube_Help") + (this.searchInit ? Bugsounet_translate("YouTubeSearchHelp") : ""), { parse_mode: "Markdown" });
+      handler.reply("TEXT", Bugsounet_translate("EXT-YouTube_Help") + (this.searchInit ? Bugsounet_translate("EXT-YouTube_SearchHelp") : ""), { parse_mode: "Markdown" });
     }
   }
 });
