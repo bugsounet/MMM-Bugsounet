@@ -215,6 +215,11 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-VLCServer_NotInstalled": "VLC n'est pas installé ou n'a pas été trouvé!",
+  "EXT-VLCServer_Close": "Le Serveur HTTP de VLC est Fermé!",
+  "EXT-VLCServer_Error": "VLC Retourne une erreur: {VALUES}",
+  "EXT-VLCServer_ErrorPacket": "VLC a retourné une error!",
+
   "EXT-Volume_RecordPresetError": "Record: Erreur de Preset !",
   "EXT-Volume_VolumePresetError": "Volume: Erreur de Preset !",
   "EXT-Volume_Text": "Volume:",
