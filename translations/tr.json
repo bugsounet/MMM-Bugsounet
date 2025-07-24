@@ -158,6 +158,12 @@
   "GW_Update": "Güncelleme uygun",
   "GW_Start": "Başlangıç",
 
+  "EXT-Volume_RecordPresetError": "Record: Ön Ayar Hatası!",
+  "EXT-Volume_VolumePresetError": "Ses: Ön Ayar Hatası!",
+  "EXT-Volume_Text": "Ses:",
+  "EXT-Volume_Help": "Cihazınızın ses seviyesini ayarlayın",
+  "EXT-Volume_Disabled": "Ses Kontrolü devre dışı",
+
   "EXT-YouTube_Description": "YouTube Oynatıcı Kontrolü",
   "EXT-YouTube_Play": "YouTube şu video kimliğini oynatacak: {VALUES}",
   "EXT-YouTube_Search": "YouTube şunu arayacak: {VALUES}",

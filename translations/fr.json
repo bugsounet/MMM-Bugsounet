@@ -215,6 +215,12 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-Volume_RecordPresetError": "Record: Erreur de Preset !",
+  "EXT-Volume_VolumePresetError": "Volume: Erreur de Preset !",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "Défini le volume sonore",
+  "EXT-Volume_Disabled": "Le contrôle du volume est désactivé",
+
   "EXT-YouTube_Description": "Contrôle du lecteur YouTube",
   "EXT-YouTube_Play": "YouTube va démarrer la lecture de la video ID: {VALUES}",
   "EXT-YouTube_Search": "YouTube va rechercher: {VALUES}",

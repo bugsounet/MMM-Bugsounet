@@ -1,4 +1,10 @@
 {
+  "EXT-Volume_RecordPresetError": "Record: Preset Error!",
+  "EXT-Volume_VolumePresetError": "Volume: Preset Error!",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "Definir o volume",
+  "EXT-Volume_Disabled": "Controlo de volume desactivado",
+
   "EXT-YouTubeCast_Start": "A começar a transmissão do YouTube",
   "EXT-YouTubeCast_Stop": "A parar a transmissão YouTube"
 }

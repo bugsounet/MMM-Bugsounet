@@ -159,6 +159,12 @@
   "GW_Update": "Update beschikbaar",
   "GW_Start": "Start",
 
+  "EXT-Volume_RecordPresetError": "Record: vooraf ingestelde fout!",
+  "EXT-Volume_VolumePresetError": "Volume: vooraf ingestelde fout!",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "Stel het volume van uw apparaat in",
+  "EXT-Volume_Disabled": "Volumeregeling is uitgeschakeld",
+
   "EXT-YouTube_Description": "YouTube spelerbediening",
   "EXT-YouTube_Play": "YouTube zal de video afspelen ID: {VALUES}",
   "EXT-YouTube_Search": "YouTube gaat op zoek: {VALUES}",

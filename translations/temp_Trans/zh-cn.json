@@ -1,4 +1,10 @@
 {
+  "EXT-Volume_RecordPresetError": "Record：预设错误！",
+  "EXT-Volume_VolumePresetError": "音量：预设错误！",
+  "EXT-Volume_Text": "音量:",
+  "EXT-Volume_Help": "设置你的设备音量",
+  "EXT-Volume_Disabled": "音量控制已禁用",
+
   "EXT-YouTubeCast_Start": "开始投射 YouTube",
   "EXT-YouTubeCast_Stop": "停止投射 YouTube"
 }

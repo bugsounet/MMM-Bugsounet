@@ -160,6 +160,12 @@
   "TB_SYSINFO_ETHERNET": "Ethernet",
   "TB_SYSINFO_WLAN": "WLAN",
 
+  "EXT-Volume_RecordPresetError": "Record: Einstellungsfehler!",
+  "EXT-Volume_VolumePresetError": "Lautstärke: Einstellungsfehler!",
+  "EXT-Volume_Text": "Lautstärke:",
+  "EXT-Volume_Help": "Stellt die Lautstärke der Audioausgabe ein.",
+  "EXT-Volume_Disabled": "Lautstärkeregelung ist deaktiviert",
+
   "EXT-YouTube_Description": "Steuerung des YouTube-Players",
   "EXT-YouTube_Play": "YouTube spielt das Video mit der ID: {VALUES}",
   "EXT-YouTube_Search": "YouTube sucht: {VALUES}",

@@ -3,7 +3,7 @@
  ** @bugsounet
  **/
 
-/* global VolumeDisplayer */
+/* global VolumeDisplayer Bugsounet_translate */
 
 Module.register("EXT-Volume", {
   defaults: {
@@ -21,7 +21,7 @@ Module.register("EXT-Volume", {
     this.currentLevel = {};
     this.oldLevel = {};
     this.ready = false;
-    this.VolumeDiplayer = new VolumeDisplayer(this.translate("VolumeText"));
+    this.VolumeDiplayer = new VolumeDisplayer(Bugsounet_translate("EXT-Volume_Text"));
   },
 
   getScripts () {
@@ -33,22 +33,6 @@ Module.register("EXT-Volume", {
       "EXT-Volume.css",
       "modules/MMM-Bugsounet/node_modules/@mdi/font/css/materialdesignicons.min.css"
     ];
-  },
-
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      ko: "translations/ko.json",
-      el: "translations/el.json",
-      "zh-cn": "translations/zh-cn.json",
-      tr: "translations/tr.json"
-    };
   },
 
   getDom () {
@@ -121,7 +105,7 @@ Module.register("EXT-Volume", {
         this.oldLevel = payload;
         break;
       case "WARNING":
-        this.sendNotification("Bugsounet_ALERT", { type: "warning", message: this.translate(payload) });
+        this.sendNotification("Bugsounet_ALERT", { type: "warning", message: Bugsounet_translate(payload) });
     }
   },
 
@@ -132,7 +116,7 @@ Module.register("EXT-Volume", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "volume",
-      description: this.translate("VolumeHelp"),
+      description: Bugsounet_translate("EXT-Volume_Help"),
       callback: "tbVolume"
     });
     commander.add({

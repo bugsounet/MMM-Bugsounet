@@ -215,6 +215,12 @@
   "Tools_YouTube_Text": "Play a YouTube video",
   "Tools_YouTube_Query": "Enter your YouTube search",
 
+  "EXT-Volume_RecordPresetError": "Record: Preset Error!",
+  "EXT-Volume_VolumePresetError": "Volume: Preset Error!",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "Set the volume of your device",
+  "EXT-Volume_Disabled": "Volume Control is disabled",
+
   "EXT-YouTube_Description": "YouTube Player Control",
   "EXT-YouTube_Play": "YouTube will playing video ID: {VALUES}",
   "EXT-YouTube_Search": "YouTube will search: {VALUES}",

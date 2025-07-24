@@ -99,6 +99,12 @@
   "GW_Listen": "Escuchando",
   "GW_Update": "Disponible una actualización",
 
+  "EXT-Volume_RecordPresetError": "Record: Error de preselección!",
+  "EXT-Volume_VolumePresetError": "Volumen: Error de preselección!",
+  "EXT-Volume_Text": "Volumen:",
+  "EXT-Volume_Help": "Ajusta el volumen de tu aparato",
+  "EXT-Volume_Disabled": "Control de volumen desactivado",
+
   "EXT-YouTubeCast_Start": "Iniciar Emisión de YouTube",
   "EXT-YouTubeCast_Stop": "Detener Emisión de YouTube"
 }

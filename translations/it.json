@@ -97,6 +97,12 @@
   "GW_RequestDone": "Richiesta Inviata con successo",
   "GW_Listen": "Ascolta",
 
+  "EXT-Volume_RecordPresetError": "Record: Preset Error!",
+  "EXT-Volume_VolumePresetError": "Volume: Preset Error!",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "Imposta il volume del tuo dispositivo",
+  "EXT-Volume_Disabled": "Volume Control è disabilitato",
+
   "EXT-YouTubeCast_Start": "Start Casting YouTube",
   "EXT-YouTubeCast_Stop": "Stop Casting YouTube"
 }

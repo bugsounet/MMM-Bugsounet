@@ -1,4 +1,10 @@
 {
+  "EXT-Volume_RecordPresetError": "Record: 사전 설정 오류!",
+  "EXT-Volume_VolumePresetError": "Volume: 사전 설정 오류!",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "장치 볼륨 설정",
+  "EXT-Volume_Disabled": "Volume 컨트롤에 문제가 생겼습니다.",
+
   "EXT-YouTubeCast_Start": "유튜브 재생을 시작합니다",
   "EXT-YouTubeCast_Stop": "유튜브 재생을 중지합니다"
 }
