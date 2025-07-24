@@ -9,7 +9,7 @@ var fs = require("fs");
 var path = require("path");
 var EventEmitter = require("events").EventEmitter;
 
-const BASE_URL = "https://api.netatmo.net";
+const BASE_URL = "https://api.netatmo.com";
 
 var client_id;
 var client_secret;
