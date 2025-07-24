@@ -158,6 +158,18 @@
   "GW_Update": "Güncelleme uygun",
   "GW_Start": "Başlangıç",
 
+  "EXT-YouTube_Description": "YouTube Oynatıcı Kontrolü",
+  "EXT-YouTube_Play": "YouTube şu video kimliğini oynatacak: {VALUES}",
+  "EXT-YouTube_Search": "YouTube şunu arayacak: {VALUES}",
+  "EXT-YouTube_CmdNotFound": "Komut bulunamadı, yardıma mı ihtiyacınız var? /youtube'u dene",
+  "EXT-YouTube_Help": "/youtube komutu için Yardıma mı ihtiyacınız var?\n\n *play*: Youtube kimliğinden video oynatmaya başlayın\n",
+  "EXT-YouTube_SearchHelp": " *arama*: Bir Başlık/Sanatçı videosunu arayın ve oynatın\n",
+  "EXT-YouTube_SearchDisabled": "YouTube arama işlevi devre dışı bırakıldı.",
+  "EXT-YouTube_IsPlaying": "Oynatılıyor: {VALUES}",
+  "EXT-YouTube_PasswordMissing": "Şifre eksik!",
+  "EXT-YouTube_LibraryError": "[FATAL] Yükleme sırasında hata oluştu: {VALUES} kitaplık",
+  "EXT-YouTube_FoundError": "YouTube Arama bazı hatalar döndürüyor!",
+
   "EXT-YouTubeCast_Start": "YouTube'u Yayınlamaya Başlayın",
   "EXT-YouTubeCast_Stop": "YouTube Yayınını Durdur"
 }

@@ -159,6 +159,18 @@
   "GW_Update": "Update beschikbaar",
   "GW_Start": "Start",
 
+  "EXT-YouTube_Description": "YouTube spelerbediening",
+  "EXT-YouTube_Play": "YouTube zal de video afspelen ID: {VALUES}",
+  "EXT-YouTube_Search": "YouTube gaat op zoek: {VALUES}",
+  "EXT-YouTube_CmdNotFound": "Commando niet gevonden, hulp nodig ? probeer /youtube",
+  "EXT-YouTube_Help": "Hulp nodig voor /youtube commando ?\n\n  *speel*: Begin met het afspelen van video vanaf Youtube ID\n",
+  "EXT-YouTube_SearchHelp": "  *zoek*: zoek en speel een Titel/Artist video\n",
+  "EXT-YouTube_SearchDisabled": "YouTube zoekfunctie is uitgeschakeld.",
+  "EXT-YouTube_IsPlaying": "Speelt: {VALUES}",
+  "EXT-YouTube_PasswordMissing": "Wachtwoord ontbreekt!",
+  "EXT-YouTube_LibraryError": "[FATAL] Fout bij het laden: {VALUES} library",
+  "EXT-YouTube_FoundError": "YouTube zoekopdracht retourneert enkele fouten!",
+
   "EXT-YouTubeCast_Start": "Begin met het casten van YouTube",
   "EXT-YouTubeCast_Stop": "Stop met het casten van YouTube"
 }

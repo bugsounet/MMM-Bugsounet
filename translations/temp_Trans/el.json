@@ -1,4 +1,16 @@
 {
+  "EXT-YouTube_Description": "YouTube Player Control",
+  "EXT-YouTube_Play": "Αναπαραγωγή YouTube : {VALUES}",
+  "EXT-YouTube_Search": "YouTube will search: {VALUES}",
+  "EXT-YouTube_CmdNotFound": "Command not found, need help ? try /youtube",
+  "EXT-YouTube_Help": "Need Help for /youtube command ?\n\n  *play*: Start playing video from Youtube ID\n",
+  "EXT-YouTube_SearchHelp": "  *search*: Search and play a Title/Artist video\n",
+  "EXT-YouTube_SearchDisabled": "YouTube search functionality is disabled.",
+  "EXT-YouTube_IsPlaying": "Playing: {VALUES}",
+  "EXT-YouTube_PasswordMissing": "Password missing!",
+  "EXT-YouTube_LibraryError": "[FATAL] Error when loading: {VALUES} library",
+  "EXT-YouTube_FoundError": "YouTube Search return some errors!",
+
   "EXT-YouTubeCast_Start": "Έναρξη Μετάδοσης YouTube",
   "EXT-YouTubeCast_Stop": "Λήξη μετάδοσης YouTube"
 }

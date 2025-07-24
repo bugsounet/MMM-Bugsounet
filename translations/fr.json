@@ -215,6 +215,18 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-YouTube_Description": "Contrôle du lecteur YouTube",
+  "EXT-YouTube_Play": "YouTube va démarrer la lecture de la video ID: {VALUES}",
+  "EXT-YouTube_Search": "YouTube va rechercher: {VALUES}",
+  "EXT-YouTube_CmdNotFound": "Commande non trouvée, besoin d'aide ? Essayez /youtube",
+  "EXT-YouTube_Help": "Besoin d'aide pour la commande /youtube ?\n\n  *play*: Démarre la lecture de la vidéo YouTube selon l'ID demandé\n",
+  "EXT-YouTube_SearchHelp": "  *search*: Recherche et démarre la lecture de la video Youtube selon votre recherche (titre/artiste)\n",
+  "EXT-YouTube_SearchDisabled": "La fonctionnalitée de recherche sur YouTube est désactivée.",
+  "EXT-YouTube_IsPlaying": "Lecture: {VALUES}",
+  "EXT-YouTube_PasswordMissing": "Password manquant!",
+  "EXT-YouTube_LibraryError": "[FATAL] Erreur de chargement de la librairie: {VALUES}",
+  "EXT-YouTube_FoundError": "La recherche YouTube retourne des erreurs.",
+
   "EXT-YouTubeCast_Start": "Démarrage de YouTube-Cast",
   "EXT-YouTubeCast_Stop": "Fin de YouTube-Cast"
 }

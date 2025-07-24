@@ -2,6 +2,8 @@
 // Module : EXT-YouTube v2
 // @bugsounet 04/2025
 
+/* global Bugsounet_translate */
+
 var logYT = () => { /* do nothing */ };
 
 Module.register("EXT-YouTube", {
@@ -44,7 +46,7 @@ Module.register("EXT-YouTube", {
       if (!this.config.password) {
         this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
-          message: this.translate("YouTubePasswordMissing"),
+          message: Bugsounet_translate("EXT-YouTube_PasswordMissing"),
           icon: this.file("resources/YT.png")
         });
       }
@@ -65,7 +67,7 @@ Module.register("EXT-YouTube", {
         if (!this.searchInit) {
           this.sendNotification("Bugsounet_ALERT", {
             type: "error",
-            message: this.translate("YouTubeSearchDisabled"),
+            message: Bugsounet_translate("EXT-YouTube_SearchDisabled"),
             icon: this.file("resources/YT.png")
           });
           return console.error("Search function is disabled!");
@@ -93,7 +95,7 @@ Module.register("EXT-YouTube", {
         if (this.config.fullscreen && this.config.displayHeader) {
           this.sendNotification("Bugsounet_ALERT", {
             type: "information",
-            message: this.translate("YouTubeIsPlaying", { VALUES: payload.title }),
+            message: Bugsounet_translate("EXT-YouTube_IsPlaying", { VALUES: payload.title }),
             icon: payload.thumbnail.url,
             timer: 6000,
             sound: this.file("resources/YT-Launch.mp3")
@@ -103,7 +105,7 @@ Module.register("EXT-YouTube", {
       case "YT_LIBRARY_ERROR":
         this.sendNotification("Bugsounet_ALERT", {
           type: "error",
-          message: this.translate("YouTubeLibraryError", { VALUES: payload }),
+          message: Bugsounet_translate("EXT-YouTube_LibraryError", { VALUES: payload }),
           icon: this.file("resources/YT.png"),
           timer: 10000
         });
@@ -111,7 +113,7 @@ Module.register("EXT-YouTube", {
       case "YT_SEARCH_ERROR":
         this.sendNotification("Bugsounet_ALERT", {
           type: "error",
-          message: this.translate("YouTubeFoundError"),
+          message: Bugsounet_translate("EXT-YouTube_FoundError"),
           icon: this.file("resources/YT.png"),
           timer: 5000
         });
@@ -161,17 +163,6 @@ Module.register("EXT-YouTube", {
     return [this.file("EXT-YouTube.css")];
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      el: "translations/el.json",
-      nl: "translations/nl.json",
-      tr: "translations/tr.json",
-      de: "translations/de.json"
-    };
-  },
-
   Rules (payload) {
     logYT("Received:", payload);
     const tag = payload.split(" ");
@@ -191,7 +182,7 @@ Module.register("EXT-YouTube", {
           break;
         case "Title:":
           this.YT.title = tag.slice(2).join(" ");
-          if (this.config.fullscreen && this.config.displayHeader) console.log("[YT]", this.translate("YouTubeIsPlaying", { VALUES: this.YT.title }));
+          if (this.config.fullscreen && this.config.displayHeader) console.log("[YT]", Bugsounet_translate("EXT-YouTube_IsPlaying", { VALUES: this.YT.title }));
           if (this.YT.title && !this.config.fullscreen && this.config.displayHeader) {
             let YTHeader = document.getElementById(this.identifier).getElementsByClassName("module-header")[0];
             YTHeader.innerText = this.YT.title;
@@ -297,7 +288,7 @@ Module.register("EXT-YouTube", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "youtube",
-      description: this.translate("YouTubeDescription"),
+      description: Bugsounet_translate("EXT-YouTube_Description"),
       callback: "tbYoutube"
     });
   },
@@ -312,24 +303,24 @@ Module.register("EXT-YouTube", {
           if (params) {
             params = params.split(" ");
             this.notificationReceived("Bugsounet_YOUTUBE-PLAY", params[0]);
-            handler.reply("TEXT", this.translate("YouTubePlay", { VALUES: params[0] }));
+            handler.reply("TEXT", Bugsounet_translate("EXT-YouTube_Play", { VALUES: params[0] }));
           } else handler.reply("TEXT", "/youtube play <video ID>");
           break;
         case "search":
-          if (!this.searchInit) return handler.reply("TEXT", this.translate("YouTubeSearchDisabled"));
+          if (!this.searchInit) return handler.reply("TEXT", Bugsounet_translate("EXT-YouTube_SearchDisabled"));
           if (params) {
             this.notificationReceived("Bugsounet_YOUTUBE-SEARCH", params);
-            handler.reply("TEXT", this.translate("YouTubeSearch", { VALUES: params }));
+            handler.reply("TEXT", Bugsounet_translate("EXT-YouTube_Search", { VALUES: params }));
           }
           else handler.reply("TEXT", "/youtube search <youtube title/artist>");
           break;
         default:
-          handler.reply("TEXT", this.translate("YouTubeCmdNotFound"));
+          handler.reply("TEXT", Bugsounet_translate("EXT-YouTube_CmdNotFound"));
           break;
       }
     } else {
       if (!this.config.password) handler.reply("TEXT", "This module is reserved to Donators of @bugsounet's modules\nIf you need password: Ask to @bugsounet to create it\nFreeDays youtube playing is every month from 01 to 07.", { parse_mode: "Markdown" });
-      handler.reply("TEXT", this.translate("YouTubeHelp") + (this.searchInit ? this.translate("YouTubeSearchHelp") : ""), { parse_mode: "Markdown" });
+      handler.reply("TEXT", Bugsounet_translate("EXT-YouTube_Help") + (this.searchInit ? Bugsounet_translate("YouTubeSearchHelp") : ""), { parse_mode: "Markdown" });
     }
   }
 });

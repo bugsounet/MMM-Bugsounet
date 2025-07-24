@@ -160,6 +160,18 @@
   "TB_SYSINFO_ETHERNET": "Ethernet",
   "TB_SYSINFO_WLAN": "WLAN",
 
+  "EXT-YouTube_Description": "Steuerung des YouTube-Players",
+  "EXT-YouTube_Play": "YouTube spielt das Video mit der ID: {VALUES}",
+  "EXT-YouTube_Search": "YouTube sucht: {VALUES}",
+  "EXT-YouTube_CmdNotFound": "Befehl nicht gefunden. Für Hilfe probiere /youtube",
+  "EXT-YouTube_Help": "Hilfe für /youtube Befehl?\n\n  *play*: Starte Video mit YouTube-ID\n",
+  "EXT-YouTube_SearchHelp": "  *search*: Sucht und spielt einen Titel bzw. ein Video\n",
+  "EXT-YouTube_SearchDisabled": "YouTube-Suche ist deaktiviert.",
+  "EXT-YouTube_IsPlaying": "Spiele: {VALUES}",
+  "EXT-YouTube_PasswordMissing": "Passwort fehlt!",
+  "EXT-YouTube_LibraryError": "[FATAL] Fehler beim Laden der Bibliothek: {VALUES}",
+  "EXT-YouTube_FoundError": "YouTube-Suche meldet Fehler!",
+
   "EXT-YouTubeCast_Start": "Starte YouTube-Casting.",
   "EXT-YouTubeCast_Stop": "Beende YouTube-Casting."
 }
