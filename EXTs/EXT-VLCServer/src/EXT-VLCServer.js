@@ -17,13 +17,6 @@ Module.register("EXT-VLCServer", {
     return dom;
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json"
-    };
-  },
-
   notificationReceived (noti, payload, sender) {
     switch (noti) {
       case "Bugsounet_READY":
