@@ -2,6 +2,8 @@
  * EXT-Updates
  */
 
+/* global Bugsounet_translate */
+
 Module.register("EXT-Updates", {
   defaults: {
     debug: false,
@@ -53,26 +55,26 @@ Module.register("EXT-Updates", {
         break;
       case "WELCOME":
         if (this.config.welcome) {
-          this.sendAlert(this.translate("ALERT_WELCOMEPID", { PID: payload.PID }), 5 * 1000, "information");
-          this.sendAdmin(this.translate("TB_WELCOMEPID", { PID: payload.PID }));
+          this.sendAlert(Bugsounet_translate("EXT-Updates_ALERT_WELCOMEPID", { PID: payload.PID }), 5 * 1000, "information");
+          this.sendAdmin(Bugsounet_translate("EXT-Updates_TB_WELCOMEPID", { PID: payload.PID }));
         }
         break;
       case "UPDATED":
         this.updating = false;
-        this.sendAlert(this.translate("UPDATE_DONE", { MODULE_NAME: payload }), 5 * 1000, "success");
-        this.sendAdmin(this.translate("UPDATE_DONE", { MODULE_NAME: payload }));
+        this.sendAlert(Bugsounet_translate("EXT-Updates_UPDATE_DONE", { MODULE_NAME: payload }), 5 * 1000, "success");
+        this.sendAdmin(Bugsounet_translate("EXT-Updates_UPDATE_DONE", { MODULE_NAME: payload }));
         break;
       case "RESTART":
         this.sendNotification("Bugsounet_Restart");
         break;
       case "NEEDRESTART":
-        this.sendAlert(this.translate("NEEDRESTART"), 5 * 1000, "warning");
-        this.sendAdmin(this.translate("NEEDRESTART"));
+        this.sendAlert(Bugsounet_translate("EXT-Updates_NEEDRESTART"), 5 * 1000, "warning");
+        this.sendAdmin(Bugsounet_translate("EXT-Updates_NEEDRESTART"));
         this.sendNotification("SCAN_UPDATES");
         break;
       case "ERROR_UPDATE":
-        this.sendAlert(this.translate("ALERT_UPDATE_ERROR", { MODULE_NAME: payload }), 5 * 1000, "error");
-        this.sendAdmin(this.translate("TB_UPDATE_ERROR", { MODULE_NAME: payload }));
+        this.sendAlert(Bugsounet_translate("EXT-Updates_ALERT_UPDATE_ERROR", { MODULE_NAME: payload }), 5 * 1000, "error");
+        this.sendAdmin(Bugsounet_translate("EXT-Updates_TB_UPDATE_ERROR", { MODULE_NAME: payload }));
         break;
       case "SendInfo":
         this.sendAdmin(payload, true);
@@ -141,47 +143,35 @@ Module.register("EXT-Updates", {
     return wrapper;
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      tr: "translations/tr.json"
-    };
-  },
-
   /** Update from Telegram **/
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "update",
-      description: this.translate("HELP_UPDATE"),
+      description: Bugsounet_translate("EXT-Updates_HELP_UPDATE"),
       callback: "Update"
     });
     commander.add({
       command: "scan",
-      description: this.translate("HELP_SCAN"),
+      description: Bugsounet_translate("EXT-Updates_HELP_SCAN"),
       callback: "Scan"
     });
   },
 
   /** TelegramBot Commands **/
   Scan (command, handler) {
-    if (!this.init) return handler.reply("TEXT", this.translate("INIT_INPROGRESS"));
+    if (!this.init) return handler.reply("TEXT", Bugsounet_translate("EXT-Updates_INIT_INPROGRESS"));
     clearTimeout(this.scanTimer);
-    handler.reply("TEXT", this.translate("UPDATE_SCAN"));
+    handler.reply("TEXT", Bugsounet_translate("EXT-Updates_UPDATE_SCAN"));
     this.sendNotification("Bugsounet_SCREEN-FORCE_WAKEUP");
     this.sendNotification("SCAN_UPDATES");
     this.scanTimer = setTimeout(() => {
-      handler.reply("TEXT", this.translate("NOUPDATE_TB"));
+      handler.reply("TEXT", Bugsounet_translate("EXT-Updates_NOUPDATE_TB"));
     }, 60000);
   },
 
   Update (command, handler) {
-    if (!this.init) return handler.reply("TEXT", this.translate("INIT_INPROGRESS"));
-    if (this.updating) return handler.reply("TEXT", this.translate("UPDATE_INPROGRESS"));
+    if (!this.init) return handler.reply("TEXT", Bugsounet_translate("EXT-Updates_INIT_INPROGRESS"));
+    if (this.updating) return handler.reply("TEXT", Bugsounet_translate("EXT-Updates_UPDATE_INPROGRESS"));
     if (handler.args) {
       var found = false;
 
@@ -193,10 +183,10 @@ Module.register("EXT-Updates", {
             if (this.moduleList[name].canBeUpdated) {
               found = true;
               this.updating = true;
-              handler.reply("TEXT", this.translate("UPDATING", { MODULE_NAME: name }));
+              handler.reply("TEXT", Bugsounet_translate("EXT-Updates_UPDATING", { MODULE_NAME: name }));
               return this.updateProcess(name);
             } else {
-              handler.reply("TEXT", this.translate("NOTAVAILABLE", { MODULE_NAME: name }));
+              handler.reply("TEXT", Bugsounet_translate("EXT-Updates_NOTAVAILABLE", { MODULE_NAME: name }));
               return;
             }
           }
@@ -204,9 +194,9 @@ Module.register("EXT-Updates", {
       }
       if (!found) {
         if (this.modulesName.indexOf(handler.args) > 0) {
-          handler.reply("TEXT", this.translate("NOUPDATE_TB", { MODULE_NAME: handler.args }));
+          handler.reply("TEXT", Bugsounet_translate("EXT-Updates_NOUPDATE_TB", { MODULE_NAME: handler.args }));
         }
-        else handler.reply("TEXT", this.translate("MODULENOTFOUND", { MODULE_NAME: handler.args }));
+        else handler.reply("TEXT", Bugsounet_translate("EXT-Updates_MODULENOTFOUND", { MODULE_NAME: handler.args }));
       }
     } else {
 
@@ -223,14 +213,14 @@ Module.register("EXT-Updates", {
         }
       }
       if (manualUpdateTxt) {
-        finalUpdateTxt = `${this.translate("UPDATE_MANUAL") + manualUpdateTxt}\n`;
+        finalUpdateTxt = `${Bugsounet_translate("EXT-Updates_UPDATE_MANUAL") + manualUpdateTxt}\n`;
       }
       if (autoUpdateTxt) {
         autoUpdateTxt += `\n${this.translate("UPDATE_HELPTB")}`;
-        finalUpdateTxt += this.translate("UPDATE_AUTO") + autoUpdateTxt;
+        finalUpdateTxt += Bugsounet_translate("EXT-Updates_UPDATE_AUTO") + autoUpdateTxt;
       }
       if (finalUpdateTxt) handler.reply("TEXT", finalUpdateTxt, { parse_mode: "Markdown" });
-      else handler.reply("TEXT", this.translate("NOUPDATE_TB"), { parse_mode: "Markdown" });
+      else handler.reply("TEXT", Bugsounet_translate("EXT-Updates_NOUPDATE_TB"), { parse_mode: "Markdown" });
     }
   },
 
