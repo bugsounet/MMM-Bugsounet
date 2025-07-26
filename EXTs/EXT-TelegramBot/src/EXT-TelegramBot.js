@@ -4,7 +4,7 @@
  * By eouia & @bugsounet
  */
 
-/* global TelegramBotCommandRegister, TelegramBotMessageHandler TelegramBotExtraChars */
+/* global TelegramBotCommandRegister, TelegramBotMessageHandler TelegramBotExtraChars Bugsounet_translate */
 
 Module.register("EXT-TelegramBot", {
   defaults: {
@@ -44,12 +44,12 @@ Module.register("EXT-TelegramBot", {
     this.askSession = new Set();
     this.commonSession = new Map();
     this.config.text = {
-      "EXT-TELBOT_HELPER_ERROR": this.translate("EXT-TELBOT_HELPER_ERROR"),
-      "EXT-TELBOT_HELPER_NOT_ALLOWED": this.translate("EXT-TELBOT_HELPER_NOT_ALLOWED"),
-      "EXT-TELBOT_HELPER_RESTART": this.translate("EXT-TELBOT_HELPER_RESTART"),
-      "EXT-TELBOT_HELPER_WAKEUP": this.translate("EXT-TELBOT_HELPER_WAKEUP"),
-      "EXT-TELBOT_HELPER_MSG_COMING": this.translate("EXT-TELBOT_HELPER_MSG_COMING"),
-      "EXT-TELBOT_HELPER_SERVED": this.translate("EXT-TELBOT_HELP_SERVED", { module: "TelegramBot Service" })
+      "EXT-TELBOT_HELPER_ERROR": Bugsounet_translate("EXT-TelegramBot_HELPER_ERROR"),
+      "EXT-TELBOT_HELPER_NOT_ALLOWED": Bugsounet_translate("EXT-TelegramBot_HELPER_NOT_ALLOWED"),
+      "EXT-TELBOT_HELPER_RESTART": Bugsounet_translate("EXT-TelegramBot_HELPER_RESTART"),
+      "EXT-TELBOT_HELPER_WAKEUP": Bugsounet_translate("EXT-TelegramBot_HELPER_WAKEUP"),
+      "EXT-TELBOT_HELPER_MSG_COMING": Bugsounet_translate("EXT-TelegramBot_HELPER_MSG_COMING"),
+      "EXT-TELBOT_HELPER_SERVED": Bugsounet_translate("EXT-TelegramBot_HELP_SERVED", { module: "TelegramBot Service" })
     };
     this.config = configMerge({}, this.defaults, this.config);
 
@@ -64,19 +64,6 @@ Module.register("EXT-TelegramBot", {
       this.sound = new Audio();
       this.sound.autoplay = true;
     }
-  },
-
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      de: "translations/de.json",
-      id: "translations/id.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      es: "translations/es.json",
-      "zh-cn": "translations/zh-cn.json",
-      tr: "translations/tr.json"
-    };
   },
 
   getStyles () {
@@ -166,7 +153,7 @@ Module.register("EXT-TelegramBot", {
           r = {
             chat_id: null,
             type: "TEXT",
-            text: `${payload}\n${this.translate("EXT-TELBOT_HELP_SERVED", { module: sender.name })}`,
+            text: `${payload}\n${Bugsounet_translate("EXT-TelegramBot_HELP_SERVED", { module: sender.name })}`,
             option: { parse_mode: "Markdown" }
           };
           this.adminSay(r);
@@ -183,92 +170,92 @@ Module.register("EXT-TelegramBot", {
       {
         command: "help",
         callback: "TELBOT_help",
-        description: this.translate("EXT-TELBOT_HELP"),
+        description: Bugsounet_translate("EXT-TelegramBot_HELP"),
         args_pattern: [/^[^\s]+/],
         args_mapping: ["command"]
       },
       {
         command: "commands",
-        description: this.translate("EXT-TELBOT_COMMANDS"),
+        description: Bugsounet_translate("EXT-TelegramBot_COMMANDS"),
         callback: "TELBOT_list_commands"
       },
       {
         command: "modules",
-        description: this.translate("EXT-TELBOT_MODULES"),
+        description: Bugsounet_translate("EXT-TelegramBot_MODULES"),
         callback: "TELBOT_list_modules"
       },
       {
         command: "mychatid",
-        description: this.translate("EXT-TELBOT_MYCHATID"),
+        description: Bugsounet_translate("EXT-TelegramBot_MYCHATID"),
         callback: "TELBOT_mychatid"
       },
       {
         command: "allowed",
-        description: this.translate("EXT-TELBOT_ALLOWED"),
+        description: Bugsounet_translate("EXT-TelegramBot_ALLOWED"),
         callback: "TELBOT_allowed"
       },
       {
         command: "allowuser",
-        description: this.translate("EXT-TELBOT_ALLOWUSER"),
+        description: Bugsounet_translate("EXT-TelegramBot_ALLOWUSER"),
         callback: "TELBOT_allowuser",
         args_pattern: [/^[^\s]+/],
         args_mapping: ["username"]
       },
       {
         command: "hideall",
-        description: this.translate("EXT-TELBOT_HIDEALL"),
+        description: Bugsounet_translate("EXT-TelegramBot_HIDEALL"),
         callback: "TELBOT_hideall"
       },
       {
         command: "showall",
-        description: this.translate("EXT-TELBOT_SHOWALL"),
+        description: Bugsounet_translate("EXT-TelegramBot_SHOWALL"),
         callback: "TELBOT_showall"
       },
       {
         command: "hide",
-        description: this.translate("EXT-TELBOT_HIDE"),
+        description: Bugsounet_translate("EXT-TelegramBot_HIDE"),
         callback: "TELBOT_hide"
       },
       {
         command: "show",
-        description: this.translate("EXT-TELBOT_SHOW"),
+        description: Bugsounet_translate("EXT-TelegramBot_SHOW"),
         callback: "TELBOT_show"
       },
       {
         command: "favor",
         callback: "TELBOT_favor",
-        description: this.translate("EXT-TELBOT_FAVOR")
+        description: Bugsounet_translate("EXT-TelegramBot_FAVOR")
       },
       {
         command: "recent",
         callback: "TELBOT_recent",
-        description: this.translate("EXT-TELBOT_RECENT")
+        description: Bugsounet_translate("EXT-TelegramBot_RECENT")
       },
       {
         command: "resetkeyboard",
         callback: "TELBOT_reset_keyboard",
-        description: this.translate("EXT-TELBOT_RESET_KEYBOARD")
+        description: Bugsounet_translate("EXT-TelegramBot_RESET_KEYBOARD")
       },
       {
         command: "notification",
         callback: "TELBOT_noti",
-        description: this.translate("EXT-TELBOT_NOTIFICATION"),
+        description: Bugsounet_translate("EXT-TelegramBot_NOTIFICATION"),
         args_pattern: [/([^\s]+)\s?([^\s]?.*|)$/]
       },
       {
         command: "screenshot",
         callback: "TELBOT_screenshot",
-        description: this.translate("EXT-TELBOT_SCREENSHOT")
+        description: Bugsounet_translate("EXT-TelegramBot_SCREENSHOT")
       },
       {
         command: "telecast",
         callback: "TELBOT_telecast",
-        description: this.translate("EXT-TELBOT_TELECAST")
+        description: Bugsounet_translate("EXT-TelegramBot_TELECAST")
       },
       {
         command: "clean",
         callback: "TELBOT_clean",
-        description: this.translate("EXT-TELBOT_CLEAN")
+        description: Bugsounet_translate("EXT-TelegramBot_CLEAN")
       }
     ];
     defaultCommands.forEach((c) => {
@@ -278,18 +265,18 @@ Module.register("EXT-TelegramBot", {
 
   TELBOT_clean (command, handler) {
     if (!this.config.telecast) {
-      var text = this.translate("EXT-TELBOT_TELECAST_FALSE");
+      var text = Bugsounet_translate("EXT-TelegramBot_TELECAST_FALSE");
       handler.reply("TEXT", text, { parse_mode: "Markdown" });
       return;
     }
     this.chats = [];
     this.updateDom();
-    handler.reply("TEXT", this.translate("EXT-TELBOT_CLEAN_DONE"));
+    handler.reply("TEXT", Bugsounet_translate("EXT-TelegramBot_CLEAN_DONE"));
   },
 
   TELBOT_telecast (command, handler) {
     if (!this.config.telecast) {
-      var text = this.translate("EXT-TELBOT_TELECAST_FALSE");
+      var text = Bugsounet_translate("EXT-TelegramBot_TELECAST_FALSE");
       handler.reply("TEXT", text, { parse_mode: "Markdown" });
       return;
     }
@@ -309,11 +296,11 @@ Module.register("EXT-TelegramBot", {
     var text = "";
     if (handler && ret.status) {
       this.commonSession.delete(sessionId);
-      text = this.translate("EXT-TELBOT_SCREENSHOT_RESULT") + ret.timestamp;
+      text = Bugsounet_translate("EXT-TelegramBot_SCREENSHOT_RESULT") + ret.timestamp;
       handler.reply("PHOTO_PATH", ret.path, { caption: text });
       this.sendNotification("EXT_GPHOTOPHOTOS-UPLOAD", ret.path);
     } else {
-      text = `${this.translate("EXT-TELBOT_SCREENSHOT_RESULT_ERROR")}\n${ret.result}`;
+      text = `${Bugsounet_translate("EXT-TelegramBot_SCREENSHOT_RESULT_ERROR")}\n${ret.result}`;
       handler.reply("TEXT", TelegramBotExtraChars(text), { parse_mode: "Markdown" });
     }
   },
@@ -321,7 +308,7 @@ Module.register("EXT-TelegramBot", {
   TELBOT_noti (command, handler) {
     var text = "";
     if (!handler.args || !handler.args[0]) {
-      text = this.translate("EXT-TELBOT_NOTIFICATION_FAIL");
+      text = Bugsounet_translate("EXT-TelegramBot_NOTIFICATION_FAIL");
       handler.reply("TEXT", text, { parse_mode: "Markdown" });
       return;
     }
@@ -332,18 +319,18 @@ Module.register("EXT-TelegramBot", {
       try {
         payload = JSON.parse(pstr);
       } catch {
-        text = this.translate("EXT-TELBOT_NOTIFICATION_PAYLOAD_FAIL");
+        text = Bugsounet_translate("EXT-TelegramBot_NOTIFICATION_PAYLOAD_FAIL");
         text += "\n" + `\`${payload}\``;
         handler.reply("TEXT", text, { parse_mode: "Markdown" });
         return;
       }
     }
     this.sendNotification(noti, payload);
-    handler.reply("TEXT", this.translate("EXT-TELBOT_NOTIFICATION_RESULT"), { parse_mode: "Markdown" });
+    handler.reply("TEXT", Bugsounet_translate("EXT-TelegramBot_NOTIFICATION_RESULT"), { parse_mode: "Markdown" });
   },
 
   TELBOT_favor (command, handler) {
-    var text = this.translate("EXT-TELBOT_FAVOR_RESULT");
+    var text = Bugsounet_translate("EXT-TelegramBot_FAVOR_RESULT");
     handler.reply("TEXT", text, {
       reply_markup: {
         resize_keyboard: true,
@@ -355,7 +342,7 @@ Module.register("EXT-TelegramBot", {
   },
 
   TELBOT_recent (command, handler) {
-    var text = this.translate("EXT-TELBOT_RECENT_RESULT");
+    var text = Bugsounet_translate("EXT-TelegramBot_RECENT_RESULT");
     handler.reply("TEXT", text, {
       reply_markup: {
         resize_keyboard: true,
@@ -367,7 +354,7 @@ Module.register("EXT-TelegramBot", {
   },
 
   TELBOT_reset_keyboard (command, handler) {
-    var text = this.translate("EXT-TELBOT_RESET_KEYBOARD_RESULT");
+    var text = Bugsounet_translate("EXT-TelegramBot_RESET_KEYBOARD_RESULT");
     handler.reply("TEXT", text, {
       reply_markup: {
         remove_keyboard: true
@@ -377,7 +364,7 @@ Module.register("EXT-TelegramBot", {
   },
 
   TELBOT_hideall (command, handler) {
-    var text = this.translate("EXT-TELBOT_HIDEALL_RESULT");
+    var text = Bugsounet_translate("EXT-TelegramBot_HIDEALL_RESULT");
     MM.getModules().enumerate((m) => {
       m.hide(500, { lockString: "TB_LOCK" });
     });
@@ -385,7 +372,7 @@ Module.register("EXT-TelegramBot", {
   },
 
   TELBOT_showall (command, handler) {
-    var text = this.translate("EXT-TELBOT_SHOWALL_RESULT");
+    var text = Bugsounet_translate("EXT-TelegramBot_SHOWALL_RESULT");
     MM.getModules().enumerate((m) => {
       m.show(500, { lockString: "TB_LOCK" });
     });
@@ -399,27 +386,27 @@ Module.register("EXT-TelegramBot", {
       MM.getModules().enumerate((m) => {
         if (m.name === handler.args) {
           found = true;
-          if (m.hidden) return handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_HIDE_ALREADY"));
+          if (m.hidden) return handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_HIDE_ALREADY"));
           if (m.lockStrings.length > 0) {
             m.lockStrings.forEach((lock) => {
               if (lock === "TB_LOCK") {
                 m.hide(500, { lockString: "TB_LOCK" });
                 if (m.lockStrings.length === 0) {
                   unlock = true;
-                  handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_HIDE_DONE"));
+                  handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_HIDE_DONE"));
                 }
               }
             });
-            if (!unlock) return handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_HIDE_LOCKED"));
+            if (!unlock) return handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_HIDE_LOCKED"));
           }
           else {
             m.hide(500, { lockString: "TB_LOCK" });
-            handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_HIDE_DONE"));
+            handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_HIDE_DONE"));
           }
         }
       });
-      if (!found) handler.reply("TEXT", this.translate("EXT-TELBOT_MODULE_NOTFOUND") + handler.args);
-    } else return handler.reply("TEXT", this.translate("EXT-TELBOT_MODULE_NAME"));
+      if (!found) handler.reply("TEXT", Bugsounet_translate("EXT-TelegramBot_MODULE_NOTFOUND") + handler.args);
+    } else return handler.reply("TEXT", Bugsounet_translate("EXT-TelegramBot_MODULE_NAME"));
   },
 
   TELBOT_show (command, handler) {
@@ -429,27 +416,27 @@ Module.register("EXT-TelegramBot", {
       MM.getModules().enumerate((m) => {
         if (m.name === handler.args) {
           found = true;
-          if (!m.hidden) return handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_SHOW_ALREADY"));
+          if (!m.hidden) return handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_SHOW_ALREADY"));
           if (m.lockStrings.length > 0) {
             m.lockStrings.forEach((lock) => {
               if (lock === "TB_LOCK") {
                 m.show(500, { lockString: "TB_LOCK" });
                 if (m.lockStrings.length === 0) {
                   unlock = true;
-                  handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_SHOW_DONE"));
+                  handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_SHOW_DONE"));
                 }
               }
             });
-            if (!unlock) return handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_SHOW_LOCKED"));
+            if (!unlock) return handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_SHOW_LOCKED"));
           }
           else {
             m.show(500, { lockString: "TB_LOCK" });
-            handler.reply("TEXT", handler.args + this.translate("EXT-TELBOT_SHOW_DONE"));
+            handler.reply("TEXT", handler.args + Bugsounet_translate("EXT-TelegramBot_SHOW_DONE"));
           }
         }
       });
-      if (!found) handler.reply("TEXT", this.translate("EXT-TELBOT_MODULE_NOTFOUND") + handler.args);
-    } else return handler.reply("TEXT", this.translate("EXT-TELBOT_MODULE_NAME"));
+      if (!found) handler.reply("TEXT", Bugsounet_translate("EXT-TelegramBot_MODULE_NOTFOUND") + handler.args);
+    } else return handler.reply("TEXT", Bugsounet_translate("EXT-TelegramBot_MODULE_NAME"));
   },
 
   TELBOT_allowed (command, handler) {
@@ -467,14 +454,14 @@ Module.register("EXT-TelegramBot", {
   TELBOT_allowuser (command, handler) {
     var text = "";
     if (handler.message.admin !== "admin") {
-      text = this.translate("EXT-TELBOT_ONLY_ADMIN");
+      text = Bugsounet_translate("EXT-TelegramBot_ONLY_ADMIN");
     } else if (handler.args !== null) {
       var user = handler.args["username"];
       this.allowed.add(user);
       this.sendSocketNotification("ALLOWEDUSER", [...this.allowed]);
-      text = this.translate("EXT-TELBOT_ALLOWUSER_REGISTERED");
+      text = Bugsounet_translate("EXT-TelegramBot_ALLOWUSER_REGISTERED");
     } else {
-      text = this.translate("EXT-TELBOT_ALLOWUSER_ERROR");
+      text = Bugsounet_translate("EXT-TelegramBot_ALLOWUSER_ERROR");
     }
 
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
@@ -482,21 +469,21 @@ Module.register("EXT-TelegramBot", {
 
   TELBOT_mychatid (command, handler) {
     //handler.tell, handler.reply, handler.ask
-    var text = this.translate("EXT-TELBOT_MYCHATID_RESULT", { chatid: handler.message.chat.id });
+    var text = Bugsounet_translate("EXT-TelegramBot_MYCHATID_RESULT", { chatid: handler.message.chat.id });
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
   },
 
   TELBOT_list_modules (command, handler) {
     var text = "";
-    var hidden = this.translate("EXT-TELBOT_HIDDEN");
-    var showing = this.translate("EXT-TELBOT_SHOWING");
+    var hidden = Bugsounet_translate("EXT-TelegramBot_HIDDEN");
+    var showing = Bugsounet_translate("EXT-TelegramBot_SHOWING");
     MM.getModules().enumerate((m) => {
       text += `\`${m.name}\` _`;
       text += ((m.hidden) ? hidden : showing);
       text += "_\n";
     });
     if (!text) {
-      text = this.translate("EXT-TELBOT_MODULES_ERROR");
+      text = Bugsounet_translate("EXT-TelegramBot_MODULES_ERROR");
     }
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
   },
@@ -511,7 +498,7 @@ Module.register("EXT-TelegramBot", {
       text += `*${name}* \- _${bits[0]}_\n`;
     });
     if (!text) {
-      text = this.translate("EXT-TELBOT_COMMANDS_ERROR");
+      text = Bugsounet_translate("EXT-TelegramBot_COMMANDS_ERROR");
     }
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
   },
@@ -529,7 +516,7 @@ Module.register("EXT-TelegramBot", {
           text += "\n";
           text += (
             (c.moduleName)
-              ? (this.translate("EXT-TELBOT_HELP_SERVED", { module: c.moduleName }))
+              ? (Bugsounet_translate("EXT-TelegramBot_HELP_SERVED", { module: c.moduleName }))
               : ""
           );
           text += "\n";
@@ -537,7 +524,7 @@ Module.register("EXT-TelegramBot", {
       });
     }
     if (!text) {
-      text = this.translate("EXT-TELBOT_HELP_HELP");
+      text = Bugsounet_translate("EXT-TelegramBot_HELP_HELP");
     }
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
   },
@@ -614,7 +601,7 @@ Module.register("EXT-TelegramBot", {
         if (Array.isArray(allowedUser) && allowedUser.length > 0) {
           if (!allowedUser.includes(msg.from.username)) {
             handler = createHandler(msg, null);
-            text = this.translate("EXT-TELBOT_NOT_ALLOWED_COMMAND");
+            text = Bugsounet_translate("EXT-TelegramBot_NOT_ALLOWED_COMMAND");
             handler.reply("TEXT", text, { parse_mode: "Markdown" });
             return;
           }
@@ -686,9 +673,9 @@ Module.register("EXT-TelegramBot", {
     } else {
       //0 or multi
       handler = createHandler(msg, null);
-      text = this.translate("EXT-TELBOT_NOT_REGISTERED_COMMAND");
+      text = Bugsounet_translate("EXT-TelegramBot_NOT_REGISTERED_COMMAND");
       if (matchedCommands.length > 1) {
-        text = this.translate("EXT-TELBOT_FOUND_SEVERAL_COMMANDS");
+        text = Bugsounet_translate("EXT-TelegramBot_FOUND_SEVERAL_COMMANDS");
         for (var tc of matchedCommands) {
           text += `*/${tc.command}*\n`;
         }
