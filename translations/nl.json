@@ -159,6 +159,14 @@
   "GW_Update": "Update beschikbaar",
   "GW_Start": "Start",
 
+  "EXT-Spotify_NoResult": "Geen resultaat gevonden",
+  "EXT-Spotify_SearchFailed": "Zoeken en Afspelen mislukt",
+  "EXT-Spotify_ListenText": "Luisteren naar",
+  "EXT-Spotify_SearchTypePlaylist": "Speellijst",
+  "EXT-Spotify_SearchTypeAlbum": "album",
+  "EXT-Spotify_SearchTypeTrack": "nummer",
+  "EXT-Spotify_SearchTypeArtist": "artist",
+
   "EXT-Updates_ALERT_UPDATE_ERROR": "Update fout: {MODULE_NAME}",
   "EXT-Updates_ALERT_WELCOMEPID": "Welkom bij EXT-Updates,<br>MagicMirror² draait op PID {PID}",
   "EXT-Updates_HELP_UPDATE": "Update commando beheren",

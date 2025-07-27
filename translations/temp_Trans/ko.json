@@ -1,4 +1,12 @@
 {
+  "EXT-Spotify_NoResult": "결과를 찾을 수 없습니다.",
+  "EXT-Spotify_SearchFailed": "검색에 실패했습니다.",
+  "EXT-Spotify_ListenText": "재생 중",
+  "EXT-Spotify_SearchTypePlaylist": "재생목록",
+  "EXT-Spotify_SearchTypeAlbum": "앨범",
+  "EXT-Spotify_SearchTypeTrack": "트랙",
+  "EXT-Spotify_SearchTypeArtist": "아티스트",
+
   "EXT-Volume_RecordPresetError": "Record: 사전 설정 오류!",
   "EXT-Volume_VolumePresetError": "Volume: 사전 설정 오류!",
   "EXT-Volume_Text": "Volume:",

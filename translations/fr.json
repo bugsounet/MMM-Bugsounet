@@ -215,6 +215,17 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-Spotify_PlayerNoResponse": "Pas de réponse du lecteur! ({VALUES})",
+  "EXT-Spotify_PlayerConnected": "Connecté au lecteur! ({VALUES})",
+  "EXT-Spotify_PlayerConnecting": "Patientez, connexion au lecteur...",
+  "EXT-Spotify_NoResult": "La recherche retourne aucun résultat",
+  "EXT-Spotify_SearchFailed": "Erreur lors de la recherche",
+  "EXT-Spotify_ListenText": "En écoute sur",
+  "EXT-Spotify_SearchTypePlaylist": "playlist",
+  "EXT-Spotify_SearchTypeAlbum": "album",
+  "EXT-Spotify_SearchTypeTrack": "piste",
+  "EXT-Spotify_SearchTypeArtist": "artiste",
+
   "EXT-TelegramBot_HELPER_ERROR": "Une erreur est survenue. Demandez à un administrateur.",
   "EXT-TelegramBot_HELPER_NOT_ALLOWED": "Vous n'êtes pas autorisé à me commander. Demandez à un administrateur.",
   "EXT-TelegramBot_HELPER_RESTART": "`MagicMirror²` a été redémarré le :",

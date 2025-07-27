@@ -32,13 +32,13 @@ module.exports = NodeHelper.create({
               this.socketNotificationReceived("SPOTIFY_PLAY", payload);
             }
             if ((code !== 204) && (code !== 202)) {
-              if (this.config.player.usePlayer) this.sendSocketNotification("WARNING", { message: "PlayerNoResponse", values: this.config.player.deviceName });
+              if (this.config.player.usePlayer) this.sendSocketNotification("WARNING", { message: "EXT-Spotify_PlayerNoResponse", values: this.config.player.deviceName });
               return console.log("[SPOTIFY:PLAY] RETRY Error", code, error, result);
             }
             else {
               logSpotify("RETRY: DONE_PLAY");
               this.retryPlayerCount = 0;
-              if (this.config.player.usePlayer) this.sendSocketNotification("SUCCESS", { message: "PlayerConnected", values: this.config.player.deviceName });
+              if (this.config.player.usePlayer) this.sendSocketNotification("SUCCESS", { message: "EXT-Spotify_PlayerConnected", values: this.config.player.deviceName });
             }
           });
         }, 3000);
@@ -52,7 +52,7 @@ module.exports = NodeHelper.create({
             if (this.retryPlayerCount >= 4) return this.retryPlayerCount = 0;
             if (this.config.player.usePlayer) {
               console.log("[SPOTIFY] No response from player !");
-              this.sendSocketNotification("INFORMATION", { message: "PlayerConnecting" });
+              this.sendSocketNotification("INFORMATION", { message: "EXT-Spotify_PlayerConnecting" });
               this.sendSocketNotification("PLAYER_RECONNECT");
               this.timeout = setTimeout(() => {
                 this.socketNotificationReceived("SPOTIFY_TRANSFER", this.config.player.deviceName);
@@ -206,18 +206,12 @@ module.exports = NodeHelper.create({
           this.socketNotificationReceived("SPOTIFY_PLAY", foundForPlay);
         } else {
           logSpotify("Search and Play No Result");
-          this.sendSocketNotification("WARNING", { message: "SpotifyNoResult" });
+          this.sendSocketNotification("WARNING", { message: "EXT-Spotify_NoResult" });
         }
       } else { //when fail
         console.log("[SPOTIFY] Search and Play failed !");
-        this.sendSocketNotification("WARNING", { message: "SpotifySearchFailed" });
+        this.sendSocketNotification("WARNING", { message: "EXT-Spotify_SearchFailed" });
       }
     });
-  },
-
-  DisplayError (err, error, details = null) {
-    if (details) console.log(`[SPOTIFY][ERROR]${err}`, details.message, details);
-    else console.log(`[SPOTIFY][ERROR]${err}`);
-    return this.sendSocketNotification("NOT_INITIALIZED", { message: error.message, values: error.values });
   }
 });

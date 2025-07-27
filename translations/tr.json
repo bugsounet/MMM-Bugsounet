@@ -158,6 +158,17 @@
   "GW_Update": "Güncelleme uygun",
   "GW_Start": "Başlangıç",
 
+  "EXT-Spotify_PlayerNoResponse": "Oyuncudan yanıt yok! ({VALUES})",
+  "EXT-Spotify_PlayerConnected": "Oyuncuya bağlanıldı! ({VALUES})",
+  "EXT-Spotify_PlayerConnecting": "Lütfen bekleyin, oynatıcıya bağlanılıyor...",
+  "EXT-Spotify_NoResult": "Sonuç bulunamadı",
+  "EXT-Spotify_SearchFailed": "Arama ve Oynatma başarısız oldu",
+  "EXT-Spotify_ListenText": "Dinleniyor",
+  "EXT-Spotify_SearchTypePlaylist": "Çalma Listesi",
+  "EXT-Spotify_SearchTypeAlbum": "Albüm",
+  "EXT-Spotify_SearchTypeTrack": "İzlemek",
+  "EXT-Spotify_SearchTypeArtist": "Sanatçı",
+
   "EXT-TelegramBot_HELPER_ERROR": "Bir hata oluştu. Yöneticiye sorun.",
   "EXT-TelegramBot_HELPER_NOT_ALLOWED": "Bana emir vermene izin yok. Yöneticiye sorun.",
   "EXT-TelegramBot_HELPER_RESTART": "'Sihirli Ayna' şu tarihte yeniden başlatıldı:",

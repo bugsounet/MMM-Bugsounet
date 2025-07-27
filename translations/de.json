@@ -160,6 +160,17 @@
   "TB_SYSINFO_ETHERNET": "Ethernet",
   "TB_SYSINFO_WLAN": "WLAN",
 
+  "EXT-Spotify_PlayerNoResponse": "Keine Antwort vom Spotify-Player! ({VALUES})",
+  "EXT-Spotify_PlayerConnected": "Mit Spotify-Player verbunden! ({VALUES})",
+  "EXT-Spotify_PlayerConnecting": "Verbindung zum Spotify-Player wird aufgebaut...",
+  "EXT-Spotify_NoResult": "Kein Ergebnis gefunden",
+  "EXT-Spotify_SearchFailed": "Suche und Wiedergabe fehlgeschlagen",
+  "EXT-Spotify_ListenText": "Zuhören aktiv",
+  "EXT-Spotify_SearchTypePlaylist": "playlist",
+  "EXT-Spotify_SearchTypeAlbum": "album",
+  "EXT-Spotify_SearchTypeTrack": "track",
+  "EXT-Spotify_SearchTypeArtist": "artist",
+
   "EXT-TelegramBot_HELPER_ERROR": "Ein Fehler ist aufgetreten. Bitte den Admin kontaktieren.",
   "EXT-TelegramBot_HELPER_NOT_ALLOWED": "Du darfst mir keine Befehle schicken. Bitte den Admin kontaktieren.",
   "EXT-TelegramBot_HELPER_RESTART": "MagicMirror² wurde neugestartet um:",

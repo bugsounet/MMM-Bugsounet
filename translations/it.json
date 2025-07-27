@@ -97,6 +97,14 @@
   "GW_RequestDone": "Richiesta Inviata con successo",
   "GW_Listen": "Ascolta",
 
+  "EXT-Spotify_NoResult": "Nessun risultato trovato",
+  "EXT-Spotify_SearchFailed": "Search and Play fallito",
+  "EXT-Spotify_ListenText": "Ascoltando",
+  "EXT-Spotify_SearchTypePlaylist": "playlist",
+  "EXT-Spotify_SearchTypeAlbum": "album",
+  "EXT-Spotify_SearchTypeTrack": "track",
+  "EXT-Spotify_SearchTypeArtist": "artist",
+
   "EXT-TelegramBot_HELPER_ERROR": "C'è un'errore. Chiedi al mio padrone.",
   "EXT-TelegramBot_HELPER_NOT_ALLOWED": "Non sei autorizzato a mandarmi comandi. Chiedi al mio padrone.",
   "EXT-TelegramBot_HELPER_RESTART": "`MagicMirror²` è partito il :",

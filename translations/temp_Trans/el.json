@@ -1,4 +1,15 @@
 {
+  "EXT-Spotify_PlayerNoResponse": "No response from the player! ({VALUES})",
+  "EXT-Spotify_PlayerConnected": "Connected to the player! ({VALUES})",
+  "EXT-Spotify_PlayerConnecting": "Please wait, connecting to the player...",
+  "EXT-Spotify_NoResult": "Δεν βρέθηκε αποτέλεσμα",
+  "EXT-Spotify_SearchFailed": "Αποτυχία αναζήτησης και αναπαραγωγής",
+  "EXT-Spotify_ListenText": "Ακρόαση",
+  "EXT-Spotify_SearchTypePlaylist": "Λίστα αναπαραγωγής",
+  "EXT-Spotify_SearchTypeAlbum": "Άλμπουμ",
+  "EXT-Spotify_SearchTypeTrack": "Κομμάτι",
+  "EXT-Spotify_SearchTypeArtist": "Καλλιτέχνης",
+
   "EXT-Volume_RecordPresetError": "Record: Σφάλμα!",
   "EXT-Volume_VolumePresetError": "Ένταση: Σφάλμα!",
   "EXT-Volume_Text": "Ένταση:",

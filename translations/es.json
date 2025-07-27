@@ -99,6 +99,14 @@
   "GW_Listen": "Escuchando",
   "GW_Update": "Disponible una actualización",
 
+  "EXT-Spotify_NoResult": "No se encuentran resultados",
+  "EXT-Spotify_SearchFailed": "Búsqueda y reproducción fallida",
+  "EXT-Spotify_ListenText": "Escuchando",
+  "EXT-Spotify_SearchTypePlaylist": "lista",
+  "EXT-Spotify_SearchTypeAlbum": "álbum",
+  "EXT-Spotify_SearchTypeTrack": "canción",
+  "EXT-Spotify_SearchTypeArtist": "artista",
+
   "EXT-TelegramBot_HELPER_ERROR": "Ha ocurrido un error. Pregunta a un Admin.",
   "EXT-TelegramBot_HELPER_NOT_ALLOWED": "No tienes permisos para eso. Pregunta a un admin.",
   "EXT-TelegramBot_HELPER_RESTART": "`MagicMirror²` se ha encendido el: ",

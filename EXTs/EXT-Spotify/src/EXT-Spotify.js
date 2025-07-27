@@ -3,7 +3,7 @@
  ** @bugsounet
  **/
 
-/* global Spotify */
+/* global Spotify Bugsounet_translate */
 
 var logSpotify = () => { /* do nothing */ };
 
@@ -44,7 +44,7 @@ Module.register("EXT-Spotify", {
     if (Librespot && !Librespot.disabled) {
       this.Player.usePlayer = true;
       logSpotify("Player Found:", Librespot.config.deviceName);
-      this.Visual.LibrespotPlayer = `${this.translate("SpotifyListenText")} ${Librespot.config.deviceName}`;
+      this.Visual.LibrespotPlayer = `${Bugsounet_translate("EXT-Spotify_ListenText")} ${Librespot.config.deviceName}`;
       if (Librespot) {
         try {
           this.Player.minVolume = Librespot.config.minVolume ? Librespot.config.minVolume : 30;
@@ -145,7 +145,7 @@ Module.register("EXT-Spotify", {
     };
     this.configClass = {
       debug: this.config.debug,
-      deviceDisplay: this.translate("SpotifyListenText"),
+      deviceDisplay: Bugsounet_translate("EXT-Spotify_ListenText"),
       mini: this.config.mini,
       hide: (...args) => this.hide(...args),
       show: (...args) => this.show(...args)
@@ -164,22 +164,6 @@ Module.register("EXT-Spotify", {
       "modules/MMM-Bugsounet/node_modules/@mdi/font/css/materialdesignicons.min.css",
       "font-awesome.css"
     ];
-  },
-
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      ko: "translations/ko.json",
-      el: "translations/el.json",
-      "zh-cn": "translations/zh-cn.json",
-      tr: "translations/tr.json"
-    };
   },
 
   getDom () {
@@ -307,21 +291,21 @@ Module.register("EXT-Spotify", {
       case "INFORMATION":
         this.sendNotification("Bugsounet_ALERT", {
           type: "information",
-          message: this.translate(payload.message, { VALUES: payload.values }),
+          message: Bugsounet_translate(payload.message, { VALUES: payload.values }),
           icon: this.file("components/Spotify-Logo.png")
         });
         break;
       case "WARNING":
         this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
-          message: this.translate(payload.message, { VALUES: payload.values }),
+          message: Bugsounet_translate(payload.message, { VALUES: payload.values }),
           icon: this.file("components/Spotify-Logo.png")
         });
         break;
       case "SUCCESS":
         this.sendNotification("Bugsounet_ALERT", {
           type: "success",
-          message: this.translate(payload.message, { VALUES: payload.values }),
+          message: Bugsounet_translate(payload.message, { VALUES: payload.values }),
           icon: this.file("components/Spotify-Logo.png")
         });
         break;
@@ -441,10 +425,10 @@ Module.register("EXT-Spotify", {
         /** enforce type **/
         var searchType = payload.query.split(" ");
         var type = null;
-        if (searchType[0] === this.translate("SpotifySearchTypePlaylist")) type = "playlist";
-        else if (searchType[0] === this.translate("SpotifySearchTypeAlbum")) type = "album";
-        else if (searchType[0] === this.translate("SpotifySearchTypeTrack")) type = "track";
-        else if (searchType[0] === this.translate("SpotifySearchTypeArtist")) type = "artist";
+        if (searchType[0] === Bugsounet_translate("EXT-Spotify_SearchTypePlaylist")) type = "playlist";
+        else if (searchType[0] === Bugsounet_translate("EXT-Spotify_SearchTypeAlbum")) type = "album";
+        else if (searchType[0] === Bugsounet_translate("EXT-Spotify_SearchTypeTrack")) type = "track";
+        else if (searchType[0] === Bugsounet_translate("EXT-Spotify_SearchTypeArtist")) type = "artist";
         if (type) {
           payload.query = payload.query.replace(`${searchType[0]} `, "");
           payload.type = type;
