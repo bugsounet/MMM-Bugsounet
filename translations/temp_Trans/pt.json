@@ -1,4 +1,7 @@
 {
+  "EXT-Librespot_NoInstalled": "O librespot não está instalado!",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+
   "EXT-Screen_WakeUp": "Ecrã ligado {VALUES}",
   "EXT-Screen_Lock": "Ecrã bloqueado por {VALUES}",
   "EXT-Screen_UnLock": "Ecrã desbloqueado por {VALUES}",

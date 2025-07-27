@@ -1,4 +1,6 @@
 {
+  "EXT-Librespot_NoInstalled": "Librespot 未安装 !",
+
   "EXT-Spotify_PlayerNoResponse": "没有来自 {VALUES} 的响应!",
   "EXT-Spotify_PlayerConnected": "已连接到 {VALUES} !",
   "EXT-Spotify_PlayerConnecting": "请稍候，正在连接 ...",

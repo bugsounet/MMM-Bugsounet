@@ -1,4 +1,9 @@
 {
+  "EXT-Librespot_NoInstalled": "Το librespot δεν είναι εγκατεστημένο !",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+  "EXT-Librespot_TBRestart": "Restart Librespot Server",
+  "EXT-Librespot_TBRestarted": "Server restarted, new credentials loaded",
+
   "EXT-Screen_WakeUp": "Ενεργοποίηση οθόνης από {VALUES}",
   "EXT-Screen_Lock": "Κλείδωμα οθόνης από {VALUES}",
   "EXT-Screen_UnLock": "Ξεκλείδωμα οθόνης από {VALUES}",

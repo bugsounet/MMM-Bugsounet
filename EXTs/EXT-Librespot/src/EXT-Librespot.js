@@ -3,6 +3,8 @@
  ** @bugsounet
  **/
 
+/* global Bugsounet_translate */
+
 Module.register("EXT-Librespot", {
   defaults: {
     debug: false,
@@ -57,7 +59,7 @@ Module.register("EXT-Librespot", {
       case "WARNING":
         this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
-          message: this.translate(payload.message, { VALUES: payload.values }),
+          message: Bugsounet_translate(payload.message, { VALUES: payload.values }),
           icon: this.file("resources/Spotify-Logo.png")
         });
         break;
@@ -70,13 +72,13 @@ Module.register("EXT-Librespot", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "librespot",
-      description: this.translate("TBRestart"),
+      description: Bugsounet_translate("EXT-Librespot_TBRestart"),
       callback: "tbLibrespot"
     });
   },
 
   tbLibrespot (command, handler) {
     this.sendSocketNotification("PLAYER-REFRESH");
-    handler.reply("TEXT", this.translate("TBRestarted"));
+    handler.reply("TEXT", Bugsounet_translate("EXT-Librespot_TBRestarted"));
   }
 });

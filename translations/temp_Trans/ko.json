@@ -1,4 +1,7 @@
 {
+  "EXT-Librespot_NoInstalled": "librespot가 설치되지 않았습니다 !",
+  "EXT-Librespot_Error": "Librespot 오류: {VALUES}",
+
   "EXT-Screen_WakeUp": "EXT-Screen_ Wakeup by {VALUES}",
   "EXT-Screen_Lock": "EXT-Screen_ Lock by {VALUES}",
   "EXT-Screen_UnLock": "EXT-Screen_ UnLock by {VALUES}",

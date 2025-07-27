@@ -215,6 +215,12 @@
   "Tools_YouTube_Text": "Play a YouTube video",
   "Tools_YouTube_Query": "Enter your YouTube search",
 
+  "EXT-Librespot_NoInstalled": "librespot is not installed !",
+  "EXT-Librespot_NoCredentials": "librespot credentials missing ! (Use: `npm run setup:credentials`)",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+  "EXT-Librespot_TBRestart": "Restart Librespot Server",
+  "EXT-Librespot_TBRestarted": "Server restarted, new credentials loaded",
+
   "EXT-Photos_Open": "Opening Photos Player",
   "EXT-Photos_Close": "Closing Photos Player",
   "EXT-Photos_Error": "Photos: URL Loading error!",

@@ -1,6 +1,0 @@
-{
-  "LibrespotNoInstalled": "Librespot 未安装 !",
-  "LibrespotError": "Librespot: {VALUES}",
-  "TBRestart": "Restart Librespot Server",
-  "TBRestarted": "Server restarted, new credentials loaded"
-}

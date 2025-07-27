@@ -159,6 +159,9 @@
   "GW_Update": "Update beschikbaar",
   "GW_Start": "Start",
 
+  "EXT-Librespot_NoInstalled": "librespot is niet geïnstalleerd !",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+
   "EXT-Screen_WakeUp": "Scherm wordt wakker door {VALUES}",
   "EXT-Screen_Lock": "Scherm vergrendeld door {VALUES}",
   "EXT-Screen_UnLock": "Scherm ontgrendeld door {VALUES}",

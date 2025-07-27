@@ -160,6 +160,11 @@
   "TB_SYSINFO_ETHERNET": "Ethernet",
   "TB_SYSINFO_WLAN": "WLAN",
 
+  "EXT-Librespot_NoInstalled": "librespot ist nicht installiert!",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+  "EXT-Librespot_TBRestart": "Neustart des Librespot-Servers",
+  "EXT-Librespot_TBRestarted": "Server neu gestartet, neue Identifikation geladen.",
+
   "EXT-Screen_WakeUp": "Display aktivieren durch {VALUES}",
   "EXT-Screen_Lock": "Display sperren durch {VALUES}",
   "EXT-Screen_UnLock": "Display entsperren durch {VALUES}",

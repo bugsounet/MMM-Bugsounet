@@ -158,6 +158,11 @@
   "GW_Update": "Güncelleme uygun",
   "GW_Start": "Başlangıç",
 
+  "EXT-Librespot_NoInstalled": "librespot kurulu değil!",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+  "EXT-Librespot_TBRestart": "Librespot Sunucusunu yeniden başlatın",
+  "EXT-Librespot_TBRestarted": "Sunucu yeniden başlatıldı, yeni kimlik bilgileri yüklendi",
+
   "EXT-Spotify_PlayerNoResponse": "Oyuncudan yanıt yok! ({VALUES})",
   "EXT-Spotify_PlayerConnected": "Oyuncuya bağlanıldı! ({VALUES})",
   "EXT-Spotify_PlayerConnecting": "Lütfen bekleyin, oynatıcıya bağlanılıyor...",

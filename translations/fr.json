@@ -215,6 +215,12 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-Librespot_NoInstalled": "Librespot n'est pas installé!",
+  "EXT-Librespot_NoCredentials": "Les identifiants de librespot sont manquant! (Executez: `npm run setup:credentials`)",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+  "EXT-Librespot_TBRestart": "Redémarre le serveur Librespot",
+  "EXT-Librespot_TBRestarted": "Serveur redémarré, nouveaux identifiants chargés!",
+
   "EXT-Photos_Open": "Ouverture du lecteur photos",
   "EXT-Photos_Close": "Fermeture du lecteur photos",
   "EXT-Photos_Error": "Erreur lors du chargement de l'URL!",

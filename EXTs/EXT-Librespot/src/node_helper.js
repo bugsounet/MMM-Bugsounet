@@ -59,7 +59,7 @@ module.exports = NodeHelper.create({
     if (!fs.existsSync(filePath)) {
       console.error("[LIBRESPOT] Librespot is not installed!");
       console.error("[LIBRESPOT] Please run `npm run setup` in EXT-Librespot Folder!");
-      this.sendSocketNotification("WARNING", { message: "LibrespotNoInstalled" });
+      this.sendSocketNotification("WARNING", { message: "EXT-Librespot_NoInstalled" });
       return;
     } else {
       console.log("[LIBRESPOT] Found Librespot in", filePath);
@@ -89,7 +89,7 @@ module.exports = NodeHelper.create({
         ]
       }, (err) => {
         if (err) {
-          this.sendSocketNotification("WARNING", { message: "LibrespotError", values: err.toString() });
+          this.sendSocketNotification("WARNING", { message: "EXT-Librespot_Error", values: err.toString() });
           console.error(`[LIBRESPOT] ${err}`);
           return;
         }

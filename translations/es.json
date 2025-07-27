@@ -99,6 +99,9 @@
   "GW_Listen": "Escuchando",
   "GW_Update": "Disponible una actualización",
 
+  "EXT-Librespot_NoInstalled": "librespot no está instalado!",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+
   "EXT-Screen_WakeUp": "Pantalla activada por {VALUES}",
   "EXT-Screen_Lock": "Pantalla bloqueada por {VALUES}",
   "EXT-Screen_UnLock": "Pantalla desbloqueada por {VALUES}",

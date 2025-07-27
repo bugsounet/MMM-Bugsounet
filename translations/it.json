@@ -97,6 +97,9 @@
   "GW_RequestDone": "Richiesta Inviata con successo",
   "GW_Listen": "Ascolta",
 
+  "EXT-Librespot_NoInstalled": "librespot non è installato!",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+
   "EXT-Screen_WakeUp": "MagicMirror svegliato da {VALUES}",
   "EXT-Screen_Lock": "MagicMirror bloccato da {VALUES}",
   "EXT-Screen_UnLock": "MagicMirror svegliato da {VALUES}",
