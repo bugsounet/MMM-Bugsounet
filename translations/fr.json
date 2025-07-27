@@ -215,6 +215,10 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-Photos_Open": "Ouverture du lecteur photos",
+  "EXT-Photos_Close": "Fermeture du lecteur photos",
+  "EXT-Photos_Error": "Erreur lors du chargement de l'URL!",
+
   "EXT-RadioPlayer_NO_INFORMATIONS": "Aucune informations disponible.",
   "EXT-RadioPlayer_NO_STREAMS_FILE": "Aucun fichier streams a été configuré.",
   "EXT-RadioPlayer_DESC_RADIO": "Lance l'écoute d'une radio.",

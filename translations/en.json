@@ -215,6 +215,10 @@
   "Tools_YouTube_Text": "Play a YouTube video",
   "Tools_YouTube_Query": "Enter your YouTube search",
 
+  "EXT-Photos_Open": "Opening Photos Player",
+  "EXT-Photos_Close": "Closing Photos Player",
+  "EXT-Photos_Error": "Photos: URL Loading error!",
+
   "EXT-RadioPlayer_NO_INFORMATIONS": "No informations available.",
   "EXT-RadioPlayer_NO_STREAMS_FILE": "No streams file defined.",
   "EXT-RadioPlayer_DESC_RADIO": "Play radio.",

@@ -4,6 +4,8 @@
  ** ©12-2024
  **/
 
+/* global Bugsounet_translate */
+
 var logPhotos = () => { /* do nothing */ };
 
 Module.register("EXT-Photos", {
@@ -58,7 +60,7 @@ Module.register("EXT-Photos", {
         logPhotos("Received:", payload);
         if (!payload || !payload.length) {
           this.sendNotification("Bugsounet_ALERT", {
-            message: this.translate("PhotosError"),
+            message: Bugsounet_translate("EXT-Photos_Error"),
             type: "error"
           });
           return;
@@ -105,7 +107,7 @@ Module.register("EXT-Photos", {
 
   startPhotos () {
     if (!this.photos.running) this.sendNotification("Bugsounet_ALERT", {
-      message: this.translate("PhotosOpen"),
+      message: Bugsounet_translate("EXT-Photos_Open"),
       type: "information",
       icon: this.file("resources/Photos-Logo.png")
     });
@@ -117,7 +119,7 @@ Module.register("EXT-Photos", {
 
   endPhotos (extAlert = false) {
     if (extAlert) this.sendNotification("Bugsounet_ALERT", {
-      message: this.translate("PhotosClose"),
+      message: Bugsounet_translate("EXT-Photos_Close"),
       type: "information",
       icon: this.file("resources/Photos-Logo.png")
     });
@@ -157,7 +159,7 @@ Module.register("EXT-Photos", {
     var hidden = document.createElement("img");
     hidden.onerror = () => {
       this.sendNotification("Bugsounet_ALERT", {
-        message: this.translate("PhotosError"),
+        message: Bugsounet_translate("EXT-Photos_Error"),
         type: "warning",
         icon: this.file("resources/Photos-Logo.png")
       });
