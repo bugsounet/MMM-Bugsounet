@@ -191,7 +191,7 @@ class ASSISTANT {
       .on("error", (error) => {
         b2m.close();
         console.log(`[GA] [ASSISTANT] CONVERSATION_ERROR: ${error}`);
-        this.response.error.error = "CONVERSATION_ERROR";
+        this.response.error.error = "EXT-Assistant_CONVERSATION_ERROR";
         this.response.error.message = error.toString();
         this.stopListening();
         conversation.end();

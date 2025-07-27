@@ -1,5 +1,5 @@
 /* Common GA Class */
-/* global logGA, removeAnimateCSS, addAnimateCSS */
+/* global logGA, removeAnimateCSS, addAnimateCSS, Bugsounet_translate */
 /* eslint-disable-next-line */
 class AssistantResponse {
   constructor (responseConfig, callbacks) {
@@ -231,7 +231,7 @@ class AssistantResponse {
         }, null);
         return;
       }
-      if (response.error.error === "TOO_SHORT" && response.lastQuery.status === "continue" && this.loopCount < 1) { // @todo to debug
+      if (response.error.error === "EXT-Assistant_TOO_SHORT" && response.lastQuery.status === "continue" && this.loopCount < 1) { // @todo to debug
         this.status("continue");
         this.callbacks.assistantActivate({
           type: "MIC",
@@ -245,7 +245,7 @@ class AssistantResponse {
         logGA(`Loop Continuous Count: ${this.loopCount}/1`);
         return;
       }
-      this.showError(response.error.message ? response.error.message : this.callbacks.translate(response.error.error));
+      this.showError(response.error.message ? response.error.message : Bugsounet_translate(response.error.error));
       this.end();
       return;
     }
@@ -296,7 +296,7 @@ class AssistantResponse {
   showScreenOutput (response) {
     if (!this.sercretMode && response.screen) {
       if (!response.audio) {
-        this.showTranscription(this.callbacks.translate("NO_AUDIO_RESPONSE"));
+        this.showTranscription(Bugsounet_translate("EXT-Assistant_NO_AUDIO_RESPONSE"));
       }
       this.showing = true;
       var iframe = document.getElementById("GA-ResultOuput");
@@ -348,12 +348,12 @@ class AssistantResponse {
 
   Loading () {
     this.forceStatusImg("standby");
-    this.showTranscription(`${this.callbacks.translate("GALoading")} EXT-Assistant`);
+    this.showTranscription(`${Bugsounet_translate("EXT-Assistant_Loading")} EXT-Assistant`);
     this.fullscreen(true, null, false);
   }
 
   Version (version) {
-    this.showTranscription(`EXT-Assistant v${version.version} (${version.rev}) [${version.lang}] ©bugsounet ${this.callbacks.translate("GAReady")}`);
+    this.showTranscription(`EXT-Assistant v${version.version} (${version.rev}) [${version.lang}] ©bugsounet ${Bugsounet_translate("EXT-Assistant_Ready")}`);
     this.fullscreen(true, null, false);
     this.aliveTimer = setTimeout(() => {
       this.end(false);

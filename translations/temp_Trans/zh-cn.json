@@ -1,4 +1,17 @@
 {
+  "EXT-Assistant_NO_RESPONSE": "对不起，我不理解。",
+  "EXT-Assistant_TOO_SHORT": "对不起，我不理解。",
+  "EXT-Assistant_CONVERSATION_ERROR": "会话错误。(麦克风配置错误)",
+  "EXT-Assistant_QUERY_REPLY": "谷歌助理将被激活",
+  "EXT-Assistant_QUERY_HELP": "你可以用来命令 `谷歌助理` 的文字。",
+  "EXT-Assistant_Loading": "加载...",
+  "EXT-Assistant_Ready": "准备就绪！",
+  "EXT-Assistant_Begin": "你好，我能提供什么帮助？",
+  "EXT-Assistant_Continue": "我在听你说...",
+  "EXT-Assistant_ErrorRecipe": "加载此方法时出现错误： {VALUES}",
+  "EXT-Assistant_ErrorCredentials": "[FATAL] Assistant: credentials.json 丢失",
+  "EXT-Assistant_ErrorToken": "[FATAL] Token YouTube: tokenYT.json 丢失",
+  "EXT-Assistant_ShellExecError": "ShellExec 返回一些错误",
   "EXT-Librespot_NoInstalled": "Librespot 未安装 !",
 
   "EXT-Spotify_PlayerNoResponse": "没有来自 {VALUES} 的响应!",

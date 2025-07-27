@@ -97,6 +97,16 @@
   "GW_RequestDone": "Richiesta Inviata con successo",
   "GW_Listen": "Ascolta",
 
+  "EXT-Assistant_NO_RESPONSE": "Perdonami, non riesco a capire.",
+  "EXT-Assistant_TOO_SHORT": "Perdonami, non riesco a sentire bene.",
+  "EXT-Assistant_CONVERSATION_ERROR": "Faccio fatica a sentire. (Controlla la configurazione del microfono)",
+  "EXT-Assistant_QUERY_REPLY": "Google Assistant si attiva",
+  "EXT-Assistant_QUERY_HELP": "Puoi comandare `Google Assistant` scrivendo dopo questo comando.",
+  "EXT-Assistant_Loading": "Caricamento di Google Assistant...",
+  "EXT-Assistant_Ready": "Google Assistant è Pronto!",
+  "EXT-Assistant_Begin": "Ciao, come posso aiutarti?",
+  "EXT-Assistant_ShellExecError": "ShellExec riporta degli Errori",
+
   "EXT-Browser_Open": "Apertura Browser",
   "EXT-Browser_Close": "Chiusura Browser",
   "EXT-Browser_Error": "Browser: URL Loading error!",

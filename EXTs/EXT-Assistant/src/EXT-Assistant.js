@@ -4,7 +4,7 @@
  * ©2025
  */
 
-/* global AssistantResponse, AssistantSearch */
+/* global AssistantResponse, AssistantSearch, Bugsounet_translate */
 
 var logGA = () => { /* do nothing */ };
 
@@ -68,22 +68,6 @@ Module.register("EXT-Assistant", {
     return ["/modules/MMM-Bugsounet/EXTs/EXT-Assistant/EXT-Assistant.css"];
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      de: "translations/de.json",
-      el: "translations/el.json",
-      es: "translations/es.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      ko: "translations/ko.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      tr: "translations/tr.json",
-      "zh-cn": "translations/zh-cn.json"
-    };
-  },
-
   getDom () {
     var dom = document.createElement("div");
     dom.style.display = "none";
@@ -120,12 +104,12 @@ Module.register("EXT-Assistant", {
         break;
       case "NOT_INITIALIZED":
         this.assistantResponse.fullscreen(true);
-        this.assistantResponse.showError(this.translate(payload.message, { VALUES: payload.values }));
+        this.assistantResponse.showError(Bugsounet_translate(payload.message, { VALUES: payload.values }));
         this.assistantResponse.forceStatusImg("userError");
         break;
       case "WARNING":
         this.sendAlert({
-          message: this.translate(payload),
+          message: Bugsounet_translate(payload),
           type: "warning",
           timer: 10000
         }, "EXT-Assistant");
@@ -135,13 +119,13 @@ Module.register("EXT-Assistant", {
         break;
       case "ERROR":
         this.sendAlert({
-          message: this.translate(payload),
+          message: Bugsounet_translate(payload),
           type: "error"
         }, "EXT-Assistant");
         break;
       case "RECIPE_ERROR":
         this.sendAlert({
-          message: this.translate("GAErrorRecipe", { VALUES: payload }),
+          message: Bugsounet_translate("EXT-Assistant_ErrorRecipe", { VALUES: payload }),
           type: "error"
         }, "EXT-Assistant");
         break;
@@ -217,9 +201,6 @@ Module.register("EXT-Assistant", {
       endResponse: () => {
         logGA("Conversation Done");
       },
-      translate: (text) => {
-        return this.translate(text);
-      },
       GAStatus: (status) => {
         this.GAStatus = status;
         this.sendNotification("Bugsounet_ASSISTANT-STATUS", this.GAStatus.actual);
@@ -288,15 +269,18 @@ Module.register("EXT-Assistant", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "query",
-      description: this.translate("QUERY_HELP"),
+      description: Bugsounet_translate("EXT-Assistant_QUERY_HELP"),
       callback: "tbQuery"
     });
   },
 
   tbQuery (command, handler) {
     var query = handler.args;
-    if (!query) handler.reply("TEXT", this.translate("QUERY_HELP"));
-    else this.assistantActivate({ type: "TEXT", key: query });
+    if (!query) handler.reply("TEXT", Bugsounet_translate("EXT-Assistant_QUERY_HELP"));
+    else {
+      this.assistantActivate({ type: "TEXT", key: query });
+      handler.reply("TEXT", Bugsounet_translate("EXT-Assistant_QUERY_REPLY"));
+    }
   },
 
   /*
@@ -305,8 +289,8 @@ Module.register("EXT-Assistant", {
   assistantActivate (payload) {
     if (this.GAStatus.actual !== "standby" && !payload.force) return logGA("Assistant is busy.");
     this.assistantResponse.clearAliveTimers();
-    if (this.GAStatus.actual === "continue") this.assistantResponse.showTranscription(this.translate("GAContinue"));
-    else this.assistantResponse.showTranscription(this.translate("GABegin"));
+    if (this.GAStatus.actual === "continue") this.assistantResponse.showTranscription(Bugsounet_translate("EXT-Assistant_Continue"));
+    else this.assistantResponse.showTranscription(Bugsounet_translate("EXT-Assistant_Begin"));
     this.assistantResponse.fullscreen(true);
     this.lastQuery = null;
     var options = {

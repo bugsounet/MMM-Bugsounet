@@ -1,4 +1,17 @@
 {
+  "EXT-Assistant_NO_RESPONSE": "Desculpa, não estou a perceber.",
+  "EXT-Assistant_TOO_SHORT": "Desculpa, não estou a perceber.",
+  "EXT-Assistant_CONVERSATION_ERROR": "Erro de conversação. (microfone mal configurado)",
+  "EXT-Assistant_QUERY_REPLY": "Assistente Google irá ser ativado",
+  "EXT-Assistant_QUERY_HELP": "Podes controlar o `Assistente Google` por texto com o seguinte comando.",
+  "EXT-Assistant_Loading": "A carregar...",
+  "EXT-Assistant_Ready": "Pronto!",
+  "EXT-Assistant_Begin": "Olá, em que posso ajudar?",
+  "EXT-Assistant_Continue": "Estou a ouvir...",
+  "EXT-Assistant_ErrorRecipe": "Erro ao carregar esta receita: {VALUES}",
+  "EXT-Assistant_ErrorCredentials": "[FATAL] Assistant: credentials.json em falta",
+  "EXT-Assistant_ShellExecError": "ShellExec returnou alguns Erros",
+
   "EXT-Browser_Open": "A abrir Navegador",
   "EXT-Browser_Close": "A fechar Navegador",
   "EXT-Browser_Error": "Browser: URL Loading error!",

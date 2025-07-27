@@ -41,18 +41,6 @@ module.exports = NodeHelper.create({
       case "GOOGLESEARCH":
         this.searchOnGoogle.search(payload);
         break;
-      case "REBOOT":
-        this.controler.SystemReboot();
-        break;
-      case "SHUTDOWN":
-        this.controler.SystemShutdown();
-        break;
-      case "RESTART":
-        this.controler.restartMM();
-        break;
-      case "CLOSE":
-        this.controler.doClose();
-        break;
     }
   },
 
@@ -62,12 +50,12 @@ module.exports = NodeHelper.create({
 
     if (!fs.existsSync(`${this.config.assistantConfig["modulePath"]}/credentials.json`)) {
       msg = "[FATAL] Assistant: credentials.json file not found !";
-      message = "GAErrorCredentials";
+      message = "EXT-Assistant_ErrorCredentials";
     }
 
     if (!fs.existsSync(`${this.config.assistantConfig["modulePath"]}/tokenGA.json`)) {
       msg = "[FATAL] Assistant: tokenGA.json file not found !";
-      message = "GAErrorTokenGA";
+      message = "EXT-Assistant_ErrorToken";
     }
 
     if (msg) {
@@ -189,7 +177,7 @@ module.exports = NodeHelper.create({
       logGA("[SHELLEXEC] command:", command);
       if (e) {
         console.error(`[GA] [SHELL_EXEC] ${e.message}`);
-        this.sendSocketNotification("WARNING", "ShellExecError");
+        this.sendSocketNotification("WARNING", "EXT-Assistant_ShellExecError");
       }
       logGA("[SHELL_EXEC] RESULT", {
         executed: payload,
@@ -220,12 +208,12 @@ module.exports = NodeHelper.create({
       response.lastQuery = payload;
 
       if (!(response.screen || response.audio)) {
-        if (!response.audio && !response.screen && !response.text) response.error.error = "NO_RESPONSE";
+        if (!response.audio && !response.screen && !response.text) response.error.error = "EXT-Assistant_NO_RESPONSE";
         if (response.transcription && response.transcription.transcription && !response.transcription.done) {
           response.error.error = "TRANSCRIPTION_FAILS";
         }
       }
-      if (response && response.error.audio && !response.error.message) response.error.error = "TOO_SHORT";
+      if (response && response.error.audio && !response.error.message) response.error.error = "EXT-Assistant_TOO_SHORT";
 
       if (response.screen) {
         parser.parse(response, (result) => {
