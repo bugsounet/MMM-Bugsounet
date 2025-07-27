@@ -4,7 +4,7 @@
  ** ©04-2025
  **/
 
-/* global BrowserDisplay */
+/* global BrowserDisplay Bugsounet_translate */
 /* eslint-disable-next-line */
 var logBrowser = () => { /* do nothing */ };
 
@@ -22,8 +22,7 @@ Module.register("EXT-Browser", {
     if (this.config.debug) logBrowser = (...args) => { console.log("[BROWSER]", ...args); };
     this.ready = false;
     const Tools = {
-      sendNotification: (...args) => this.sendNotification(...args),
-      translate: (...args) => this.translate(...args)
+      sendNotification: (...args) => this.sendNotification(...args)
     };
     this.BrowserDisplay = new BrowserDisplay(this.config, Tools);
   },
@@ -40,20 +39,6 @@ Module.register("EXT-Browser", {
 
   getScripts () {
     return [this.file("components/BrowserDisplay.js")];
-  },
-
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      ko: "translations/ko.json",
-      tr: "translations/tr.json"
-    };
   },
 
   notificationReceived (noti, payload, sender) {
@@ -77,7 +62,7 @@ Module.register("EXT-Browser", {
           this.BrowserDisplay.displayBrowser();
         } else {
           this.sendNotification("Bugsounet_ALERT", {
-            message: this.translate("BrowserError"),
+            message: Bugsounet_translate("EXT-Browser_Error"),
             type: "error"
           });
         }

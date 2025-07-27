@@ -160,6 +160,11 @@
   "TB_SYSINFO_ETHERNET": "Ethernet",
   "TB_SYSINFO_WLAN": "WLAN",
 
+  "EXT-Browser_Open": "Öffne Browser",
+  "EXT-Browser_Close": "Schließe Browser",
+  "EXT-Browser_Error": "Browser: Fehler beim Laden der URL!",
+  "EXT-Browser_Crash": "Der Browser ist abgestürzt...",
+
   "EXT-Librespot_NoInstalled": "librespot ist nicht installiert!",
   "EXT-Librespot_Error": "Librespot: {VALUES}",
   "EXT-Librespot_TBRestart": "Neustart des Librespot-Servers",

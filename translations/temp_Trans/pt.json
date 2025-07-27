@@ -1,4 +1,9 @@
 {
+  "EXT-Browser_Open": "A abrir Navegador",
+  "EXT-Browser_Close": "A fechar Navegador",
+  "EXT-Browser_Error": "Browser: URL Loading error!",
+  "EXT-Browser_Crash": "Browser have crash...",
+
   "EXT-Librespot_NoInstalled": "O librespot não está instalado!",
   "EXT-Librespot_Error": "Librespot: {VALUES}",
 

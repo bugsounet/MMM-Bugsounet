@@ -215,6 +215,11 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-Browser_Open": "Ouverture du navigateur",
+  "EXT-Browser_Close": "Fermeture du navigateur",
+  "EXT-Browser_Error": "Erreur lors du chargement de l'URL!",
+  "EXT-Browser_Crash": "Crash du navigateur...",
+
   "EXT-Librespot_NoInstalled": "Librespot n'est pas installé!",
   "EXT-Librespot_NoCredentials": "Les identifiants de librespot sont manquant! (Executez: `npm run setup:credentials`)",
   "EXT-Librespot_Error": "Librespot: {VALUES}",

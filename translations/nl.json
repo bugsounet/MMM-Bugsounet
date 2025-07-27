@@ -159,6 +159,11 @@
   "GW_Update": "Update beschikbaar",
   "GW_Start": "Start",
 
+  "EXT-Browser_Open": "Weergavebrowser openen",
+  "EXT-Browser_Close": "Weergavebrowser sluiten",
+  "EXT-Browser_Error": "Browser: URL Loading error!",
+  "EXT-Browser_Crash": "Browser have crash...",
+
   "EXT-Librespot_NoInstalled": "librespot is niet geïnstalleerd !",
   "EXT-Librespot_Error": "Librespot: {VALUES}",
 

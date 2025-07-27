@@ -158,6 +158,11 @@
   "GW_Update": "Güncelleme uygun",
   "GW_Start": "Başlangıç",
 
+  "EXT-Browser_Open": "Tarayıcıyı Aç",
+  "EXT-Browser_Close": "Tarayıcıyı Kapat",
+  "EXT-Browser_Error": "Tarayıcı: URL Yükleme hatası!",
+  "EXT-Browser_Crash": "Tarayıcı çöküyor...",
+
   "EXT-Librespot_NoInstalled": "librespot kurulu değil!",
   "EXT-Librespot_Error": "Librespot: {VALUES}",
   "EXT-Librespot_TBRestart": "Librespot Sunucusunu yeniden başlatın",

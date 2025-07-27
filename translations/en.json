@@ -215,6 +215,11 @@
   "Tools_YouTube_Text": "Play a YouTube video",
   "Tools_YouTube_Query": "Enter your YouTube search",
 
+  "EXT-Browser_Open": "Opening Browser",
+  "EXT-Browser_Close": "Closing Browser",
+  "EXT-Browser_Error": "Browser: URL Loading error!",
+  "EXT-Browser_Crash": "Browser have crash...",
+
   "EXT-Librespot_NoInstalled": "librespot is not installed !",
   "EXT-Librespot_NoCredentials": "librespot credentials missing ! (Use: `npm run setup:credentials`)",
   "EXT-Librespot_Error": "Librespot: {VALUES}",

@@ -1,4 +1,9 @@
 {
+  "EXT-Browser_Open": "브라우저를 엽니다",
+  "EXT-Browser_Close": "브라우저를 닫습니다",
+  "EXT-Browser_Error": "Browser: URL Loading error!",
+  "EXT-Browser_Crash": "Browser have crash...",
+
   "EXT-Librespot_NoInstalled": "librespot가 설치되지 않았습니다 !",
   "EXT-Librespot_Error": "Librespot 오류: {VALUES}",
 

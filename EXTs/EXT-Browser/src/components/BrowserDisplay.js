@@ -1,4 +1,4 @@
-/* global logBrowser */
+/* global logBrowser Bugsounet_translate */
 /* eslint-disable-next-line */
 class BrowserDisplay {
   constructor (config, Tools) {
@@ -8,7 +8,6 @@ class BrowserDisplay {
     };
     this.timerBrowser = null;
     this.sendNotification = (...args) => { Tools.sendNotification(...args); };
-    this.translate = (...args) => { return Tools.translate(...args); };
     this.config = config;
     console.log("[BROWSER] BrowserDisplay Ready");
   }
@@ -32,7 +31,7 @@ class BrowserDisplay {
 
       /*
       this.sendNotification("GA_ALERT", {
-        message: this.translate("BrowserError"),
+        message: Bugsounet_translate("EXT-Browser_Error"),
         type: "error"
       });
       this.endBrowser();
@@ -42,7 +41,7 @@ class BrowserDisplay {
       console.log("[BROWSER] J'ai tout pété mon général !!!");
       console.log("[BROWSER]", event);
       this.sendNotification("Bugsounet_ALERT", {
-        message: this.translate("BrowserCrash"),
+        message: Bugsounet_translate("EXT-Browser_Crash"),
         type: "error"
       });
       this.endBrowser();
@@ -84,7 +83,7 @@ class BrowserDisplay {
 
   startBrowser () {
     if (!this.browser.running) this.sendNotification("Bugsounet_ALERT", {
-      message: this.translate("BrowserOpen"),
+      message: Bugsounet_translate("EXT-Browser_Open"),
       type: "information"
     });
     this.sendNotification("Bugsounet_BROWSER-CONNECTED");
@@ -96,7 +95,7 @@ class BrowserDisplay {
 
   endBrowser (extAlert = false) {
     if (extAlert) this.sendNotification("Bugsounet_ALERT", {
-      message: this.translate("BrowserClose"),
+      message: Bugsounet_translate("EXT-Browser_Close"),
       type: "information"
     });
     this.sendNotification("Bugsounet_BROWSER-DISCONNECTED");

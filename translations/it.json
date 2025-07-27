@@ -97,6 +97,11 @@
   "GW_RequestDone": "Richiesta Inviata con successo",
   "GW_Listen": "Ascolta",
 
+  "EXT-Browser_Open": "Apertura Browser",
+  "EXT-Browser_Close": "Chiusura Browser",
+  "EXT-Browser_Error": "Browser: URL Loading error!",
+  "EXT-Browser_Crash": "Browser have crash...",
+
   "EXT-Librespot_NoInstalled": "librespot non è installato!",
   "EXT-Librespot_Error": "Librespot: {VALUES}",
 
