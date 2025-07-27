@@ -23,22 +23,6 @@ Module.register("EXT-Librespot", {
     return dom;
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      ko: "translations/ko.json",
-      el: "translations/el.json",
-      "zh-cn": "translations/zh-cn.json",
-      tr: "translations/tr.json"
-    };
-  },
-
   notificationReceived (noti, payload, sender) {
     switch (noti) {
       case "Bugsounet_READY":
