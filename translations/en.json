@@ -215,6 +215,16 @@
   "Tools_YouTube_Text": "Play a YouTube video",
   "Tools_YouTube_Query": "Enter your YouTube search",
 
+  "EXT-RadioPlayer_NO_INFORMATIONS": "No informations available.",
+  "EXT-RadioPlayer_NO_STREAMS_FILE": "No streams file defined.",
+  "EXT-RadioPlayer_DESC_RADIO": "Play radio.",
+  "EXT-RadioPlayer_DESC_NEXT": "Play next radio.",
+  "EXT-RadioPlayer_DESC_PREVIOUS": "Play previous radio.",
+  "EXT-RadioPlayer_DESC_LIST": "Available radio list.",
+  "EXT-RadioPlayer_PLAYING": "Playing: {VALUES}",
+  "EXT-RadioPlayer_NOT_FOUND": "Radio not found: {VALUES}",
+  "EXT-RadioPlayer_LIST": "Available Radio: \n - {VALUES}\n\nNote: You can use ***/Radio <radio name>*** for listening your prefered radio station.",
+
   "EXT-Screen_WakeUp": "Screen Wakeup by {VALUES}",
   "EXT-Screen_Lock": "Screen Lock by {VALUES}",
   "EXT-Screen_UnLock": "Screen UnLock by {VALUES}",

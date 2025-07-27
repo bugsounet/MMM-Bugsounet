@@ -215,6 +215,16 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-RadioPlayer_NO_INFORMATIONS": "Aucune informations disponible.",
+  "EXT-RadioPlayer_NO_STREAMS_FILE": "Aucun fichier streams a été configuré.",
+  "EXT-RadioPlayer_DESC_RADIO": "Lance l'écoute d'une radio.",
+  "EXT-RadioPlayer_DESC_NEXT": "Lance l'écoute de la radio suivante.",
+  "EXT-RadioPlayer_DESC_PREVIOUS": "Lance l'écoute de la radio précédente.",
+  "EXT-RadioPlayer_DESC_LIST": "Liste des radios disponible.",
+  "EXT-RadioPlayer_PLAYING": "En écoute: {VALUES}",
+  "EXT-RadioPlayer_NOT_FOUND": "Radio non trouvé: {VALUES}",
+  "EXT-RadioPlayer_LIST": "Radio disponible:\n - {VALUES}\n\nNote: Vous pouvez utiliser ***/Radio <nom de la radio>*** pour écouter votre radio préféré.",
+
   "EXT-Screen_WakeUp": "Réveil de l'écran demandé par {VALUES}",
   "EXT-Screen_Lock": "Verrouillage de l'écran demandé par {VALUES}",
   "EXT-Screen_UnLock": "Déverrouillage de l'écran demandé par {VALUES}",
