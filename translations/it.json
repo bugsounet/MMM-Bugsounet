@@ -97,6 +97,14 @@
   "GW_RequestDone": "Richiesta Inviata con successo",
   "GW_Listen": "Ascolta",
 
+  "EXT-Screen_WakeUp": "MagicMirror svegliato da {VALUES}",
+  "EXT-Screen_Lock": "MagicMirror bloccato da {VALUES}",
+  "EXT-Screen_UnLock": "MagicMirror svegliato da {VALUES}",
+  "EXT-Screen_TurnOff": "Spegnimento automatico monitor:",
+  "EXT-Screen_LastPresence": "Ultima presenza:",
+  "EXT-Screen_PowerOn": "accensione monitor",
+  "EXT-Screen_PowerOff": "Spegnimento monitor",
+
   "EXT-Spotify_NoResult": "Nessun risultato trovato",
   "EXT-Spotify_SearchFailed": "Search and Play fallito",
   "EXT-Spotify_ListenText": "Ascoltando",

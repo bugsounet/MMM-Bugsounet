@@ -1,4 +1,12 @@
 {
+  "EXT-Screen_WakeUp": "EXT-Screen_ Wakeup by {VALUES}",
+  "EXT-Screen_Lock": "EXT-Screen_ Lock by {VALUES}",
+  "EXT-Screen_UnLock": "EXT-Screen_ UnLock by {VALUES}",
+  "EXT-Screen_TurnOff": "화면 자동 끄기:",
+  "EXT-Screen_LastPresence": "마지막 화면:",
+  "EXT-Screen_PowerOn": "화면 켜기",
+  "EXT-Screen_PowerOff": "화면 끄기",
+
   "EXT-Spotify_NoResult": "결과를 찾을 수 없습니다.",
   "EXT-Spotify_SearchFailed": "검색에 실패했습니다.",
   "EXT-Spotify_ListenText": "재생 중",

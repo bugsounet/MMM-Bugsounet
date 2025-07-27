@@ -1,4 +1,12 @@
 {
+  "EXT-Screen_WakeUp": "Ενεργοποίηση οθόνης από {VALUES}",
+  "EXT-Screen_Lock": "Κλείδωμα οθόνης από {VALUES}",
+  "EXT-Screen_UnLock": "Ξεκλείδωμα οθόνης από {VALUES}",
+  "EXT-Screen_TurnOff": "Αυτόματη απενεργοποίηση οθόνης:",
+  "EXT-Screen_LastPresence": "Τελευταία παρουσία:",
+  "EXT-Screen_PowerOn": "Ενεργοποίηση οθόνης",
+  "EXT-Screen_PowerOff": "Απενεργοποίηση οθόνης",
+
   "EXT-Spotify_PlayerNoResponse": "No response from the player! ({VALUES})",
   "EXT-Spotify_PlayerConnected": "Connected to the player! ({VALUES})",
   "EXT-Spotify_PlayerConnecting": "Please wait, connecting to the player...",

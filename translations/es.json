@@ -99,6 +99,14 @@
   "GW_Listen": "Escuchando",
   "GW_Update": "Disponible una actualización",
 
+  "EXT-Screen_WakeUp": "Pantalla activada por {VALUES}",
+  "EXT-Screen_Lock": "Pantalla bloqueada por {VALUES}",
+  "EXT-Screen_UnLock": "Pantalla desbloqueada por {VALUES}",
+  "EXT-Screen_TurnOff": "Apagado automático de la pantalla:",
+  "EXT-Screen_LastPresence": "Última presencia:",
+  "EXT-Screen_PowerOn": "Encender Pantalla",
+  "EXT-Screen_PowerOff": "Apagar Pantalla",
+
   "EXT-Spotify_NoResult": "No se encuentran resultados",
   "EXT-Spotify_SearchFailed": "Búsqueda y reproducción fallida",
   "EXT-Spotify_ListenText": "Escuchando",

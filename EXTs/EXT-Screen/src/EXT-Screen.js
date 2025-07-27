@@ -4,7 +4,7 @@
 *  01/2025    *
 *************/
 
-/* global screenDisplayer, screenTouch, motionLib */
+/* global screenDisplayer, screenTouch, motionLib, Bugsounet_translate */
 
 var _logScreen = () => { /* do nothing */ };
 
@@ -76,7 +76,6 @@ Module.register("EXT-Screen", {
       sendSocketNotification: (...args) => this.sendSocketNotification(...args),
       sendNotification: (...args) => this.sendNotification(...args),
       hidden: () => { return this.hidden; },
-      translate: (...args) => this.translate(...args),
       hide: (...args) => this.hide(...args),
       show: (...args) => this.show(...args),
       wakeup: () => {
@@ -128,9 +127,9 @@ Module.register("EXT-Screen", {
       case "SCREEN_POWERSTATUS":
         this.sendNotification("Bugsounet_SCREEN-POWER", payload);
         if (payload) {
-          this.sendInformation(this.translate("ScreenPowerOn"));
+          this.sendInformation(Bugsounet_translate("EXT-Screen_PowerOn"));
         } else {
-          this.sendInformation(this.translate("ScreenPowerOff"));
+          this.sendInformation(Bugsounet_translate("EXT-Screen_PowerOff"));
         }
         break;
       case "SCREEN_ERROR":
@@ -204,18 +203,18 @@ Module.register("EXT-Screen", {
         break;
       case "Bugsounet_SCREEN-WAKEUP":
         if (this.isForceLocked) return;
-        this.sendInformation(this.translate("ScreenWakeUp", { VALUES: sender.name }));
+        this.sendInformation(Bugsounet_translate("EXT-Screen_WakeUp", { VALUES: sender.name }));
         this.sendSocketNotification("WAKEUP");
         break;
       case "Bugsounet_SCREEN-LOCK":
         if (this.isForceLocked) return;
-        if (sender.name !== "MMM-Bugsounet") this.sendInformation(this.translate("ScreenLock", { VALUES: sender.name }));
+        if (sender.name !== "MMM-Bugsounet") this.sendInformation(Bugsounet_translate("EXT-Screen_Lock", { VALUES: sender.name }));
         this.screenDisplay.hideMe();
         this.sendSocketNotification("LOCK");
         break;
       case "Bugsounet_SCREEN-UNLOCK":
         if (this.isForceLocked) return;
-        if (sender.name !== "MMM-Bugsounet") this.sendInformation(this.translate("ScreenUnLock", { VALUES: sender.name }));
+        if (sender.name !== "MMM-Bugsounet") this.sendInformation(Bugsounet_translate("EXT-Screen_UnLock", { VALUES: sender.name }));
         this.screenDisplay.showMe();
         this.sendSocketNotification("UNLOCK");
         break;
@@ -251,20 +250,6 @@ Module.register("EXT-Screen", {
       this.file("components/motion.js"),
       this.file("components/motionLib.js")
     ];
-  },
-
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      ko: "translations/ko.json",
-      el: "translations/el.json"
-    };
   },
 
   // force to set `sendUpdatesNotifications: true` in updatenotification module
@@ -306,13 +291,13 @@ Module.register("EXT-Screen", {
       if (args[0] === "on") {
         this.isForceLocked = false;
         this.sendSocketNotification("LOCK_FORCE_WAKEUP");
-        handler.reply("TEXT", this.translate("ScreenPowerOn"));
+        handler.reply("TEXT", Bugsounet_translate("EXT-Screen_PowerOn"));
         return;
       }
       if (args[0] === "off") {
         this.isForceLocked = true;
         this.sendSocketNotification("LOCK_FORCE_END");
-        handler.reply("TEXT", this.translate("ScreenPowerOff"));
+        handler.reply("TEXT", Bugsounet_translate("EXT-Screen_PowerOff"));
         return;
       }
     }

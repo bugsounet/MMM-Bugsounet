@@ -159,6 +159,14 @@
   "GW_Update": "Update beschikbaar",
   "GW_Start": "Start",
 
+  "EXT-Screen_WakeUp": "Scherm wordt wakker door {VALUES}",
+  "EXT-Screen_Lock": "Scherm vergrendeld door {VALUES}",
+  "EXT-Screen_UnLock": "Scherm ontgrendeld door {VALUES}",
+  "EXT-Screen_TurnOff": "Automatisch Scherm Uit:",
+  "EXT-Screen_LastPresence": "Laatst getoond:",
+  "EXT-Screen_PowerOn": "Scherm aan",
+  "EXT-Screen_PowerOff": "Scherm uit",
+
   "EXT-Spotify_NoResult": "Geen resultaat gevonden",
   "EXT-Spotify_SearchFailed": "Zoeken en Afspelen mislukt",
   "EXT-Spotify_ListenText": "Luisteren naar",

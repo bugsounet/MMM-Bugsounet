@@ -1,4 +1,11 @@
 {
+  "EXT-Screen_WakeUp": "Ecrã ligado {VALUES}",
+  "EXT-Screen_Lock": "Ecrã bloqueado por {VALUES}",
+  "EXT-Screen_UnLock": "Ecrã desbloqueado por {VALUES}",
+  "EXT-Screen_TurnOff": "Desbloqueio automático do Ecrã:",
+  "EXT-Screen_LastPresence": "Última utilização",
+  "EXT-Screen_PowerOn": "Ligar Ecrã",
+  "EXT-Screen_PowerOff": "Desligar Ecrã",
 
   "EXT-Spotify_NoResult": "Sem resultados",
   "EXT-Spotify_SearchFailed": "Falha na procura",

@@ -160,6 +160,15 @@
   "TB_SYSINFO_ETHERNET": "Ethernet",
   "TB_SYSINFO_WLAN": "WLAN",
 
+  "EXT-Screen_WakeUp": "Display aktivieren durch {VALUES}",
+  "EXT-Screen_Lock": "Display sperren durch {VALUES}",
+  "EXT-Screen_UnLock": "Display entsperren durch {VALUES}",
+  "EXT-Screen_TurnOff": "Automatische Displayabschaltung:",
+  "EXT-Screen_LastPresence": "Letzte Aktivität:",
+  "EXT-Screen_PowerOn": "Display einschalten",
+  "EXT-Screen_PowerOff": "Display ausschalten",
+  "EXT-Screen_Availability": "Bildschirmzeit:",
+
   "EXT-Spotify_PlayerNoResponse": "Keine Antwort vom Spotify-Player! ({VALUES})",
   "EXT-Spotify_PlayerConnected": "Mit Spotify-Player verbunden! ({VALUES})",
   "EXT-Spotify_PlayerConnecting": "Verbindung zum Spotify-Player wird aufgebaut...",

@@ -215,6 +215,15 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-Screen_WakeUp": "Réveil de l'écran demandé par {VALUES}",
+  "EXT-Screen_Lock": "Verrouillage de l'écran demandé par {VALUES}",
+  "EXT-Screen_UnLock": "Déverrouillage de l'écran demandé par {VALUES}",
+  "EXT-Screen_TurnOff": "Mise en veille dans:",
+  "EXT-Screen_LastPresence": "Dernière Présence:",
+  "EXT-Screen_PowerOn": "Allumage de l'écran",
+  "EXT-Screen_PowerOff": "Extinction de l'écran",
+  "EXT-Screen_Availability": "Disponibilité écran:",
+
   "EXT-SmartHome_Stop": "Stop",
   "EXT-SmartHome_Restart": "Redémarrer MagicMirror²",
   "EXT-SmartHome_CLose": "Eteindre MagicMirror²",
