@@ -215,6 +215,12 @@
   "Tools_YouTube_Text": "Play a YouTube video",
   "Tools_YouTube_Query": "Enter your YouTube search",
 
+  "EXT-SmartHome_Stop": "Stop",
+  "EXT-SmartHome_Restart": "Restart MagicMirror²",
+  "EXT-SmartHome_CLose": "Close MagicMirror²",
+  "EXT-SmartHome_Reboot": "Reboot System",
+  "EXT-SmartHome_Shutdown": "Shutdown System",
+
   "EXT-Spotify_PlayerNoResponse": "No response from the player! ({VALUES})",
   "EXT-Spotify_PlayerConnected": "Connected to the player! ({VALUES})",
   "EXT-Spotify_PlayerConnecting": "Please wait, connecting to the player...",

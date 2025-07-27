@@ -215,6 +215,12 @@
   "Tools_YouTube_Text": "Lance une vidéo YouTube",
   "Tools_YouTube_Query": "Entrez votre recherche sur YouTube",
 
+  "EXT-SmartHome_Stop": "Stop",
+  "EXT-SmartHome_Restart": "Redémarrer MagicMirror²",
+  "EXT-SmartHome_CLose": "Eteindre MagicMirror²",
+  "EXT-SmartHome_Reboot": "Redémarrer le Système",
+  "EXT-SmartHome_Shutdown": "Eteindre le Système",
+
   "EXT-Spotify_PlayerNoResponse": "Pas de réponse du lecteur! ({VALUES})",
   "EXT-Spotify_PlayerConnected": "Connecté au lecteur! ({VALUES})",
   "EXT-Spotify_PlayerConnecting": "Patientez, connexion au lecteur...",
