@@ -99,6 +99,9 @@ Module.register("MMM-Bugsounet", {
       case "TB_SYSINFO-RESULT":
         this.show_sysinfo(payload);
         break;
+      case "Activate":
+        this.ActivateAPIPopup(payload);
+        break;
     }
   },
 
@@ -142,6 +145,34 @@ Module.register("MMM-Bugsounet", {
     this.session = {};
     this.sysInfo = new sysInfoPage(Tools);
     this.sysInfo.prepare();
+  },
+
+  ActivateAPIPopup (data) {
+    var popup = document.createElement("div");
+    popup.id = "Bugsounet-API";
+    popup.innerHTML = `
+    <div class="modal-content animate__animated animate__zoomInDown">
+      <div class="modal-header ">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>MMM-Bugsounet API</span>
+      </div>
+      <div class="modal-body">
+        <div class="modal-container">
+          <span>Your ${data.username} account need to be activated</span>
+          <span>Please navigate to ${data.url} to continue...</span>
+        </div>
+      </div>
+    </div>`;
+    document.body.appendChild(popup);
+
+    setTimeout(() => this.CloseAPIPopup(), 60 * 1000);
+  },
+
+  CloseAPIPopup () {
+    const popup = document.getElementById("Bugsounet-API");
+    if (popup) {
+      popup.parentNode.removeChild(popup);
+    }
   },
 
   /********************************/

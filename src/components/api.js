@@ -13,6 +13,7 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
+// const QRCode = require("qrcode");
 
 const swaggerUi = require("swagger-ui-express");
 
@@ -120,7 +121,7 @@ class api {
     this.ApiDOCS = {};
     this.secret = this.encode(`MMM-Bugsounet v:${require("../package.json").version} rev:${require("../package.json").rev} API:v${require("../package.json").api}`);
 
-    //const allowlist = ["127.0.0.1", "192.168.0.10"]; // for testing
+    // const allowlist = ["127.0.0.1", "192.168.0.10"]; // for testing
     const allowlist = [];
 
     this.Api_rateLimiter = rateLimit({
@@ -201,6 +202,13 @@ class api {
     console.log("[Bugsounet] [API] Loading API Server...");
     await this.createAPI();
     await this.serverAPI();
+
+    const AdminActivate = await this.getFirstUserOpt();
+    if (AdminActivate) {
+      console.warn(`[Bugsounet] [API] For activate your ${AdminActivate.username} account`);
+      console.warn("[Bugsounet] [API] Please read informations on MagicMirror² screen for continue");
+      this.sendSocketNotification("Activate", { username: this.getFirstUserOpt().username, url: `http://${this.Api.listening}:8085/activate` });
+    }
   }
 
   /** log any website traffic **/
@@ -305,7 +313,69 @@ class api {
           else res.status(404).json({ error: "Disabled" });
         })
 
+      // .use("/activate/assets", express.static(`${this.BugsounetModulePath}/otp/assets`))
+
         .use(this.Api_rateLimiter)
+
+      /* finally: will not be used
+       * to code: Activate with qrcode/link
+        .get("/activate", (req, res) => {
+          res.sendFile(`${this.BugsounetModulePath}/otp/index.html`);
+        })
+
+        .post("/activate/set-account", (req, res) => {
+          const { accountName } = req.body;
+          let sessionSecret = null;
+
+          if (!accountName) return res.status(400).json({ error: "Account name is required."});
+
+          if (!this.getUserByUsername(accountName)) return res.status(400).json({ error: "Account not found."});
+
+          const userId = this.getUuidByUsername(accountName);
+          if (this.Api.users[userId].isRegistered) return res.status(400).json({ error: "Account already regsitered."});
+          if (this.Api.users[userId].sessionSecret) sessionSecret = this.decode(this.Api.users[userId].sessionSecret)
+          else {
+            sessionSecret = otplib.authenticator.generateSecret();
+            this.Api.users[userId].sessionSecret = this.encode(sessionSecret);
+            this.writeUsers()
+          }
+
+          // Generate otpauth URL
+          const otpauth = otplib.authenticator.keyuri(accountName, "MMM-Bugsounet", sessionSecret);
+
+          // Generate QR Code
+          QRCode.toDataURL(otpauth, (err, imageUrl) => {
+            if (err) {
+              console.error("Error generating QR code", err);
+              return res.status(500).json({ error: "Error generating QR code."});
+            }
+            res.json({ imageUrl });
+          });
+        })
+
+        .post("/activate/verify", (req, res) => {
+          const { token, accountName } = req.body;
+          const user = this.getUserByUsername(accountName);
+
+          if (!token || !user) return res.status(400).json({ error: "Invalid request."});
+
+          const userId = this.getUuidByUsername(accountName);
+
+          if (!userId || !this.Api.users[userId].sessionSecret) return res.status(400).json({ error: "Invalid request."});
+
+          const isValid = otplib.authenticator.check(token, this.decode(this.Api.users[userId].sessionSecret));
+
+          if (isValid) {
+            this.Api.users[userId].is2FaEnabled = false;
+            this.Api.users[userId].isRegistered = true;
+            this.Api.users[userId].is2FaActive = true;
+            if (this.Api.users[userId].level === 10) this.Api.users[userId].disabled = false;
+          }
+          this.writeUsers();
+
+          res.json({ isValid });
+        })
+      */
 
         .get("/api", (req, res) => {
           res.json({ api: "OK", docs: this.Api.APIDocs });
@@ -564,7 +634,7 @@ class api {
           return;
         }
 
-        if (this.findUserId(UserDecode.username) !== UserDecode.id) {
+        if (this.getUuidByUsername(UserDecode.username) !== UserDecode.id) {
           res.status(404).json({ error: "ID not found" });
           return;
         }
@@ -918,7 +988,7 @@ class api {
           return;
         }
 
-        var DeleteUserIndex = this.findUserId(DeleteUserDecode.username);
+        var DeleteUserIndex = this.getUuidByUsername(DeleteUserDecode.username);
         if (!DeleteUserIndex) { // !!! and again consider that Admin is id 0 !!!
           res.status(404).json({ error: "UserID not found" });
           return;
@@ -991,29 +1061,40 @@ class api {
     const [username, password] = base64Credentials.split(":");
 
     const FindUsername = this.getUserByUsername(username);
-    if (FindUsername && !FindUsername.disabled && bcrypt.compareSync(password, FindUsername.password)) {
-      const token = jwt.sign(
-        {
-          user: username
-        },
-        this.secret,
-        { expiresIn: "1h" }
-      );
+    if (FindUsername) {
+      if (FindUsername.disabled) {
+        console.warn(`[Bugsounet] [API] [${ip}] Bad Login ${username}: user disabled`);
+        APIResult.description = `${username}: user disabled`;
+        return res.status(403).json(APIResult);
+      }
 
-      console.log(`[Bugsounet] [API] [${ip}] Welcome ${username}, happy to serve you!`);
+      if (bcrypt.compareSync(password, FindUsername.password)) {
+        const token = jwt.sign(
+          {
+            user: username
+          },
+          this.secret,
+          { expiresIn: "1h" }
+        );
 
-      this.Api_rateLimiter.resetKey(req.ip);
-      APIResult = {
-        access_token: token,
-        token_type: "Bearer",
-        expire_in: 3600,
-        user: FindUsername.username,
-        level: FindUsername.level
-      };
-      res.json(APIResult);
+        console.log(`[Bugsounet] [API] [${ip}] Welcome ${username}, happy to serve you!`);
 
+        this.Api_rateLimiter.resetKey(req.ip);
+        APIResult = {
+          access_token: token,
+          token_type: "Bearer",
+          expire_in: 3600,
+          user: FindUsername.username,
+          level: FindUsername.level
+        };
+        res.json(APIResult);
+      } else {
+        console.warn(`[Bugsounet] [API] [${ip}] Bad Login ${username}: Invalid password`);
+        APIResult.description = "Invalid password";
+        res.status(403).json(APIResult);
+      }
     } else {
-      console.warn(`[Bugsounet] [API] [${ip}] Bad Login: Invalid username or password`);
+      console.warn(`[Bugsounet] [API] [${ip}] Bad Login ${username}: Invalid username`);
       APIResult.description = "Invalid username or password";
       res.status(403).json(APIResult);
     }
@@ -1713,6 +1794,13 @@ class api {
     return users.find((user) => user.username === username);
   }
 
+  getFirstUserOpt () {
+    let uuid = Object.keys(this.Api.users)[0];
+    let Admin = this.Api.users[uuid];
+    if (Admin.level === 10 && Admin.disabled) return Admin;
+    return false;
+  }
+
   getUuidByUsername (username) {
     return Object.keys(this.Api.users).find((key) => this.Api.users[key].username === username);
   }
@@ -1725,10 +1813,6 @@ class api {
     User.id = this.getUuidByUsername(username);
     delete (User.password);
     return User;
-  }
-
-  findUserId (username) {
-    return Object.keys(this.Api.users).find((key) => this.Api.users[key].username === username);
   }
 
   getAllUsers () {
@@ -1771,9 +1855,9 @@ class api {
           level: 10,
           avatar: 1,
           language: "en",
-          disabled: false
+          disabled: true
         };
-        console.warn("[Bugsounet] [API] Create default users database (login: admin // password: admin)");
+        console.warn("[Bugsounet] [API] Create default users database (login (disabled): admin // password: admin)");
         this.writeUsers().then(() => resolve());
       }
     });
