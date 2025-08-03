@@ -401,8 +401,8 @@ body.swal2-shown > [aria-hidden="true"] {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgb(0 0 0);
+  background-color: rgb(0 0 0 / 40%);
 }
 
 #Bugsounet-API .modal-content {
@@ -415,7 +415,7 @@ body.swal2-shown > [aria-hidden="true"] {
   width: 100%;
 }
 
- #Bugsounet-API .modal-header {
+#Bugsounet-API .modal-header {
   padding: 10px 20px;
   background-color: red;
   color: white;
