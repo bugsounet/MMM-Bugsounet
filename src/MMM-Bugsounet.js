@@ -158,14 +158,36 @@ Module.register("MMM-Bugsounet", {
       </div>
       <div class="modal-body">
         <div class="modal-container">
-          <span>Your ${data.username} account need to be activated</span>
-          <span>Please navigate to ${data.url} to continue...</span>
+          <img src="${data.imageUrl}" alt="QR Code" />
+          <div class="text">
+            <span>Your ${data.username} account need to be activated</span>
+            <span>Please scan this QRCode to continue...</span>
+          </div>
+        </div>
+        <div class="time-container">
+          <span class="time-text">Time remaining:</span>
+          <p class="time">00:00</p>
         </div>
       </div>
     </div>`;
     document.body.appendChild(popup);
 
-    setTimeout(() => this.CloseAPIPopup(), 60 * 1000);
+    const timeElement = popup.querySelector(".time");
+    let timeLeft = 300; // Initial time in seconds
+
+    const countdownInterval = setInterval(() => {
+      timeLeft--;
+      if (timeLeft < 0) {
+        clearInterval(countdownInterval);
+        this.CloseAPIPopup();
+        return;
+      }
+
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      timeElement.textContent = formattedTime;
+    }, 1000);
   },
 
   CloseAPIPopup () {

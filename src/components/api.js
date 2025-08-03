@@ -13,7 +13,7 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
-// const QRCode = require("qrcode");
+const QRCode = require("qrcode");
 
 const swaggerUi = require("swagger-ui-express");
 
@@ -207,7 +207,11 @@ class api {
     if (AdminActivate) {
       console.warn(`[Bugsounet] [API] For activate your ${AdminActivate.username} account`);
       console.warn("[Bugsounet] [API] Please read informations on MagicMirror² screen for continue");
-      this.sendSocketNotification("Activate", { username: this.getFirstUserOpt().username, url: `http://${this.Api.listening}:8085/activate` });
+
+      QRCode.toDataURL(`http://${this.Api.listening}:8085/activate?account=${AdminActivate.username}`, (err, imageUrl) => {
+        if (err) return console.error("[Bugsounet] [API] Error generating QR code", err);
+        this.sendSocketNotification("Activate", { imageUrl, username: AdminActivate.username });
+      });
     }
   }
 
