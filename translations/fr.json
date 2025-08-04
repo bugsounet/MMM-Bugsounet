@@ -1,10 +1,4 @@
 {
-  "AlertInformation": "Information",
-  "AlertWarning": "Avertissement",
-  "AlertError": "Erreur",
-  "AlertSuccess": "Réussie",
-  "EXTStop": "Tous les processus Extented sont maintenant arrêtés",
-
   "TB_SYSINFO_DESCRIPTION": "Montre les informations système.",
   "TB_SYSINFO_ETHERNET": "Cable",
   "TB_SYSINFO_WLAN": "Wifi",
@@ -41,6 +35,7 @@
   "Generic_ConfigName": "Selectionez un fichier de configuration de MagicMirror²",
   "Generic_DownloadReady": "Le téléchargement est prêt",
   "Generic_ConfigLoaded": "La nouvelle configuration a été importé",
+  "Generic_EXTStop": "Tous les processus Extented sont maintenant arrêtés",
 
   "About": "À Propos",
   "About_Title": "À Propos de MMM-Bugsounet",

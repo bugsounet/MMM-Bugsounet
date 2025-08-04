@@ -135,7 +135,7 @@ class AlertCommander {
       options.backdrop = true;
       options.width = "32em";
       options.position = "center";
-      options.title = Bugsounet_translate("AlertError");
+      options.title = Bugsounet_translate("Generic_Error");
       options.imageUrl = alert.info.icon || undefined;
       options.imageWidth = 100;
       options.customClass.timerProgressBar = "AlertProgressColorError";

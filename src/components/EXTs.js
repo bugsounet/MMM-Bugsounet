@@ -296,7 +296,7 @@ class EXTs {
         break;
       case "Bugsounet_STOP":
         if (this.hasPluginConnected(this.EXT, "connected", true)) {
-          this.sendAlert({ type: "information", message: Bugsounet_translate("EXTStop") }, "MMM-Bugsounet");
+          this.sendAlert({ type: "information", message: Bugsounet_translate("Generic_EXTStop") }, "MMM-Bugsounet");
         }
         break;
       case "Bugsounet_Restart":
