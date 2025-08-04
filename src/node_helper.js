@@ -67,6 +67,9 @@ module.exports = NodeHelper.create({
         result.sessionId = payload;
         this.sendSocketNotification("TB_SYSINFO-RESULT", result);
         break;
+      case "ActivateClosed":
+        this.api.closeActivate();
+        break;
     }
   },
 

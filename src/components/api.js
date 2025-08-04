@@ -56,6 +56,8 @@ class api {
       listening: "127.0.0.1",
       APIDocs: false,
       healthDownloader: null,
+      Activate: false,
+      Code: null,
       Access: {
         GET: {
           "/api/version": 1, // ok
@@ -208,9 +210,11 @@ class api {
       console.warn(`[Bugsounet] [API] For activate your ${AdminActivate.username} account`);
       console.warn("[Bugsounet] [API] Please read informations on MagicMirror² screen for continue");
 
-      QRCode.toDataURL(`http://${this.Api.listening}:8085/activate?account=${AdminActivate.username}`, (err, imageUrl) => {
+      QRCode.toDataURL(`http://${this.Api.listening}:8085/activate?id=${this.getUuidByUsername(AdminActivate.username)}`, (err, imageUrl) => {
         if (err) return console.error("[Bugsounet] [API] Error generating QR code", err);
-        this.sendSocketNotification("Activate", { imageUrl, username: AdminActivate.username });
+        this.Api.Activate = true;
+        this.Api.Code = this.randomCode();
+        this.sendSocketNotification("Activate", { imageUrl, username: AdminActivate.username, code: this.Api.Code });
       });
     }
   }
@@ -317,69 +321,31 @@ class api {
           else res.status(404).json({ error: "Disabled" });
         })
 
-      // .use("/activate/assets", express.static(`${this.BugsounetModulePath}/otp/assets`))
+        .use("/activate/assets", express.static(`${this.BugsounetModulePath}/activate/assets`))
 
         .use(this.Api_rateLimiter)
 
-      /* finally: will not be used
-       * to code: Activate with qrcode/link
         .get("/activate", (req, res) => {
-          res.sendFile(`${this.BugsounetModulePath}/otp/index.html`);
-        })
-
-        .post("/activate/set-account", (req, res) => {
-          const { accountName } = req.body;
-          let sessionSecret = null;
-
-          if (!accountName) return res.status(400).json({ error: "Account name is required."});
-
-          if (!this.getUserByUsername(accountName)) return res.status(400).json({ error: "Account not found."});
-
-          const userId = this.getUuidByUsername(accountName);
-          if (this.Api.users[userId].isRegistered) return res.status(400).json({ error: "Account already regsitered."});
-          if (this.Api.users[userId].sessionSecret) sessionSecret = this.decode(this.Api.users[userId].sessionSecret)
-          else {
-            sessionSecret = otplib.authenticator.generateSecret();
-            this.Api.users[userId].sessionSecret = this.encode(sessionSecret);
-            this.writeUsers()
-          }
-
-          // Generate otpauth URL
-          const otpauth = otplib.authenticator.keyuri(accountName, "MMM-Bugsounet", sessionSecret);
-
-          // Generate QR Code
-          QRCode.toDataURL(otpauth, (err, imageUrl) => {
-            if (err) {
-              console.error("Error generating QR code", err);
-              return res.status(500).json({ error: "Error generating QR code."});
-            }
-            res.json({ imageUrl });
-          });
+          if (!this.Api.Activate) return res.status(404).json({ error: "You Are Lost in Space" });
+          res.sendFile(`${this.BugsounetModulePath}/activate/index.html`);
         })
 
         .post("/activate/verify", (req, res) => {
-          const { token, accountName } = req.body;
-          const user = this.getUserByUsername(accountName);
+          if (!this.Api.Activate) return res.status(404).json({ error: "You Are Lost in Space" });
+          const { id, token } = req.body;
 
-          if (!token || !user) return res.status(400).json({ error: "Invalid request."});
+          const myAdmin = this.getFirstUserOpt();
+          if (!myAdmin || myAdmin.username !== this.Api.users[id]?.username || this.Api.Code !== parseInt(token)) return res.json({ isValid: false });
 
-          const userId = this.getUuidByUsername(accountName);
+          res.json({ isValid: true, account: myAdmin.username });
 
-          if (!userId || !this.Api.users[userId].sessionSecret) return res.status(400).json({ error: "Invalid request."});
-
-          const isValid = otplib.authenticator.check(token, this.decode(this.Api.users[userId].sessionSecret));
-
-          if (isValid) {
-            this.Api.users[userId].is2FaEnabled = false;
-            this.Api.users[userId].isRegistered = true;
-            this.Api.users[userId].is2FaActive = true;
-            if (this.Api.users[userId].level === 10) this.Api.users[userId].disabled = false;
-          }
+          this.Api.users[id].disabled = false;
           this.writeUsers();
-
-          res.json({ isValid });
+          this.Api.Activate = false;
+          this.Api.Code = null;
+          this.sendSocketNotification("CodeDone");
+          console.warn(`[Bugsounet] [API] Welcome ${myAdmin.username}, your account is now enabled!`);
         })
-      */
 
         .get("/api", (req, res) => {
           res.json({ api: "OK", docs: this.Api.APIDocs });
@@ -1933,6 +1899,17 @@ class api {
         resolve();
       });
     });
+  }
+
+  randomCode () {
+    const crypto = require("crypto");
+    return crypto.randomInt(100000, 999999);
+  }
+
+  closeActivate () {
+    this.Api.Activate = false;
+    this.Api.Code = null;
+    log("Admin account activate is now closed");
   }
 }
 module.exports = api;

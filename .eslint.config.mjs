@@ -111,7 +111,7 @@ const config = [
     }
   },
   {
-    "ignores": ["*.js", "components/**/*.js"]
+    "ignores": ["*.js", "components/**/*.js", "activate/**/*.js"]
   },
   {
     "ignores": ["databases/*.js"]

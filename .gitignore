@@ -65,3 +65,4 @@
 /EXTs/EXT-Website/web/assets/js/*.js
 /EXTs/EXT-Website/server/server.js
 /databases/login
+/activate/assets/index.js

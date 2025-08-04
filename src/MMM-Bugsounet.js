@@ -25,6 +25,7 @@ Module.register("MMM-Bugsounet", {
     if (this.config.debug) logBugsounet = (...args) => { console.log("[Bugsounet]", ...args); };
     this.ready = false;
     this.AlertCommander = new AlertCommander();
+    this.ActivateCountdownInterval = null;
     this.sendSocketNotification("PRE-INIT");
   },
 
@@ -102,6 +103,9 @@ Module.register("MMM-Bugsounet", {
       case "Activate":
         this.ActivateAPIPopup(payload);
         break;
+      case "CodeDone":
+        this.CloseAPIPopup();
+        break;
     }
   },
 
@@ -161,7 +165,8 @@ Module.register("MMM-Bugsounet", {
           <img src="${data.imageUrl}" alt="QR Code" />
           <div class="text">
             <span>Your ${data.username} account need to be activated</span>
-            <span>Please scan this QRCode to continue...</span>
+            <span>Scan this QRCode</span>
+            <span>Enter this Code: ${data.code}</span>
           </div>
         </div>
         <div class="time-container">
@@ -175,10 +180,9 @@ Module.register("MMM-Bugsounet", {
     const timeElement = popup.querySelector(".time");
     let timeLeft = 300; // Initial time in seconds
 
-    const countdownInterval = setInterval(() => {
+    this.ActivateCountdownInterval = setInterval(() => {
       timeLeft--;
       if (timeLeft < 0) {
-        clearInterval(countdownInterval);
         this.CloseAPIPopup();
         return;
       }
@@ -192,9 +196,12 @@ Module.register("MMM-Bugsounet", {
 
   CloseAPIPopup () {
     const popup = document.getElementById("Bugsounet-API");
+    clearInterval(this.ActivateCountdownInterval);
+    this.ActivateCountdownInterval = null;
     if (popup) {
       popup.parentNode.removeChild(popup);
     }
+    this.sendSocketNotification("ActivateClosed");
   },
 
   /********************************/
