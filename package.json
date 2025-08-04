@@ -69,7 +69,7 @@
     "setup:EXT-YouTubeCast": "node installer/setup --path=EXTs/EXT-YouTubeCast",
     "test": "npm run lint",
     "test:all": "npm run lint && npm run test:css && npm run test:markdown && npm run test:translations",
-    "test:css": "stylelint *.css EXTs/EXT-*/*.css EXTs/EXT-Website/web/assets/css/*.css --config .stylelintrc.json",
+    "test:css": "stylelint *.css activate/assets/*.css EXTs/EXT-*/*.css EXTs/EXT-Website/web/assets/css/*.css --config .stylelintrc.json",
     "test:markdown": "markdownlint-cli2 *.md EXTs/EXT-*/*.md --config .markdownlint-cli2.mjs",
     "test:translations": "prettier translations/*.json --check --config .prettier.config.mjs",
     "update": "node installer/update"
