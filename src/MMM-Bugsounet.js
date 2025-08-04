@@ -210,7 +210,7 @@ Module.register("MMM-Bugsounet", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "sysinfo",
-      description: Bugsounet_translate("TB_SYSINFO_DESCRIPTION"),
+      description: Bugsounet_translate("EXT-TelegramBot_SYSINFO_DESCRIPTION"),
       callback: "cmd_sysinfo"
     });
     commander.add({
@@ -297,7 +297,7 @@ Module.register("MMM-Bugsounet", {
     // network
     text += `*-- ${Bugsounet_translate("System_NetworkSystem")} --*\n`;
     text += `*${Bugsounet_translate("System_IPNetwork")}* \`${result["NETWORK"]["ip"]}\`\n`;
-    text += `*${Bugsounet_translate("System_InterfaceNetwork")}* \`${result["NETWORK"]["name"]} (${result["NETWORK"]["type"] === "wired" ? Bugsounet_translate("TB_SYSINFO_ETHERNET") : Bugsounet_translate("TB_SYSINFO_WLAN")})\`\n`;
+    text += `*${Bugsounet_translate("System_InterfaceNetwork")}* \`${result["NETWORK"]["name"]} (${result["NETWORK"]["type"] === "wired" ? Bugsounet_translate("EXT-TelegramBot_SYSINFO_ETHERNET") : Bugsounet_translate("EXT-TelegramBot_SYSINFO_WLAN")})\`\n`;
     if (result["NETWORK"]["type"] === "wired") {
       text += `*${Bugsounet_translate("System_SpeedNetwork")}* \`${result["NETWORK"]["speed"]} Mbit/s\`\n`;
       text += `*${Bugsounet_translate("System_DuplexNetwork")}* \`${result["NETWORK"]["duplex"]}\`\n`;

@@ -1,8 +1,4 @@
 {
-  "TB_SYSINFO_DESCRIPTION": "Zeige Systeminformationen.",
-  "TB_SYSINFO_ETHERNET": "Ethernet",
-  "TB_SYSINFO_WLAN": "WLAN",
-
   "Generic_Install": "Installieren",
   "Generic_Delete": "Löschen",
   "Generic_Configure": "Konfigurieren",
@@ -337,6 +333,9 @@
   "EXT-TelegramBot_SHOW_LOCKED": " ist durch einen anderen Prozess gesperrt und kann nicht angezeigt werden.",
   "EXT-TelegramBot_MODULE_NOTFOUND": "Modul nicht gefunden: ",
   "EXT-TelegramBot_MODULE_NAME": "Name des Moduls fehlt.",
+  "EXT-TelegramBot_SYSINFO_DESCRIPTION": "Zeige Systeminformationen.",
+  "EXT-TelegramBot_SYSINFO_ETHERNET": "Ethernet",
+  "EXT-TelegramBot_SYSINFO_WLAN": "WLAN",
 
   "EXT-Updates_ALERT_UPDATE_ERROR": "Aktualisierungsfehler: {MODULE_NAME}",
   "EXT-Updates_ALERT_WELCOMEPID": "Willkommen.<br>MagicMirror² läuft unter PID {PID}",
