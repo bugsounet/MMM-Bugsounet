@@ -69,6 +69,7 @@ Module.register("MMM-Bugsounet", {
       case "BUGSOUNET-INIT":
         await this.EXT_Config();
         await this.websiteInit();
+        this.config.translations = this.getTranslations();
         this.sendSocketNotification("INIT", this.config);
         break;
       case "INITIALIZED":

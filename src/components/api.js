@@ -143,6 +143,7 @@ class api {
   }
 
   async init (data) {
+    await Translator.initTranslationsFiles(data.translations);
     await Translator.loadCoreTranslations();
     await Translator.loadTranslations();
 

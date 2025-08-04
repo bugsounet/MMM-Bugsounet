@@ -3,22 +3,9 @@
  * Modified for MMM-Bugsounet API using and node_helper using
  */
 
-/**
- * Translation to load
- * First is core translation
- * <translation lang>:<translation file>
- */
-const translations = {
-  en: "en.json",
-  fr: "fr.json",
-  de: "de.json",
-  es: "es.json",
-  it: "it.json",
-  nl: "nl.json",
-  tr: "tr.json"
-};
+var translations = {};
 
-const translationsPath = `${global.root_path}/modules/MMM-Bugsounet/translations`;
+const BugsounetPath = `${global.root_path}/modules/MMM-Bugsounet`;
 
 /* main Translator */
 const Translator = (function () {
@@ -28,12 +15,11 @@ const Translator = (function () {
    * @param {string} file Path of the file we want to load.
    * @returns {Promise<object>} the translations in the specified file
    */
-
   async function loadJSON (file) {
     return new Promise(function (resolve) {
       let fileInfo = null;
       try {
-        fileInfo = require(`${translationsPath}/${file}`);
+        fileInfo = require(`${BugsounetPath}/${file}`);
       } catch {
         console.error(`[Bugsounet] [Translator] loading json file: ${file} failed`);
       }
@@ -139,6 +125,15 @@ const Translator = (function () {
       }
       console.log(`[Bugsounet] [Translator] Translations Group: ${group} - Lang: ${lang} - Match: ${Object.keys(TranslatedGroupResult).length}`);
       return TranslatedGroupResult;
+    },
+
+    /**
+     * init translations language files
+     */
+    initTranslationsFiles (languagesFiles) {
+      translations = languagesFiles;
+      console.log("[Bugsounet] [Translator] Set Language Files:", translations);
+      return translations;
     }
   };
 }());
