@@ -105,7 +105,7 @@
     "eslint-plugin-package-json": "^0.48.0",
     "markdownlint-cli2": "^0.18.1",
     "stylelint": "^16.23.0",
-    "stylelint-config-standard": "^38.0.0",
+    "stylelint-config-standard": "^39.0.0",
     "stylelint-prettier": "^5.0.3"
   },
   "engines": {
