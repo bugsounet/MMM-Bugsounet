@@ -2566,6 +2566,10 @@ body.swal2-shown {
   color: #04b962 !important;
 }
 
+#PasswordStrengthChecker .ConfirmGrp {
+  color: #04b962 !important;
+}
+
 #PasswordStrengthChecker[data-strength-check*="lowercase"] .LowercaseGrp {
   color: #04b962 !important;
 }

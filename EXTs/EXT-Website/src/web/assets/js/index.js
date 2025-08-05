@@ -103,11 +103,12 @@ function AddSpinner () {
 
 function doPassword () {
   let password = document.getElementById("password");
-  let newpassword = document.getElementById("newpassword");
-  let PasswordStrengthChecker = document.getElementById("PasswordStrengthChecker");
 
   if (password) {
     console.log("detected password");
+    let newpassword = document.getElementById("newpassword");
+    let PasswordStrengthChecker = document.getElementById("PasswordStrengthChecker");
+
     let eyeIcon = document.getElementsByClassName("toggle-password");
     Array.from(eyeIcon).forEach((icon) => {
       icon.onclick = function () {
@@ -126,9 +127,12 @@ function doPassword () {
     });
 
     if (PasswordStrengthChecker) {
+      let LengthGrp = document.getElementById("LengthGrp");
+      let ConfirmGrp = document.getElementById("ConfirmGrp");
+      let Profil = document.getElementById("profil") || document.getElementById("accounts");
+
       password.onkeyup = () => {
         let pwdChecker = checkPasswordStrength.passwordStrength(password.value);
-        let LengthGrp = document.getElementById("LengthGrp");
 
         if (pwdChecker.length === 0 && pwdChecker.value === "Too weak") password.setAttribute("passwordStrength", "");
         else password.setAttribute("passwordStrength", pwdChecker.value);
@@ -148,9 +152,17 @@ function doPassword () {
           if (newpassword) {
             newpassword.disabled = true;
             newpassword.value = "";
+            ConfirmGrp.classList.remove("ConfirmGrp");
           }
         }
       };
+
+      if (newpassword && Profil) {
+        Profil.onkeyup = () => {
+          if (password.value !== "" && (password.value === newpassword.value)) ConfirmGrp.classList.add("ConfirmGrp");
+          else ConfirmGrp.classList.remove("ConfirmGrp");
+        };
+      }
     }
   }
 }
