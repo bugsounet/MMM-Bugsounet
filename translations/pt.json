@@ -35,7 +35,7 @@
   "EXT-Spotify_SearchTypeAlbum": "album",
   "EXT-Spotify_SearchTypeTrack": "faixa",
   "EXT-Spotify_SearchTypeArtist": "artista",
-  
+
   "EXT-Volume_RecordPresetError": "Record: Preset Error!",
   "EXT-Volume_VolumePresetError": "Volume: Preset Error!",
   "EXT-Volume_Text": "Volume:",
