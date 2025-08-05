@@ -50,7 +50,12 @@ Module.register("MMM-Bugsounet", {
       es: "translations/es.json",
       it: "translations/it.json",
       nl: "translations/nl.json",
-      tr: "translations/tr.json"
+      tr: "translations/tr.json",
+      el: "translations/el.json",
+      id: "translations/id.json",
+      ko: "translations/ko.json",
+      pt: "translations/pt.json",
+      "zh-cn": "translations/zh-cn.json"
     };
   },
 
