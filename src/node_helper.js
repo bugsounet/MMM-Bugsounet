@@ -11,10 +11,8 @@ const api = require("./components/api");
 module.exports = NodeHelper.create({
   requiresVersion: "2.31.0",
   start () {
-    this.lib = { error: 0 };
     this.config = {};
     this.alreadyInitialized = false;
-    this.lib = { error: 0 };
   },
 
   async socketNotificationReceived (noti, payload) {
