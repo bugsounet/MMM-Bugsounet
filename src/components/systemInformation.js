@@ -1,7 +1,6 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const { exec } = require("node:child_process");
 const si = require("systeminformation");
+const { updateFirstId, getFirstId } = require("./database");
 
 // see to add fetch from website ?
 
@@ -301,61 +300,31 @@ class systemInfo {
 
   getUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../databases/uptimed");
-      if (fs.existsSync(uptimeFilePath)) {
-        fs.readFile(uptimeFilePath, "utf8", (error, data) => {
-          if (error) {
-            console.error("[Bugsounet] [SysInfo] readFile uptimed error!", error);
-            return resolve();
-          }
-          try {
-            var Data = JSON.parse(data);
-          } catch (e) {
-            console.error("[Bugsounet] [SysInfo] readFile data error!", e.toString());
-            return resolve();
-          }
-          console.log("[Bugsounet] [SysInfo] Read Uptimed");
-          this.System["UPTIME"].recordCurrent = Data.system;
-          this.System["UPTIME"].recordMM = Data.MM;
-          this.System["UPTIME"].recordCurrentDHM = this.getDHM(Data.system);
-          this.System["UPTIME"].recordMMDHM = this.getDHM(Data.MM);
-          resolve();
-        });
-      } else {
-        let uptime = {
-          system: 1,
-          MM: 1
-        };
-        fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-          if (error) console.error("[Bugsounet] [SysInfo] Uptimed database file creation error!", error);
-          else console.log("[Bugsounet] [SysInfo] Create Uptimed database");
-          resolve();
-        });
-      }
+      console.log("[Bugsounet] [SysInfo] Read Uptimed");
+      const GetDBUptimed = getFirstId("uptimed");
+      this.System["UPTIME"].recordCurrent = GetDBUptimed.system;
+      this.System["UPTIME"].recordMM = GetDBUptimed.magicmirror;
+      this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);
+      this.System["UPTIME"].recordMMDHM = this.getDHM(this.System["UPTIME"].recordMM);
+      resolve();
     });
   }
 
   writeUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../databases/uptimed");
       if (this.System["UPTIME"].current > this.System["UPTIME"].recordCurrent) {
         this.System["UPTIME"].recordCurrent = this.System["UPTIME"].current;
         this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);
+        updateFirstId("uptimed", "system", this.System["UPTIME"].recordCurrent);
       }
 
       if (this.System["UPTIME"].MM > this.System["UPTIME"].recordMM) {
         this.System["UPTIME"].recordMM = this.System["UPTIME"].MM;
         this.System["UPTIME"].recordMMDHM = this.getDHM(this.System["UPTIME"].recordMM);
+        updateFirstId("uptimed", "magicmirror", this.System["UPTIME"].recordMM);
       }
 
-      let uptime = {
-        system: this.System["UPTIME"].recordCurrent,
-        MM: this.System["UPTIME"].recordMM
-      };
-      fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-        if (error) console.error("[Bugsounet] [SysInfo] Uptimed database file writing error", error);
-        resolve();
-      });
+      resolve();
     });
   }
 

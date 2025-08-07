@@ -14,14 +14,21 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const QRCode = require("qrcode");
-
 const swaggerUi = require("swagger-ui-express");
-
 const { rateLimit } = require("express-rate-limit");
 
 const systemInformation = require("./systemInformation");
-
 const Translator = require("./translator");
+
+const {
+  openDatabase,
+  updateFirstId,
+  getFirstId,
+  getUsers,
+  getUserById,
+  //getUserByUsername,
+  updateUserById
+} = require("./database");
 
 var log = () => { /* do nothing */ };
 
@@ -32,6 +39,8 @@ class api {
     this.sendInternalCallback = (value) => cb.sendInternalCallback(value);
 
     if (config.debug) log = (...args) => { console.log("[Bugsounet] [API]", ...args); };
+
+    openDatabase(config.debug);
 
     this.Api = {
       MMConfig: null, // real config file (config.js)
@@ -170,27 +179,9 @@ class api {
     this.Api.systemInformation.result = await this.Api.systemInformation.lib.initData();
 
     console.log("[Bugsounet] [API] Reading users Database...");
-    await this.getUsers();
+    //await this.getUsers();
 
-    const verify = this.verifyUsers();
-    if (verify) {
-      console.error("[Bugsounet] [API] Invalid Users database detected!");
-      console.warn("[Bugsounet] [API] Detected:", verify);
-      console.error("[Bugsounet] [API] Please Fix users database before.");
-      process.exit();
-      return;
-    }
-
-    const duplicate = this.verifyDuplicate();
-    if (duplicate.length) {
-      console.error("[Bugsounet] [API] Error: There are duplicates in the Users database!");
-      console.warn("[Bugsounet] [API] Duplicates:", duplicate);
-      console.error("[Bugsounet] [API] Please Fix users database before.");
-      process.exit();
-      return;
-    } else {
-      console.log("[Bugsounet] [API] There is", Object.keys(this.Api.users).length, "username in database");
-    }
+    console.log("[Bugsounet] [API] There is", getUsers().length, "username in database");
 
     console.log("[Bugsounet] [API] Reading login Database...");
     await this.getLoginPrefs();
@@ -206,12 +197,12 @@ class api {
     await this.createAPI();
     await this.serverAPI();
 
-    const AdminActivate = await this.getFirstUserOpt();
-    if (AdminActivate) {
+    const AdminActivate = getUserById(1);
+    if (AdminActivate && AdminActivate.level === 10 && AdminActivate.disabled) {
       console.warn(`[Bugsounet] [API] For activate your ${AdminActivate.username} account`);
       console.warn("[Bugsounet] [API] Please read informations on MagicMirror² screen for continue");
 
-      QRCode.toDataURL(`http://${this.Api.listening}:8085/activate?id=${this.getUuidByUsername(AdminActivate.username)}`, (err, imageUrl) => {
+      QRCode.toDataURL(`http://${this.Api.listening}:8085/activate?id=${AdminActivate.id}`, (err, imageUrl) => {
         if (err) return console.error("[Bugsounet] [API] Error generating QR code", err);
         this.Api.Activate = true;
         this.Api.Code = this.randomCode();
@@ -335,13 +326,12 @@ class api {
           if (!this.Api.Activate) return res.status(404).json({ error: "You Are Lost in Space" });
           const { id, token } = req.body;
 
-          const myAdmin = this.getFirstUserOpt();
-          if (!myAdmin || myAdmin.username !== this.Api.users[id]?.username || this.Api.Code !== parseInt(token)) return res.json({ isValid: false });
+          const myAdmin = getUserById(1);
+          if (!myAdmin || myAdmin.username !== getUserById(id)?.username || this.Api.Code !== parseInt(token)) return res.json({ isValid: false });
 
           res.json({ isValid: true, account: myAdmin.username });
 
-          this.Api.users[id].disabled = false;
-          this.writeUsers();
+          updateUserById(1, "disabled", 0);
           this.Api.Activate = false;
           this.Api.Code = null;
           this.sendSocketNotification("CodeDone");
@@ -546,7 +536,7 @@ class api {
         }
         if (decoder.background) this.Api.users[decoder.id].background = decoder.background;
         if (decoder.topbar) this.Api.users[decoder.id].topbar = decoder.topbar;
-        await this.writeUsers();
+        //await this.writeUsers();
         res.json({ done: "ok" });
         break;
 
@@ -581,7 +571,7 @@ class api {
         newUser.password = this.cryptPassword(this.decode(NewUserDecode.password));
         var UserId = uuid.v4();
         this.Api.users[UserId] = newUser;
-        await this.writeUsers();
+        //await this.writeUsers();
         res.json({ done: "ok" });
         break;
 
@@ -621,7 +611,7 @@ class api {
         if (UserDecode.password) this.Api.users[UserDecode.id].password = this.cryptPassword(this.decode(UserDecode.password));
         if (UserDecode.level) this.Api.users[UserDecode.id].level = UserDecode.level;
         if (UserDecode.disabled) this.Api.users[UserDecode.id].disabled = UserDecode.disabled;
-        await this.writeUsers();
+        //await this.writeUsers();
         res.json({ done: "ok" });
         break;
 
@@ -987,7 +977,7 @@ class api {
         }
 
         delete (this.Api.users[DeleteUserIndex]);
-        await this.writeUsers();
+        //await this.writeUsers();
         res.json({ done: "ok" });
         break;
 
@@ -1749,17 +1739,6 @@ class api {
 
   /* user database */
 
-  verifyUsers () {
-    const users = Object.values(this.Api.users);
-    return users.find((x) => !x.username || !x.password);
-  }
-
-  verifyDuplicate () {
-    const users = Object.values(this.Api.users);
-    let lookup = Object.groupBy(users, (user) => user.username);
-    return users.filter((user) => lookup[user.username].length > 1);
-  }
-
   getUserByUsername (username) {
     const users = Object.values(this.Api.users);
     return users.find((user) => user.username === username);
@@ -1865,40 +1844,18 @@ class api {
 
   getLoginPrefs () {
     return new Promise((resolve) => {
-      const loginFile = `${this.BugsounetModulePath}/databases/login`;
-      if (fs.existsSync(loginFile)) {
-        fs.readFile(loginFile, "utf8", (error, data) => {
-          if (error) {
-            console.error("[Bugsounet] [API] readFile login error!", error.message);
-            return resolve();
-          }
-          try {
-            this.Api.login = JSON.parse(data);
-            console.log("[Bugsounet] [API] login Database:", this.Api.login);
-          } catch (e) {
-            console.error("[Bugsounet] [API] - readFile login error!", e.message);
-            return resolve();
-          }
-          resolve();
-        });
-      } else {
-        this.Api.login = {
-          language: "en",
-          background: 1
-        };
-        console.warn("[Bugsounet] [API] Create default login database");
-        this.writeLoginPrefs().then(() => resolve());
-      }
+      const prefs = getFirstId("login");
+      this.Api.login.language = prefs.language;
+      this.Api.login.background = prefs.background;
+      resolve();
     });
   }
 
   writeLoginPrefs () {
     return new Promise((resolve) => {
-      const loginFile = `${this.BugsounetModulePath}/databases/login`;
-      fs.writeFile(loginFile, JSON.stringify(this.Api.login), (error) => {
-        if (error) console.error("[Bugsounet] [API] login database file writing error", error);
-        resolve();
-      });
+      updateFirstId("login", "language", this.Api.login.language);
+      updateFirstId("login", "background", this.Api.login.background);
+      resolve();
     });
   }
 

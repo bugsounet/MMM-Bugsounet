@@ -79,6 +79,7 @@
     "@mdi/font": "^7.4.47",
     "alertifyjs": "^1.14.0",
     "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^12.2.0",
     "dayjs": "^1.11.13",
     "esbuild": "^0.25.8",
     "express": "^5.1.0",
@@ -112,6 +113,7 @@
     "node": ">=24"
   },
   "installer": {
+    "rebuild": true,
     "apt": [
       "pulseaudio",
       "python3",
@@ -122,6 +124,6 @@
     ],
     "EXT": true
   },
-  "rev": "250714-dev",
+  "rev": "250807-dev",
   "api": "2.0.0"
 }
