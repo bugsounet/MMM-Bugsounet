@@ -395,7 +395,7 @@ body.swal2-shown > [aria-hidden="true"] {
 
 #Bugsounet-API {
   position: fixed;
-  z-index: 1;
+  z-index: 999999;
   left: 0;
   top: 0;
   width: 100%;
