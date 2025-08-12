@@ -2,23 +2,24 @@
 
 const Database = require("better-sqlite3");
 const bcrypt = require("bcryptjs");
+const uuid = require("uuid");
 
 var db = null;
 var log = () => { /* do nothing */ };
+const userRows = "id, disabled, username, newPassword, level, avatar, language, background, topbar";
 
 function initUptimed () {
   var query = `
     CREATE TABLE IF NOT EXISTS "uptimed" (
-      "id" INTEGER UNIQUE,
       "system" INTEGER NOT NULL,
       "magicmirror" INTEGER NOT NULL
     )
   `;
   db.exec(query);
 
-  const row = db.prepare("SELECT * FROM uptimed WHERE id = 0").get();
+  const row = db.prepare("SELECT * FROM uptimed").get();
   if (!row) {
-    db.exec("INSERT INTO uptimed (id, system, magicmirror) VALUES (0, 0, 0)");
+    db.exec("INSERT INTO uptimed (system, magicmirror) VALUES (0, 0)");
     console.debug("[Bugsounet] [DB] Uptimed database created");
   }
 }
@@ -26,16 +27,15 @@ function initUptimed () {
 function initLogin () {
   var query = `
     CREATE TABLE IF NOT EXISTS "login" (
-      "id" INTEGER UNIQUE,
       "language" TEXT NOT NULL,
       "background" INTEGER NOT NULL
     )
   `;
   db.exec(query);
 
-  const row = db.prepare("SELECT * FROM login WHERE id = 0").get();
+  const row = db.prepare("SELECT * FROM login").get();
   if (!row) {
-    db.exec("INSERT INTO login (id, language, background) VALUES (0, 'en', 2)");
+    db.exec("INSERT INTO login (anguage, background) VALUES ('en', 2)");
     console.debug("[Bugsounet] [DB] login database created");
   }
 }
@@ -43,7 +43,7 @@ function initLogin () {
 function initUsers () {
   var query = `
     CREATE TABLE IF NOT EXISTS "users" (
-      "id" INTEGER UNIQUE,
+      "id" TEXT NOT NULL UNIQUE,
       "disabled" BOOLEAN DEFAULT 0,
       "username" TEXT NOT NULL UNIQUE,
       "password" TEXT NOT NULL,
@@ -52,22 +52,22 @@ function initUsers () {
       "avatar" INTEGER NOT NULL DEFAULT 1,
       "language" TEXT NOT NULL DEFAULT 'en',
       "background" INTEGER NOT NULL DEFAULT 2,
-      "topbar" INTEGER NOT NULL DEFAULT 26,
-      PRIMARY KEY("id" AUTOINCREMENT)
+      "topbar" INTEGER NOT NULL DEFAULT 26
     )
   `;
   db.exec(query);
 
-  const row = db.prepare("SELECT * FROM users WHERE id = 1").get();
+  const row = db.prepare("SELECT * FROM users WHERE level = 10").get();
   if (!row) {
     const newUser = {
+      id: uuid.v4(),
       username: "admin",
       password: bcrypt.hashSync("admin", 10),
       newPassword: 1,
       level: 10,
       disabled: 1
     };
-    const insert = db.prepare("INSERT INTO users (username, password, newPassword, level, disabled) VALUES (@username, @password, @newPassword, @level, @disabled)");
+    const insert = db.prepare("INSERT INTO users (id, username, password, newPassword, level, disabled) VALUES (@id, @username, @password, @newPassword, @level, @disabled)");
 
     insert.run(newUser);
     console.debug("[Bugsounet] [DB] users database created");
@@ -89,29 +89,29 @@ function openDatabase (debug) {
 }
 module.exports.openDatabase = openDatabase;
 
-function updateFirstId (database, key, value) {
+function updateDatas (database, key, value) {
   if (!db) return console.error("[Bugsounet] [DB] Not initialized");
-  const update = db.prepare(`UPDATE ${database} SET ${key} = ? WHERE id = 0`);
+  const update = db.prepare(`UPDATE ${database} SET ${key} = ?`);
   update.run(value);
 }
-module.exports.updateFirstId = updateFirstId;
+module.exports.updateDatas = updateDatas;
 
-function getFirstId (database) {
+function getDatas (database) {
   if (!db) {
     console.error("[Bugsounet] [DB] Not initialized");
     return {};
   }
-  const row = db.prepare(`SELECT * FROM ${database} WHERE id = 0`).get();
+  const row = db.prepare(`SELECT * FROM ${database}`).get();
   return row;
 }
-module.exports.getFirstId = getFirstId;
+module.exports.getDatas = getDatas;
 
 function getUsers () {
   if (!db) {
     console.error("[Bugsounet] [DB] Not initialized");
     return [];
   }
-  const row = db.prepare("SELECT * FROM users").all();
+  const row = db.prepare(`SELECT ${userRows} FROM users`).all();
   return row;
 }
 module.exports.getUsers = getUsers;
@@ -121,7 +121,7 @@ function getUserById (id) {
     console.error("[Bugsounet] [DB] Not initialized");
     return {};
   }
-  const row = db.prepare(`SELECT * FROM users WHERE id = ${id}`).get();
+  const row = db.prepare(`SELECT * FROM users WHERE id = '${id}'`).get();
   return row;
 }
 module.exports.getUserById = getUserById;
@@ -136,15 +136,68 @@ function getUserByUsername (username) {
 }
 module.exports.getUserByUsername = getUserByUsername;
 
+function getUserByUsernameExceptPassword (username) {
+  if (!db) {
+    console.error("[Bugsounet] [DB] Not initialized");
+    return {};
+  }
+  const row = db.prepare(`SELECT ${userRows} FROM users WHERE username = '${username}'`).get();
+  return row;
+}
+module.exports.getUserByUsernameExceptPassword = getUserByUsernameExceptPassword;
+
+function getUserIdByUsername (username) {
+  if (!db) {
+    console.error("[Bugsounet] [DB] Not initialized");
+    return {};
+  }
+  const row = db.prepare(`SELECT id FROM users WHERE username = '${username}'`).get();
+  return row?.id;
+}
+module.exports.getUserIdByUsername = getUserIdByUsername;
+
 function updateUserById (id, key, value) {
   if (!db) {
     console.error("[Bugsounet] [DB] Not initialized");
     return {};
   }
-  const update = db.prepare(`UPDATE users SET ${key} = ? WHERE id = ${id}`);
+  const update = db.prepare(`UPDATE users SET ${key} = ? WHERE id = '${id}'`);
   update.run(value);
 }
 module.exports.updateUserById = updateUserById;
+
+function getMyAdmin () {
+  if (!db) {
+    console.error("[Bugsounet] [DB] Not initialized");
+    return {};
+  }
+  const row = db.prepare("SELECT * FROM users WHERE level = 10").get();
+  return row;
+}
+module.exports.getMyAdmin = getMyAdmin;
+
+function addUser (user) {
+  const newUser = {
+    id: uuid.v4(),
+    username: user.username,
+    password: bcrypt.hashSync(user.password, 10),
+    newPassword: 1,
+    level: user.level,
+    disabled: user.disabled ? 1 : 0,
+    avatar: user.avatar,
+    background: user.background,
+    topbar: user.topbar
+  };
+  const insert = db.prepare("INSERT INTO users (id, username, password, newPassword, level, disabled, avatar, background, topbar) VALUES (@id, @username, @password, @newPassword, @level, @disabled, @avatar, @background, @topbar)");
+  insert.run(newUser);
+}
+module.exports.addUser = addUser;
+
+function deleteUserById (id) {
+  const deleteUser = db.prepare(`DELETE FROM users WHERE id = '${id}'`);
+  deleteUser.run();
+}
+module.exports.deleteUserById = deleteUserById;
 
 /*
 process.on("exit", () => {

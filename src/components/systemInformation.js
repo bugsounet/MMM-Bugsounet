@@ -1,8 +1,6 @@
 const { exec } = require("node:child_process");
 const si = require("systeminformation");
-const { updateFirstId, getFirstId } = require("./database");
-
-// see to add fetch from website ?
+const { updateDatas, getDatas } = require("./database");
 
 class systemInfo {
   constructor (units) {
@@ -301,7 +299,7 @@ class systemInfo {
   getUptimeRecord () {
     return new Promise((resolve) => {
       console.log("[Bugsounet] [SysInfo] Read Uptimed");
-      const GetDBUptimed = getFirstId("uptimed");
+      const GetDBUptimed = getDatas("uptimed");
       this.System["UPTIME"].recordCurrent = GetDBUptimed.system;
       this.System["UPTIME"].recordMM = GetDBUptimed.magicmirror;
       this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);
@@ -315,13 +313,13 @@ class systemInfo {
       if (this.System["UPTIME"].current > this.System["UPTIME"].recordCurrent) {
         this.System["UPTIME"].recordCurrent = this.System["UPTIME"].current;
         this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);
-        updateFirstId("uptimed", "system", this.System["UPTIME"].recordCurrent);
+        updateDatas("uptimed", "system", this.System["UPTIME"].recordCurrent);
       }
 
       if (this.System["UPTIME"].MM > this.System["UPTIME"].recordMM) {
         this.System["UPTIME"].recordMM = this.System["UPTIME"].MM;
         this.System["UPTIME"].recordMMDHM = this.getDHM(this.System["UPTIME"].recordMM);
-        updateFirstId("uptimed", "magicmirror", this.System["UPTIME"].recordMM);
+        updateDatas("uptimed", "magicmirror", this.System["UPTIME"].recordMM);
       }
 
       resolve();
