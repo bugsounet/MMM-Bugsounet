@@ -160,6 +160,7 @@ Module.register("MMM-Bugsounet", {
   ActivateAPIPopup (data) {
     var popup = document.createElement("div");
     popup.id = "Bugsounet-API";
+    // todo: write it in nodejs (lazy mode)
     popup.innerHTML = `
     <div class="modal-content animate__animated animate__zoomInDown">
       <div class="modal-header ">
@@ -170,20 +171,17 @@ Module.register("MMM-Bugsounet", {
         <div class="modal-container">
           <img src="${data.imageUrl}" alt="QR Code" />
           <div class="text">
-            <span>Your ${data.username} account need to be activated</span>
-            <span>Scan this QRCode</span>
-            <span>Enter this Code: ${data.code}</span>
+            <span>${Bugsounet_translate("Generic_Activated", { Username: data.username })}</span>
+            <span>${Bugsounet_translate("Generic_QRCode")}</span>
+            <span>${Bugsounet_translate("Generic_Code", { Code: data.code })}</span>
           </div>
         </div>
-        <div class="time-container">
-          <span class="time-text">Time remaining:</span>
-          <p class="time">00:00</p>
-        </div>
+        <span class="time-remain">${Bugsounet_translate("Generic_TimeRemaining", { Time: "" })}</span>
       </div>
     </div>`;
     document.body.appendChild(popup);
 
-    const timeElement = popup.querySelector(".time");
+    const timeElement = popup.querySelector(".time-remain");
     let timeLeft = 300; // Initial time in seconds
 
     this.ActivateCountdownInterval = setInterval(() => {
@@ -196,7 +194,7 @@ Module.register("MMM-Bugsounet", {
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
       const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-      timeElement.textContent = formattedTime;
+      timeElement.textContent = Bugsounet_translate("Generic_TimeRemaining", { Time: formattedTime });
     }, 1000);
   },
 
