@@ -18,6 +18,9 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-MusicPlayer",
     "setup": "node ../../installer/setup --path=EXTs/EXT-MusicPlayer"
   },
+  "overrides": {
+    "tar-fs": "^3.0.8"
+  },
   "dependencies": {
     "drivelist": "^12.0.2",
     "usb": "^2.16.0",
@@ -29,9 +32,6 @@
       "libudev-dev"
     ],
     "windowsRebuild": false
-  },
-  "overrides": {
-    "tar-fs": "^3.0.8"
   },
   "rev": "250411"
 }

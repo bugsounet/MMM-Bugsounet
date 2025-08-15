@@ -29,14 +29,14 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-MeteoFrance",
     "setup": "node ../../installer/setup --path=EXTs/EXT-MeteoFrance"
   },
-  "dependencies": {
-    "meteofrance_api": "^1.2.4",
-    "weathericons": "^2.1.0"
-  },
   "overrides": {
     "meteofrance_api": {
       "axios": "^1.8.2"
     }
+  },
+  "dependencies": {
+    "meteofrance_api": "^1.2.4",
+    "weathericons": "^2.1.0"
   },
   "rev": "250328"
 }

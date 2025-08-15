@@ -36,6 +36,9 @@
     "token": "node installer/auth_GoogleAssistant_Headless.js",
     "tokenCode": "node installer/auth_GoogleAssistant_ReadLine.js"
   },
+  "overrides": {
+    "axios": "^1.8.2"
+  },
   "dependencies": {
     "@grpc/grpc-js": "^1.13.4",
     "google-auth-library": "^9.15.1",
@@ -44,9 +47,6 @@
     "node-html-parser": "^7.0.1",
     "protobufjs": "^7.5.3",
     "readline": "^1.3.0"
-  },
-  "overrides": {
-    "axios": "^1.8.2"
   },
   "rev": "250412"
 }
