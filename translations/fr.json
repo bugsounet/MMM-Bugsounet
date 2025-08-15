@@ -32,6 +32,10 @@
   "Generic_DownloadReady": "Le téléchargement est prêt",
   "Generic_ConfigLoaded": "La nouvelle configuration a été importé",
   "Generic_EXTStop": "Tous les processus Extented sont maintenant arrêtés",
+  "Generic_Activated": "Votre compte utilisateur {Username} doit être activé.",
+  "Generic_QRCode": "Scannez ce QRCode",
+  "Generic_Code": "Entrez le code: {Code}",
+  "Generic_TimeRemaining": "Temps restant: {Time}",
 
   "About": "À Propos",
   "About_Title": "À Propos de MMM-Bugsounet",

@@ -32,6 +32,10 @@
   "Generic_DownloadReady": "Download is ready",
   "Generic_ConfigLoaded": "New configuration loaded",
   "Generic_EXTStop": "Tüm Genişletilmiş Süreçler artık durduruldu",
+  "Generic_Activated": "Your {Username} account need to be activated",
+  "Generic_QRCode": "Scan this QRCode",
+  "Generic_Code": "Enter this Code: {Code}",
+  "Generic_TimeRemaining": "Time remaining: {Time}",
 
   "About": "About",
   "About_Title": "About MMM-Bugsounet",
