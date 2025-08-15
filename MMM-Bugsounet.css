@@ -11,7 +11,7 @@ body.swal2-shown > [aria-hidden="true"] {
 }
 
 .swal2-container {
-  z-index: 100000 !important;
+  z-index: 999999 !important;
 }
 
 .AlertProgressColor {
@@ -395,7 +395,7 @@ body.swal2-shown > [aria-hidden="true"] {
 
 #Bugsounet-API {
   position: fixed;
-  z-index: 999999;
+  z-index: 999998;
   left: 0;
   top: 0;
   width: 100%;
@@ -434,18 +434,4 @@ body.swal2-shown > [aria-hidden="true"] {
 #Bugsounet-API .modal-container .text {
   display: flex;
   flex-direction: column;
-}
-
-#Bugsounet-API .time-container {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
-
-#Bugsounet-API .time-container .time-text {
-  margin-right: 5px;
-}
-
-#Bugsounet-API .time-container .time {
-  margin: 0;
 }
