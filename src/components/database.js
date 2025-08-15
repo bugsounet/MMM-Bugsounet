@@ -35,7 +35,7 @@ function initLogin () {
 
   const row = db.prepare("SELECT * FROM login").get();
   if (!row) {
-    db.exec("INSERT INTO login (anguage, background) VALUES ('en', 2)");
+    db.exec("INSERT INTO login (language, background) VALUES ('en', 2)");
     console.debug("[Bugsounet] [DB] login database created");
   }
 }
