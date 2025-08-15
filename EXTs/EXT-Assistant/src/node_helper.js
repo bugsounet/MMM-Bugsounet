@@ -13,22 +13,14 @@ module.exports = NodeHelper.create({
   start () {
     this.lib = { error: 0 };
     this.config = {};
-    this.alreadyInitialized = false;
   },
 
   async socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "INIT":
-        if (this.alreadyInitialized) {
-          console.error("[GA] You can't use EXT-Assistant in server mode");
-          this.sendSocketNotification("ERROR", "You can't use EXT-Assistant in server mode");
-          setTimeout(() => process.exit(), 5000);
-          return;
-        }
         console.log(`[GA] EXT-Assistant Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
         this.config = payload;
         if (this.config.debug) logGA = (...args) => { console.log("[GA]", ...args); };
-        this.alreadyInitialized = true;
         this.config.assistantConfig["modulePath"] = __dirname;
         this.initGA();
         break;
