@@ -18,12 +18,20 @@ module.exports = NodeHelper.create({
   async socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "PRE-INIT":
-        if (this.alreadyInitialized) {
+        if (process.mainModule?.path.includes("MagicMirror/serveronly")) {
           console.error("[Bugsounet] You can't use MMM-Bugsounet in server mode");
           this.sendSocketNotification("ERROR", "You can't use MMM-Bugsounet in server mode");
           setTimeout(() => process.exit(), 5000);
           return;
         }
+
+        if (this.alreadyInitialized) {
+          console.error("[Bugsounet] Multi-instances is not allowed");
+          this.sendSocketNotification("ERROR", "Multi-instances is not allowed");
+          setTimeout(() => process.exit(), 5000);
+          return;
+        }
+
         console.log(`[Bugsounet] MMM-Bugsounet Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
 
         this.alreadyInitialized = true;
