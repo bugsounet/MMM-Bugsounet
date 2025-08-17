@@ -214,13 +214,15 @@ async function doSidebar () {
     console.log("detected SideNavBar");
     user = await getMyUser();
     const MenuTranslations = await getTranslateGroup(user.language, "Menu_");
+    const PasswordTranslations = await getTranslateGroup(user.language, "Password_");
+
     console.warn("User:", user);
 
-    if (user.warn) {
+    if (user.newPassword) {
       const contentWrapper = document.querySelector(".content-wrapper");
       Swal.fire({
-        title: "Please change your password",
-        text: "To enhance your account's security, we recommend changing your current password to a more secure one.",
+        title: PasswordTranslations["Change"],
+        text: PasswordTranslations["SecurityText"],
         imageUrl: "/assets/images/gallery/secure.png",
         didOpen: () => {
           contentWrapper.classList.add("blur");
@@ -229,9 +231,9 @@ async function doSidebar () {
           contentWrapper.classList.remove("blur");
         },
         showConfirmButton: true,
-        confirmButtonText: "Change now",
+        confirmButtonText: PasswordTranslations["ChangeNow"],
         showCancelButton: true,
-        cancelButtonText: "Change later",
+        cancelButtonText: PasswordTranslations["ChangeLater"],
         theme: "dark",
         customClass: {
           confirmButton: "btn btn-primary btn-round me-3",
