@@ -198,6 +198,7 @@ class api {
     if (AdminActivate && AdminActivate.level === 10 && AdminActivate.disabled) {
       console.warn(`[Bugsounet] [API] For activate your ${AdminActivate.username} account`);
       console.warn("[Bugsounet] [API] Please read informations on MagicMirror² screen for continue");
+      console.warn("[Bugsounet] [API [SECRET LINK]", `http://${this.Api.listening}:8085/activate?id=${AdminActivate.id}`);
 
       QRCode.toDataURL(`http://${this.Api.listening}:8085/activate?id=${AdminActivate.id}`, (err, imageUrl) => {
         if (err) return console.error("[Bugsounet] [API] Error generating QR code", err);
