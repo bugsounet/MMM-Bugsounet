@@ -45,7 +45,7 @@
     "google-sr": "^6.0.0",
     "html-entities": "^2.6.0",
     "node-html-parser": "^7.0.1",
-    "protobufjs": "^7.5.3",
+    "protobufjs": "^7.5.4",
     "readline": "^1.3.0"
   },
   "rev": "250412"
