@@ -140,6 +140,11 @@
   "Admin_Users": "Compte utilisateurs",
   "Admin_LoginPrefs": "Définissez vos préférences de la page d'identification",
 
+  "Password_Change": "Merci de changer votre mot de passe",
+  "Password_SecurityText": "Pour améliorer la sécurité de votre compte, nous vous recommandons de modifier votre mot de passe actuel par un mot de passe plus sécurisé.",
+  "Password_ChangeNow": "Changer maintenant",
+  "Password_ChangeLater": "Changer plus tard",
+
   "Language_English": "Anglais",
   "Language_French": "Français",
   "Language_German": "Allemand",

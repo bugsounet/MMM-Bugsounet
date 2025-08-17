@@ -140,6 +140,11 @@
   "Admin_Users": "Users Account",
   "Admin_LoginPrefs": "Set your login page preferences",
 
+  "Password_Change": "Please change your password",
+  "Password_SecurityText": "To enhance your account's security, we recommend changing your current password to a more secure one.",
+  "Password_ChangeNow": "Change now",
+  "Password_ChangeLater": "Change later",
+
   "Language_English": "Engels",
   "Language_French": "Frans",
   "Language_German": "Duits",
