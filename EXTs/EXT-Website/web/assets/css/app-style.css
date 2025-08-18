@@ -2105,6 +2105,8 @@ table.grid td {
 
 .card-authentication {
   width: 24rem;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .footer {
@@ -2588,4 +2590,11 @@ body.swal2-shown {
 
 .justify-self-center {
   justify-self: center !important;
+}
+
+#login-html {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
