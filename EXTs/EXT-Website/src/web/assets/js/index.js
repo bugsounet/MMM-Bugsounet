@@ -101,7 +101,7 @@ function AddSpinner () {
   spinner.classList.add("show");
 }
 
-function doPassword () {
+async function doPassword () {
   let password = document.getElementById("password");
 
   if (password) {
@@ -127,6 +127,15 @@ function doPassword () {
     });
 
     if (PasswordStrengthChecker) {
+      const PasswordTranslations = await getTranslateGroup(user.language, "Password_");
+      setTranslation("PasswordStrength", PasswordTranslations["Strength"]);
+      setTranslation("Length", PasswordTranslations["Length"]);
+      setTranslation("Lowercase", PasswordTranslations["Lowercase"]);
+      setTranslation("Uppercase", PasswordTranslations["Uppercase"]);
+      setTranslation("Number", PasswordTranslations["Number"]);
+      setTranslation("Symbol", PasswordTranslations["Symbol"]);
+      setTranslation("Confirmed", PasswordTranslations["Confirmed"]);
+
       let LengthGrp = document.getElementById("LengthGrp");
       let ConfirmGrp = document.getElementById("ConfirmGrp");
       let Profil = document.getElementById("profil") || document.getElementById("accounts");
@@ -214,11 +223,11 @@ async function doSidebar () {
     console.log("detected SideNavBar");
     user = await getMyUser();
     const MenuTranslations = await getTranslateGroup(user.language, "Menu_");
-    const PasswordTranslations = await getTranslateGroup(user.language, "Password_");
 
     console.warn("User:", user);
 
     if (user.newPassword) {
+      const PasswordTranslations = await getTranslateGroup(user.language, "Password_");
       const contentWrapper = document.querySelector(".content-wrapper");
       Swal.fire({
         title: PasswordTranslations["Change"],
