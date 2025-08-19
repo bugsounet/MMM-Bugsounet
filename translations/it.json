@@ -144,6 +144,13 @@
   "Password_SecurityText": "To enhance your account's security, we recommend changing your current password to a more secure one.",
   "Password_ChangeNow": "Change now",
   "Password_ChangeLater": "Change later",
+  "Password_Strength": "Password Strength",
+  "Password_Length": "10 characters minimum",
+  "Password_Lowercase": "Lowercase",
+  "Password_Uppercase": "Uppercase",
+  "Password_Number": "Number",
+  "Password_Symbol": "Symbol",
+  "Password_Confirmed": "Password confirmed",
 
   "Language_English": "Inglese",
   "Language_French": "francese",

@@ -144,6 +144,13 @@
   "Password_SecurityText": "Pour améliorer la sécurité de votre compte, nous vous recommandons de modifier votre mot de passe actuel par un mot de passe plus sécurisé.",
   "Password_ChangeNow": "Changer maintenant",
   "Password_ChangeLater": "Changer plus tard",
+  "Password_Strength": "Robustesse du mot de passe",
+  "Password_Length": "10 caractères minimum",
+  "Password_Lowercase": "Minuscule",
+  "Password_Uppercase": "Majuscule",
+  "Password_Number": "Nombre",
+  "Password_Symbol": "Symbole",
+  "Password_Confirmed": "Confirmation du mot de passe",
 
   "Language_English": "Anglais",
   "Language_French": "Français",
