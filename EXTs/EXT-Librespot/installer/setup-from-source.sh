@@ -41,7 +41,7 @@ echo
 Installer_info "Installing Librespot..."
 Installer_warning "It could takes ~30 minutes."
 cd sources
-cargo build --release --no-default-features --features "alsa-backend with-libmdns" || {
+cargo build --release --no-default-features --features "pulseaudio-backend with-libmdns" || {
   Installer_error "Error detected !"
   exit 255
 }
