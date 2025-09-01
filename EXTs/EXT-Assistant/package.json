@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.13.4",
-    "google-auth-library": "^9.15.1",
+    "google-auth-library": "^10.3.0",
     "google-sr": "^6.0.0",
     "html-entities": "^2.6.0",
     "node-html-parser": "^7.0.1",
