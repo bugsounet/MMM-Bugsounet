@@ -71,59 +71,58 @@ class api {
       Code: null,
       Access: {
         GET: {
-          "/api/version": 1, // ok
-          "/api/translations/common": 1, // ok
-          "/api/translations/group": 1, // ok
-          "/api/translations/translate": 1, // ok
-          "/api/translations/homeText": 1, // ok
-          "/api/system/sysInfo": 3, // ok
-          "/api/EXT/versions": 3, // ok
-          "/api/EXT/status": 2, // ok
-          "/api/config/MM": 10, // ok
-          "/api/backups": 2, // ok ~~
-          "/api/backups/file": 10, // ok
-          "/api/EXT/RadioPlayer": 5, // ok
-          "/api/EXT/Updates": 10, // ok
-          "/api/EXT/FreeboxTV": 5, // ok
-          "/api/databases/users/me": 1, // ok
-          "/api/databases/users/all": 9 // ok
+          "/api/version": 1, // --
+          //"/api/translations/common": 1,
+          "/api/translations/group": 1, // --
+          "/api/translations/translate": 1, // --
+          "/api/translations/homeText": 1, // --
+          "/api/system/sysInfo": 3, // --
+          "/api/EXT/versions": 3, // --
+          "/api/EXT/status": 2, // --
+          "/api/config/MM": 5, // --
+          "/api/backups": 2, // --
+          "/api/backups/file": 5, // -- 
+          "/api/EXT/RadioPlayer": 5, // --
+          "/api/EXT/Updates": 5, // --
+          "/api/EXT/FreeboxTV": 2,  // -- 
+          "/api/databases/users/me": 1, // --
+          "/api/databases/users/all": 5 // --
         },
         PUT: {
-          "/api/databases/login": 10, // ok
-          "/api/databases/users/me": 1, // ok
-          "/api/databases/users/new": 9, // ok
-          "/api/databases/users/user": 9, // ok
-          "/api/config/MM": 10, // ok
-          "/api/EXT/Volume/speaker": 7, // ok
-          "/api/EXT/Updates": 10, // ok
-          "/api/EXT/Spotify/play": 6, // ok
-          "/api/EXT/Spotify/pause": 6, // ok
-          "/api/EXT/Spotify/toggle": 6, // ok
-          "/api/EXT/Spotify/stop": 6, // ok
-          "/api/EXT/Spotify/next": 6, // ok
-          "/api/EXT/Spotify/previous": 6, // ok
-          "/api/EXT/Screen": 4, // ok
-          "/api/EXT/FreeboxTV": 5, // ok
-          "/api/EXT/RadioPlayer": 5, // ok
-          "/api/backups/file": 10, // ok
-          "/api/backups/external": 10, // ok
-          "/api/MM": 9 // ok
+          "/api/databases/login": 5, // --
+          "/api/databases/users/me": 1, // --
+          "/api/databases/users/new": 5, // --
+          "/api/databases/users/user": 5, // --
+          "/api/config/MM": 5, // --
+          "/api/EXT/Volume/speaker": 2, // --
+          "/api/EXT/Updates": 5, // --
+          "/api/EXT/Spotify/play": 2, // --
+          "/api/EXT/Spotify/pause": 2, // --
+          "/api/EXT/Spotify/toggle": 2, // --
+          "/api/EXT/Spotify/stop": 2, // --
+          "/api/EXT/Spotify/next": 2, // --
+          "/api/EXT/Spotify/previous": 2, // --
+          "/api/EXT/Screen": 2, // --
+          "/api/EXT/FreeboxTV": 2, // --
+          "/api/EXT/RadioPlayer": 2, // --
+          "/api/backups/file": 5, // --
+          "/api/backups/external": 5, // --
+          //"/api/MM": 9
         },
         POST: {
-          "/api/system/restart": 8, // ok
-          "/api/system/die": 8, // ok
-          "/api/system/reboot": 9, //ok
-          "/api/system/shutdown": 9, // ok
-          "/api/system/alert": 3, //ok
-          "/api/EXT/stop": 5, // ok
-          "/api/EXT/Assistant/send": 6, // ok
-          "/api/EXT/YouTube/search": 6, // ok
-          "/api/EXT/Spotify/search": 6, // ok
-          "/api/backups/external": 10 //ok
+          "/api/system/restart": 4, // --
+          "/api/system/die": 5, // --
+          "/api/system/reboot": 4, // --
+          "/api/system/shutdown": 5, // --
+          "/api/system/alert": 2, // --
+          "/api/EXT/stop": 2, // --
+          "/api/EXT/YouTube/search": 2, // --
+          "/api/EXT/Spotify/search": 2, // --
+          "/api/backups/external": 5 // --
         },
         DELETE: {
-          "/api/backups": 10, //ok
-          "/api/databases/users/delete": 9 //ok
+          "/api/backups": 5, // --
+          "/api/databases/users/delete": 5 // --
         }
       }
     };
@@ -528,7 +527,7 @@ class api {
         if (decoder.language) updateUserById(decoder.id, "language", decoder.language);
         if (decoder.avatar) updateUserById(decoder.id, "avatar", decoder.avatar);
         if (decoder.password) {
-          updateUserById(decoder.id, "password", this.cryptPassword(this.decode(decoder.password)));
+          updateUserById(decoder.id, "password", this.decode(decoder.password));
           updateUserById(decoder.id, "newPassword", 0);
         }
         if (decoder.background) updateUserById(decoder.id, "background", decoder.background);
@@ -564,7 +563,7 @@ class api {
         }
 
         var newUser = NewUserDecode;
-        newUser.password = this.cryptPassword(this.decode(NewUserDecode.password));
+        newUser.password = this.decode(NewUserDecode.password);
         addUser(newUser);
         res.json({ done: "ok" });
         break;
@@ -602,7 +601,7 @@ class api {
           return;
         }
 
-        if (UserDecode.password) updateUserById(UserDecode.id, "password", this.cryptPassword(this.decode(UserDecode.password)));
+        if (UserDecode.password) updateUserById(UserDecode.id, "password", this.decode(UserDecode.password));
         if (UserDecode.level) updateUserById(UserDecode.id, "level", UserDecode.level);
         if (UserDecode.disabled) updateUserById(UserDecode.id, "disabled", UserDecode.disabled);
         res.json({ done: "ok" });
@@ -853,15 +852,6 @@ class api {
         res.json({ done: "ok" });
         break;
 
-      case "/api/EXT/Assistant/send":
-        if (!this.Api.EXTStatus["EXT-Assistant"].hello) return res.status(404).json({ error: "Not Found" });
-        var send = req.body["send"];
-        if (typeof (send) !== "string" || send.length < 5) return res.status(400).json({ error: "Bad Request" });
-        log("Request EXT-Assistant send:", send);
-        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_ASSISTANT-ACTIVATE", payload: { type: "TEXT", key: send } });
-        res.json({ done: "ok" });
-        break;
-
       case "/api/EXT/YouTube/search":
         if (!this.Api.EXTStatus["EXT-YouTube"].hello) return res.status(404).json({ error: "Not Found" });
         var YTquery = req.body["search"];
@@ -1107,8 +1097,12 @@ class api {
     var CheckAccess = this.Api.Access[req.method][req.url];
     if (!CheckAccess) {
       console.warn("[Bugsounet] [API] No Access rule found for", req.method, req.url);
-      CheckAccess = 10;
+      CheckAccess = 5;
     } else {
+      if (CheckAccess > 5) {
+        console.warn("[Bugsounet] [API] CheckAccess too high:", CheckAccess);
+        CheckAccess = 5;
+      }
       console.log("[Bugsounet] [API] CheckAccess --> Required:", CheckAccess, "-- User Level:", req.level);
     }
 
@@ -1727,10 +1721,6 @@ class api {
           resolve(APIResult);
         });
     });
-  }
-
-  cryptPassword (password) {
-    return bcrypt.hashSync(password, 10);
   }
 
   /**

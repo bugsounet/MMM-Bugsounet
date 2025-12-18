@@ -57,14 +57,14 @@ function initUsers () {
   `;
   db.exec(query);
 
-  const row = db.prepare("SELECT * FROM users WHERE level = 10").get();
+  const row = db.prepare("SELECT * FROM users WHERE level = 5").get();
   if (!row) {
     const newUser = {
       id: uuid.v4(),
       username: "admin",
-      password: bcrypt.hashSync("admin", 10),
+      password: cryptPassword("admin", 10),
       newPassword: 1,
-      level: 10,
+      level: 5,
       disabled: 1
     };
     const insert = db.prepare("INSERT INTO users (id, username, password, newPassword, level, disabled) VALUES (@id, @username, @password, @newPassword, @level, @disabled)");
@@ -171,7 +171,7 @@ function getMyAdmin () {
     console.error("[Bugsounet] [DB] Not initialized");
     return {};
   }
-  const row = db.prepare("SELECT * FROM users WHERE level = 10").get();
+  const row = db.prepare("SELECT * FROM users WHERE level = 5").get();
   return row;
 }
 module.exports.getMyAdmin = getMyAdmin;
@@ -180,7 +180,7 @@ function addUser (user) {
   const newUser = {
     id: uuid.v4(),
     username: user.username,
-    password: bcrypt.hashSync(user.password, 10),
+    password: cryptPassword(user.password, 10),
     newPassword: 1,
     level: user.level,
     disabled: user.disabled ? 1 : 0,
@@ -199,24 +199,6 @@ function deleteUserById (id) {
 }
 module.exports.deleteUserById = deleteUserById;
 
-/*
-process.on("exit", () => {
-  console.warn("[Bugsounet] [DB] Closed (exit)");
-  db.close();
-});
-
-process.on("SIGHUP", () => {
-  console.warn("[Bugsounet] [DB] Closed (SIGHUP)");
-  process.exit(128 + 1);
-});
-
-process.on("SIGINT", () => {
-  console.warn("[Bugsounet] [DB] Closed (SIGINT)");
-  process.exit(128 + 2);
-});
-
-process.on("SIGTERM", () => {
-  console.warn("[Bugsounet] [DB] Closed (SIGTERM)");
-  process.exit(128 + 15);
-});
-*/
+function cryptPassword (password) {
+  return bcrypt.hashSync(password, 10);
+}
