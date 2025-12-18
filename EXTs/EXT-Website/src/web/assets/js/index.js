@@ -180,6 +180,8 @@ async function doPassword () {
 
 async function doAccess () {
   console.warn("---> Check Access", user.level);
+  if (!user.id) return;
+
   const APIDocs = await EnableAPIDoc();
 
   if (!APIDocs) {
@@ -234,7 +236,6 @@ async function doAccess () {
       // Handle unexpected user levels if necessary
       break;
   }
-
 }
 
 async function doLoginPage () {
