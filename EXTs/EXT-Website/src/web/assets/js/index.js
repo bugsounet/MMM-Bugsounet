@@ -7,6 +7,7 @@
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
   UpdateFlagsLanguage FlagsSelector applyBackgroundTheme AdminSaveChange AdminDelete getAllUsers
   UserSelector LevelSelector checkPasswordStrength putNewUser loadContentDynamically deleteUser updateUser
+  EnableAPIDoc removeAriaHiddenFromBodyChildren
  */
 
 /* eslint-disable max-lines-per-function */
@@ -178,7 +179,7 @@ async function doPassword () {
 }
 
 async function doAccess () {
-  console.warn("---> Check Access", user.level)
+  console.warn("---> Check Access", user.level);
   const APIDocs = await EnableAPIDoc();
 
   if (!APIDocs) {
@@ -197,7 +198,7 @@ async function doAccess () {
   if (user.level < 5) {
     const nextSibling = AdminGrp.nextElementSibling;
     AdminGrp.remove();
-    if (nextSibling && nextSibling.tagName === 'LI' && nextSibling.classList.contains("dropdown-divider")) {
+    if (nextSibling && nextSibling.tagName === "LI" && nextSibling.classList.contains("dropdown-divider")) {
       nextSibling.remove();
     }
   }

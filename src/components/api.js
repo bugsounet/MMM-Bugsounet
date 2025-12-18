@@ -81,10 +81,10 @@ class api {
           "/api/EXT/status": 2, // --
           "/api/config/MM": 5, // --
           "/api/backups": 2, // --
-          "/api/backups/file": 5, // -- 
+          "/api/backups/file": 5, // --
           "/api/EXT/RadioPlayer": 5, // --
           "/api/EXT/Updates": 5, // --
-          "/api/EXT/FreeboxTV": 2,  // -- 
+          "/api/EXT/FreeboxTV": 2, // --
           "/api/databases/users/me": 1, // --
           "/api/databases/users/all": 5 // --
         },
@@ -106,7 +106,7 @@ class api {
           "/api/EXT/FreeboxTV": 2, // --
           "/api/EXT/RadioPlayer": 2, // --
           "/api/backups/file": 5, // --
-          "/api/backups/external": 5, // --
+          "/api/backups/external": 5 // --
           //"/api/MM": 9
         },
         POST: {

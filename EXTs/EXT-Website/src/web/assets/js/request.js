@@ -540,7 +540,7 @@ function configMerge (result) {
 }
 
 function setTranslation (id, content) {
-  let ID = document.getElementById(id)
+  let ID = document.getElementById(id);
   if (ID) ID.textContent = content;
   else console.warn(`id: ${id} not found for Translation content: ${content}`);
 }

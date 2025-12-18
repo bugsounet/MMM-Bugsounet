@@ -186,12 +186,14 @@ class EXTs {
 
   // exception with plugin
   byPassIsConnected () {
+
     /*
     if (this.EXT["EXT-xxx"].hello && this.EXT["EXT-xxx"].connected) {
       logBugsounet("[EXTs] byPass", true);
       return true;
     }
     */
+
     return false;
   }
 

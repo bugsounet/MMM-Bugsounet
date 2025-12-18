@@ -562,12 +562,12 @@ function DoToast (type, header, small, body) {
   });
 }
 
-function removeAriaHiddenFromBodyChildren() {
+function removeAriaHiddenFromBodyChildren () {
   const bodyChildren = document.body.children;
   for (let i = 0; i < bodyChildren.length; i++) {
     const child = bodyChildren[i];
-    if (child.hasAttribute('aria-hidden')) {
-      child.removeAttribute('aria-hidden');
+    if (child.hasAttribute("aria-hidden")) {
+      child.removeAttribute("aria-hidden");
       console.log(`Removed aria-hidden from body child: ${child.tagName} id "${child.id}"`);
     }
   }
