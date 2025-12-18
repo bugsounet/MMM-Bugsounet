@@ -33,7 +33,7 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-Screen"
   },
   "dependencies": {
-    "cron-parser": "^5.3.0",
+    "cron-parser": "^5.4.0",
     "dayjs": "^1.11.19",
     "long-press-event": "^2.5.0",
     "node-cron": "^4.2.1",
