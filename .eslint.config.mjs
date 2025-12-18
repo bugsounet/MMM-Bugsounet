@@ -56,6 +56,7 @@ const config = [
       "@stylistic/semi": ["error", "always"],
       "@stylistic/space-before-function-paren": ["error", "always"],
       "@stylistic/spaced-comment": "off",
+      "depend/ban-dependencies": ["error", {"allowed": ["axios"]}],
       "eqeqeq": "error",
       "id-length": "off",
       "import-x/order": "error",
@@ -107,7 +108,8 @@ const config = [
     "files": ["**/package.json"],
     "rules": {
       "package-json/valid-name": "off",
-      "package-json/require-type": "off"
+      "package-json/require-type": "off",
+      "depend/ban-dependencies": ["error", {"allowed": ["axios"]}]
     }
   },
   {
