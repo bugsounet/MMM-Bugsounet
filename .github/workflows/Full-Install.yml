@@ -34,26 +34,6 @@ jobs:
         working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
-      - name: Install EXT-Assistant
-        run: npm run setup:EXT-Assistant
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
-      - name: Install EXT-Background
-        run: npm run setup:EXT-Background
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
-      - name: Install EXT-Browser
-        run: npm run setup:EXT-Browser
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
-      - name: Install EXT-Detector
-        run: npm run setup:EXT-Detector
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
       - name: Install EXT-Freebox
         run: npm run setup:EXT-Freebox
         working-directory: MagicMirror/modules/MMM-Bugsounet
@@ -84,11 +64,6 @@ jobs:
         working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
-      - name: Install EXT-MusicPlayer
-        run: npm run setup:EXT-MusicPlayer
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
       - name: Install EXT-NetatmoThermostat
         run: npm run setup:EXT-NetatmoThermostat
         working-directory: MagicMirror/modules/MMM-Bugsounet
@@ -96,11 +71,6 @@ jobs:
 
       - name: Install EXT-Pages
         run: npm run setup:EXT-Pages
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
-      - name: Install EXT-Photos
-        run: npm run setup:EXT-Photos
         working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
@@ -134,18 +104,8 @@ jobs:
         working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
-      - name: Install EXT-StreamDeck
-        run: npm run setup:EXT-StreamDeck
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
       - name: Install EXT-TelegramBot
         run: npm run setup:EXT-TelegramBot
-        working-directory: MagicMirror/modules/MMM-Bugsounet
-        continue-on-error: false
-
-      - name: Install EXT-Touch
-        run: npm run setup:EXT-Touch
         working-directory: MagicMirror/modules/MMM-Bugsounet
         continue-on-error: false
 
