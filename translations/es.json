@@ -222,26 +222,6 @@
   "Tools_YouTube_Text": "Play a YouTube video",
   "Tools_YouTube_Query": "Enter your YouTube search",
 
-  "EXT-Assistant_NO_RESPONSE": "Lo siento, no te entiendo.",
-  "EXT-Assistant_NO_AUDIO_RESPONSE": "No hay respuesta",
-  "EXT-Assistant_TOO_SHORT": "Lo siento, no te entiendo, demasiado corto..",
-  "EXT-Assistant_CONVERSATION_ERROR": "Error en la conversación. (micrófono sin configurar)",
-  "EXT-Assistant_QUERY_REPLY": "Google Assistant va a ser activado",
-  "EXT-Assistant_QUERY_HELP": "Puedes usar Google Assistant vía texto con este comando.",
-  "EXT-Assistant_Loading": "Cargando...",
-  "EXT-Assistant_Ready": "Listos!",
-  "EXT-Assistant_Begin": "Hola, Como puedo ayudar?",
-  "EXT-Assistant_Continue": "Estoy escuchándote...",
-  "EXT-Assistant_ErrorRecipe": "Error cargando esta receta: {VALUES}",
-  "EXT-Assistant_ErrorCredentials": "[FATAL] Asistente: Falta credentials.json",
-  "EXT-Assistant_ErrorToken": "[FATAL] Asistente: Falta tokenGA.json",
-  "EXT-Assistant_ShellExecError": "ShellExec devolvió errores",
-
-  "EXT-Browser_Open": "Abriendo Navegador",
-  "EXT-Browser_Close": "Cerrando Navegador",
-  "EXT-Browser_Error": "Browser: URL Loading error!",
-  "EXT-Browser_Crash": "Browser have crash...",
-
   "EXT-Librespot_NoInstalled": "librespot no está instalado!",
   "EXT-Librespot_Error": "Librespot: {VALUES}",
 
