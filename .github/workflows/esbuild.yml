@@ -23,22 +23,6 @@ jobs:
         run: node installer/minify
         continue-on-error: false
 
-      - name: Run ESBuild EXT-Assistant
-        run: node installer/minify --path=EXTs/EXT-Assistant
-        continue-on-error: false
-
-      - name: Run ESBuild EXT-Background
-        run: node installer/minify --path=EXTs/EXT-Background
-        continue-on-error: false
-
-      - name: Run ESBuild EXT-Browser
-        run: node installer/minify --path=EXTs/EXT-Browser
-        continue-on-error: false
-
-      - name: Run ESBuild EXT-Detector
-        run: node installer/minify --path=EXTs/EXT-Detector
-        continue-on-error: false
-
       - name: Run ESBuild EXT-Freebox
         run: node installer/minify --path=EXTs/EXT-Freebox
         continue-on-error: false
@@ -63,20 +47,12 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-MeteoFrance
         continue-on-error: false
 
-      - name: Run ESBuild EXT-MusicPlayer
-        run: node installer/minify --path=EXTs/EXT-MusicPlayer
-        continue-on-error: false
-
       - name: Run ESBuild EXT-NetatmoThermostat
         run: node installer/minify --path=EXTs/EXT-NetatmoThermostat
         continue-on-error: false
 
       - name: Run ESBuild EXT-Pages
         run: node installer/minify --path=EXTs/EXT-Pages
-        continue-on-error: false
-
-      - name: Run ESBuild EXT-Photos
-        run: node installer/minify --path=EXTs/EXT-Photos
         continue-on-error: false
 
       - name: Run ESBuild EXT-PrixCarburants
@@ -103,16 +79,8 @@ jobs:
         run: node installer/minify --path=EXTs/EXT-Spotify
         continue-on-error: false
 
-      - name: Run ESBuild EXT-StreamDeck
-        run: node installer/minify --path=EXTs/EXT-StreamDeck
-        continue-on-error: false
-
       - name: Run ESBuild EXT-TelegramBot
         run: node installer/minify --path=EXTs/EXT-TelegramBot
-        continue-on-error: false
-
-      - name: Run ESBuild EXT-Touch
-        run: node installer/minify --path=EXTs/EXT-Touch
         continue-on-error: false
 
       - name: Run ESBuild EXT-Updates
