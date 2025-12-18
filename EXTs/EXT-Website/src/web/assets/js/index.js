@@ -27,6 +27,7 @@ async function doIndex () {
   await doLoginPage();
   await doSidebar();
   await doHomePage();
+  await doAccess();
   doPassword();
 }
 
@@ -176,6 +177,65 @@ async function doPassword () {
   }
 }
 
+async function doAccess () {
+  console.warn("---> Check Access", user.level)
+  const APIDocs = await EnableAPIDoc();
+
+  if (!APIDocs) {
+    const APIGrp = document.getElementById("APIGrp");
+    APIGrp.remove();
+  }
+
+  const MagicMirrorGrp = document.getElementById("MagicMirrorGrp");
+  const TerminalGrp = document.getElementById("TerminalGrp");
+  const SSH = document.getElementById("SSH");
+  const ToolsGrp = document.getElementById("ToolsGrp");
+  const SystemGrp = document.getElementById("SystemGrp");
+  const PartyModuleGrp = document.getElementById("3rdPartyGrp");
+  const AdminGrp = document.getElementById("AdminGrp");
+
+  if (user.level < 5) {
+    const nextSibling = AdminGrp.nextElementSibling;
+    AdminGrp.remove();
+    if (nextSibling && nextSibling.tagName === 'LI' && nextSibling.classList.contains("dropdown-divider")) {
+      nextSibling.remove();
+    }
+  }
+
+  switch (user.level) {
+    case 1:
+      MagicMirrorGrp.remove();
+      TerminalGrp.remove();
+      ToolsGrp.remove();
+      SystemGrp.remove();
+      PartyModuleGrp.remove();
+      break;
+
+    case 2:
+      MagicMirrorGrp.remove();
+      TerminalGrp.remove();
+      SystemGrp.remove();
+      PartyModuleGrp.remove();
+      break;
+    case 3:
+      MagicMirrorGrp.remove();
+      SSH.remove();
+      break;
+    case 4:
+
+      break; // Break after handling levels 1-4 and removing admin
+
+    case 5:
+      // do something for level 5 specifically
+      break;
+
+    default:
+      // Handle unexpected user levels if necessary
+      break;
+  }
+
+}
+
 async function doLoginPage () {
   // login page
   let loginPage = document.getElementById("login-html");
@@ -229,6 +289,7 @@ async function doSidebar () {
     if (user.newPassword) {
       const PasswordTranslations = await getTranslateGroup(user.language, "Password_");
       const contentWrapper = document.querySelector(".content-wrapper");
+
       Swal.fire({
         title: PasswordTranslations["Change"],
         text: PasswordTranslations["SecurityText"],
@@ -238,6 +299,7 @@ async function doSidebar () {
         },
         willClose: () => {
           contentWrapper.classList.remove("blur");
+          removeAriaHiddenFromBodyChildren();
         },
         showConfirmButton: true,
         confirmButtonText: PasswordTranslations["ChangeNow"],
@@ -253,6 +315,7 @@ async function doSidebar () {
           document.querySelector("a[data-loading='/html/account.html']").click();
         }
       });
+
     }
 
     // background theme
@@ -266,7 +329,7 @@ async function doSidebar () {
 
     // translations
     setTranslation("myusername", user.username);
-    if (user.level === 10) setTranslation("mylevel", MenuTranslations["Administrator"]);
+    if (user.level === 5) setTranslation("mylevel", MenuTranslations["Administrator"]);
     else setTranslation("mylevel", await getTranslate(user.language, "Account_Level", { level: user.level }));
     if (user.avatar) {
       let Avatar = document.getElementById("Avatar");
@@ -342,7 +405,7 @@ async function doAccountPage () {
 
     document.getElementById("SaveChange").value = AccountTranslations["SaveChange"];
     document.getElementById("username").value = user.username;
-    if (user.level === 10) document.getElementById("LevelUser").value = AccountTranslations["Administrator"];
+    if (user.level === 5) document.getElementById("LevelUser").value = AccountTranslations["Administrator"];
     else document.getElementById("LevelUser").value = user.level;
 
     const avatarInput = document.querySelector(`input[name="avatar"][value="${user.avatar}"]`);
@@ -1852,6 +1915,7 @@ async function doAdminPage () {
 
     const AccountTranslations = await getTranslateGroup(user.language, "Account_");
     const AdminTranslations = await getTranslateGroup(user.language, "Admin_");
+    const GenericTranslations = await getTranslateGroup(user.language, "Generic_");
 
     setTranslation("Login", AdminTranslations["Login"]);
     setTranslation("Accounts", AdminTranslations["Users"]);
@@ -1891,6 +1955,7 @@ async function doAdminPage () {
     };
 
     // user management
+
     var NewUser = {
       background: 2,
       topbar: 26,
@@ -1905,6 +1970,23 @@ async function doAdminPage () {
     const LengthGrp = document.getElementById("LengthGrp");
     const UserLanguageButton = document.getElementById("UserLanguageButton");
     const AvatarsGrp = document.getElementById("AvatarsGrp");
+
+    setTranslation("UsernameProfile", AccountTranslations["UsernameProfile"]);
+    setTranslation("LevelProfile", AccountTranslations["LevelProfile"]);
+    setTranslation("PasswordProfile", AccountTranslations["PasswordProfile"]);
+    setTranslation("NewPasswordProfile", AccountTranslations["NewPasswordProfile"]);
+    setTranslation("UserProfile", AdminTranslations["ManagementProfil"]);
+    setTranslation("UserProfile", AdminTranslations["ManagementProfil"]);
+    setTranslation("Management", AdminTranslations["Management"]);
+    setTranslation("NewUser", AdminTranslations["NewUser"]);
+    setTranslation("UserDisabled", AdminTranslations["UserDisabled"]);
+
+    password.setAttribute("placeholder", AdminTranslations["Password"]);
+    newpassword.setAttribute("placeholder", AdminTranslations["PasswordConfirm"]);
+
+    document.getElementById("AdminSaveChange").value = GenericTranslations["Save"];
+    document.getElementById("AdminDelete").value = GenericTranslations["Delete"];
+    document.getElementById("AdminNewUser").value = GenericTranslations["Confirm"];
 
     switchNewUser.onclick = function () {
       const AdminSaveChange = document.getElementById("AdminSaveChange");

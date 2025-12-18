@@ -10,6 +10,12 @@ function getCurrentToken () {
   return JSON.parse(localStorage.getItem("MMM-Bugsounet"));
 }
 
+function EnableAPIDoc () {
+  return new Promise((resolve) => {
+    Request("/api", "GET", null, null, null, "EnableAPIDoc", (API) => resolve(API.docs));
+  });
+}
+
 function doLogin (credentials, success, failed) {
   Request("/auth", "POST", false, { Authorization: `Basic ${credentials}` }, null, "doLogin", (response) => success(response), (err) => failed(err));
 }
@@ -534,12 +540,9 @@ function configMerge (result) {
 }
 
 function setTranslation (id, content) {
-  try {
-    document.getElementById(id).textContent = content;
-  } catch (e) {
-    console.error(`id: ${id}`, `content: ${content}`);
-    console.error(e);
-  }
+  let ID = document.getElementById(id)
+  if (ID) ID.textContent = content;
+  else console.warn(`id: ${id} not found for Translation content: ${content}`);
 }
 
 function HideBlock (id) {

@@ -650,6 +650,12 @@ body.bg-theme15 {
   border-color: #04b962;
 }
 
+.form-check-input:focus {
+  border-color: unset;
+  box-shadow: none;
+  border: unset;
+}
+
 /* Buttons */
 .btn {
   font-size: 0.7rem;

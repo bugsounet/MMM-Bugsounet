@@ -234,7 +234,7 @@ class website {
                 socket.on("disconnect", (err) => {
                   log(`[${ip}] Disconnected from Terminal Logs:`, req.user, `[${err}]`);
                 });
-                if (req.level >= 5) {
+                if (req.level >= 3) {
                   var pastLogs = await this.readAllMMLogs(HyperWatch.logs());
                   io.to(socket.id).emit("terminal.logs", pastLogs);
                   HyperWatch.stream().on("stdData", (data) => {
@@ -262,7 +262,7 @@ class website {
                   io.to(socket.id).emit("forceDisconnect");
                   return;
                 }
-                if (req.level < 9) {
+                if (req.level < 5) {
                   io.to(socket.id).emit("terminal.incData", "\x1B[1;3;33mInsufficient access level.");
                   io.to(socket.id).emit("forceDisconnect");
                   return;
