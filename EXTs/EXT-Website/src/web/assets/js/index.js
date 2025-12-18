@@ -3,7 +3,7 @@
   getMyUser loadLoginTranslation saveAs JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
-  doAssistantQuery doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
+  doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
   UpdateFlagsLanguage FlagsSelector applyBackgroundTheme AdminSaveChange AdminDelete getAllUsers
   UserSelector LevelSelector checkPasswordStrength putNewUser loadContentDynamically deleteUser updateUser
@@ -1418,38 +1418,6 @@ async function doToolsPage () {
     document.getElementById("AlertSend").onclick = function () {
       SendAlertRequest();
     };
-
-    if (EXTStatus["EXT-Assistant"].hello) {
-      setTranslation("AssistantText", ToolsTranslations["Assistant_Text"]);
-      setTranslation("AssistantSend", GenericTranslations["Send"]);
-      document.getElementById("AssistantQuery").setAttribute("placeholder", ToolsTranslations["Assistant_Query"]);
-
-      function SendAssistantRequest () {
-        document.getElementById("AssistantSend").classList.add("disabled");
-        doAssistantQuery(document.getElementById("AssistantQuery").value, () => {
-          document.getElementById("AssistantQuery").value = "";
-          DoToast("success", "EXT-Assistant", null, GenericTranslations["RequestDone"]);
-        });
-      }
-
-      document.getElementById("AssistantQuery").addEventListener("keyup", function (e) {
-        const AssistantSend = document.getElementById("AssistantSend");
-        if (this.value.length > 5) {
-          AssistantSend.classList.remove("disabled");
-        } else {
-          AssistantSend.classList.add("disabled");
-        }
-        if ((e.key === "Enter" || e.keyCode === 13) && !AssistantSend.matches(".disabled")) {
-          SendAssistantRequest();
-        }
-      });
-
-      document.getElementById("AssistantSend").onclick = function () {
-        SendAssistantRequest();
-      };
-    } else {
-      HideBlock("AssistantBlock");
-    }
 
     if (EXTStatus["EXT-Screen"].hello) {
       setTranslation("ScreenText", ToolsTranslations["Screen_Text"]);

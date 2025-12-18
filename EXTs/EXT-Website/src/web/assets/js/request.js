@@ -320,15 +320,6 @@ function loadBackupConfig (file) {
   });
 }
 
-function doAssistantQuery (send, success) {
-  return new Promise((resolve) => {
-    Request("/api/EXT/Assistant/send", "POST", true, null, { send: send }, "doAssistantQuery", () => {
-      if (success) success();
-      resolve();
-    });
-  });
-}
-
 function doYouTubeQuery (search, success) {
   return new Promise((resolve) => {
     Request("/api/EXT/YouTube/search", "POST", true, null, { search: search }, "doYouTubeQuery", () => {
