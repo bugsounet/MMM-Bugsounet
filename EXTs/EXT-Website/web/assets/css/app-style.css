@@ -653,7 +653,8 @@ body.bg-theme15 {
 .form-check-input:focus {
   border-color: unset;
   box-shadow: none;
-  border: unset;
+
+  /* border: unset; */
 }
 
 /* Buttons */
