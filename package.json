@@ -65,7 +65,7 @@
     "update": "node installer/update"
   },
   "dependencies": {
-    "@electron/rebuild": "^4.0.1",
+    "@electron/rebuild": "^4.0.2",
     "@mdi/font": "^7.4.47",
     "alertifyjs": "^1.14.0",
     "bcryptjs": "^3.0.2",
