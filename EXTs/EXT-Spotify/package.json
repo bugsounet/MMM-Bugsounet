@@ -1,6 +1,6 @@
 {
   "name": "EXT-Spotify",
-  "version": "2.15.0",
+  "version": "3.0.0",
   "description": "An embedded Spotify Player for MagicMirror.",
   "keywords": [
     "magic mirror",
@@ -29,5 +29,5 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-Spotify",
     "token": "node installer/auth_Spotify"
   },
-  "rev": "250329"
+  "rev": "251219"
 }

@@ -9,8 +9,6 @@ class Spotify {
     this.spotifyPlaying = callbacks.spotifyPlaying;
     this.currentPlayback = null;
     this.connected = false;
-    this.timer = null;
-    this.ads = false;
     this.hide = (...args) => this.config.hide(...args);
     this.show = (...args) => this.config.show(...args);
     console.log("[SPOTIFY] Spotify Class Loaded");
@@ -48,8 +46,6 @@ class Spotify {
   updatePlayback (status) { // hide show rules with animation !
     var dom = document.getElementById("EXT_SPOTIFY");
 
-    clearTimeout(this.timer);
-    this.timer = null;
     this.spotifyPlaying(status);
     if (this.connected && !status) {
       if (this.debug) console.log("[SPOTIFY] Disconnected");
@@ -76,7 +72,6 @@ class Spotify {
     if (!this.currentPlayback) {
       this.updateSongInfo(current.item);
       this.updatePlaying(current.is_playing);
-      this.updateDevice(current.device);
       this.updatePlayback(current.is_playing);
       if (current.device) this.updateVolume(current.device.volume_percent);
       if (current.is_playing && current.item) this.updateProgress(current.progress_ms, current.item.duration_ms);
@@ -85,22 +80,8 @@ class Spotify {
         this.updatePlayback(true);
       }
 
-      /** for Ads **/
-      if (current.currently_playing_type === "ad") {
-        this.ads = true;
-        current.is_playing = false;
-      }
       if (this.currentPlayback.is_playing !== current.is_playing) {
         this.updatePlaying(current.is_playing);
-      }
-      if (current.currently_playing_type === "ad") {
-        this.currentPlayback.is_playing = false;
-        return;
-      }
-      if (this.ads) {
-        this.currentPlayback = null;
-        this.ads = false;
-        return;
       }
 
       /** prevent all error **/
@@ -143,19 +124,6 @@ class Spotify {
     bar.value = progressMS;
 
     if (bar.max !== durationMS) bar.max = durationMS;
-
-  }
-
-  updateDevice (device) {
-    const deviceContainer = document.querySelector("#EXT_SPOTIFY_DEVICE .text");
-    const deviceIcon = document.getElementById("EXT_SPOTIFY_DEVICE_ICON");
-
-    if (device.id === "EXT-Librespot") {
-      deviceContainer.textContent = `${device.name}`;
-    } else {
-      deviceContainer.textContent = `${this.config.deviceDisplay} ${device.name}`;
-    }
-    deviceIcon.className = this.getFAIconClass(device.type);
   }
 
   updateVolume (volume_percent) {
@@ -369,7 +337,7 @@ class Spotify {
       info.appendChild(element);
     }
 
-    info.appendChild(this.getDeviceContainer());
+    //info.appendChild(this.getDeviceContainer());
     info.appendChild(this.getVolumeContainer());
     return info;
   }
