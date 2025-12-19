@@ -62,8 +62,6 @@ class EXTs {
     this.EXT["EXT-Screen"].power = true;
     this.EXT["EXT-Updates"].module = {};
     this.EXT["EXT-Updates"].list = [];
-    this.EXT["EXT-Spotify"].remote = false;
-    this.EXT["EXT-Spotify"].play = false;
     this.EXT["EXT-Volume"].speaker = 0;
     this.EXT["EXT-Volume"].isMuted = false;
     this.EXT["EXT-Volume"].recorder = 0;
@@ -239,9 +237,6 @@ class EXTs {
       "Bugsounet_RADIO-PLAYING",
       "Bugsounet_SPOTIFY-CONNECTED",
       "Bugsounet_SPOTIFY-DISCONNECTED",
-      "Bugsounet_SPOTIFY-PLAYING",
-      "Bugsounet_SPOTIFY-PLAYER_CONNECTED",
-      "Bugsounet_SPOTIFY-PLAYER_DISCONNECTED",
       "Bugsounet_FREEBOXTV-CONNECTED",
       "Bugsounet_FREEBOXTV-DISCONNECTED",
       "Bugsounet_FREEBOXTV-CHANNELS",
@@ -347,22 +342,10 @@ class EXTs {
         this.EXT["EXT-RadioPlayer"].playing = payload;
         break;
       case "Bugsounet_SPOTIFY-CONNECTED":
-        if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[CONNECT] EXT-Spotify don't say to me HELLO!");
-        this.EXT["EXT-Spotify"].remote = true;
-        break;
-      case "Bugsounet_SPOTIFY-DISCONNECTED":
-        if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[DISCONNECT] EXT-Spotify don't say to me HELLO!");
-        this.EXT["EXT-Spotify"].remote = false;
-        break;
-      case "Bugsounet_SPOTIFY-PLAYING":
-        if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[RULES] EXT-Spotify don't say to me HELLO!");
-        this.EXT["EXT-Spotify"].play = payload;
-        break;
-      case "Bugsounet_SPOTIFY-PLAYER_CONNECTED":
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[RULES] EXT-Spotify don't say to me HELLO!");
         this.connectEXT("EXT-Spotify");
         break;
-      case "Bugsounet_SPOTIFY-PLAYER_DISCONNECTED":
+      case "Bugsounet_SPOTIFY-DISCONNECTED":
         if (!this.EXT["EXT-Spotify"].hello) return this.sendWarn("[RULES] EXT-Spotify don't say to me HELLO!");
         this.disconnectEXT("EXT-Spotify");
         break;
