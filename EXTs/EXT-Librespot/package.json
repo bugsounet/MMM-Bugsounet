@@ -15,7 +15,6 @@
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Librespot",
     "setup": "node installer/setup --path=EXTs/EXT-Librespot",
-    "setup:credentials": "installer/setup-credentials.sh",
     "setup:develop": "installer/setup-from-devsource.sh",
     "setup:source": "installer/setup-from-source.sh"
   },
@@ -25,5 +24,5 @@
       "libssl-dev"
     ]
   },
-  "rev": "250824"
+  "rev": "251220"
 }

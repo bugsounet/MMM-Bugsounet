@@ -32,7 +32,8 @@ Module.register("EXT-Librespot", {
           this.sendNotification("Bugsounet_HELLO");
         }
         break;
-      case "Bugsounet_PLAYER-SPOTIFY_RECONNECT":
+      case "Bugsounet_STOP":
+      case "Bugsounet_LIBRESPOT_RECONNECT":
         if (this.ready) this.sendSocketNotification("PLAYER-RECONNECT");
         break;
     }
