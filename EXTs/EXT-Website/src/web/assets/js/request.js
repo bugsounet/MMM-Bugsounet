@@ -338,50 +338,6 @@ function doScreenPower (power, success) {
   });
 }
 
-function SpotifySend (search, type, success) {
-  return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/search", "POST", true, null, { search: search, type: type }, "SpotifySend", () => {
-      if (success) success();
-      resolve();
-    });
-  });
-}
-
-function SpotifyPlay (success) {
-  return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/play", "PUT", true, null, null, "SpotifyPlay", () => {
-      if (success) success();
-      resolve();
-    });
-  });
-}
-
-function SpotifyStop (success) {
-  return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/stop", "PUT", true, null, null, "SpotifyStop", () => {
-      if (success) success();
-      resolve();
-    });
-  });
-}
-
-function SpotifyNext (success) {
-  return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/next", "PUT", true, null, null, "SpotifyNext", () => {
-      if (success) success();
-      resolve();
-    });
-  });
-}
-
-function SpotifyPrevious (success) {
-  return new Promise((resolve) => {
-    Request("/api/EXT/Spotify/previous", "PUT", true, null, null, "SpotifyPrevious", () => {
-      if (success) success();
-      resolve();
-    });
-  });
-}
 
 function loadBackup (backup, success, failed) {
   return new Promise((resolve) => {

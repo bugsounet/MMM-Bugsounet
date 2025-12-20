@@ -3,7 +3,7 @@
   getMyUser loadLoginTranslation saveAs JSONEditor loadMMConfig loadBackupConfig loadBackupNames
   bootstrap getTranslateGroup checkEXTStatus doUpdates doDie doRestart doShutdown doReboot HideBlock ShowBlock
   deleteBackups hasPluginConnected doStop loadRadio putRadio putSpeaker putMic loadFreeboxTV putTV doAlert
-  doScreenPower doLogin showAlert putMyUser SpotifyPrevious SpotifyStop SpotifyPlay SpotifyNext SpotifySend
+  doScreenPower doLogin showAlert putMyUser
   loadBackup saveBackup readBackup writeConfig Swal doYouTubeQuery getLoginPrefs putLoginPrefs
   UpdateFlagsLanguage FlagsSelector applyBackgroundTheme AdminSaveChange AdminDelete getAllUsers
   UserSelector LevelSelector checkPasswordStrength putNewUser loadContentDynamically deleteUser updateUser
@@ -179,8 +179,12 @@ async function doPassword () {
 }
 
 async function doAccess () {
+  if (!user.id) {
+    console.warn("---> No User found");
+    return;
+  }
+
   console.warn("---> Check Access", user.level);
-  if (!user.id) return;
 
   const APIDocs = await EnableAPIDoc();
 
@@ -1437,75 +1441,6 @@ async function doToolsPage () {
       HideBlock("ScreenBlock");
     }
 
-    // Spotify Control
-    if (EXTStatus["EXT-Spotify"].hello) {
-      setTranslation("SpotifyText", ToolsTranslations["Spotify_Text"]);
-      setTranslation("SpotifyText2", ToolsTranslations["Spotify_Text2"]);
-      document.getElementById("SpotifyQuery").setAttribute("placeholder", ToolsTranslations["Spotify_Query"]);
-      setTranslation("SpotifyArtist", ToolsTranslations["Spotify_Artist"]);
-      setTranslation("SpotifyTrack", ToolsTranslations["Spotify_Track"]);
-      setTranslation("SpotifyAlbum", ToolsTranslations["Spotify_Album"]);
-      setTranslation("SpotifyPlaylist", ToolsTranslations["Spotify_Playlist"]);
-      setTranslation("SpotifySend", GenericTranslations["Send"]);
-
-      function SendSpotifyRequest () {
-        const selectedSpotifySearch = document.querySelector("input[name='spotifySearchType']:checked");
-        if (!selectedSpotifySearch) {
-          DoToast("error", "EXT-Spotify", null, "spotifySearchType missing");
-          return;
-        }
-        document.getElementById("SpotifySend").classList.add("disabled");
-        SpotifySend(document.getElementById("SpotifyQuery").value, selectedSpotifySearch.value, () => {
-          document.getElementById("SpotifyQuery").value = "";
-          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
-        });
-      }
-
-      document.getElementById("SpotifyQuery").addEventListener("keyup", function (e) {
-        const SpotifySendId = document.getElementById("SpotifySend");
-        if (this.value.length > 1) {
-          SpotifySendId.classList.remove("disabled");
-        } else {
-          SpotifySendId.classList.add("disabled");
-        }
-        if ((e.key === "Enter" || e.keyCode === 13) && !SpotifySendId.matches(".disabled")) {
-          SendSpotifyRequest();
-        }
-      });
-
-      document.getElementById("SpotifySend").onclick = function () {
-        SendSpotifyRequest();
-      };
-
-      document.getElementById("SpotifyPlay").onclick = function () {
-        SpotifyPlay(() => {
-          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
-        });
-      };
-
-      document.getElementById("SpotifyStop").onclick = function () {
-        SpotifyStop(() => {
-          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
-        });
-      };
-
-      document.getElementById("SpotifyNext").onclick = function () {
-        SpotifyNext(() => {
-          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
-        });
-      };
-
-      document.getElementById("SpotifyPrevious").onclick = function () {
-        SpotifyPrevious(() => {
-          DoToast("success", "EXT-Spotify", null, GenericTranslations["RequestDone"]);
-        });
-      };
-      HideBlock("SpotifyBlock");
-    } else {
-      HideBlock("SpotifyBlock");
-      HideBlock("SpotifyBlock2");
-    }
-
     if (EXTStatus["EXT-YouTube"].hello) {
       setTranslation("YouTubeText", ToolsTranslations["YouTube_Text"]);
       setTranslation("YouTubeSend", GenericTranslations["Send"]);
@@ -1570,26 +1505,6 @@ async function doToolsPage () {
         }
         if (!needUpdate) document.getElementById("UpdateApply").classList.add("disabled");
         else document.getElementById("UpdateApply").classList.remove("disabled");
-      }
-
-      if (EXTStatus["EXT-Spotify"].hello) {
-        if (EXTStatus["EXT-Spotify"].connected || EXTStatus["EXT-Spotify"].remote) {
-          ShowBlock("SpotifyBlock");
-        } else {
-          HideBlock("SpotifyBlock");
-        }
-
-        if (EXTStatus["EXT-Spotify"].play) {
-          document.getElementById("SpotifyPlay").classList.add("d-none");
-          document.getElementById("SpotifyStop").classList.remove("d-none");
-          document.getElementById("SpotifyNext").classList.remove("disabled");
-          document.getElementById("SpotifyPrevious").classList.remove("disabled");
-        } else {
-          document.getElementById("SpotifyPlay").classList.remove("d-none");
-          document.getElementById("SpotifyStop").classList.add("d-none");
-          document.getElementById("SpotifyNext").classList.add("disabled");
-          document.getElementById("SpotifyPrevious").classList.add("disabled");
-        }
       }
 
     }
