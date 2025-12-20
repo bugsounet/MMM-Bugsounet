@@ -656,53 +656,6 @@ class api {
         res.json({ done: "ok" });
         break;
 
-      case "/api/EXT/Spotify/play":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already playing" });
-        log("Request send Spotify play");
-        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY");
-        res.json({ done: "ok" });
-        break;
-
-      case "/api/EXT/Spotify/pause":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Already pausing" });
-        log("Request send Spotify pause");
-        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PAUSE");
-        res.json({ done: "ok" });
-        break;
-
-      case "/api/EXT/Spotify/toggle":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        log("Request send Spotify toogle");
-        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PLAY-TOGGLE");
-        res.json({ done: "ok" });
-        break;
-
-      case "/api/EXT/Spotify/stop":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (!this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
-        log("Request send Spotify stop");
-        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-STOP");
-        res.json({ done: "ok" });
-        break;
-
-      case "/api/EXT/Spotify/next":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (!this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
-        log("Request send Spotify next");
-        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-NEXT");
-        res.json({ done: "ok" });
-        break;
-
-      case "/api/EXT/Spotify/previous":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        if (!this.Api.EXTStatus["EXT-Spotify"].play) return res.status(409).json({ error: "Not playing" });
-        log("Request send Spotify previous");
-        this.sendSocketNotification("SendNoti", "Bugsounet_SPOTIFY-PREVIOUS");
-        res.json({ done: "ok" });
-        break;
-
       case "/api/EXT/Screen":
         if (!this.Api.EXTStatus["EXT-Screen"].hello) return res.status(404).json({ error: "Not Found" });
         var power = req.body["power"];
@@ -858,22 +811,6 @@ class api {
         if (typeof (YTquery) !== "string" || YTquery.length < 5) return res.status(400).json({ error: "Bad Request" });
         log("Request send youtube search:", YTquery);
         this.sendSocketNotification("SendNoti", { noti: "Bugsounet_YOUTUBE-SEARCH", payload: YTquery });
-        res.json({ done: "ok" });
-        break;
-
-      case "/api/EXT/Spotify/search":
-        if (!this.Api.EXTStatus["EXT-Spotify"].hello) return res.status(404).json({ error: "Not Found" });
-        var search = req.body["search"];
-        var type = req.body["type"];
-        var ArrayType = ["artist", "album", "playlist", "track"];
-        if (!search || typeof (search) !== "string" || !type || ArrayType.indexOf(type) === -1) return res.status(400).json({ error: "Bad Request" });
-        var pl = {
-          type: type,
-          query: search,
-          random: false
-        };
-        log("Request send Spotify search:", pl);
-        this.sendSocketNotification("SendNoti", { noti: "Bugsounet_SPOTIFY-SEARCH", payload: pl });
         res.json({ done: "ok" });
         break;
 
