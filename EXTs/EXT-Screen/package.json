@@ -37,28 +37,18 @@
     "dayjs": "^1.11.19",
     "long-press-event": "^2.5.0",
     "node-cron": "^4.2.1",
-    "node-libgpiod": "^0.5.3",
     "progressbar.js": "^1.1.1",
     "python-shell": "^5.0.0"
   },
   "installer": {
-    "rebuild": true,
     "apt": [
       "unclutter",
       "ddcutil",
       "cec-utils",
       "python3",
       "python-is-python3",
-      "python3-gpiozero",
-      "gpiod",
-      "libgpiod2",
-      "libgpiod-dev"
-    ],
-    "windowsNPMRemove": [
-      "@electron/rebuild",
-      "node-libgpiod"
-    ],
-    "windowsRebuild": false
+      "python3-gpiozero"
+    ]
   },
   "rev": "250328"
 }
