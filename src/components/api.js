@@ -31,7 +31,8 @@ const {
   updateUserById,
   getMyAdmin,
   addUser,
-  deleteUserById
+  deleteUserById,
+  cryptPassword
 } = require("./database");
 
 var log = () => { /* do nothing */ };
@@ -96,12 +97,6 @@ class api {
           "/api/config/MM": 5, // --
           "/api/EXT/Volume/speaker": 2, // --
           "/api/EXT/Updates": 5, // --
-          "/api/EXT/Spotify/play": 2, // --
-          "/api/EXT/Spotify/pause": 2, // --
-          "/api/EXT/Spotify/toggle": 2, // --
-          "/api/EXT/Spotify/stop": 2, // --
-          "/api/EXT/Spotify/next": 2, // --
-          "/api/EXT/Spotify/previous": 2, // --
           "/api/EXT/Screen": 2, // --
           "/api/EXT/FreeboxTV": 2, // --
           "/api/EXT/RadioPlayer": 2, // --
@@ -117,7 +112,6 @@ class api {
           "/api/system/alert": 2, // --
           "/api/EXT/stop": 2, // --
           "/api/EXT/YouTube/search": 2, // --
-          "/api/EXT/Spotify/search": 2, // --
           "/api/backups/external": 5 // --
         },
         DELETE: {
@@ -527,7 +521,7 @@ class api {
         if (decoder.language) updateUserById(decoder.id, "language", decoder.language);
         if (decoder.avatar) updateUserById(decoder.id, "avatar", decoder.avatar);
         if (decoder.password) {
-          updateUserById(decoder.id, "password", this.decode(decoder.password));
+          updateUserById(decoder.id, "password", cryptPassword(this.decode(decoder.password)));
           updateUserById(decoder.id, "newPassword", 0);
         }
         if (decoder.background) updateUserById(decoder.id, "background", decoder.background);
@@ -601,7 +595,7 @@ class api {
           return;
         }
 
-        if (UserDecode.password) updateUserById(UserDecode.id, "password", this.decode(UserDecode.password));
+        if (UserDecode.password) updateUserById(UserDecode.id, "password", cryptPassword(this.decode(UserDecode.password)));
         if (UserDecode.level) updateUserById(UserDecode.id, "level", UserDecode.level);
         if (UserDecode.disabled) updateUserById(UserDecode.id, "disabled", UserDecode.disabled);
         res.json({ done: "ok" });

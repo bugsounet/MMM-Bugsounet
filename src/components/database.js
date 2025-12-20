@@ -202,3 +202,4 @@ module.exports.deleteUserById = deleteUserById;
 function cryptPassword (password) {
   return bcrypt.hashSync(password, 10);
 }
+module.exports.cryptPassword = cryptPassword;
