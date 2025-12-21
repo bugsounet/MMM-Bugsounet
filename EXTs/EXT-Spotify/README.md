@@ -1,6 +1,6 @@
 # EXT-Spotify
 
-This plugin show current playback of any devices
+This plugin show current spotify playback of MagicMirror²
 
 This plugin is an Extented plugins for `MMM-Bugsounet`
 
