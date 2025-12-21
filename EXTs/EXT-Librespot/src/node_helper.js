@@ -4,6 +4,7 @@ const path = require("path");
 const fs = require("fs");
 var NodeHelper = require("node_helper");
 const pm2 = require("pm2");
+const librespot = require("./components/librespotLib");
 
 var log = () => { /* do nothing */ };
 
@@ -42,6 +43,11 @@ module.exports = NodeHelper.create({
     console.log("[LIBRESPOT] Launch Librespot...");
     if (this.config.debug) log = (...args) => { console.log("[LIBRESPOT]", ...args); };
     this.Librespot();
+    try {
+      this.events = new librespot(this.config, (...args) => { this.sendSocketNotification(...args); });
+    } catch (e) {
+      console.log(`[LIBRESPOT] Error From library: ${e}`);
+    }
   },
 
   /** launch librespot with pm2 **/
@@ -85,7 +91,7 @@ module.exports = NodeHelper.create({
           "cubic",
           "--volume-range",
           "40",
-          `--onevent=${path.resolve(__dirname, "components/librespot/", "events.py")}`
+          `--onevent=${path.resolve(__dirname, "components/", "events.py")}`
         ]
       }, (err) => {
         if (err) {
@@ -103,8 +109,7 @@ module.exports = NodeHelper.create({
           var events;
           try {
             events = JSON.parse(packet.data);
-            this.sendSocketNotification("PLAYING", events);
-            log(events);
+            this.events.librespot(events);
           } catch { /* not a json output */ }
         });
       });

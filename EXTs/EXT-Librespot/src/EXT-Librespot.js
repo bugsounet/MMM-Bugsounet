@@ -48,8 +48,11 @@ Module.register("EXT-Librespot", {
           icon: this.file("resources/Spotify-Logo.png")
         });
         break;
-      case "PLAYING":
-        this.sendNotification("Bugsounet_LIBRESPOT-PLAYING", payload);
+      case "EVENTS":
+        if (this.ready) this.sendNotification("Bugsounet_LIBRESPOT-EVENTS", payload);
+        break;
+      case "IDLE":
+        if (this.ready) this.sendNotification("Bugsounet_LIBRESPOT-IDLE");
         break;
     }
   },
