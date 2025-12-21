@@ -79,7 +79,7 @@ module.exports = NodeHelper.create({
           "--name",
           this.config.deviceName,
           "--initial-volume",
-          this.config.maxVolume,
+          this.config.volume,
           "--cache",
           cacheDir,
           "--cache-size-limit",

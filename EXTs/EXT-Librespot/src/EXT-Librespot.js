@@ -9,8 +9,7 @@ Module.register("EXT-Librespot", {
   defaults: {
     debug: false,
     deviceName: "MagicMirror",
-    minVolume: 40,
-    maxVolume: 100
+    volume: 100
   },
 
   start () {
