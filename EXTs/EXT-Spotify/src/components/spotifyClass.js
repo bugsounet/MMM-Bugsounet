@@ -5,12 +5,13 @@ class Spotify {
   constructor (Config, callbacks) {
     this.config = Config;
     this.debug = this.config.debug;
+
     this.spotifyStatus = callbacks.spotifyStatus;
-    this.spotifyPlaying = callbacks.spotifyPlaying;
+    this.hide = (...args) => callbacks.hide(...args);
+    this.show = (...args) => callbacks.show(...args);
+
     this.currentPlayback = null;
     this.connected = false;
-    this.hide = (...args) => this.config.hide(...args);
-    this.show = (...args) => this.config.show(...args);
     console.log("[SPOTIFY] Spotify Class Loaded");
   }
 
@@ -46,7 +47,6 @@ class Spotify {
   updatePlayback (status) { // hide show rules with animation !
     var dom = document.getElementById("EXT_SPOTIFY");
 
-    this.spotifyPlaying(status);
     if (this.connected && !status) {
       if (this.debug) console.log("[SPOTIFY] Disconnected");
       this.connected = false;
@@ -76,47 +76,19 @@ class Spotify {
       if (current.device) this.updateVolume(current.device.volume_percent);
       if (current.is_playing && current.item) this.updateProgress(current.progress_ms, current.item.duration_ms);
     } else {
-      if (!this.connected && current.is_playing) {
-        this.updatePlayback(true);
-      }
-
-      if (this.currentPlayback.is_playing !== current.is_playing) {
-        this.updatePlaying(current.is_playing);
-      }
+      if (!this.connected && current.is_playing) this.updatePlayback(true);
+      if (this.currentPlayback.is_playing !== current.is_playing) this.updatePlaying(current.is_playing);
 
       /** prevent all error **/
       if (!current.item || !current.device || !current.progress_ms || !current.item.duration_ms || !this.currentPlayback.item) return this.currentPlayback = null;
       if (!this.currentPlayback.item) return this.currentPlayback = current;
 
       /** All is good so ... live update **/
-      if (this.currentPlayback.item.id !== current.item.id) {
-        this.updateSongInfo(current.item);
-      }
-      if (this.currentPlayback.device.id !== current.device.id) {
-        this.updateDevice(current.device);
-      }
-      if (this.currentPlayback.device.volume_percent !== current.device.volume_percent) {
-        this.updateVolume(current.device.volume_percent);
-      }
-      if (this.currentPlayback.progress_ms !== current.progress_ms) {
-        this.updateProgress(current.progress_ms, current.item.duration_ms);
-      }
+      if (this.currentPlayback.item.id !== current.item.id) this.updateSongInfo(current.item);
+      if (this.currentPlayback.device.volume_percent !== current.device.volume_percent) this.updateVolume(current.device.volume_percent);
+      if (this.currentPlayback.progress_ms !== current.progress_ms) this.updateProgress(current.progress_ms, current.item.duration_ms);
     }
     this.currentPlayback = current;
-  }
-
-  msToTime (duration) {
-    let ret = "";
-    let seconds = parseInt((duration / 1000) % 60),
-      minutes = parseInt((duration / (1000 * 60)) % 60),
-      hours = parseInt((duration / (1000 * 60 * 60)) % 24);
-    if (hours > 0) {
-      hours = (hours < 10) ? `0${hours}` : hours;
-      ret = `${ret + hours}:`;
-    }
-    minutes = (minutes < 10) ? `0${minutes}` : minutes;
-    seconds = (seconds < 10) ? `0${seconds}` : seconds;
-    return `${ret + minutes}:${seconds}`;
   }
 
   updateProgress (progressMS, durationMS) {
@@ -150,11 +122,9 @@ class Spotify {
     if (isPlaying) {
       s.classList.add("playing");
       s.classList.remove("pausing");
-      this.spotifyPlaying(true);
     } else {
       s.classList.add("pausing");
       s.classList.remove("playing");
-      this.spotifyPlaying(false);
     }
   }
 
@@ -289,16 +259,6 @@ class Spotify {
     return text;
   }
 
-  getDeviceContainer () {
-    const device = this.getHTMLElementWithID("div", "EXT_SPOTIFY_DEVICE");
-    device.appendChild(
-      this.getIconContainer(this.getFAIconClass("default"), "EXT_SPOTIFY_DEVICE_ICON")
-    );
-    device.appendChild(this.getEmptyTextHTMLElement());
-
-    return device;
-  }
-
   getVolumeContainer () {
     const volume = this.getHTMLElementWithID("div", "EXT_SPOTIFY_VOLUME");
     volume.appendChild(
@@ -337,7 +297,6 @@ class Spotify {
       info.appendChild(element);
     }
 
-    //info.appendChild(this.getDeviceContainer());
     info.appendChild(this.getVolumeContainer());
     return info;
   }
@@ -360,9 +319,5 @@ class Spotify {
     const cover = this.getHTMLElementWithID("div", "EXT_SPOTIFY_COVER");
     cover.appendChild(cover_img);
     return cover;
-  }
-
-  getConnected () {
-    return this.connected;
   }
 }
