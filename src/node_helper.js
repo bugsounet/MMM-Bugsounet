@@ -39,7 +39,7 @@ module.exports = NodeHelper.create({
         break;
       case "INIT":
         this.config = payload;
-        await checker.secure(this);
+        await checker.secure();
         this.controler = new controler();
         await this.controler.check_PM2_Process();
         await this.parserAPI();
