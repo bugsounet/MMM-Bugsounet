@@ -6,8 +6,6 @@ var NodeHelper = require("node_helper");
 const pm2 = require("pm2");
 const librespot = require("./components/librespotLib");
 
-var log = () => { /* do nothing */ };
-
 module.exports = NodeHelper.create({
   start () {
     this.pm2 = pm2;
@@ -41,7 +39,6 @@ module.exports = NodeHelper.create({
 
   initialize () {
     console.log("[LIBRESPOT] Launch Librespot...");
-    if (this.config.debug) log = (...args) => { console.log("[LIBRESPOT]", ...args); };
     this.Librespot();
     try {
       this.events = new librespot(this.config, (...args) => { this.sendSocketNotification(...args); });
