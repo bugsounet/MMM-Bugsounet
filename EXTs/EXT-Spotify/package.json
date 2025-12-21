@@ -26,8 +26,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Spotify",
-    "setup": "node ../../installer/setup --path=EXTs/EXT-Spotify",
-    "token": "node installer/auth_Spotify"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Spotify"
   },
   "rev": "251219"
 }
