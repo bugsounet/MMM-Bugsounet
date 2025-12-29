@@ -13,6 +13,31 @@ function Bugsounet_translate (...args) {
   return Translator.translate({ name: "MMM-Bugsounet" }, ...args);
 }
 
+function decodeDHM (DHM) {
+  var Days = DHM.Days;
+  var Hours = DHM.Hours;
+  var Minutes = DHM.Minutes;
+
+  if (DHM.Days > 0) {
+    if (DHM.Days > 1) Days += ` ${Bugsounet_translate("System_DAYS")} `;
+    else Days += ` ${Bugsounet_translate("System_DAY")} `;
+  } else {
+    Days = "";
+  }
+
+  if (DHM.Hours > 0) {
+    if (DHM.Hours > 1) Hours += ` ${Bugsounet_translate("System_HOURS")} `;
+    else Hours += ` ${Bugsounet_translate("System_HOUR")} `;
+  } else {
+    Hours = "";
+  }
+
+  if (DHM.Minutes > 1) Minutes += ` ${Bugsounet_translate("System_MINUTES")}`;
+  else Minutes += ` ${Bugsounet_translate("System_MINUTE")}`;
+
+  return Days + Hours + Minutes;
+}
+
 Module.register("MMM-Bugsounet", {
   requiresVersion: "2.31.0",
   defaults: {
@@ -282,7 +307,7 @@ Module.register("MMM-Bugsounet", {
   show_sysinfo (result) {
     let session = result.sessionId;
     let handler = this.session[session];
-    if (!handler || !session) return console.error("[Website] TB session not found!", handler, session);
+    if (!handler || !session) return console.error("[Bugsounet] TB session not found!", handler, session);
     var text = "";
     text += `*${result["HOSTNAME"]}*\n\n`;
     // version
@@ -334,11 +359,11 @@ Module.register("MMM-Bugsounet", {
     // uptimes
     text += `*-- ${Bugsounet_translate("System_UptimeSystem")} --*\n`;
     text += `*${Bugsounet_translate("System_CurrentUptime")}:*\n`;
-    text += `*  ${Bugsounet_translate("System_System")}* \`${result["UPTIME"]["currentDHM"]}\`\n`;
-    text += `*  MagicMirror²:* \`${result["UPTIME"]["MMDHM"]}\`\n`;
+    text += `*  ${Bugsounet_translate("System_System")}* \`${decodeDHM(result["UPTIME"]["currentDHM"])}\`\n`;
+    text += `*  MagicMirror²:* \`${decodeDHM(result["UPTIME"]["MMDHM"])}\`\n`;
     text += `*${Bugsounet_translate("System_RecordUptime")}:*\n`;
-    text += `*  ${Bugsounet_translate("System_System")}* \`${result["UPTIME"]["recordCurrentDHM"]}\`\n`;
-    text += `*  MagicMirror²:* \`${result["UPTIME"]["recordMMDHM"]}\`\n`;
+    text += `*  ${Bugsounet_translate("System_System")}* \`${decodeDHM(result["UPTIME"]["recordCurrentDHM"])}\`\n`;
+    text += `*  MagicMirror²:* \`${decodeDHM(result["UPTIME"]["recordMMDHM"])}\`\n`;
 
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
     delete this.session[session];

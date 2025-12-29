@@ -1,4 +1,4 @@
-/* global removeAnimateCSS, addAnimateCSS, Bugsounet_translate */
+/* global removeAnimateCSS, addAnimateCSS, Bugsounet_translate, decodeDHM */
 /* eslint-disable max-lines-per-function */
 /* eslint-disable-next-line */
 class sysInfoPage {
@@ -536,7 +536,7 @@ class sysInfoPage {
 
     var Sysinfo_uptime_current_system_value = document.createElement("div");
     Sysinfo_uptime_current_system_value.id = "BUGSOUNET-SYSINFO_UPTIMES_CURRENT_SYSTEM_VALUE";
-    Sysinfo_uptime_current_system_value.textContent = this.System.UPTIME.currentDHM;
+    Sysinfo_uptime_current_system_value.textContent = decodeDHM(this.System.UPTIME.currentDHM);
     Sysinfo_uptime_current_system.appendChild(Sysinfo_uptime_current_system_value);
 
     var Sysinfo_uptime_current_MM = document.createElement("div");
@@ -546,7 +546,7 @@ class sysInfoPage {
 
     var Sysinfo_uptime_current_MM_value = document.createElement("div");
     Sysinfo_uptime_current_MM_value.id = "BUGSOUNET-SYSINFO_UPTIMES_CURRENT_MM_VALUE";
-    Sysinfo_uptime_current_MM_value.textContent = this.System.UPTIME.MMDHM;
+    Sysinfo_uptime_current_MM_value.textContent = decodeDHM(this.System.UPTIME.MMDHM);
     Sysinfo_uptime_current_MM.appendChild(Sysinfo_uptime_current_MM_value);
 
     var Sysinfo_uptime_record = document.createElement("div");
@@ -561,7 +561,7 @@ class sysInfoPage {
 
     var Sysinfo_uptime_record_system_value = document.createElement("div");
     Sysinfo_uptime_record_system_value.id = "BUGSOUNET-SYSINFO_UPTIMES_RECORD_SYSTEM_VALUE";
-    Sysinfo_uptime_record_system_value.textContent = this.System.UPTIME.currentDHM;
+    Sysinfo_uptime_record_system_value.textContent = decodeDHM(this.System.UPTIME.currentDHM);
     Sysinfo_uptime_record_system.appendChild(Sysinfo_uptime_record_system_value);
 
     var Sysinfo_uptime_record_MM = document.createElement("div");
@@ -571,7 +571,7 @@ class sysInfoPage {
 
     var Sysinfo_uptime_record_MM_value = document.createElement("div");
     Sysinfo_uptime_record_MM_value.id = "BUGSOUNET-SYSINFO_UPTIMES_RECORD_MM_VALUE";
-    Sysinfo_uptime_record_MM_value.textContent = this.System.UPTIME.MMDHM;
+    Sysinfo_uptime_record_MM_value.textContent = decodeDHM(this.System.UPTIME.MMDHM);
     Sysinfo_uptime_record_MM.appendChild(Sysinfo_uptime_record_MM_value);
 
     document.body.appendChild(wrapper);
@@ -693,13 +693,13 @@ class sysInfoPage {
 
     /* Uptimes*/
     var uptime_current_system = document.getElementById("BUGSOUNET-SYSINFO_UPTIMES_CURRENT_SYSTEM_VALUE");
-    uptime_current_system.textContent = this.System.UPTIME.currentDHM;
+    uptime_current_system.textContent = decodeDHM(this.System.UPTIME.currentDHM);
     var uptime_current_MM = document.getElementById("BUGSOUNET-SYSINFO_UPTIMES_CURRENT_MM_VALUE");
-    uptime_current_MM.textContent = this.System.UPTIME.MMDHM;
+    uptime_current_MM.textContent = decodeDHM(this.System.UPTIME.MMDHM);
     var uptime_record_system = document.getElementById("BUGSOUNET-SYSINFO_UPTIMES_RECORD_SYSTEM_VALUE");
-    uptime_record_system.textContent = this.System.UPTIME.recordCurrentDHM;
+    uptime_record_system.textContent = decodeDHM(this.System.UPTIME.recordCurrentDHM);
     var uptime_record_MM = document.getElementById("BUGSOUNET-SYSINFO_UPTIMES_RECORD_MM_VALUE");
-    uptime_record_MM.textContent = this.System.UPTIME.recordMMDHM;
+    uptime_record_MM.textContent = decodeDHM(this.System.UPTIME.recordMMDHM);
 
     /* NETWORK */
     var information = document.getElementById("BUGSOUNET-SYSINFO_NETWORK_INFORMATION");
