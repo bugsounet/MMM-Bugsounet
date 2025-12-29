@@ -18,7 +18,8 @@ Module.register("MMM-Bugsounet", {
   defaults: {
     debug: false,
     useAPIDocs: false,
-    useLimiter: true
+    useLimiter: true,
+    enablePopUpAPI: false
   },
 
   start () {
@@ -72,8 +73,9 @@ Module.register("MMM-Bugsounet", {
   async socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "BUGSOUNET-INIT":
+        this.checkWebsiteConfig();
         await this.EXT_Config();
-        await this.websiteInit();
+        await this.sysinfoInit();
         this.config.translations = this.getTranslations();
         this.sendSocketNotification("INIT", this.config);
         break;
@@ -146,7 +148,7 @@ Module.register("MMM-Bugsounet", {
     }
   },
 
-  async websiteInit () {
+  async sysinfoInit () {
     const Tools = {
       translate: (...args) => Bugsounet_translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
@@ -155,6 +157,15 @@ Module.register("MMM-Bugsounet", {
     this.session = {};
     this.sysInfo = new sysInfoPage(Tools);
     this.sysInfo.prepare();
+  },
+
+  checkWebsiteConfig () {
+    MM.getModules().enumerate((module) => {
+      if (module.name === "EXT-Website" && !module.disabled) {
+        console.warn("[Bugsounet] EXT-Website detected, enable enablePopUpAPI");
+        this.config.enablePopUpAPI = true;
+      }
+    });
   },
 
   ActivateAPIPopup (data) {

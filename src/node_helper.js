@@ -82,11 +82,8 @@ module.exports = NodeHelper.create({
   parserAPI () {
     return new Promise((resolve) => {
       let APIHelperConfig = {
-        config: {
-          username: this.config.username,
-          password: this.config.password,
-          useLimiter: this.config.useLimiter
-        },
+        useLimiter: this.config.useLimiter,
+        enablePopUpAPI: this.config.enablePopUpAPI,
         debug: this.config.debug
       };
       let callback = {

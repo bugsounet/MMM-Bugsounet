@@ -39,13 +39,13 @@ var log = () => { /* do nothing */ };
 
 class api {
   constructor (config, cb = () => {}) {
-    this.config = config.config;
+    this.config = config;
     this.sendSocketNotification = (...args) => cb.sendSocketNotification(...args);
     this.sendInternalCallback = (value) => cb.sendInternalCallback(value);
 
     if (config.debug) log = (...args) => { console.log("[Bugsounet] [API]", ...args); };
 
-    openDatabase(config.debug);
+    openDatabase(this.config.debug);
 
     this.Api = {
       MMConfig: null, // real config file (config.js)
@@ -188,7 +188,7 @@ class api {
     await this.serverAPI();
 
     const AdminActivate = getMyAdmin();
-    if (AdminActivate && AdminActivate.level === 5 && AdminActivate.disabled) {
+    if (AdminActivate && AdminActivate.level === 5 && AdminActivate.disabled && this.config.enablePopUpAPI) {
       console.warn(`[Bugsounet] [API] For activate your ${AdminActivate.username} account`);
       console.warn("[Bugsounet] [API] Please read informations on MagicMirror² screen for continue");
       console.warn("[Bugsounet] [API [SECRET LINK]", `http://${this.Api.listening}:8085/activate?id=${AdminActivate.id}`);
