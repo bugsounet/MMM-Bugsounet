@@ -85,7 +85,7 @@
     "stream": "^0.0.3",
     "swagger-ui-express": "^5.0.1",
     "sweetalert2": "^11.26.16",
-    "systeminformation": "^5.27.14",
+    "systeminformation": "^5.28.3",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
