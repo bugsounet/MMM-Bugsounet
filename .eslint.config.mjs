@@ -3,13 +3,13 @@ import eslintPluginStylistic from "@stylistic/eslint-plugin";
 import {configs as eslintPluginDepend_configs} from "eslint-plugin-depend";
 import {flatConfigs as eslintPluginImportX_flatConfigs} from "eslint-plugin-import-x";
 import eslintPluginJs from "@eslint/js";
-import eslintPluginPackageJson from "eslint-plugin-package-json";
+import {configs as eslintPluginPackageJson_configs} from "eslint-plugin-package-json";
 
 const config = [
   eslintPluginDepend_configs["flat/recommended"],
   eslintPluginImportX_flatConfigs.recommended,
   eslintPluginJs.configs.recommended,
-  eslintPluginPackageJson.configs.recommended,
+  eslintPluginPackageJson_configs.recommended,
   {
     "files": ["**/*.js"],
     "languageOptions": {
@@ -28,10 +28,10 @@ const config = [
       }
     },
     "plugins": {
-      ...eslintPluginStylistic.configs["all-flat"].plugins
+      ...eslintPluginStylistic.configs["all"].plugins
     },
     "rules": {
-      ...eslintPluginStylistic.configs["all-flat"].rules,
+      ...eslintPluginStylistic.configs["all"].rules,
       "@stylistic/array-element-newline": ["error", "consistent"],
       "@stylistic/arrow-parens": ["error", "always"],
       "@stylistic/brace-style": "off",
@@ -56,6 +56,7 @@ const config = [
       "@stylistic/semi": ["error", "always"],
       "@stylistic/space-before-function-paren": ["error", "always"],
       "@stylistic/spaced-comment": "off",
+      "depend/ban-dependencies": ["error", {"allowed": ["axios"]}],
       "eqeqeq": "error",
       "id-length": "off",
       "import-x/order": "error",
@@ -93,10 +94,10 @@ const config = [
       "sourceType": "module"
     },
     "plugins": {
-      ...eslintPluginStylistic.configs["all-flat"].plugins
+      ...eslintPluginStylistic.configs["all"].plugins
     },
     "rules": {
-      ...eslintPluginStylistic.configs["all-flat"].rules,
+      ...eslintPluginStylistic.configs["all"].rules,
       "@stylistic/indent": ["error", 2],
       "@stylistic/array-element-newline": "off",
       "@stylistic/function-call-argument-newline": "off",
@@ -106,11 +107,16 @@ const config = [
   {
     "files": ["**/package.json"],
     "rules": {
-      "package-json/valid-name": "off"
+      "package-json/valid-name": "off",
+      "package-json/require-type": "off",
+      "depend/ban-dependencies": ["error", {"allowed": ["axios"]}]
     }
   },
   {
-    "ignores": ["*.js", "components/**/*.js"]
+    "ignores": ["*.js", "components/**/*.js", "activate/**/*.js"]
+  },
+  {
+    "ignores": ["databases/*.js"]
   },
   {
     "ignores": ["EXTs/EXT-*/*.js", "EXTs/EXT-*/components/**/*.js"]
@@ -122,7 +128,7 @@ const config = [
     "ignores": ["EXTs/EXT-SmartHome/website/assets/js/*.js", "EXTs/EXT-SmartHome/website/**/*.min.js"]
   },
   {
-    "ignores": ["website/tools/*.js"]
+    "ignores": ["EXTs/EXT-Website/web/**/*.min.js", "EXTs/EXT-Website/web/assets/js/*.js"]
   }
 ];
 

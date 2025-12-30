@@ -60,13 +60,15 @@ module.exports = NodeHelper.create({
   },
 
   pulse () {
-    if (this.statusInterval) {
-      log("Kill old pulse...");
-      clearInterval(this.statusInterval);
-      this.statusInterval = null;
-    }
+    if (this.statusInterval) this.killPulse();
     log("Launch pulse");
     this.statusInterval = setInterval(() => this.status(), 1000);
+  },
+
+  killPulse () {
+    log("Kill pulse");
+    clearInterval(this.statusInterval);
+    this.statusInterval = null;
   },
 
   async status () {
@@ -76,8 +78,7 @@ module.exports = NodeHelper.create({
           this.warn++;
           console.error(`[FreeboxTV] Can't start VLC Client! Reason: ${err.message}`);
           if (this.warn > 5) {
-            clearTimeout(this.statusInterval);
-            this.statusInterval = null;
+            this.killPulse();
             this.sendSocketNotification("ERROR", `Can't start VLC Client! Reason: ${err.message}`);
             this.sendSocketNotification("ENDED");
             this.TV.is_playing = false;
@@ -99,8 +100,7 @@ module.exports = NodeHelper.create({
         if (this.TV.is_playing) this.sendSocketNotification("ENDED");
         this.TV.is_playing = false;
         log("Not played by EXT-FreeboxTV");
-        clearInterval(this.statusInterval);
-        this.statusInterval = null;
+        this.killPulse();
         return;
       }
       if (!this.TV.is_playing) {
@@ -115,8 +115,7 @@ module.exports = NodeHelper.create({
     if (status.state === "stopped") {
       if (this.TV.is_playing) this.sendSocketNotification("ENDED");
       this.TV.is_playing = false;
-      clearInterval(this.statusInterval);
-      this.statusInterval = null;
+      this.killPulse();
       log("Stopped");
     }
   },
@@ -124,6 +123,7 @@ module.exports = NodeHelper.create({
   stop () {
     log("Stop TV...");
     this.stopPlayer();
+    this.killPulse();
   },
 
   async startPlayer (name) {

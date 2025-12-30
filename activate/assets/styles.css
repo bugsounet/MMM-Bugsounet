@@ -1,0 +1,234 @@
+body {
+  font-family: Roboto, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  background: black;
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+  background-image: url("/activate/assets/1.png");
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background 0.3s;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 20%);
+  font-size: 24px;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+  appearance: textfield; /* Firefox */
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #1abc9c;
+  background: rgb(255 255 255 / 30%);
+  box-shadow: 0 0 12px rgb(26 188 156 / 60%);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Main container styling */
+.container {
+  max-width: 600px;
+  padding: 15px;
+  background: rgb(0 0 0 / 40%);
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 20%);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 1s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+}
+
+/* Header styles */
+h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #fff;
+  text-shadow: 0 2px 5px rgb(0 0 0 / 30%);
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  color: #dcdcdc;
+}
+
+/* Labels */
+label {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 10px;
+  text-align: left;
+  display: block;
+}
+
+/* Popup Styling */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: 80%;
+  width: 300px;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: #fff;
+  color: #333;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 30%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  animation: popupFadeIn 0.5s ease forwards;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 30%);
+  transition: all 0.3s ease-in-out;
+}
+
+.popup button:hover {
+  background: #ee2610;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgb(0 0 0 / 30%);
+  animation: gradientShift 12s ease infinite; /* Animates the gradient */
+}
+
+/* Improved Code Squares */
+.code-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.code-input {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  border: 2px solid rgb(255 255 255 / 20%);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 10%);
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.code-input:focus {
+  outline: none;
+  border-color: #1abc9c;
+  box-shadow: 0 0 10px rgb(26 188 156 / 60%);
+  transform: scale(1.1);
+}
+
+.code-input.success {
+  border-color: #2ecc71;
+  background: rgb(46 204 113 / 20%);
+}
+
+.code-input.error {
+  border-color: #e74c3c;
+  background: rgb(231 76 60 / 20%);
+}
+
+/* Tick and Cross Icon Styles */
+.icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.icon.success {
+  background: #2ecc71; /* Green background for success */
+  animation: scaleBounce 0.5s ease-out;
+}
+
+.icon.error {
+  background: #e74c3c; /* Red background for error */
+  animation: scaleBounce 0.5s ease-out;
+}
+
+/* Animations */
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes scaleBounce {
+  0% {
+    transform: scale(0.8);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

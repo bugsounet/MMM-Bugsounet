@@ -8,7 +8,7 @@ source installer/utils.sh
 
 # module name
 Installer_info "Welcome to EXT-Librespot setup"
-Installer_info "This installer will install librespot v0.6.0 release"
+Installer_info "This installer will install librespot v0.8.0 release"
 echo
 
 # check dependencies
@@ -21,7 +21,7 @@ echo
 cd components
 Installer_info "Cloning repository..."
 rm -rf sources
-git clone -b v0.6.0 -c advice.detachedHead=false https://github.com/librespot-org/librespot sources
+git clone -b v0.8.0 -c advice.detachedHead=false https://github.com/librespot-org/librespot sources
 Installer_success "Done."
 
 echo
@@ -41,7 +41,7 @@ echo
 Installer_info "Installing Librespot..."
 Installer_warning "It could takes ~30 minutes."
 cd sources
-cargo build --release --no-default-features --features "alsa-backend with-libmdns" || {
+cargo build --release --no-default-features --features "native-tls pulseaudio-backend with-libmdns" || {
   Installer_error "Error detected !"
   exit 255
 }

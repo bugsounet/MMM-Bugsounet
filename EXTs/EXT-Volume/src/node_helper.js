@@ -74,7 +74,7 @@ module.exports = NodeHelper.create({
     exec(script, (err) => {
       if (err) {
         console.error("[VOLUME] Set Volume Error:", err.toString());
-        this.sendSocketNotification("WARNING", "VolumePresetError");
+        this.sendSocketNotification("WARNING", "EXT-Volume_VolumePresetError");
       }
       else {
         log("Set Speaker Volume To:", level);
@@ -111,7 +111,7 @@ module.exports = NodeHelper.create({
     exec(script, (err) => {
       if (err) {
         console.error("[VOLUME] Set Record Volume Error:", err.toString());
-        this.sendSocketNotification("WARNING", "VolumeRecordPresetError");
+        this.sendSocketNotification("WARNING", "EXT-Volume_RecordPresetError");
       }
       else {
         log("Set Recorder Volume To:", level);

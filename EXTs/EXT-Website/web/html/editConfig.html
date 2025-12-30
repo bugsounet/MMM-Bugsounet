@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+  <div class="col">
+
+    <div class="card mt-0 mb-0">
+      <div class="card-header">
+        <div id ="ConfigTitle" class="text-center fs-4">MagicMirror² Configuration</div>
+        <div class="text-truncate mt-3">
+
+          <select id="backup" class="p-2 rounded" onchange="location = `/editConfig?config=${this.value}`">
+            <option class="bg-white" value="default" selected="">Current Config</option>
+          </select>
+
+          <label class="form-label m-0 ps-3 pe-3" for="fileToLoad">
+            <a class="btn fs-3 p-0" role="button" id="externalLoad" data-bs-toggle="tooltip" data-bs-title="The last tip!">
+              <i class="fa-solid fa-file-import text-google-yellow"></i>
+            </a>
+          </label>
+
+          <label class="m-0">
+            <a class="btn fs-3 p-0" role="button" id="externalSave" data-bs-toggle="tooltip" data-bs-title="The last tip!">
+              <i class="fa-solid fa-file-export text-google-green"></i>
+            </a>
+          </label>
+
+        </div>
+      </div>
+
+      <div class="card-body text-white">
+        <div id="jsoneditor" class="editConfig"></div>
+      </div>
+
+      <div class="card-footer">
+        <div id="buttonGrp" class="btn-group invisible" role="group">
+          <button id="save" class="btn btn-success btn-round btn-round bg-google-green" type="button">Save</button>
+          <button id="wait" class="btn btn-warning btn-round rubberBand animated bg-google-yellow" type="button">Please wait...</button>
+          <a id="done"  class="btn btn-success btn-round tada animated bg-google-green" role="button" href="/Tools">Done</a>
+          <a id="error" class="btn btn-danger btn-round flash animated bg-google-red" role="button" href="/Terminal">Error</a>
+          <a id="errorConfig" class="btn btn-danger btn-round flash animated infinite bg-google-red" role="button">Error</a>
+          <button id="load" class="btn btn-success btn-round bg-google-green" type="button">Load</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

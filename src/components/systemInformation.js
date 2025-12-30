@@ -1,35 +1,31 @@
-const fs = require("node:fs");
-const path = require("node:path");
 const { exec } = require("node:child_process");
 const si = require("systeminformation");
-
-// see to add fetch from website ?
+const { updateDatas, getDatas } = require("./database");
 
 class systemInfo {
-  constructor (translate, units) {
-    this.translate = translate;
+  constructor (units) {
     this.System = {
       VERSION: {
         Bugsounet: `${require("../package.json").version} (${require("../package.json").rev})`,
         MagicMirror: require("../../../package.json").version,
-        ELECTRON: "unknow",
-        NODECORE: "unknow",
-        NPM: "unknow",
-        KERNEL: "unknow",
-        OS: "Loading..."
+        ELECTRON: "...",
+        NODECORE: "...",
+        NPM: "...",
+        KERNEL: "...",
+        OS: "..."
       },
-      HOSTNAME: "unknow",
+      HOSTNAME: "...",
       NETWORK: {
-        type: "unknow",
-        ip: "unknow",
-        name: "unknow",
+        type: "...",
+        ip: "...",
+        name: "...",
         speed: null,
         duplex: "",
-        ssid: "unknow",
+        ssid: "...",
         frequency: undefined,
         signalLevel: -99,
         barLevel: 0,
-        interface: "unknow",
+        interface: "...",
         rate: undefined,
         quality: undefined
       },
@@ -44,25 +40,25 @@ class systemInfo {
       STORAGE: [],
       CPU: {
         usage: 0,
-        type: "unknow",
+        type: "...",
         temp: {
           imperial: (units === "imperial") ? true : false,
           C: 0,
           F: 0
         },
-        speed: "unknow",
-        governor: "unknow"
+        speed: "...",
+        governor: "..."
       },
       GPU: process.env.ELECTRON_ENABLE_GPU !== "1" ? false : true,
       UPTIME: {
         current: 0,
-        currentDHM: "unknow",
+        currentDHM: "...",
         recordCurrent: 0,
-        recordCurrentDHM: "unknow",
+        recordCurrentDHM: "...",
         MM: 0,
-        MMDHM: "unknow",
+        MMDHM: "...",
         recordMM: 0,
-        recordMMDHM: "unknow"
+        recordMMDHM: "..."
       },
       PROCESS: {
         nginx: {
@@ -105,6 +101,7 @@ class systemInfo {
     await this.getUptimeRecord();
     setInterval(async () => { await this.uptimed(); }, 5000);
     console.log("[Bugsounet] [SysInfo] Initialized");
+    return this.System;
   }
 
   async Get () {
@@ -270,23 +267,15 @@ class systemInfo {
     if (seconds === 0) return "Loading...";
     var Days = Math.floor(seconds / 86400);
     var Seconds = seconds - (Days * 86400);
-    var hours = Math.floor(Seconds / 3600);
-    Seconds = Seconds - (hours * 3600);
-    var minutes = Math.floor(Seconds / 60);
+    var Hours = Math.floor(Seconds / 3600);
+    Seconds = Seconds - (Hours * 3600);
+    var Minutes = Math.floor(Seconds / 60);
 
-    if (Days > 0) {
-      if (Days > 1) Days = `${Days} ${this.translate.System_DAYS} `;
-      else Days = `${Days} ${this.translate.System_DAY} `;
-    }
-    else Days = "";
-    if (hours > 0) {
-      if (hours > 1) hours = `${hours} ${this.translate.System_HOURS} `;
-      else hours = `${hours} ${this.translate.System_HOUR} `;
-    }
-    else hours = "";
-    if (minutes > 1) minutes = `${minutes} ${this.translate.System_MINUTES}`;
-    else minutes = `${minutes} ${this.translate.System_MINUTE}`;
-    return Days + hours + minutes;
+    return {
+      Days: Days,
+      Hours: Hours,
+      Minutes: Minutes
+    };
   }
 
   uptimed () {
@@ -309,61 +298,31 @@ class systemInfo {
 
   getUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../website/tools/.uptimed");
-      if (fs.existsSync(uptimeFilePath)) {
-        fs.readFile(uptimeFilePath, "utf8", (error, data) => {
-          if (error) {
-            console.error("[Bugsounet] [SysInfo] readFile uptimed error!", error);
-            return resolve();
-          }
-          try {
-            var Data = JSON.parse(data);
-          } catch (e) {
-            console.error("[Bugsounet] [SysInfo] readFile data error!", e.toString());
-            return resolve();
-          }
-          console.log("[Bugsounet] [SysInfo] Read Uptimed");
-          this.System["UPTIME"].recordCurrent = Data.system;
-          this.System["UPTIME"].recordMM = Data.MM;
-          this.System["UPTIME"].recordCurrentDHM = this.getDHM(Data.system);
-          this.System["UPTIME"].recordMMDHM = this.getDHM(Data.MM);
-          resolve();
-        });
-      } else {
-        let uptime = {
-          system: 1,
-          MM: 1
-        };
-        fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-          if (error) console.error("[Bugsounet] [SysInfo] recordFile creation error!", error);
-          else console.log("[Bugsounet] [SysInfo] Create Uptimed");
-          resolve();
-        });
-      }
+      console.log("[Bugsounet] [SysInfo] Read Uptimed");
+      const GetDBUptimed = getDatas("uptimed");
+      this.System["UPTIME"].recordCurrent = GetDBUptimed.system;
+      this.System["UPTIME"].recordMM = GetDBUptimed.magicmirror;
+      this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);
+      this.System["UPTIME"].recordMMDHM = this.getDHM(this.System["UPTIME"].recordMM);
+      resolve();
     });
   }
 
   writeUptimeRecord () {
     return new Promise((resolve) => {
-      var uptimeFilePath = path.resolve(__dirname, "../website/tools/.uptimed");
       if (this.System["UPTIME"].current > this.System["UPTIME"].recordCurrent) {
         this.System["UPTIME"].recordCurrent = this.System["UPTIME"].current;
         this.System["UPTIME"].recordCurrentDHM = this.getDHM(this.System["UPTIME"].recordCurrent);
+        updateDatas("uptimed", "system", this.System["UPTIME"].recordCurrent);
       }
 
       if (this.System["UPTIME"].MM > this.System["UPTIME"].recordMM) {
         this.System["UPTIME"].recordMM = this.System["UPTIME"].MM;
         this.System["UPTIME"].recordMMDHM = this.getDHM(this.System["UPTIME"].recordMM);
+        updateDatas("uptimed", "magicmirror", this.System["UPTIME"].recordMM);
       }
 
-      let uptime = {
-        system: this.System["UPTIME"].recordCurrent,
-        MM: this.System["UPTIME"].recordMM
-      };
-      fs.writeFile(uptimeFilePath, JSON.stringify(uptime), (error) => {
-        if (error) console.error("[Bugsounet] [SysInfo] recordFile writing error!", error);
-        resolve();
-      });
+      resolve();
     });
   }
 

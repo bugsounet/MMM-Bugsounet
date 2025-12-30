@@ -1,0 +1,44 @@
+{
+  "name": "EXT-Website",
+  "version": "1.5.0",
+  "description": "GA EXT-Website Module",
+  "homepage": "https://wiki.bugsounet.fr/en/EXT-Website",
+  "license": "MIT",
+  "author": "bugsounet",
+  "main": "EXT-Website.js",
+  "scripts": {
+    "clean": "node ../../installer/clean --path=EXTs/EXT-Website",
+    "deps": "node ../../installer/deps --path=EXTs/EXT-Website",
+    "dev": "node ../../installer/dev --path=EXTs/EXT-Website",
+    "dev:src": "node ../../installer/src --path=EXTs/EXT-Website",
+    "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
+    "install": "exit 1",
+    "rebuild": "node ../../installer/rebuild --path=EXTs/EXT-Website",
+    "reset": "node ../../installer/reset --path=EXTs/EXT-Website",
+    "server": "node server/server.js",
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Website"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.0",
+    "animate.css": "^4.1.1",
+    "bootstrap": "^5.3.7",
+    "check-password-strength": "^3.0.0",
+    "console-stamp": "^3.1.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "http-proxy-middleware": "^3.0.5",
+    "jsoneditor": "^10.4.2",
+    "jsonwebtoken": "^9.0.2",
+    "node-pty": "^1.1.0",
+    "socket.io": "^4.8.3",
+    "swagger-ui-express": "^5.0.1",
+    "tablesorter": "^2.32.0",
+    "uuid": "^13.0.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
+  },
+  "installer": {
+    "rebuild": true
+  },
+  "rev": "250504"
+}

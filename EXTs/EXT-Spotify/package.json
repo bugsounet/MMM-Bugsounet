@@ -1,6 +1,6 @@
 {
   "name": "EXT-Spotify",
-  "version": "2.15.0",
+  "version": "3.0.0",
   "description": "An embedded Spotify Player for MagicMirror.",
   "keywords": [
     "magic mirror",
@@ -26,11 +26,7 @@
     "preinstall": "echo ⚠ Please use: npm run setup && exit 1",
     "install": "exit 1",
     "reset": "node ../../installer/reset --path=EXTs/EXT-Spotify",
-    "setup": "node ../../installer/setup --path=EXTs/EXT-Spotify",
-    "token": "node installer/auth_Spotify"
+    "setup": "node ../../installer/setup --path=EXTs/EXT-Spotify"
   },
-  "engines": {
-    "node": ">=23"
-  },
-  "rev": "250329"
+  "rev": "251219"
 }

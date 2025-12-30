@@ -1,0 +1,48 @@
+{
+  "EXT-Assistant_NO_RESPONSE": "죄송합니다, 이해하지 못했습니다.",
+  "EXT-Assistant_TOO_SHORT": "죄송합니다, 이해하지 못했습니다.",
+  "EXT-Assistant_CONVERSATION_ERROR": "Conversation error. (misconfigured microphone)",
+  "EXT-Assistant_QUERY_REPLY": "구글 어시스턴트가 활성화됩니다.",
+  "EXT-Assistant_QUERY_HELP": "이 명령을 사용하여 텍스트로 구글 어시스턴트를 명령할 수 있습니다.",
+  "EXT-Assistant_Loading": "로딩중...",
+  "EXT-Assistant_Ready": "준비!",
+  "EXT-Assistant_Begin": "반가워요, 무엇을 도와드릴까요?",
+  "EXT-Assistant_Continue": "듣는중...",
+  "EXT-Assistant_ErrorRecipe": "이 recipe를 불러오는 중 오류가 발생함: {VALUES}",
+  "EXT-Assistant_ErrorCredentials": "[FATAL] Assistant: credentials.json이 없습니다.",
+  "EXT-Assistant_ErrorToken": "[FATAL] Token Assistant: tokenGA.json이 없습니다.",
+  "EXT-Assistant_ShellExecError": "ShellExec return some Errors",
+
+  "EXT-Browser_Open": "브라우저를 엽니다",
+  "EXT-Browser_Close": "브라우저를 닫습니다",
+  "EXT-Browser_Error": "Browser: URL Loading error!",
+  "EXT-Browser_Crash": "Browser have crash...",
+
+  "EXT-Librespot_NoInstalled": "librespot가 설치되지 않았습니다 !",
+  "EXT-Librespot_Error": "Librespot 오류: {VALUES}",
+
+  "EXT-Screen_WakeUp": "EXT-Screen_ Wakeup by {VALUES}",
+  "EXT-Screen_Lock": "EXT-Screen_ Lock by {VALUES}",
+  "EXT-Screen_UnLock": "EXT-Screen_ UnLock by {VALUES}",
+  "EXT-Screen_TurnOff": "화면 자동 끄기:",
+  "EXT-Screen_LastPresence": "마지막 화면:",
+  "EXT-Screen_PowerOn": "화면 켜기",
+  "EXT-Screen_PowerOff": "화면 끄기",
+
+  "EXT-Spotify_NoResult": "결과를 찾을 수 없습니다.",
+  "EXT-Spotify_SearchFailed": "검색에 실패했습니다.",
+  "EXT-Spotify_ListenText": "재생 중",
+  "EXT-Spotify_SearchTypePlaylist": "재생목록",
+  "EXT-Spotify_SearchTypeAlbum": "앨범",
+  "EXT-Spotify_SearchTypeTrack": "트랙",
+  "EXT-Spotify_SearchTypeArtist": "아티스트",
+
+  "EXT-Volume_RecordPresetError": "Record: 사전 설정 오류!",
+  "EXT-Volume_VolumePresetError": "Volume: 사전 설정 오류!",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "장치 볼륨 설정",
+  "EXT-Volume_Disabled": "Volume 컨트롤에 문제가 생겼습니다.",
+
+  "EXT-YouTubeCast_Start": "유튜브 재생을 시작합니다",
+  "EXT-YouTubeCast_Stop": "유튜브 재생을 중지합니다"
+}

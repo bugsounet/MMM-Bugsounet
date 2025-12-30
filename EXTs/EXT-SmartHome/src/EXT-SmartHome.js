@@ -2,6 +2,8 @@
 * EXT-SmartHome
 ******************/
 
+/* global Bugsounet_translate */
+
 Module.register("EXT-SmartHome", {
   defaults: {
     debug: false,
@@ -47,21 +49,14 @@ Module.register("EXT-SmartHome", {
     return dom;
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json"
-    };
-  },
-
   async websiteInit () {
     this.config.EXT_DB = this.EXT_DB;
     this.config.translations = {
-      Stop: this.translate("Stop"),
-      Restart: this.translate("Restart"),
-      CLose: this.translate("CLose"),
-      Reboot: this.translate("Reboot"),
-      Shutdown: this.translate("Shutdown")
+      Stop: Bugsounet_translate("EXT-SmartHome_Stop"),
+      Restart: Bugsounet_translate("EXT-SmartHome_Restart"),
+      CLose: Bugsounet_translate("EXT-SmartHome_CLose"),
+      Reboot: Bugsounet_translate("EXT-SmartHome_Reboot"),
+      Shutdown: Bugsounet_translate("EXT-SmartHome_Shutdown")
     };
     this.sendSocketNotification("INIT", this.config);
   },

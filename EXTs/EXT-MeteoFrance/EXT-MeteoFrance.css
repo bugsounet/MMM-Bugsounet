@@ -321,7 +321,7 @@
 /* Extra Current Conditions */
 .EXT-MeteoFrance .extra-current-conditions {
   display: block;
-  word-wrap: normal;
+  overflow-wrap: normal;
   padding: 0 10px;
   position: relative;
 }

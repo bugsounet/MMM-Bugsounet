@@ -1,0 +1,213 @@
+<section>
+  <div class="container">
+    <div class="card text-center text-white">
+      <div id="ToolsTitle" class="card-header fs-4">Tools</div>
+      <div id="ToolsDescription" class="card-body">MMM-Bugsounet peut vous offrir plus de contrôle ! (Les fonctions disponibles sont uniquement affichées)</div>
+    </div>
+    <div class="text-center">
+      <div class="row">
+
+        <div class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">MagicMirror²</div>
+            <div id="Control" class="card-content text-center p-2">Control</div>
+            <div class="card-body list-group-item d-flex">
+              <a id="MMDie" class="btn btn-danger btn-sm btn-round mx-auto">Die</a>
+              <a id="MMRestart" class="btn btn-warning btn-sm btn-round mx-auto">Restart</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div id="SystemHeader" class="card-header text-center fs-4">System</div>
+            <div id="Control" class="card-content text-center p-2">Control</div>
+            <div class="card-body list-group-item d-flex">
+              <a id="SysDie" class="btn btn-danger btn-sm btn-round mx-auto">Die</a>
+              <a id="SysRestart" class="btn btn-warning btn-sm btn-round mx-auto">Restart</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="UpdateBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">EXT-Update</div>
+            <div id="UpdateHeader" class="card-content text-center p-2">Update available</div>
+            <div class="card-body list-group-item">
+              <div id="UpdateFiled" class="mb-2">
+                <!--
+                <div id="MMM-Bugsounet">MMM-Bugsounet</div>
+                <div id="MMM-Test">MMM-Test</div>
+                -->
+              </div>
+              <a id="UpdateApply" class="btn btn-info btn-sm btn-round mx-5">Update</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="BackupBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">MagicMirror²</div>
+            <div id="backupDeleteAll" class="card-content text-center p-2">Delete it ?</div>
+            <div class="card-body list-group-item">
+              <div>
+                <span id="backupFoundNumber">2</span>
+                <span id="backupFoundText">Backup found</span>
+              </div>
+              <a id="BackupDelete" class="mt-2 btn btn-danger btn-sm btn-round mx-5">Delete</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="StopBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">Plugins</div>
+            <div id="StopText" class="card-content text-center p-2">Stop all working plugins</div>
+            <div class="card-body list-group-item">
+              <a id="StopApply" class="btn btn-danger btn-sm btn-round mx-5">Stop</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">Bugsounet-Alert</div>
+            <div id="AlertText" class="card-content text-center p-2">Affiche un message sur votre mirroir</div>
+            <div class="card-body list-group-item">
+              <input id="AlertQuery" class="form-control w-100 mb-2" type="text" placeholder="">
+              <a id="AlertSend" class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="YouTubeBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">EXT-YouTube</div>
+            <div id="YouTubeText" class="card-content text-center p-2">Active YouTube</div>
+            <div class="card-body list-group-item">
+              <input id="YouTubeQuery" class="form-control w-100 mb-2" type="text" placeholder="">
+              <a id="YouTubeSend" class="btn btn-secondary btn-sm btn-round mx-5 disabled">Send</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="ScreenBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">EXT-Screen</div>
+            <div id="ScreenText" class="card-content text-center p-2">Allumer ou éteindre votre écran</div>
+            <div class="card-body list-group-item">
+              <a id="ScreenPower" class="btn btn-secondary btn-sm btn-round mx-5">Allumer</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="SpeakerBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">EXT-Volume</div>
+            <div id="SpeakerText" class="card-content text-center p-2">Defini le volume sonore de votre mirroi</div>
+            <div class="card-body list-group-item">
+              <div class="mb-2">
+                <span id="SpeakerActual">Actual:</span>
+                <span id="SpeakerValue">0%</span>
+              </div>
+              <div class="mb-2">
+                <span id="SpeakerDefine">Definir sur:</span>
+                <select id="SpeakerQuery">
+                  <option class="bg-light" value="0">0%</option>
+                  <option class="bg-light" value="5">5%</option>
+                  <option class="bg-light" value="10">10%</option>
+                  <option class="bg-light" value="15">15%</option>
+                  <option class="bg-light" value="20">20%</option>
+                  <option class="bg-light" value="25">25%</option>
+                  <option class="bg-light" value="30">30%</option>
+                  <option class="bg-light" value="35">35%</option>
+                  <option class="bg-light" value="40">40%</option>
+                  <option class="bg-light" value="45">45%</option>
+                  <option class="bg-light" value="50" selected>50%</option>
+                  <option class="bg-light" value="55">55%</option>
+                  <option class="bg-light" value="60">60%</option>
+                  <option class="bg-light" value="65">65%</option>
+                  <option class="bg-light" value="70">70%</option>
+                  <option class="bg-light" value="75">75%</option>
+                  <option class="bg-light" value="80">80%</option>
+                  <option class="bg-light" value="85">85%</option>
+                  <option class="bg-light" value="90">90%</option>
+                  <option class="bg-light" value="95">95%</option>
+                  <option class="bg-light" value="100">100%</option>
+                </select>
+              </div>
+              <a id="SpeakerVolumeSend" class="btn btn-secondary btn-sm btn-round mx-5">Send</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="MicBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">EXT-Volume</div>
+            <div id="MicText" class="card-content text-center p-2">Defini le volume de votre microphone</div>
+            <div class="card-body list-group-item">
+              <div class="mb-2">
+                <span id="MicActual">Actual:</span>
+                <span id="MicValue">0%</span>
+              </div>
+              <div class="mb-2">
+                <span id="MicDefine">Definir sur:</span>
+                <select id="MicQuery">
+                  <option class="bg-light" value="0">0%</option>
+                  <option class="bg-light" value="5">5%</option>
+                  <option class="bg-light" value="10">10%</option>
+                  <option class="bg-light" value="15">15%</option>
+                  <option class="bg-light" value="20">20%</option>
+                  <option class="bg-light" value="25">25%</option>
+                  <option class="bg-light" value="30">30%</option>
+                  <option class="bg-light" value="35">35%</option>
+                  <option class="bg-light" value="40">40%</option>
+                  <option class="bg-light" value="45">45%</option>
+                  <option class="bg-light" value="50" selected>50%</option>
+                  <option class="bg-light" value="55">55%</option>
+                  <option class="bg-light" value="60">60%</option>
+                  <option class="bg-light" value="65">65%</option>
+                  <option class="bg-light" value="70">70%</option>
+                  <option class="bg-light" value="75">75%</option>
+                  <option class="bg-light" value="80">80%</option>
+                  <option class="bg-light" value="85">85%</option>
+                  <option class="bg-light" value="90">90%</option>
+                  <option class="bg-light" value="95">95%</option>
+                  <option class="bg-light" value="100">100%</option>
+                </select>
+              </div>
+              <a id="MicVolumeSend" class="btn btn-secondary btn-sm btn-round mx-5">Send</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="FreeboxTVBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">EXT-FreeboxTV</div>
+            <div id="FreeboxTVText" class="card-content text-center p-2">Regarder la TV</div>
+            <div class="card-body list-group-item">
+               <div class="mb-2">
+                <select id="FreeboxTVQuery"></select>
+              </div>
+              <a id="FreeboxTVSend" class="btn btn-secondary btn-sm btn-round mx-5">Zapper</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="RadioBlock" class="col-sm-4 col-sm-6">
+          <div class="card text-white">
+            <div class="card-header text-center fs-4">EXT-RadioPlayer</div>
+            <div id="RadioText" class="card-content text-center p-2">Ecouter la Radio</div>
+            <div class="card-body list-group-item">
+              <div class="mb-2">
+                <select id="RadioQuery"></select>
+              </div>
+              <a id="RadioSend" class="btn btn-secondary btn-sm btn-round mx-5">Ecouter</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

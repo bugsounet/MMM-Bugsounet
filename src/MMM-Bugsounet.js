@@ -4,31 +4,54 @@
  * ©2025
  */
 
-/* global AlertCommander, EXTs, WebsiteTranslations, sysInfoPage */
+/* global AlertCommander, EXTs, sysInfoPage, Translator */
 
 var logBugsounet = () => { /* do nothing */ };
+
+/*  Bugsounet's global translator */
+function Bugsounet_translate (...args) {
+  return Translator.translate({ name: "MMM-Bugsounet" }, ...args);
+}
+
+function decodeDHM (DHM) {
+  var Days = DHM.Days;
+  var Hours = DHM.Hours;
+  var Minutes = DHM.Minutes;
+
+  if (DHM.Days > 0) {
+    if (DHM.Days > 1) Days += ` ${Bugsounet_translate("System_DAYS")} `;
+    else Days += ` ${Bugsounet_translate("System_DAY")} `;
+  } else {
+    Days = "";
+  }
+
+  if (DHM.Hours > 0) {
+    if (DHM.Hours > 1) Hours += ` ${Bugsounet_translate("System_HOURS")} `;
+    else Hours += ` ${Bugsounet_translate("System_HOUR")} `;
+  } else {
+    Hours = "";
+  }
+
+  if (DHM.Minutes > 1) Minutes += ` ${Bugsounet_translate("System_MINUTES")}`;
+  else Minutes += ` ${Bugsounet_translate("System_MINUTE")}`;
+
+  return Days + Hours + Minutes;
+}
 
 Module.register("MMM-Bugsounet", {
   requiresVersion: "2.31.0",
   defaults: {
     debug: false,
-    username: "admin",
-    password: "admin",
     useAPIDocs: false,
-    useLimiter: true
+    useLimiter: true,
+    enablePopUpAPI: false
   },
 
   start () {
     if (this.config.debug) logBugsounet = (...args) => { console.log("[Bugsounet]", ...args); };
     this.ready = false;
-    this.config.translations = {};
-    this.EXT_DB = [];
-    this.callbacks = {
-      translate: (text) => {
-        return this.translate(text);
-      }
-    };
-    this.AlertCommander = new AlertCommander(this.callbacks);
+    this.AlertCommander = new AlertCommander();
+    this.ActivateCountdownInterval = null;
     this.sendSocketNotification("PRE-INIT");
   },
 
@@ -37,7 +60,6 @@ Module.register("MMM-Bugsounet", {
       this.file("/node_modules/sweetalert2/dist/sweetalert2.all.min.js"),
       this.file("components/AlertCommander.js"),
       this.file("components/EXTs.js"),
-      this.file("components/WebsiteTranslations.js"),
       this.file("components/sysInfoPage.js")
     ];
   },
@@ -54,7 +76,12 @@ Module.register("MMM-Bugsounet", {
       es: "translations/es.json",
       it: "translations/it.json",
       nl: "translations/nl.json",
-      tr: "translations/tr.json"
+      tr: "translations/tr.json",
+      el: "translations/el.json",
+      id: "translations/id.json",
+      ko: "translations/ko.json",
+      pt: "translations/pt.json",
+      "zh-cn": "translations/zh-cn.json"
     };
   },
 
@@ -71,8 +98,10 @@ Module.register("MMM-Bugsounet", {
   async socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "BUGSOUNET-INIT":
+        this.checkWebsiteConfig();
         await this.EXT_Config();
-        await this.websiteInit();
+        await this.sysinfoInit();
+        this.config.translations = this.getTranslations();
         this.sendSocketNotification("INIT", this.config);
         break;
       case "INITIALIZED":
@@ -83,7 +112,7 @@ Module.register("MMM-Bugsounet", {
         break;
       case "ERROR":
         this.sendAlert({
-          message: this.translate(payload),
+          message: Bugsounet_translate(payload),
           type: "error"
         }, "MMM-Bugsounet");
         break;
@@ -104,12 +133,17 @@ Module.register("MMM-Bugsounet", {
       case "TB_SYSINFO-RESULT":
         this.show_sysinfo(payload);
         break;
+      case "Activate":
+        this.ActivateAPIPopup(payload);
+        break;
+      case "CodeDone":
+        this.CloseAPIPopup();
+        break;
     }
   },
 
   async EXT_Config () {
     const Tools = {
-      translate: (...args) => this.translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
       sendSocketNotification: (...args) => this.sendSocketNotification(...args),
       socketNotificationReceived: (...args) => this.socketNotificationReceived(...args),
@@ -139,27 +173,75 @@ Module.register("MMM-Bugsounet", {
     }
   },
 
-  async websiteInit () {
+  async sysinfoInit () {
     const Tools = {
-      translate: (...args) => this.translate(...args),
+      translate: (...args) => Bugsounet_translate(...args),
       sendNotification: (...args) => this.sendNotification(...args),
       sendSocketNotification: (...args) => this.sendSocketNotification(...args)
     };
-    this.Translations = new WebsiteTranslations(Tools);
-    let init = await this.Translations.init();
-    if (!init) {
-      this.sendNotification("Bugsounet_ALERT", { // <-- to modify
-        message: "Translations Error",
-        type: "error",
-        timer: 5000
-      });
-      return;
-    }
     this.session = {};
-    this.config.EXT_DB = this.EXTs.Get_DB();
-    this.config.translations = this.Translations.Get_EXT_Translation();
     this.sysInfo = new sysInfoPage(Tools);
     this.sysInfo.prepare();
+  },
+
+  checkWebsiteConfig () {
+    MM.getModules().enumerate((module) => {
+      if (module.name === "EXT-Website" && !module.disabled) {
+        console.warn("[Bugsounet] EXT-Website detected, enable enablePopUpAPI");
+        this.config.enablePopUpAPI = true;
+      }
+    });
+  },
+
+  ActivateAPIPopup (data) {
+    var popup = document.createElement("div");
+    popup.id = "Bugsounet-API";
+    // todo: write it in nodejs (lazy mode)
+    popup.innerHTML = `
+    <div class="modal-content animate__animated animate__zoomInDown">
+      <div class="modal-header ">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>MMM-Bugsounet API</span>
+      </div>
+      <div class="modal-body">
+        <div class="modal-container">
+          <img src="${data.imageUrl}" alt="QR Code" />
+          <div class="text">
+            <span>${Bugsounet_translate("Generic_Activated", { Username: data.username })}</span>
+            <span>${Bugsounet_translate("Generic_QRCode")}</span>
+            <span>${Bugsounet_translate("Generic_Code", { Code: data.code })}</span>
+          </div>
+        </div>
+        <span class="time-remain">${Bugsounet_translate("Generic_TimeRemaining", { Time: "" })}</span>
+      </div>
+    </div>`;
+    document.body.appendChild(popup);
+
+    const timeElement = popup.querySelector(".time-remain");
+    let timeLeft = 300; // Initial time in seconds
+
+    this.ActivateCountdownInterval = setInterval(() => {
+      timeLeft--;
+      if (timeLeft < 0) {
+        this.CloseAPIPopup();
+        return;
+      }
+
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      const formattedTime = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+      timeElement.textContent = Bugsounet_translate("Generic_TimeRemaining", { Time: formattedTime });
+    }, 1000);
+  },
+
+  CloseAPIPopup () {
+    const popup = document.getElementById("Bugsounet-API");
+    clearInterval(this.ActivateCountdownInterval);
+    this.ActivateCountdownInterval = null;
+    if (popup) {
+      popup.parentNode.removeChild(popup);
+    }
+    this.sendSocketNotification("ActivateClosed");
   },
 
   /********************************/
@@ -168,32 +250,32 @@ Module.register("MMM-Bugsounet", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "sysinfo",
-      description: this.translate("TB_SYSINFO_DESCRIPTION"),
+      description: Bugsounet_translate("EXT-TelegramBot_SYSINFO_DESCRIPTION"),
       callback: "cmd_sysinfo"
     });
     commander.add({
       command: "stop",
-      description: this.translate("GW_Tools_Stop_Text"),
+      description: Bugsounet_translate("Tools_Stop_Text"),
       callback: "tbStopEXT"
     });
     commander.add({
       command: "reboot",
-      description: this.translate("GW_System_Box_Restart"),
+      description: Bugsounet_translate("System_Box_Restart"),
       callback: "tbReboot"
     });
     commander.add({
       command: "shutdown",
-      description: this.translate("GW_System_Box_Shutdown"),
+      description: Bugsounet_translate("System_Box_Shutdown"),
       callback: "tbShutdown"
     });
     commander.add({
       command: "close",
-      description: this.translate("GW_Tools_Die"),
+      description: `MagicMirror²: ${Bugsounet_translate("System_Shutdown")}`,
       callback: "tbClose"
     });
     commander.add({
       command: "restart",
-      description: this.translate("GW_Tools_Restart"),
+      description: `MagicMirror²: ${Bugsounet_translate("System_Restart")}`,
       callback: "tbRestart"
     });
   },
@@ -225,63 +307,63 @@ Module.register("MMM-Bugsounet", {
   show_sysinfo (result) {
     let session = result.sessionId;
     let handler = this.session[session];
-    if (!handler || !session) return console.error("[Website] TB session not found!", handler, session);
+    if (!handler || !session) return console.error("[Bugsounet] TB session not found!", handler, session);
     var text = "";
     text += `*${result["HOSTNAME"]}*\n\n`;
     // version
-    text += `*-- ${this.translate("GW_System_Box_Version")} --*\n`;
+    text += `*-- ${Bugsounet_translate("System_Box_Version")} --*\n`;
     text += "*" + `MMM-Bugsounet:* \`${result["VERSION"]["Bugsounet"]}\`\n`;
     text += "*" + `MagicMirror²:* \`${result["VERSION"]["MagicMirror"]}\`\n`;
     text += "*" + `Electron:* \`${result["VERSION"]["ELECTRON"]}\`\n`;
-    text += `*${this.translate("GW_System_NodeVersion")}* \`${result["VERSION"]["NODECORE"]}\`\n`;
-    text += `*${this.translate("GW_System_NPMVersion")}* \`${result["VERSION"]["NPM"]}\`\n`;
-    text += `*${this.translate("GW_System_OSVersion")}* \`${result["VERSION"]["OS"]}\`\n`;
-    text += `*${this.translate("GW_System_KernelVersion")}* \`${result["VERSION"]["KERNEL"]}\`\n`;
+    text += `*${Bugsounet_translate("System_NodeVersion")}* \`${result["VERSION"]["NODECORE"]}\`\n`;
+    text += `*${Bugsounet_translate("System_NPMVersion")}* \`${result["VERSION"]["NPM"]}\`\n`;
+    text += `*${Bugsounet_translate("System_OSVersion")}* \`${result["VERSION"]["OS"]}\`\n`;
+    text += `*${Bugsounet_translate("System_KernelVersion")}* \`${result["VERSION"]["KERNEL"]}\`\n`;
     // GPU
     text += "*-- GPU --*\n";
-    let GPU_INFO = result.GPU ? this.translate("GW_System_GPUAcceleration_Enabled") : (`WARN: ${this.translate("GW_System_GPUAcceleration_Disabled")}`);
+    let GPU_INFO = result.GPU ? Bugsounet_translate("System_GPUAcceleration_Enabled") : (`WARN: ${Bugsounet_translate("System_GPUAcceleration_Disabled")}`);
     text += `*${GPU_INFO}*\n`;
     // CPU
-    text += `*-- ${this.translate("GW_System_CPUSystem")} --*\n`;
-    text += `*${this.translate("GW_System_TypeCPU")}* \`${result["CPU"]["type"]}\`\n`;
-    text += `*${this.translate("GW_System_SpeedCPU")}* \`${result["CPU"]["speed"]}\`\n`;
-    text += `*${this.translate("GW_System_CurrentLoadCPU")}* \`${result["CPU"]["usage"]}%\`\n`;
-    text += `*${this.translate("GW_System_GovernorCPU")}* \`${result["CPU"]["governor"]}\`\n`;
-    text += `*${this.translate("GW_System_TempCPU")}* \`${config.units === "metric" ? result["CPU"]["temp"]["C"] : result["CPU"]["temp"]["F"]}°\`\n`;
+    text += `*-- ${Bugsounet_translate("System_CPUSystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_TypeCPU")}* \`${result["CPU"]["type"]}\`\n`;
+    text += `*${Bugsounet_translate("System_SpeedCPU")}* \`${result["CPU"]["speed"]}\`\n`;
+    text += `*${Bugsounet_translate("System_CurrentLoadCPU")}* \`${result["CPU"]["usage"]}%\`\n`;
+    text += `*${Bugsounet_translate("System_GovernorCPU")}* \`${result["CPU"]["governor"]}\`\n`;
+    text += `*${Bugsounet_translate("System_TempCPU")}* \`${config.units === "metric" ? result["CPU"]["temp"]["C"] : result["CPU"]["temp"]["F"]}°\`\n`;
     // memory
-    text += `*-- ${this.translate("GW_System_MemorySystem")} --*\n`;
-    text += `*${this.translate("GW_System_TypeMemory")}* \`${result["MEMORY"]["used"]} / ${result["MEMORY"]["total"]} (${result["MEMORY"]["percent"]}%)\`\n`;
-    text += `*${this.translate("GW_System_SwapMemory")}* \`${result["MEMORY"]["swapUsed"]} / ${result["MEMORY"]["swapTotal"]} (${result["MEMORY"]["swapPercent"]}%)\`\n`;
+    text += `*-- ${Bugsounet_translate("System_MemorySystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_TypeMemory")}* \`${result["MEMORY"]["used"]} / ${result["MEMORY"]["total"]} (${result["MEMORY"]["percent"]}%)\`\n`;
+    text += `*${Bugsounet_translate("System_SwapMemory")}* \`${result["MEMORY"]["swapUsed"]} / ${result["MEMORY"]["swapTotal"]} (${result["MEMORY"]["swapPercent"]}%)\`\n`;
     // network
-    text += `*-- ${this.translate("GW_System_NetworkSystem")} --*\n`;
-    text += `*${this.translate("GW_System_IPNetwork")}* \`${result["NETWORK"]["ip"]}\`\n`;
-    text += `*${this.translate("GW_System_InterfaceNetwork")}* \`${result["NETWORK"]["name"]} (${result["NETWORK"]["type"] === "wired" ? this.translate("TB_SYSINFO_ETHERNET") : this.translate("TB_SYSINFO_WLAN")})\`\n`;
+    text += `*-- ${Bugsounet_translate("System_NetworkSystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_IPNetwork")}* \`${result["NETWORK"]["ip"]}\`\n`;
+    text += `*${Bugsounet_translate("System_InterfaceNetwork")}* \`${result["NETWORK"]["name"]} (${result["NETWORK"]["type"] === "wired" ? Bugsounet_translate("EXT-TelegramBot_SYSINFO_ETHERNET") : Bugsounet_translate("EXT-TelegramBot_SYSINFO_WLAN")})\`\n`;
     if (result["NETWORK"]["type"] === "wired") {
-      text += `*${this.translate("GW_System_SpeedNetwork")}* \`${result["NETWORK"]["speed"]} Mbit/s\`\n`;
-      text += `*${this.translate("GW_System_DuplexNetwork")}* \`${result["NETWORK"]["duplex"]}\`\n`;
+      text += `*${Bugsounet_translate("System_SpeedNetwork")}* \`${result["NETWORK"]["speed"]} Mbit/s\`\n`;
+      text += `*${Bugsounet_translate("System_DuplexNetwork")}* \`${result["NETWORK"]["duplex"]}\`\n`;
     } else {
-      text += `*${this.translate("GW_System_WirelessInfo")}:*\n`;
-      text += `*  ${this.translate("GW_System_SSIDNetwork")}* \`${result["NETWORK"]["ssid"]}\`\n`;
-      text += `*  ${this.translate("GW_System_FrequencyNetwork")}* \`${result["NETWORK"]["frequency"]} GHz\`\n`;
-      text += `*  ${this.translate("GW_System_RateNetwork")}* \`${result["NETWORK"]["rate"]}\`\n`;
-      text += `*  ${this.translate("GW_System_QualityNetwork")}* \`${result["NETWORK"]["quality"]}\`\n`;
-      text += `*  ${this.translate("GW_System_SignalNetwork")}* \`${result["NETWORK"]["signalLevel"]} dBm (${result["NETWORK"]["barLevel"]})\`\n`;
+      text += `*${Bugsounet_translate("System_WirelessInfo")}:*\n`;
+      text += `*  ${Bugsounet_translate("System_SSIDNetwork")}* \`${result["NETWORK"]["ssid"]}\`\n`;
+      text += `*  ${Bugsounet_translate("System_FrequencyNetwork")}* \`${result["NETWORK"]["frequency"]} GHz\`\n`;
+      text += `*  ${Bugsounet_translate("System_RateNetwork")}* \`${result["NETWORK"]["rate"]}\`\n`;
+      text += `*  ${Bugsounet_translate("System_QualityNetwork")}* \`${result["NETWORK"]["quality"]}\`\n`;
+      text += `*  ${Bugsounet_translate("System_SignalNetwork")}* \`${result["NETWORK"]["signalLevel"]} dBm (${result["NETWORK"]["barLevel"]})\`\n`;
     }
     // storage
-    text += `*-- ${this.translate("GW_System_StorageSystem")} --*\n`;
+    text += `*-- ${Bugsounet_translate("System_StorageSystem")} --*\n`;
     result["STORAGE"].forEach((partition) => {
       for (let [name, values] of Object.entries(partition)) {
-        text += `*${this.translate("GW_System_MountStorage")} ${name}:* \`${values.used} / ${values.size} (${values.use}%)\`\n`;
+        text += `*${Bugsounet_translate("System_MountStorage")} ${name}:* \`${values.used} / ${values.size} (${values.use}%)\`\n`;
       }
     });
     // uptimes
-    text += `*-- ${this.translate("GW_System_UptimeSystem")} --*\n`;
-    text += `*${this.translate("GW_System_CurrentUptime")}:*\n`;
-    text += `*  ${this.translate("GW_System_System")}* \`${result["UPTIME"]["currentDHM"]}\`\n`;
-    text += `*  MagicMirror²:* \`${result["UPTIME"]["MMDHM"]}\`\n`;
-    text += `*${this.translate("GW_System_RecordUptime")}:*\n`;
-    text += `*  ${this.translate("GW_System_System")}* \`${result["UPTIME"]["recordCurrentDHM"]}\`\n`;
-    text += `*  MagicMirror²:* \`${result["UPTIME"]["recordMMDHM"]}\`\n`;
+    text += `*-- ${Bugsounet_translate("System_UptimeSystem")} --*\n`;
+    text += `*${Bugsounet_translate("System_CurrentUptime")}:*\n`;
+    text += `*  ${Bugsounet_translate("System_System")}* \`${decodeDHM(result["UPTIME"]["currentDHM"])}\`\n`;
+    text += `*  MagicMirror²:* \`${decodeDHM(result["UPTIME"]["MMDHM"])}\`\n`;
+    text += `*${Bugsounet_translate("System_RecordUptime")}:*\n`;
+    text += `*  ${Bugsounet_translate("System_System")}* \`${decodeDHM(result["UPTIME"]["recordCurrentDHM"])}\`\n`;
+    text += `*  MagicMirror²:* \`${decodeDHM(result["UPTIME"]["recordMMDHM"])}\`\n`;
 
     handler.reply("TEXT", text, { parse_mode: "Markdown" });
     delete this.session[session];
@@ -289,27 +371,27 @@ Module.register("MMM-Bugsounet", {
 
   tbReboot (command, handler) {
     this.sendSocketNotification("REBOOT");
-    handler.reply("TEXT", this.translate("GW_RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbShutdown (command, handler) {
     this.sendSocketNotification("SHUTDOWN");
-    handler.reply("TEXT", this.translate("GW_RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbClose (command, handler) {
     this.sendSocketNotification("CLOSE");
-    handler.reply("TEXT", this.translate("GW_RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbRestart (command, handler) {
     this.sendSocketNotification("RESTART");
-    handler.reply("TEXT", this.translate("GW_RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   },
 
   tbStopEXT (command, handler) {
     this.EXTs.ActionsEXTs("Bugsounet_STOP", undefined, { sender: { name: "MMM-Bugsounet" } });
     this.sendNotification("Bugsounet_STOP");
-    handler.reply("TEXT", this.translate("GW_RequestDone"));
+    handler.reply("TEXT", Bugsounet_translate("Generic_RequestDone"));
   }
 });

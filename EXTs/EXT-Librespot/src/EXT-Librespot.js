@@ -3,12 +3,13 @@
  ** @bugsounet
  **/
 
+/* global Bugsounet_translate */
+
 Module.register("EXT-Librespot", {
   defaults: {
     debug: false,
     deviceName: "MagicMirror",
-    minVolume: 40,
-    maxVolume: 100
+    volume: 100
   },
 
   start () {
@@ -21,22 +22,6 @@ Module.register("EXT-Librespot", {
     return dom;
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json",
-      it: "translations/it.json",
-      de: "translations/de.json",
-      es: "translations/es.json",
-      nl: "translations/nl.json",
-      pt: "translations/pt.json",
-      ko: "translations/ko.json",
-      el: "translations/el.json",
-      "zh-cn": "translations/zh-cn.json",
-      tr: "translations/tr.json"
-    };
-  },
-
   notificationReceived (noti, payload, sender) {
     switch (noti) {
       case "Bugsounet_READY":
@@ -46,7 +31,8 @@ Module.register("EXT-Librespot", {
           this.sendNotification("Bugsounet_HELLO");
         }
         break;
-      case "Bugsounet_PLAYER-SPOTIFY_RECONNECT":
+      case "Bugsounet_STOP":
+      case "Bugsounet_LIBRESPOT_RECONNECT":
         if (this.ready) this.sendSocketNotification("PLAYER-RECONNECT");
         break;
     }
@@ -57,12 +43,15 @@ Module.register("EXT-Librespot", {
       case "WARNING":
         this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
-          message: this.translate(payload.message, { VALUES: payload.values }),
+          message: Bugsounet_translate(payload.message, { VALUES: payload.values }),
           icon: this.file("resources/Spotify-Logo.png")
         });
         break;
-      case "PLAYING":
-        this.sendNotification("Bugsounet_LIBRESPOT-PLAYING", payload);
+      case "EVENTS":
+        if (this.ready) this.sendNotification("Bugsounet_LIBRESPOT-EVENTS", payload);
+        break;
+      case "IDLE":
+        if (this.ready) this.sendNotification("Bugsounet_LIBRESPOT-IDLE");
         break;
     }
   },
@@ -70,13 +59,13 @@ Module.register("EXT-Librespot", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "librespot",
-      description: this.translate("TBRestart"),
+      description: Bugsounet_translate("EXT-Librespot_TBRestart"),
       callback: "tbLibrespot"
     });
   },
 
   tbLibrespot (command, handler) {
     this.sendSocketNotification("PLAYER-REFRESH");
-    handler.reply("TEXT", this.translate("TBRestarted"));
+    handler.reply("TEXT", Bugsounet_translate("EXT-Librespot_TBRestarted"));
   }
 });

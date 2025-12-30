@@ -29,11 +29,8 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-Freebox"
   },
   "dependencies": {
-    "axios": "^1.8.4",
-    "ping": "^0.4.4"
+    "axios": "^1.13.2",
+    "ping": "^1.0.0"
   },
-  "engines": {
-    "node": ">=23"
-  },
-  "rev": "250328"
+  "rev": "251218"
 }

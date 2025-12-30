@@ -16,8 +16,5 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-Keyboard",
     "setup": "node ../../installer/setup --path=EXTs/EXT-Keyboard"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250407"
 }

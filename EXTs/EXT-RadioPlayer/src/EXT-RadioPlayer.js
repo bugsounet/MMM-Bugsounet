@@ -3,6 +3,8 @@
  ** ©@bugsounet
  **/
 
+/* global Bugsounet_translate */
+
 Module.register("EXT-RadioPlayer", {
   defaults: {
     debug: false,
@@ -32,13 +34,6 @@ Module.register("EXT-RadioPlayer", {
     return ["EXT-RadioPlayer.css"];
   },
 
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json"
-    };
-  },
-
   getDom () {
     var radio = document.createElement("div");
     radio.id = "EXT_RADIO";
@@ -66,11 +61,11 @@ Module.register("EXT-RadioPlayer", {
     marqueeContainer.appendChild(marqueeDiv);
     var marqueeSpan1 = document.createElement("span");
     marqueeSpan1.id = "EXT_RADIO-MarqueeSpan1";
-    marqueeSpan1.textContent = this.translate("NO_INFORMATIONS");
+    marqueeSpan1.textContent = Bugsounet_translate("EXT-RadioPlayer_NO_INFORMATIONS");
     marqueeDiv.appendChild(marqueeSpan1);
     var marqueeSpan2 = document.createElement("span");
     marqueeSpan2.id = "EXT_RADIO-MarqueeSpan2";
-    marqueeSpan2.textContent = this.translate("NO_INFORMATIONS");
+    marqueeSpan2.textContent = Bugsounet_translate("EXT-RadioPlayer_NO_INFORMATIONS");
     marqueeDiv.appendChild(marqueeSpan2);
     radio.appendChild(marqueeContainer);
 
@@ -195,8 +190,8 @@ Module.register("EXT-RadioPlayer", {
     var marquee1 = document.getElementById("EXT_RADIO-MarqueeSpan1");
     var marquee2 = document.getElementById("EXT_RADIO-MarqueeSpan2");
     radioName.textContent = this.radioPlayer.title || this.radioPlayer.radio || "EXT-RadioPlayer";
-    marquee1.textContent = this.radioPlayer.now_playing || this.translate("NO_INFORMATIONS");
-    marquee2.textContent = this.radioPlayer.now_playing || this.translate("NO_INFORMATIONS");
+    marquee1.textContent = this.radioPlayer.now_playing || Bugsounet_translate("EXT-RadioPlayer_NO_INFORMATIONS");
+    marquee2.textContent = this.radioPlayer.now_playing || Bugsounet_translate("EXT-RadioPlayer_NO_INFORMATIONS");
   },
 
   /** initialise volume control for VLC **/
@@ -272,7 +267,7 @@ Module.register("EXT-RadioPlayer", {
     var marquee1 = document.getElementById("EXT_RADIO-MarqueeSpan1");
     var marquee2 = document.getElementById("EXT_RADIO-MarqueeSpan2");
 
-    this.radioPlayer.now_playing = this.translate("NO_INFORMATIONS");
+    this.radioPlayer.now_playing = Bugsounet_translate("EXT-RadioPlayer_NO_INFORMATIONS");
     marquee1.textContent = this.radioPlayer.now_playing;
     marquee2.textContent = this.radioPlayer.now_playing;
     radioName.textContent = this.radioPlayer.radio || "EXT-RadioPlayer";
@@ -297,78 +292,78 @@ Module.register("EXT-RadioPlayer", {
   EXT_TELBOTCommands (commander) {
     commander.add({
       command: "radio",
-      description: this.translate("RADIO_DESC_RADIO"),
+      description: Bugsounet_translate("EXT-RadioPlayer_DESC_RADIO"),
       callback: "tb_RadioPlay"
     });
     commander.add({
       command: "radionext",
-      description: this.translate("RADIO_DESC_NEXT"),
+      description: Bugsounet_translate("EXT-RadioPlayer_DESC_NEXT"),
       callback: "tb_RadioNext"
     });
     commander.add({
       command: "radioprevious",
-      description: this.translate("RADIO_DESC_PREVIOUS"),
+      description: Bugsounet_translate("EXT-RadioPlayer_DESC_PREVIOUS"),
       callback: "tb_RadioPrevious"
     });
     commander.add({
       command: "radiolist",
-      description: this.translate("RADIO_DESC_LIST"),
+      description: Bugsounet_translate("EXT-RadioPlayer_DESC_LIST"),
       callback: "tb_RadioList"
     });
   },
 
   tb_RadioPlay (command, handler) {
     if (!this.Channels.length) {
-      handler.reply("TEXT", this.translate("NO_STREAMS_FILE"));
+      handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_NO_STREAMS_FILE"));
       return;
     }
     if (handler.args) {
       if (this.ChannelsCheck(handler.args)) {
         this.playStream(handler.args);
-        handler.reply("TEXT", this.translate("RADIO_PLAYING", { VALUES: handler.args }));
+        handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_PLAYING", { VALUES: handler.args }));
       } else {
-        handler.reply("TEXT", this.translate("RADIO_NOT_FOUND", { VALUES: handler.args }));
+        handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_NOT_FOUND", { VALUES: handler.args }));
       }
     } else {
       if (this.radioPlayer.last === 9999) {
         this.playStream(this.Channels[0]);
-        handler.reply("TEXT", this.translate("RADIO_PLAYING", { VALUES: this.Channels[0] }));
+        handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_PLAYING", { VALUES: this.Channels[0] }));
       } else {
         this.playStream(this.Channels[this.radioPlayer.last]);
-        handler.reply("TEXT", this.translate("RADIO_PLAYING", { VALUES: this.Channels[this.radioPlayer.last] }));
+        handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_PLAYING", { VALUES: this.Channels[this.radioPlayer.last] }));
       }
     }
   },
 
   tb_RadioNext (command, handler) {
     if (!this.Channels.length) {
-      handler.reply("TEXT", this.translate("NO_STREAMS_FILE"));
+      handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_NO_STREAMS_FILE"));
       return;
     }
     let channel = this.Channels.next(this.radioPlayer.last);
     if (!channel) channel = this.Channels[0];
     this.playStream(channel);
-    handler.reply("TEXT", this.translate("RADIO_PLAYING", { VALUES: channel }));
+    handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_PLAYING", { VALUES: channel }));
   },
 
   tb_RadioPrevious (command, handler) {
     if (!this.Channels.length) {
-      handler.reply("TEXT", this.translate("NO_STREAMS_FILE"));
+      handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_NO_STREAMS_FILE"));
       return;
     }
     let channel = this.Channels.prev(this.radioPlayer.last);
     if (!channel) channel = this.Channels[this.Channels.length - 1];
     this.playStream(channel);
-    handler.reply("TEXT", this.translate("RADIO_PLAYING", { VALUES: channel }));
+    handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_PLAYING", { VALUES: channel }));
   },
 
   tb_RadioList (command, handler) {
     if (!this.Channels.length) {
-      handler.reply("TEXT", this.translate("NO_STREAMS_FILE"));
+      handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_NO_STREAMS_FILE"));
       return;
     }
     let List = this.Channels.toString();
     List = List.replaceAll(",", "\n - ");
-    handler.reply("TEXT", this.translate("RADIO_LIST", { VALUES: List }), { parse_mode: "Markdown" });
+    handler.reply("TEXT", Bugsounet_translate("EXT-RadioPlayer_LIST", { VALUES: List }), { parse_mode: "Markdown" });
   }
 });

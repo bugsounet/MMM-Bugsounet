@@ -1,0 +1,70 @@
+<header class="topbar-nav">
+  <nav class="navbar navbar-expand fixed-top bg-dark">
+    <ul class="navbar-nav mr-auto align-items-center">
+      <li class="nav-item">
+        <a class="nav-link toggle-menu">
+          <i class="icon-menu menu-icon"></i>
+        </a>
+      </li>
+    </ul>
+    <ul class="navbar-nav align-items-center right-nav-link ms-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="https://github.com/bugsounet/MMM-Bugsounet" target="_blank">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://github.com/bugsounet/MMM-Bugsounet/wiki" target="_blank">
+          <i class="fa-brands fa-wikipedia-w"></i>
+        </a>
+      </li>
+      <li class="d-none nav-item">
+        <a class="nav-link" href="https://forum.bugsounet.fr" target="_blank">
+          <i class="fa fa-comments"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a id="fullscreen" class="nav-link" href="#" data-fs-toggle="fullscreen">
+          <i data-fs-icon="maximize" class="fa fa-maximize"></i>
+          <i data-fs-icon="minimize" class="fa fa-minimize" style="display: none"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
+          <span class="user-profile"><img id="Avatar" src="/assets/images/avatars/avatar1.png" class="rounded-circle" alt="account"></span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li class="dropdown-item user-details">
+            <div class="media">
+              <div class="media-body">
+                <h6 id="myusername" class="mt-2 user-title">Username</h6>
+                <p id="mylevel" class="user-subtitle">Level</p>
+              </div>
+            </div>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li class="dropdown-item">
+            <a class="d-flex align-items-baseline" data-loading="/html/account.html">
+              <i class="icon-user mr-2"></i>
+              <div id="Account">Account</div>
+            </a>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li id="AdminGrp" class="dropdown-item">
+            <a class="d-flex align-items-baseline" data-loading="/html/admin.html">
+              <i class="icon-people mr-2"></i>
+              <div id="Admin">Admin</div>
+            </a>
+          </li>
+          <li class="dropdown-divider"></li>
+          <li class="dropdown-item">
+            <a class="d-flex align-items-baseline" href="/logout">
+              <i class="icon-power mr-2"></i>
+              <div id="Logout">Logout</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</header>

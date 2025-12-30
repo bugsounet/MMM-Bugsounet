@@ -1,0 +1,48 @@
+{
+  "EXT-Assistant_NO_RESPONSE": "对不起，我不理解。",
+  "EXT-Assistant_TOO_SHORT": "对不起，我不理解。",
+  "EXT-Assistant_CONVERSATION_ERROR": "会话错误。(麦克风配置错误)",
+  "EXT-Assistant_QUERY_REPLY": "谷歌助理将被激活",
+  "EXT-Assistant_QUERY_HELP": "你可以用来命令 `谷歌助理` 的文字。",
+  "EXT-Assistant_Loading": "加载...",
+  "EXT-Assistant_Ready": "准备就绪！",
+  "EXT-Assistant_Begin": "你好，我能提供什么帮助？",
+  "EXT-Assistant_Continue": "我在听你说...",
+  "EXT-Assistant_ErrorRecipe": "加载此方法时出现错误： {VALUES}",
+  "EXT-Assistant_ErrorCredentials": "[FATAL] Assistant: credentials.json 丢失",
+  "EXT-Assistant_ErrorToken": "[FATAL] Token YouTube: tokenYT.json 丢失",
+  "EXT-Assistant_ShellExecError": "ShellExec 返回一些错误",
+  "EXT-Librespot_NoInstalled": "Librespot 未安装 !",
+
+  "EXT-Spotify_PlayerNoResponse": "没有来自 {VALUES} 的响应!",
+  "EXT-Spotify_PlayerConnected": "已连接到 {VALUES} !",
+  "EXT-Spotify_PlayerConnecting": "请稍候，正在连接 ...",
+
+  "EXT-Spotify_NoResult": "Spotify: 未找到结果",
+  "EXT-Spotify_SearchFailed": "Spotify: 搜索和播放失败",
+  "EXT-Spotify_ListenText": "正在聆听中",
+  "EXT-Spotify_SearchTypePlaylist": "播放列表",
+  "EXT-Spotify_SearchTypeAlbum": "专辑",
+  "EXT-Spotify_SearchTypeTrack": "音轨",
+  "EXT-Spotify_SearchTypeArtist": "艺术家",
+
+  "EXT-TelegramBot_HIDE": "隐藏所需模块",
+  "EXT-TelegramBot_HIDE_ALREADY": " 已被隐藏",
+  "EXT-TelegramBot_HIDE_DONE": " 现在被隐藏了",
+  "EXT-TelegramBot_HIDE_LOCKED": " 被另一个程序锁定，无法隐藏它",
+  "EXT-TelegramBot_SHOW": "显示所需模块",
+  "EXT-TelegramBot_SHOW_ALREADY": " 已经显示",
+  "EXT-TelegramBot_SHOW_DONE": " 现在显示了",
+  "EXT-TelegramBot_SHOW_LOCKED": " 已经被另一个程序锁定，无法显示。",
+  "EXT-TelegramBot_MODULE_NOTFOUND": "未找到模块： ",
+  "EXT-TelegramBot_MODULE_NAME": "缺少的模块名称",
+
+  "EXT-Volume_RecordPresetError": "Record：预设错误！",
+  "EXT-Volume_VolumePresetError": "音量：预设错误！",
+  "EXT-Volume_Text": "音量:",
+  "EXT-Volume_Help": "设置你的设备音量",
+  "EXT-Volume_Disabled": "音量控制已禁用",
+
+  "EXT-YouTubeCast_Start": "开始投射 YouTube",
+  "EXT-YouTubeCast_Stop": "停止投射 YouTube"
+}

@@ -7,10 +7,10 @@ jobs:
     name: Run translations scanning
     runs-on: ubuntu-latest
     steps:
-      - name: "Use Node.js v23.x (latest)"
+      - name: "Use Node.js v24.x (latest)"
         uses: actions/setup-node@v4
         with:
-          node-version: "23.x"
+          node-version: "24.x"
           check-latest: true
 
       - name: Checkout code

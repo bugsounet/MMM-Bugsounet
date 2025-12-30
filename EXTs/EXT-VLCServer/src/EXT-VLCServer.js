@@ -3,6 +3,8 @@
  ** @bugsounet
  **/
 
+/* global Bugsounet_translate */
+
 Module.register("EXT-VLCServer", {
   defaults: {
     debug: false,
@@ -13,13 +15,6 @@ Module.register("EXT-VLCServer", {
     var dom = document.createElement("div");
     dom.style.display = "none";
     return dom;
-  },
-
-  getTranslations () {
-    return {
-      en: "translations/en.json",
-      fr: "translations/fr.json"
-    };
   },
 
   notificationReceived (noti, payload, sender) {
@@ -38,18 +33,18 @@ Module.register("EXT-VLCServer", {
       case "ERROR":
         this.sendNotification("Bugsounet_ALERT", {
           type: "error",
-          message: this.translate(payload.message),
+          message: Bugsounet_translate(payload.message),
           timer: 10000
         });
-        console.error(`[VLC] [ERROR] ${this.translate(payload.message)}`);
+        console.error(`[VLC] [ERROR] ${Bugsounet_translate(payload.message)}`);
         break;
       case "WARNING":
         this.sendNotification("Bugsounet_ALERT", {
           type: "warning",
-          message: this.translate(payload.message, { VALUES: payload.values }),
+          message: Bugsounet_translate(payload.message, { VALUES: payload.values }),
           timer: 10000
         });
-        console.warn(`[VLC] [WARNING] ${this.translate(payload.message, { VALUES: payload.values })}`);
+        console.warn(`[VLC] [WARNING] ${Bugsounet_translate(payload.message, { VALUES: payload.values })}`);
         break;
       case "STARTED":
         this.sendNotification("Bugsounet_VLCSERVER-START");

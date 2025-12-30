@@ -3,12 +3,11 @@
 * Bugsounet         *
 *********************/
 
-/* global ProgressBar, _logScreen */
+/* global ProgressBar, _logScreen, Bugsounet_translate */
 /* eslint-disable-next-line */
 class screenDisplayer {
   constructor (config, Tools) {
     this.config = config;
-    this.translate = (...args) => Tools.translate(...args);
     this.hide = (...args) => Tools.hide(...args);
     this.show = (...args) => Tools.show(...args);
     this.hidden = () => Tools.hidden();
@@ -47,7 +46,7 @@ class screenDisplayer {
       screen.id = "EXT-Screen_TEXT";
       var screenText = document.createElement("div");
       screenText.id = "RXT-Screen_TEXT_TRANSLATE";
-      screenText.textContent = this.translate("ScreenTurnOff");
+      screenText.textContent = Bugsounet_translate("EXT-Screen_TurnOff");
       screenText.classList.add("bright");
       screen.appendChild(screenText);
 
@@ -76,7 +75,7 @@ class screenDisplayer {
       presence.className = "hidden";
       var presenceText = document.createElement("div");
       presenceText.id = "EXT-Screen_PRESENCE_TEXT";
-      presenceText.textContent = this.translate("ScreenLastPresence");
+      presenceText.textContent = Bugsounet_translate("EXT-Screen_LastPresence");
       presence.appendChild(presenceText);
       var presenceDate = document.createElement("div");
       presenceDate.id = "EXT-Screen_PRESENCE_DATE";
@@ -93,7 +92,7 @@ class screenDisplayer {
       availability.classList.add("bright");
       var availabilityText = document.createElement("div");
       availabilityText.id = "EXT-Screen_AVAILABILITY_TEXT";
-      availabilityText.textContent = this.translate("ScreenAvailability");
+      availabilityText.textContent = Bugsounet_translate("EXT-Screen_Availability");
       availability.appendChild(availabilityText);
       var availabilityValue = document.createElement("div");
       availabilityValue.id = "EXT-Screen_AVAILABILITY_DATA";

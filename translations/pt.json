@@ -1,0 +1,47 @@
+{
+  "EXT-Assistant_NO_RESPONSE": "Desculpa, não estou a perceber.",
+  "EXT-Assistant_TOO_SHORT": "Desculpa, não estou a perceber.",
+  "EXT-Assistant_CONVERSATION_ERROR": "Erro de conversação. (microfone mal configurado)",
+  "EXT-Assistant_QUERY_REPLY": "Assistente Google irá ser ativado",
+  "EXT-Assistant_QUERY_HELP": "Podes controlar o `Assistente Google` por texto com o seguinte comando.",
+  "EXT-Assistant_Loading": "A carregar...",
+  "EXT-Assistant_Ready": "Pronto!",
+  "EXT-Assistant_Begin": "Olá, em que posso ajudar?",
+  "EXT-Assistant_Continue": "Estou a ouvir...",
+  "EXT-Assistant_ErrorRecipe": "Erro ao carregar esta receita: {VALUES}",
+  "EXT-Assistant_ErrorCredentials": "[FATAL] Assistant: credentials.json em falta",
+  "EXT-Assistant_ShellExecError": "ShellExec returnou alguns Erros",
+
+  "EXT-Browser_Open": "A abrir Navegador",
+  "EXT-Browser_Close": "A fechar Navegador",
+  "EXT-Browser_Error": "Browser: URL Loading error!",
+  "EXT-Browser_Crash": "Browser have crash...",
+
+  "EXT-Librespot_NoInstalled": "O librespot não está instalado!",
+  "EXT-Librespot_Error": "Librespot: {VALUES}",
+
+  "EXT-Screen_WakeUp": "Ecrã ligado {VALUES}",
+  "EXT-Screen_Lock": "Ecrã bloqueado por {VALUES}",
+  "EXT-Screen_UnLock": "Ecrã desbloqueado por {VALUES}",
+  "EXT-Screen_TurnOff": "Desbloqueio automático do Ecrã:",
+  "EXT-Screen_LastPresence": "Última utilização",
+  "EXT-Screen_PowerOn": "Ligar Ecrã",
+  "EXT-Screen_PowerOff": "Desligar Ecrã",
+
+  "EXT-Spotify_NoResult": "Sem resultados",
+  "EXT-Spotify_SearchFailed": "Falha na procura",
+  "EXT-Spotify_ListenText": "A ouvir em",
+  "EXT-Spotify_SearchTypePlaylist": "playlist",
+  "EXT-Spotify_SearchTypeAlbum": "album",
+  "EXT-Spotify_SearchTypeTrack": "faixa",
+  "EXT-Spotify_SearchTypeArtist": "artista",
+
+  "EXT-Volume_RecordPresetError": "Record: Preset Error!",
+  "EXT-Volume_VolumePresetError": "Volume: Preset Error!",
+  "EXT-Volume_Text": "Volume:",
+  "EXT-Volume_Help": "Definir o volume",
+  "EXT-Volume_Disabled": "Controlo de volume desactivado",
+
+  "EXT-YouTubeCast_Start": "A começar a transmissão do YouTube",
+  "EXT-YouTubeCast_Stop": "A parar a transmissão YouTube"
+}

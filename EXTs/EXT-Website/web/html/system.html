@@ -1,0 +1,264 @@
+<section>
+  <div id="SystemDisplayer" class="container visually-hidden">
+
+    <div id="Hostname-Box" class="card">
+      <div id="HOSTNAME" class="card-header text-center fs-4 border-bottom-none rounded-bottom"></div>
+    </div>
+
+    <!-- start of row -->
+    <div class="row">
+
+      <div id="Version-Box" class="col col-12 col-lg-6">
+        <div class="card text-white">
+          <div id="VersionSystem" class="card-header text-center fs-4"></div>
+          <div class="card-body list-group-item">
+            <div>
+              <span>MagicMirror²:</span>
+              <span id="MMVersion"></span>
+            </div>
+            <div>
+              <span>Electron:</span>
+              <span id="ElectronVersion"></span>
+            </div>
+            <div>
+              <span id="NodeVersion"></span>
+              <span id="NODECORE"></span>
+            </div>
+            <div>
+              <span id="NPMVersion"></span>
+              <span id="NPM"></span>
+            </div>
+            <div>
+              <span id="OSVersion"></span>
+              <span id="OS"></span>
+            </div>
+            <div>
+              <span id="KernelVersion">:</span>
+              <span id="KERNEL"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="CPU-Box" class="col col-12 col-lg-6">
+        <div class="card  text-white">
+          <div id="CPUSystem" class="card-header text-center fs-4"></div>
+          <div class="card-body list-group-item ">
+             <div class="text-lg-start">
+              <span id="TypeCPU"></span>
+              <span id="CPU"></span>
+            </div>
+            <div class="text-lg-start">
+              <span id="SpeedCPU">:</span>
+              <span id="SPEED"></span>
+            </div>
+            <div class="d-flex align-items-center align-items-xl-center text-lg-start">
+              <span class="me-1" id="CurrentLoadCPU"></span>
+               <span id="LoadText"></span>
+              <div class="flex-fill progress" id="Load">
+                <div id="LoadDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;">
+                  <span id="LoadValue" class="text-black align-self-end me-1">></span>
+                </div>
+              </div>
+            </div>
+            <div class="text-lg-start">
+              <span id="GovernorCPU"></span>
+              <span id="GOVERNOR"></span>
+            </div>
+            <div class="d-flex align-items-center align-items-xl-center text-lg-start">
+              <span class="me-1" id="TempCPU"></span>
+              <span id="TempText"></span>
+              <div class="flex-fill progress" id="Temp">
+                <div id="TempDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;">
+                  <span id="TempValue" class="text-black align-self-end me-1">></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="Memory-Box" class="col col-12 col-lg-6">
+        <div class="card text-white">
+          <div id="MemorySystem" class="card-header text-center fs-4"></div>
+          <div class="card-body list-group-item">
+            <div class="d-flex align-items-center align-items-xl-center text-lg-start">
+              <span class="mx-1" id="TypeMemory"></span>
+               <span id="MemoryText"></span>
+              <span class="mx-1" id="MemoryText2" class="visually-hidden">/</span>
+              <div class="flex-fill progress me-1" id="Memory">
+                <div id="MemoryDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 50px;">
+                  <span id="MemoryPercent" class="text-black align-self-end me-1"></span>
+                </div>
+              </div>
+              <span id="MemoryTotal"></span>
+            </div>
+            <div class="d-flex align-items-center align-items-xl-center text-lg-start">
+              <span class="mx-1" id="SwapMemory"></span>
+              <span id="SwapText"></span>
+              <span class="mx-1" id="SwapText2" class="visually-hidden">/</span>
+              <div class="flex-fill progress me-1" id="Swap">
+                <div id="SwapDisplay" class="progress-bar progress-bar-striped progress-bar-animated" style="min-width: 30px;">
+                  <span id="SwapPercent" class="text-black align-self-end me-1"></span>
+                </div>
+              </div>
+              <span id="SwapTotal"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="GPU-Box" class="col col-12 col-lg-6">
+        <div class="card text-white">
+          <div class="card-header text-center fs-4">GPU</div>
+          <div id="GPUAlert" class="card-body list-group-item bg-google-red">
+            <div class="text-center fw-bold">
+              <i id="GPUWarn" class="fa-solid fa-triangle-exclamation"></i>
+              <span id="GPU"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="Bugsounet-Box" class="col-md-8 offset-md-2">
+        <div class="card text-white">
+          <div class="card-header text-center fs-4">MMM-Bugsounet</div>
+          <div class="card-body list-group-item">
+            <div class="fw-bold text-center text-google-blue">
+              <span id="CurrentlyRunning"></span>
+            </div>
+          </div>
+          <div class="table-responsive visually-hidden" id="Plugins-Table">
+            <table class="table table-sm">
+              <thead class="table-dark">
+                <tr>
+                  <th id="NamePlugin"></th>
+                  <th id="VersionPlugin" class="text-center"></th>
+                  <th id="RevPlugin" class="text-center"></th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider" id="PluginsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="Storage-Box" class="col col-12">
+        <div class="card text-white">
+          <div id="StorageSystem" class="card-header text-center fs-4"></div>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead class="table-dark">
+                <tr>
+                  <th class="col" id="MountStorage"></th>
+                  <th class="col" id="UsedStorage"></th>
+                  <th class="col-6" id="PercentStorage"></th>
+                  <th class="col" id="TotalStorage"></th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider" id="Storage"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="Network-Box" class="col col-12 col-lg-6">
+        <div class="card text-white">
+          <div class="card-header text-center fs-4">
+            <div id="wirelessSignal" class="position-absolute">
+              <i id="wireless" class="icon__signal-strength signal-0">
+                <span class="bar-1"></span>
+                <span class="bar-2"></span>
+                <span class="bar-3"></span>
+                <span class="bar-4"></span>
+              </i>
+            </div>
+            <span id="NetworkSystem"></span>
+          </div>
+          <div class="card-body list-group-item">
+            <div>
+              <span id="IPNetwork"></span>
+              <span id="IP"></span>
+            </div>
+            <div class="d-flex">
+              <span id="InterfaceNetwork"></span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-ethernet mx-1 fs-5" id="wired-icon">
+                <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2ZM1 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2Zm13 11.5v-7a.5.5 0 0 0-.5-.5H12V4.5a.5.5 0 0 0-.5-.5h-1v-.5A.5.5 0 0 0 10 3H6a.5.5 0 0 0-.5.5V4h-1a.5.5 0 0 0-.5.5V6H2.5a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5ZM3.75 11a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25h-.5Zm2 0a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25h-.5Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5ZM9.75 11a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25h-.5Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5Z"></path>
+              </svg>
+              <i class="zmdi zmdi-wifi-alt mx-1 fs-5" id="wireless-icon"></i>
+              <span id="interface"></span>
+            </div>
+            <div id="SpeedArea">
+              <span id="SpeedNetwork"></span>
+              <span id="speed"></span>
+              <span>Mbit/s</span>
+            </div>
+            <div id="DuplexArea">
+              <span id="DuplexNetwork"></span>
+              <span id="duplex"></span>
+            </div>
+            <div id="wirelessInfo">
+              <div id="WirelessInfo" class=" mt-2 fw-bold text-center text-google-blue"></div>               
+              <div>
+                <span id="SSIDNetwork"></span>
+                <span id="ssid"></span>
+              </div>
+              <div>
+                <span id="FrequencyNetwork"></span>
+                <span id="frequency"></span>
+                <span>GHz</span>
+              </div>
+              <div>
+                <span id="RateNetwork"></span>
+                <span id="rate"></span>
+              </div>
+              <div>
+                <span id="QualityNetwork"></span>
+                <span id="quality"></span>
+              </div>
+              <div>
+                <span id="SignalNetwork"></span>
+                <span id="signalLevel"></span>
+                <span>dBm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="Uptime-Box" class="col col-12 col-lg-6">
+        <div class="card text-white">
+          <div id="UptimeSystem" class="card-header text-center fs-4"></div>
+          <div class="card-body list-group-item">
+            <span class="fw-bold" id="CurrentUptime"></span>
+            <div class="mx-3">
+              <div class="text-lg-start">
+                <span id="SysCurrent"></span>
+                <span id="SysUptime"></span>
+              </div>
+              <div class="text-lg-start">
+                <span>MagicMirror²:</span>
+                <span id="MMUptime"></span>
+              </div>
+            </div>
+            <span class="fw-bold" id="RecordUptime"></span>
+            <div class="mx-3">
+              <div class="text-lg-start">
+                <span id="SysRecord"></span>
+                <span id="SysUptimeRecord"></span>
+              </div>
+              <div class="text-lg-start">
+                <span>MagicMirror²:</span>
+                <span id="MMUptimeRecord"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- end of row -->
+    </div>
+
+  </div>
+
+</section>

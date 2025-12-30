@@ -3,29 +3,35 @@
 //
 
 "use strict";
-var log = () => { /* do nothing */ };
 var NodeHelper = require("node_helper");
 const checker = require("./components/checker");
 const controler = require("./components/controler");
+const api = require("./components/api");
 
 module.exports = NodeHelper.create({
   requiresVersion: "2.31.0",
   start () {
-    this.lib = { error: 0 };
     this.config = {};
     this.alreadyInitialized = false;
-    this.lib = { error: 0 };
   },
 
   async socketNotificationReceived (noti, payload) {
     switch (noti) {
       case "PRE-INIT":
-        if (this.alreadyInitialized) {
+        if (process.mainModule?.path.includes("MagicMirror/serveronly")) {
           console.error("[Bugsounet] You can't use MMM-Bugsounet in server mode");
           this.sendSocketNotification("ERROR", "You can't use MMM-Bugsounet in server mode");
           setTimeout(() => process.exit(), 5000);
           return;
         }
+
+        if (this.alreadyInitialized) {
+          console.error("[Bugsounet] Multi-instances is not allowed");
+          this.sendSocketNotification("ERROR", "Multi-instances is not allowed");
+          setTimeout(() => process.exit(), 5000);
+          return;
+        }
+
         console.log(`[Bugsounet] MMM-Bugsounet Version: ${require("./package.json").version} rev: ${require("./package.json").rev}`);
 
         this.alreadyInitialized = true;
@@ -33,21 +39,19 @@ module.exports = NodeHelper.create({
         break;
       case "INIT":
         this.config = payload;
-        if (this.config.debug) log = (...args) => { console.log("[Bugsounet]", ...args); };
-        await checker.secure(this);
+        await checker.secure();
         this.controler = new controler();
         await this.controler.check_PM2_Process();
-        await this.parseWebsite();
-        this.lib.HyperWatch.enable();
-        await this.website.init(this.config);
+        await this.parserAPI();
+        await this.api.init(this.config);
         this.sendSocketNotification("INITIALIZED");
         console.log("[Bugsounet] MMM-Bugsounet Ready!");
         break;
       case "setEXTStatus":
-        this.website.setEXTStatus(payload);
+        this.api.setEXTStatus(payload);
         break;
       case "setHelloEXT":
-        this.website.setEXTVersions(payload);
+        this.api.setEXTVersions(payload);
         break;
       case "REBOOT":
         this.controler.SystemReboot();
@@ -62,28 +66,25 @@ module.exports = NodeHelper.create({
         this.controler.doClose();
         break;
       case "GET-SYSINFO":
-        this.sendSocketNotification("SYSINFO-RESULT", await this.website.website.systemInformation.lib.Get());
+        this.sendSocketNotification("SYSINFO-RESULT", await this.api.Api.systemInformation.lib.Get());
         break;
       case "TB_SYSINFO":
-        var result = await this.website.website.systemInformation.lib.Get();
+        var result = await this.api.Api.systemInformation.lib.Get();
         result.sessionId = payload;
         this.sendSocketNotification("TB_SYSINFO-RESULT", result);
+        break;
+      case "ActivateClosed":
+        this.api.closeActivate();
         break;
     }
   },
 
-  async parseWebsite () {
-    const bugsounet = await this.libraries();
+  parserAPI () {
     return new Promise((resolve) => {
-      if (bugsounet) return this.bugsounetError(bugsounet);
-      let WebsiteHelperConfig = {
-        config: {
-          username: this.config.username,
-          password: this.config.password,
-          useLimiter: this.config.useLimiter
-        },
-        debug: this.config.debug,
-        lib: this.lib
+      let APIHelperConfig = {
+        useLimiter: this.config.useLimiter,
+        enablePopUpAPI: this.config.enablePopUpAPI,
+        debug: this.config.debug
       };
       let callback = {
         sendSocketNotification: (...args) => this.sendSocketNotification(...args),
@@ -108,52 +109,8 @@ module.exports = NodeHelper.create({
         }
       };
 
-      this.website = new this.lib.website(WebsiteHelperConfig, callback);
+      this.api = new api(APIHelperConfig, callback);
       resolve();
     });
-  },
-
-  libraries () {
-    let Libraries = [
-      { "./components/hyperwatch.js": "HyperWatch" },
-      { "./components/systemInformation.js": "SystemInformation" },
-      { "./components/website.js": "website" }
-    ];
-
-    let errors = 0;
-
-    log("Loading website Libraries...");
-
-    return new Promise((resolve) => {
-      Libraries.forEach((library) => {
-        for (const [name, configValues] of Object.entries(library)) {
-          let libraryToLoad = name;
-          let libraryName = configValues;
-
-          try {
-            if (!this.lib[libraryName]) {
-              this.lib[libraryName] = require(libraryToLoad);
-              log(`[Lib] Loaded: ${libraryToLoad} --> this.lib.${libraryName}`);
-            }
-          } catch (e) {
-            //console.error(`[Bugsounet] [Lib] ${libraryToLoad} Loading error!`, e.message);
-            console.error(`[Bugsounet] [Lib] ${libraryToLoad} Loading error!`, e);
-            this.sendSocketNotification("ERROR", `Loading error! library: ${libraryToLoad}`);
-            errors++;
-            this.lib.error = errors;
-          }
-        }
-      });
-      resolve(errors);
-      if (errors) {
-        console.error("[Bugsounet] [Lib] Some libraries missing!");
-      } else console.log("[Bugsounet] [Lib] All website libraries loaded!");
-    });
-  },
-
-  bugsounetError (bugsounet) {
-    console.error(`[Bugsounet] [Lib] Warning: ${bugsounet} needed library not loaded !`);
-    console.error("[Bugsounet] [Lib] Try to solve it with `npm run rebuild` in MMM-Bugsounet folder");
-    this.sendSocketNotification("WARNING", "Try to solve it with 'npm run rebuild' in MMM-Bugsounet folder");
   }
 });

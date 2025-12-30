@@ -15,8 +15,5 @@
     "reset": "node ../../installer/reset --path=EXTs/EXT-YouTube",
     "setup": "node ../../installer/setup --path=EXTs/EXT-YouTube"
   },
-  "engines": {
-    "node": ">=23"
-  },
   "rev": "250412"
 }

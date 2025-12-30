@@ -1,0 +1,398 @@
+<div class="row mt-3 justify-content-center">
+  <div class="col-lg">
+    <div class="card">
+
+      <div class="card-body">
+        <ul class="nav nav-tabs nav-tabs-primary top-icon nav-justified">
+          <li class="nav-item">
+            <a id="loginTab" class="nav-link active"
+               data-bs-toggle="tab"
+               href="#login"
+               role="tab"
+               aria-controls="login"
+               aria-selected="true">
+               <i class="icon-login"></i>
+               <span id="Login" class="hidden-xs">Login</span>
+            </a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a id="accountsTab" class="nav-link"
+               data-bs-toggle="tab"
+               href="#accounts"
+               role="tab"
+               aria-controls="theme"
+               aria-selected="false">
+               <i class="icon-people"></i>
+               <span id="Accounts" class="hidden-xs">Users Account</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="tab-content p-3">
+
+          <div class="tab-pane fade active show" id="login">
+            <h5 id="LoginPrefs" class="mb-3">Default login preferences</h5>
+            <div class="mb-3 row">
+              <label id="LanguageProfile"class="col-lg-3 col-form-label form-control-label">Language</label>
+              <div class="col-lg-4">
+                <div class="dropdown">
+                  <button class="btn btn dropdown-toggle btn-light dropdown-toggle" type="button" id="LoginLanguageButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    Select Language
+                  </button>
+                  <ul id="LoginLanguageSelectorDropdown" class="dropdown-menu" aria-labelledby="LoginLanguageButton">
+                    <li>
+                      <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="en">
+                        <i class="flag-icon flag-icon-gb me-2"></i>
+                        <div id="English">English</div>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="fr">
+                        <i class="flag-icon flag-icon-fr me-2"></i>
+                        <div id="French">French</div>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="de">
+                        <i class="flag-icon flag-icon-de me-2"></i>
+                        <div id="German">German</div>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="it">
+                        <i class="flag-icon flag-icon-it me-2"></i>
+                        <div id="Italian">Italian</div>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="es">
+                        <i class="flag-icon flag-icon-es me-2"></i>
+                        <div id="Spanish">Spanish</div>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="nl">
+                        <i class="flag-icon flag-icon-nl me-2"></i>
+                        <div id="Dutch">Dutch</div>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="tr">
+                        <i class="flag-icon flag-icon-tr me-2"></i>
+                        <div id="Turkish">Turkish</div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+                <input type="hidden" id="LoginSelectedLanguage" name="language" value="">
+
+              </div>
+            </div>
+
+            <h5 id="LoginBackground" class="mb-3">Background Theme</h5>
+            <div id="background-container" class="col-lg-12 d-flex flex-wrap gap-3 ps-0 pe-0">
+              <label class="background-choice">
+                <input type="radio" name="background" value="1">
+                <div class="background-size-choice" id="theme1"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="2">
+                <div class="background-size-choice" id="theme2"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="3">
+                <div class="background-size-choice" id="theme3"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="4">
+                <div class="background-size-choice" id="theme4"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="5">
+                <div class="background-size-choice" id="theme5"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="6">
+                <div class="background-size-choice" id="theme6"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="7">
+                <div class="background-size-choice" id="theme7"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="8">
+                <div class="background-size-choice" id="theme8"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="9">
+                <div class="background-size-choice" id="theme9"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="10">
+                <div class="background-size-choice" id="theme10"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="11">
+                <div class="background-size-choice" id="theme11"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="12">
+                <div class="background-size-choice" id="theme12"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="13">
+                <div class="background-size-choice" id="theme13"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="14">
+                <div class="background-size-choice" id="theme14"></div>
+              </label>
+              <label class="background-choice">
+                <input type="radio" name="background" value="15">
+                <div class="background-size-choice" id="theme15"></div>
+              </label>
+            </div>
+            <div class="text-center mt-3">
+              <input id="SaveLoginPrefs" type="button" class="mt-1 btn btn-primary btn-round" value="Save Change">
+            </div>
+
+          </div>
+
+          <div class="tab-pane fade" id="accounts" role="tabpanel" aria-labelledby="theme-tab"> 
+            <form>
+              <h5 id="UserProfile" class="mb-3">User Profile Management</h5>
+  
+              <div class="mb-3 row">
+                <label id="Management" class="col-lg-3 col-form-label form-control-label">Management</label>
+                <div class="col-lg-5 col-sm-auto col-xl-auto d-flex flex-column mt-1">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input form-check-success" type="checkbox" role="switch" id="switchNewUser">
+                    <label id="NewUser" class="text-capitalize text-form-no-padding" for="switchNewUser">Create New user</label>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input form-check-warn" type="checkbox" role="switch" id="switchUserDisabled">
+                    <label id="UserDisabled" class="text-capitalize text-form-no-padding" for="switchUserDisabled">User Disabled</label>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="mb-3 row">
+                <label id="UsernameProfile" class="col-lg-3 col-form-label form-control-label">Username</label>
+                <div class="col-lg-5 col-sm-auto col-xl-auto">
+                  <div class="input-group">
+                    <div class="input-group-text"><i class="fa-solid fa-at"></i></div>
+                    <input id="username" type="text" class="form-control rounded-end-2 d-none" placeholder="Username" autocomplete="username" autocorrect="off" autocapitalize="off" spellcheck="false" required>
+                    <div class="dropdown">
+                      <button class="btn btn-light dropdown-toggle rounded-start-0 text-unset text-form" type="button" id="UserSelectButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select User
+                      </button>
+                      <ul id="UserSelectorDropdown" class="dropdown-menu" aria-labelledby="UserSelectButton">
+                      </ul>
+                    </div>
+                    <input type="hidden" id="selectedUser" name="user" value=""></input>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="mb-3 row">
+                <label id="LevelProfile"class="col-lg-3 col-form-label form-control-label">Level</label>
+                <div class="col-lg-5 col-sm-auto col-xl-auto">
+                  <div class="input-group">
+                    <div class="input-group-text"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="dropdown">
+                      <button class="btn btn-light dropdown-toggle text-unset text-form" type="button" id="LevelButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Select Level
+                      </button>
+                      <ul id="LevelSelectorDropdown" class="dropdown-menu" aria-labelledby="LevelButton">
+                        <li>
+                          <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="1">
+                            <i class="icon-badge me-2"></i>
+                            <div id="Level1">Level 1</div>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="2">
+                            <i class="icon-badge me-2"></i>
+                            <div id="Level2">Level 2</div>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="3">
+                            <i class="icon-badge me-2"></i>
+                            <div id="Level3">Level 3</div>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="4">
+                            <i class="icon-badge me-2"></i>
+                            <div id="Level4">Level 4</div>
+                          </a>
+                        </li>
+                        <li class="d-none">
+                          <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="5">
+                            <i class="icon-badge me-2"></i>
+                            <div id="Level10">Level 5</div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <input type="hidden" id="selectedLevel" name="level" value=""></input>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label id="LanguageProfile"class="col-lg-3 col-form-label form-control-label">Language</label>
+                <div class="col-lg-4">
+                  <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="UserLanguageButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      Select Language
+                    </button>
+                    <ul id="UserLanguageSelectorDropdown" class="dropdown-menu" aria-labelledby="UserLanguageButton">
+                      <li>
+                        <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="en">
+                          <i class="flag-icon flag-icon-gb me-2"></i>
+                          <div id="English">English</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="fr">
+                          <i class="flag-icon flag-icon-fr me-2"></i>
+                          <div id="French">French</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="de">
+                          <i class="flag-icon flag-icon-de me-2"></i>
+                          <div id="German">German</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="it">
+                          <i class="flag-icon flag-icon-it me-2"></i>
+                          <div id="Italian">Italian</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="es">
+                          <i class="flag-icon flag-icon-es me-2"></i>
+                          <div id="Spanish">Spanish</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="nl">
+                          <i class="flag-icon flag-icon-nl me-2"></i>
+                          <div id="Dutch">Dutch</div>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item d-flex align-items-baseline" href="#" data-value="tr">
+                          <i class="flag-icon flag-icon-tr me-2"></i>
+                          <div id="Turkish">Turkish</div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+  
+                  <input type="hidden" id="UserSelectedLanguage" name="language" value="">
+  
+                </div>
+              </div>
+              <div id="AvatarsGrp" class="mb-3 row">
+                <label id="AvatarProfile"class="col-lg-3 col-form-label form-control-label">Avatar</label>
+                <div id= "avatars-choice" class="col-lg-9 d-flex flex-wrap gap-2">
+                  <label class="avatars-choice">
+                    <input id="avatar1" type="radio" name="avatar" value="1">
+                    <img class="rounded-circle" src="/assets/images/avatars/avatar1.png">
+                  </label>
+                  <label class="avatars-choice">
+                    <input id="avatar2" type="radio" name="avatar" value="2">
+                    <img class="rounded-circle" src="/assets/images/avatars/avatar2.png">
+                  </label>
+                  <label class="avatars-choice">
+                    <input id="avatar3" type="radio" name="avatar" value="3">
+                    <img class="rounded-circle" src="/assets/images/avatars/avatar3.png">
+                  </label>
+                  <label class="avatars-choice">
+                    <input id="avatar4" type="radio" name="avatar" value="4">
+                    <img class="rounded-circle" src="assets/images/avatars/avatar4.png">
+                  </label>
+                  <label class="avatars-choice">
+                    <input id="avatar5" type="radio" name="avatar" value="5">
+                    <img class="rounded-circle" src="/assets/images/avatars/avatar5.png">
+                  </label>
+                  <label class="avatars-choice">
+                    <input id="avatar6" type="radio" name="avatar" value="6">
+                    <img class="rounded-circle" src="/assets/images/avatars/avatar6.png">
+                  </label>
+                  <label class="avatars-choice">
+                    <input id="avatar7" type="radio" name="avatar" value="7">
+                    <img class="rounded-circle" src="/assets/images/avatars/avatar7.png">
+                  </label>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label id="PasswordProfile"class="col-lg-3 col-form-label form-control-label">Password</label>
+                <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
+                  <div class="input-group">
+                    <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
+                    <input id="password" class="form-control" type="password" minlength="10" autocomplete="new-password" placeholder="Enter Password">
+                    <div class="input-group-text"><i toggle="#password" class="icon-eye toggle-password text-white me-0"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label id="NewPasswordProfile"class="col-lg-3 col-form-label form-control-label">Confirm password</label>
+                <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
+                  <div class="input-group">
+                    <div class="input-group-text"><i class="fa-solid fa-key"></i></div>
+                    <input id="newpassword" class="form-control" type="password" autocomplete="new-password" placeholder="Confirm Password">
+                    <div class="input-group-text"><i toggle="#newpassword" class="icon-eye toggle-password text-white me-0"></i></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <label id="PasswordStrength" class="col-lg-3 col-form-label form-control-label">Password Strength</label>
+                <div class="col-lg-5 col-md-auto col-sm-auto col-xl-auto">
+                  <div id="PasswordStrengthChecker" class="text-white" data-Strength-check="">
+                    <div id="LengthGrp" class="d-flex align-items-center">
+                      <i class="icon-check"></i>
+                      <div id="Length">Length: 10 characters minimum</div>
+                    </div>
+                    <div class="d-flex align-items-center LowercaseGrp">
+                      <i class="icon-check"></i>
+                      <div id="Lowercase">Lowercase</div>
+                    </div>
+                    <div class="d-flex align-items-center UppercaseGrp">
+                      <i class="icon-check"></i>
+                      <div id="Uppercase">Uppercase</div>
+                    </div>
+                    <div class="d-flex align-items-center NumberGrp">
+                      <i class="icon-check"></i>
+                      <div id="Number">Number</div>
+                    </div>
+                    <div class="d-flex align-items-center SymbolGrp">
+                      <i class="icon-check"></i>
+                      <div id="Symbol">Symbol</div>
+                    </div>
+                    <div id="ConfirmGrp" class="d-flex align-items-center">
+                      <i class="icon-check"></i>
+                      <div id="Confirmed">Password confirmed</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="d-flex flex-wrap justify-content-evenly mt-5 gap-3">
+              <input id="AdminSaveChange" type="button" class="btn btn-primary btn-round" value="Save Change">
+              <input id="AdminDelete" type="button" class="btn btn-danger btn-round" value="Delete User">
+              <input id="AdminNewUser" type="button" class="btn btn-success btn-round d-none" value="Create User">
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

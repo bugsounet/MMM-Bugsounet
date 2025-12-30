@@ -4,8 +4,7 @@ const path = require("path");
 const fs = require("fs");
 var NodeHelper = require("node_helper");
 const pm2 = require("pm2");
-
-var log = () => { /* do nothing */ };
+const librespot = require("./components/librespotLib");
 
 module.exports = NodeHelper.create({
   start () {
@@ -40,8 +39,12 @@ module.exports = NodeHelper.create({
 
   initialize () {
     console.log("[LIBRESPOT] Launch Librespot...");
-    if (this.config.debug) log = (...args) => { console.log("[LIBRESPOT]", ...args); };
     this.Librespot();
+    try {
+      this.events = new librespot(this.config, (...args) => { this.sendSocketNotification(...args); });
+    } catch (e) {
+      console.log(`[LIBRESPOT] Error From library: ${e}`);
+    }
   },
 
   /** launch librespot with pm2 **/
@@ -59,7 +62,7 @@ module.exports = NodeHelper.create({
     if (!fs.existsSync(filePath)) {
       console.error("[LIBRESPOT] Librespot is not installed!");
       console.error("[LIBRESPOT] Please run `npm run setup` in EXT-Librespot Folder!");
-      this.sendSocketNotification("WARNING", { message: "LibrespotNoInstalled" });
+      this.sendSocketNotification("WARNING", { message: "EXT-Librespot_NoInstalled" });
       return;
     } else {
       console.log("[LIBRESPOT] Found Librespot in", filePath);
@@ -76,7 +79,7 @@ module.exports = NodeHelper.create({
           "--name",
           this.config.deviceName,
           "--initial-volume",
-          this.config.maxVolume,
+          this.config.volume,
           "--cache",
           cacheDir,
           "--cache-size-limit",
@@ -85,11 +88,11 @@ module.exports = NodeHelper.create({
           "cubic",
           "--volume-range",
           "40",
-          `--onevent=${path.resolve(__dirname, "components/librespot/", "events.py")}`
+          `--onevent=${path.resolve(__dirname, "components/", "events.py")}`
         ]
       }, (err) => {
         if (err) {
-          this.sendSocketNotification("WARNING", { message: "LibrespotError", values: err.toString() });
+          this.sendSocketNotification("WARNING", { message: "EXT-Librespot_Error", values: err.toString() });
           console.error(`[LIBRESPOT] ${err}`);
           return;
         }
@@ -103,8 +106,7 @@ module.exports = NodeHelper.create({
           var events;
           try {
             events = JSON.parse(packet.data);
-            this.sendSocketNotification("PLAYING", events);
-            log(events);
+            this.events.librespot(events);
           } catch { /* not a json output */ }
         });
       });
