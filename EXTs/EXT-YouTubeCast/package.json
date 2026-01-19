@@ -17,7 +17,7 @@
     "setup": "node ../../installer/setup --path=EXTs/EXT-YouTubeCast"
   },
   "dependencies": {
-    "ejs": "^3.1.10",
+    "ejs": "^4.0.1",
     "gate": "^0.3.0",
     "peer-ssdp": "0.0.5",
     "uuid": "^13.0.0",
